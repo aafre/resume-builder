@@ -20,7 +20,7 @@ export default function AIJobDescriptionAnalyzer() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Job descriptions contain more information than meets the eye. Between the lines are
           clues about company culture, real priorities, and exactly what keywords your resume needs.
           AI can help you decode all of this in minutes.
@@ -44,7 +44,7 @@ export default function AIJobDescriptionAnalyzer() {
           Step 1: Initial Analysis Prompt
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-4">
+        <p className="text-lg leading-relaxed text-ink/60 mb-4">
           Start with this comprehensive prompt to get a full breakdown:
         </p>
 
@@ -75,7 +75,7 @@ export default function AIJobDescriptionAnalyzer() {
           Step 2: Keyword Extraction
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-4">
+        <p className="text-lg leading-relaxed text-ink/60 mb-4">
           For ATS optimization, you need exact keyword matches. Use this prompt:
         </p>
 
@@ -97,7 +97,7 @@ export default function AIJobDescriptionAnalyzer() {
           Step 3: Decode Hidden Expectations
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-4">
+        <p className="text-lg leading-relaxed text-ink/60 mb-4">
           What they write isn't always what they mean. This prompt helps decode the subtext:
         </p>
 
@@ -118,7 +118,7 @@ export default function AIJobDescriptionAnalyzer() {
           Step 4: Match Analysis
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-4">
+        <p className="text-lg leading-relaxed text-ink/60 mb-4">
           Once you've analyzed the JD, compare it against your background:
         </p>
 
@@ -141,7 +141,7 @@ export default function AIJobDescriptionAnalyzer() {
           Step 5: Create Tailored Content
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-4">
+        <p className="text-lg leading-relaxed text-ink/60 mb-4">
           Now turn your analysis into resume content:
         </p>
 
@@ -161,7 +161,7 @@ export default function AIJobDescriptionAnalyzer() {
           Example Analysis Walkthrough
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-4">
+        <p className="text-lg leading-relaxed text-ink/60 mb-4">
           Here's what a sample analysis might reveal from a typical JD phrase:
         </p>
 
@@ -176,24 +176,24 @@ export default function AIJobDescriptionAnalyzer() {
             </thead>
             <tbody className="divide-y divide-black/[0.06]">
               <tr>
-                <td className="px-4 py-4 text-stone-warm">"Drive cross-functional initiatives"</td>
-                <td className="px-4 py-4 text-stone-warm">Lead projects involving multiple teams</td>
-                <td className="px-4 py-4 text-stone-warm">Cross-functional, stakeholder management, collaboration</td>
+                <td className="px-4 py-4 text-ink/60">"Drive cross-functional initiatives"</td>
+                <td className="px-4 py-4 text-ink/60">Lead projects involving multiple teams</td>
+                <td className="px-4 py-4 text-ink/60">Cross-functional, stakeholder management, collaboration</td>
               </tr>
               <tr className="bg-chalk-dark">
-                <td className="px-4 py-4 text-stone-warm">"Experience with Agile methodologies"</td>
-                <td className="px-4 py-4 text-stone-warm">Worked on Scrum/Kanban teams</td>
-                <td className="px-4 py-4 text-stone-warm">Agile, Scrum, sprints, standups, retrospectives</td>
+                <td className="px-4 py-4 text-ink/60">"Experience with Agile methodologies"</td>
+                <td className="px-4 py-4 text-ink/60">Worked on Scrum/Kanban teams</td>
+                <td className="px-4 py-4 text-ink/60">Agile, Scrum, sprints, standups, retrospectives</td>
               </tr>
               <tr>
-                <td className="px-4 py-4 text-stone-warm">"Data-driven decision making"</td>
-                <td className="px-4 py-4 text-stone-warm">Uses metrics to inform choices</td>
-                <td className="px-4 py-4 text-stone-warm">Analytics, KPIs, data analysis, insights</td>
+                <td className="px-4 py-4 text-ink/60">"Data-driven decision making"</td>
+                <td className="px-4 py-4 text-ink/60">Uses metrics to inform choices</td>
+                <td className="px-4 py-4 text-ink/60">Analytics, KPIs, data analysis, insights</td>
               </tr>
               <tr className="bg-chalk-dark">
-                <td className="px-4 py-4 text-stone-warm">"Own end-to-end delivery"</td>
-                <td className="px-4 py-4 text-stone-warm">Full responsibility from start to finish</td>
-                <td className="px-4 py-4 text-stone-warm">End-to-end, ownership, delivery, accountability</td>
+                <td className="px-4 py-4 text-ink/60">"Own end-to-end delivery"</td>
+                <td className="px-4 py-4 text-ink/60">Full responsibility from start to finish</td>
+                <td className="px-4 py-4 text-ink/60">End-to-end, ownership, delivery, accountability</td>
               </tr>
             </tbody>
           </table>
@@ -231,7 +231,7 @@ export default function AIJobDescriptionAnalyzer() {
           Related Resources
         </h2>
 
-        <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
+        <ul className="list-disc list-inside space-y-2 text-lg text-ink/60">
           <li>
             <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">
               How to Use Resume Keywords to Beat the ATS

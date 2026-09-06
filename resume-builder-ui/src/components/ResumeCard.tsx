@@ -208,10 +208,10 @@ export function ResumeCard({
 
         {/* Metadata row */}
         <div className="flex items-center gap-2 mb-3">
-          <span className="text-xs bg-chalk-dark text-stone-warm px-2 py-1 rounded-md">
+          <span className="text-xs bg-chalk-dark text-ink/60 px-2 py-1 rounded-md">
             {getTemplateName(resume.template_id)}
           </span>
-          <span className="text-xs text-stone-warm">
+          <span className="text-xs text-ink/60">
             • Updated {formatDate(resume.updated_at)}
           </span>
         </div>

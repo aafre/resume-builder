@@ -89,7 +89,7 @@ export default function ResumeBuilderHiddenCosts() {
           </p>
         </div>
 
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           "Free resume builder" is one of the most misleading phrases in the job
           search. You can build a resume for free on most popular platforms
           &mdash; you just can't download a usable copy without paying. This is a
@@ -97,7 +97,7 @@ export default function ResumeBuilderHiddenCosts() {
           is worse than the sticker price suggests.
         </p>
 
-        <p className="text-sm leading-relaxed text-stone-warm italic">
+        <p className="text-sm leading-relaxed text-ink/60 italic">
           Note: Prices, trial terms, and cancellation steps change often. The
           figures below reflect terms advertised as of 2026 and are described as
           observed, not guaranteed. Always verify the current price on the
@@ -109,7 +109,7 @@ export default function ResumeBuilderHiddenCosts() {
           The real cost of "free" resume builders, side by side
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           The table below compares advertised trial prices, what they convert
           to, billing cadence, and estimated annual cost. EasyFreeResume is
           included as the genuinely-free reference point.
@@ -145,31 +145,31 @@ export default function ResumeBuilderHiddenCosts() {
             <tbody className="divide-y divide-black/[0.06]">
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Resume.io</td>
-                <td className="px-4 py-4 text-stone-warm">
+                <td className="px-4 py-4 text-ink/60">
                   ~$2.95 / 7-day trial
                 </td>
-                <td className="px-4 py-4 text-stone-warm">~$29.95 / 4 weeks</td>
-                <td className="px-4 py-4 text-stone-warm">
+                <td className="px-4 py-4 text-ink/60">~$29.95 / 4 weeks</td>
+                <td className="px-4 py-4 text-ink/60">
                   Every 4 weeks (~13/yr)
                 </td>
-                <td className="px-4 py-4 text-stone-warm">~$389/year</td>
+                <td className="px-4 py-4 text-ink/60">~$389/year</td>
                 <td className="px-4 py-4 text-red-700">Yes (typical)</td>
-                <td className="px-4 py-4 text-stone-warm">
+                <td className="px-4 py-4 text-ink/60">
                   Users report cancellation friction
                 </td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Zety</td>
-                <td className="px-4 py-4 text-stone-warm">
+                <td className="px-4 py-4 text-ink/60">
                   ~$1.95 / 14-day trial
                 </td>
-                <td className="px-4 py-4 text-stone-warm">~$25.95 / 4 weeks</td>
-                <td className="px-4 py-4 text-stone-warm">
+                <td className="px-4 py-4 text-ink/60">~$25.95 / 4 weeks</td>
+                <td className="px-4 py-4 text-ink/60">
                   Every 4 weeks (~13/yr)
                 </td>
-                <td className="px-4 py-4 text-stone-warm">~$337/year</td>
+                <td className="px-4 py-4 text-ink/60">~$337/year</td>
                 <td className="px-4 py-4 text-red-700">Yes (typical)</td>
-                <td className="px-4 py-4 text-stone-warm">
+                <td className="px-4 py-4 text-ink/60">
                   Cancel before trial ends
                 </td>
               </tr>
@@ -177,20 +177,20 @@ export default function ResumeBuilderHiddenCosts() {
                 <td className="px-4 py-4 font-medium text-ink">
                   Canva Pro
                 </td>
-                <td className="px-4 py-4 text-stone-warm">
+                <td className="px-4 py-4 text-ink/60">
                   ~30-day Pro trial
                 </td>
-                <td className="px-4 py-4 text-stone-warm">
+                <td className="px-4 py-4 text-ink/60">
                   ~$15/month (~$120/yr annual)
                 </td>
-                <td className="px-4 py-4 text-stone-warm">
+                <td className="px-4 py-4 text-ink/60">
                   Monthly or annual
                 </td>
-                <td className="px-4 py-4 text-stone-warm">~$120/year (Pro)</td>
+                <td className="px-4 py-4 text-ink/60">~$120/year (Pro)</td>
                 <td className="px-4 py-4 text-yellow-800">
                   Free tier limited, not watermarked
                 </td>
-                <td className="px-4 py-4 text-stone-warm">
+                <td className="px-4 py-4 text-ink/60">
                   Standard subscription cancel
                 </td>
               </tr>
@@ -219,7 +219,7 @@ export default function ResumeBuilderHiddenCosts() {
           </table>
         </div>
 
-        <p className="text-sm text-stone-warm italic">
+        <p className="text-sm text-ink/60 italic">
           Canva Pro is a general design subscription, not a resume-only paywall;
           its free tier lets you export without a watermark but with limited
           features. Figures are estimates observed as of 2026 and vary by region
@@ -231,13 +231,13 @@ export default function ResumeBuilderHiddenCosts() {
           Resume.io: a $2.95 trial that becomes $29.95 every 4 weeks
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Resume.io's "free" entry point is a short trial. As of 2026, Resume.io
           advertises a 7-day trial priced around $2.95 that auto-renews at
           roughly $29.95 every 4 weeks unless you cancel first.
         </p>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           The catch most people miss is cancellation. As of 2026, some Resume.io
           users report cancellation friction &mdash; unexpected charges after
           the trial and difficulty completing or confirming a cancellation
@@ -259,7 +259,7 @@ export default function ResumeBuilderHiddenCosts() {
           Zety: the "13th charge" billing trap
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Zety's pricing looks monthly but isn't. As of 2026, Zety advertises a
           14-day trial near $1.95 that converts to about $25.95 charged every 4
           weeks &mdash; not every calendar month.
@@ -301,7 +301,7 @@ export default function ResumeBuilderHiddenCosts() {
           </ul>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           See the full numbers in our{" "}
           <Link
             to="/easyfreeresume-vs-zety"
@@ -316,7 +316,7 @@ export default function ResumeBuilderHiddenCosts() {
           Canva Pro: cheaper, but a subscription you may not need
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Canva is different: its free tier lets you export resumes without a
           watermark. The cost shows up when you want premium templates or
           elements, which require Canva Pro at roughly $15 per month, or about
@@ -324,7 +324,7 @@ export default function ResumeBuilderHiddenCosts() {
           $12.99 to $15/month in 2025).
         </p>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Canva is a strong general design tool, but a resume rarely needs a
           design subscription, and Canva's free resume layouts can confuse
           applicant tracking systems. Our{" "}
@@ -342,13 +342,13 @@ export default function ResumeBuilderHiddenCosts() {
           Cancellation friction: where the real cost hides
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           The advertised price is rarely the whole story &mdash; the cost of
           forgetting to cancel is. Trials auto-convert, and the friction to stop
           them is often higher than the friction to start them.
         </p>
 
-        <ul className="space-y-3 text-lg text-stone-warm">
+        <ul className="space-y-3 text-lg text-ink/60">
           <li className="flex gap-3 items-start">
             <span className="text-accent-text mt-1.5">&#x2022;</span>
             <span>
@@ -382,7 +382,7 @@ export default function ResumeBuilderHiddenCosts() {
           How EasyFreeResume is genuinely free
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           EasyFreeResume removes the paywall entirely. There is no trial, no
           credit card, no watermark, and no account &mdash; you build and you
           download.
@@ -403,7 +403,7 @@ export default function ResumeBuilderHiddenCosts() {
           </ul>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           The service is funded by non-intrusive advertising rather than by
           locking your download behind a subscription. If you want to understand
           the model in more depth, read{" "}
@@ -446,7 +446,7 @@ export default function ResumeBuilderHiddenCosts() {
           {FAQS.map(({ question, answer }) => (
             <div key={question} className="bg-chalk-dark rounded-xl p-5">
               <h3 className="font-bold text-ink mb-2">{question}</h3>
-              <p className="text-stone-warm text-sm leading-relaxed">{answer}</p>
+              <p className="text-ink/60 text-sm leading-relaxed">{answer}</p>
             </div>
           ))}
         </div>

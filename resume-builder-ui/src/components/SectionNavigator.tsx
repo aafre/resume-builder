@@ -330,13 +330,13 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
       {/* Toggle Button - Top of sidebar with subtle border */}
       <div className="shrink-0 flex items-center justify-between px-3 py-3 border-b border-gray-200/60 bg-chalk">
         {!isCollapsed && (
-          <span className="text-xs font-semibold text-stone-warm uppercase tracking-wider">
+          <span className="text-xs font-semibold text-ink/60 uppercase tracking-wider">
             Navigator
           </span>
         )}
         <button
           onClick={handleToggle}
-          className={`inline-flex min-h-11 min-w-11 items-center justify-center p-2 hover:bg-white rounded-lg transition-colors duration-150 text-stone-warm hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
+          className={`inline-flex min-h-11 min-w-11 items-center justify-center p-2 hover:bg-white rounded-lg transition-colors duration-150 text-ink/60 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
             isCollapsed ? "mx-auto" : ""
           }`}
           aria-label={isCollapsed ? "Expand sidebar (Ctrl+\\)" : "Collapse sidebar (Ctrl+\\)"}
@@ -350,7 +350,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-clip scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
         <div className={`${isCollapsed ? "py-3 px-1.5" : "p-3"}`} id="tour-section-navigator">
           {!isCollapsed && (
-            <h2 className="text-[11px] font-semibold text-stone-warm uppercase tracking-wider mb-3 px-2">
+            <h2 className="text-[11px] font-semibold text-ink/60 uppercase tracking-wider mb-3 px-2">
               Sections
             </h2>
           )}
@@ -377,7 +377,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               } rounded-lg ${
                 activeSectionIndex === -1
                   ? "bg-accent/10 text-accent-text"
-                  : "bg-chalk-dark text-stone-warm group-hover:text-ink"
+                  : "bg-chalk-dark text-ink/60 group-hover:text-ink"
               }`}
             >
               <MdPerson className="text-base" />
@@ -418,7 +418,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                 } rounded-lg ${
                   activeSectionIndex === index
                     ? "bg-accent/10 text-accent-text"
-                    : "bg-chalk-dark text-stone-warm group-hover:text-ink"
+                    : "bg-chalk-dark text-ink/60 group-hover:text-ink"
                 }`}
               >
                 {getSectionIcon(section)}
@@ -449,7 +449,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
       <div className="shrink-0 border-t border-gray-200/60 bg-white">
         <div className={`${isCollapsed ? "py-3 px-2" : "p-4"}`}>
           {!isCollapsed && (
-            <h3 className="text-[11px] font-semibold text-stone-warm uppercase tracking-wider mb-3 px-1">
+            <h3 className="text-[11px] font-semibold text-ink/60 uppercase tracking-wider mb-3 px-1">
               Actions
             </h3>
           )}
@@ -574,7 +574,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                   disabled={loadingSave}
                   className={`${optionRowBase} text-ink hover:bg-black/5`}
                 >
-                  <MdFileDownload className="text-base text-stone-warm shrink-0" aria-hidden="true" />
+                  <MdFileDownload className="text-base text-ink/60 shrink-0" aria-hidden="true" />
                   <span className="flex flex-col items-start">
                     <span className="text-[13px]">
                       {loadingSave
@@ -583,7 +583,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                         ? "Backup to File"
                         : "Save My Work"}
                     </span>
-                    <span className={`text-[11px] leading-tight ${isAnonymous ? "text-amber-700" : "text-stone-warm"}`}>
+                    <span className={`text-[11px] leading-tight ${isAnonymous ? "text-amber-700" : "text-ink/60"}`}>
                       {isAnonymous ? "Your only local save" : "Download YAML file"}
                     </span>
                   </span>
@@ -595,7 +595,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                   disabled={loadingLoad}
                   className={`${optionRowBase} text-ink hover:bg-black/5`}
                 >
-                  <MdFileUpload className="text-base text-stone-warm shrink-0" aria-hidden="true" />
+                  <MdFileUpload className="text-base text-ink/60 shrink-0" aria-hidden="true" />
                   <span className="flex flex-col items-start">
                     <span className="text-[13px]">
                       {loadingLoad
@@ -604,7 +604,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                         ? "Import from File"
                         : "Load My Work"}
                     </span>
-                    <span className="text-[11px] leading-tight text-stone-warm">Upload YAML file</span>
+                    <span className="text-[11px] leading-tight text-ink/60">Upload YAML file</span>
                   </span>
                 </button>
 
@@ -615,10 +615,10 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                   onClick={() => runOption(handleStartFresh)}
                   className={`${optionRowBase} text-ink hover:bg-red-50 hover:text-red-800`}
                 >
-                  <MdRefresh className="text-base text-stone-warm shrink-0" aria-hidden="true" />
+                  <MdRefresh className="text-base text-ink/60 shrink-0" aria-hidden="true" />
                   <span className="flex flex-col items-start">
                     <span className="text-[13px]">Start Fresh</span>
-                    <span className="text-[11px] leading-tight text-stone-warm">Clear and start over</span>
+                    <span className="text-[11px] leading-tight text-ink/60">Clear and start over</span>
                   </span>
                 </button>
 
@@ -627,10 +627,10 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                   onClick={() => runOption(onHelp)}
                   className={`${optionRowBase} text-ink hover:bg-black/5`}
                 >
-                  <MdHelpOutline className="text-base text-stone-warm shrink-0" aria-hidden="true" />
+                  <MdHelpOutline className="text-base text-ink/60 shrink-0" aria-hidden="true" />
                   <span className="flex flex-col items-start">
                     <span className="text-[13px]">Help &amp; Tips</span>
-                    <span className="text-[11px] leading-tight text-stone-warm">Guided tour</span>
+                    <span className="text-[11px] leading-tight text-ink/60">Guided tour</span>
                   </span>
                 </button>
 
@@ -640,10 +640,10 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                   onClick={() => setShowMoreOptions(false)}
                   className={`${optionRowBase} text-ink hover:bg-black/5`}
                 >
-                  <MdSupport className="text-base text-stone-warm shrink-0" aria-hidden="true" />
+                  <MdSupport className="text-base text-ink/60 shrink-0" aria-hidden="true" />
                   <span className="flex flex-col items-start">
                     <span className="text-[13px]">Contact Support</span>
-                    <span className="text-[11px] leading-tight text-stone-warm">Ask a question</span>
+                    <span className="text-[11px] leading-tight text-ink/60">Ask a question</span>
                   </span>
                 </Link>
               </div>
@@ -656,7 +656,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
       {showAffiliates && (
         <div className={`shrink-0 border-t border-gray-200/60 bg-chalk ${isCollapsed ? "py-2 px-1.5" : "px-2 py-2"}`}>
           {!isCollapsed && (
-            <h3 className="mb-2 px-1 font-mono text-[10px] uppercase tracking-[0.15em] text-stone-warm">
+            <h3 className="mb-2 px-1 font-mono text-[10px] uppercase tracking-[0.15em] text-ink/60">
               Sponsored
             </h3>
           )}
@@ -668,7 +668,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                 href={affiliateConfig.resumeReview.url}
                 target="_blank"
                 rel="noopener noreferrer nofollow sponsored"
-                className="w-full flex flex-col items-center gap-1.5 py-2 px-1 rounded-lg hover:bg-black/5 transition-colors duration-150 text-stone-warm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
+                className="w-full flex flex-col items-center gap-1.5 py-2 px-1 rounded-lg hover:bg-black/5 transition-colors duration-150 text-ink/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
                 title="Sponsored: ATS compatibility check (opens in a new tab)"
               >
                 <div className="w-7 h-7 flex items-center justify-center rounded-lg bg-white border border-gray-200">
@@ -683,14 +683,14 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                 rel="noopener noreferrer nofollow sponsored"
                 className="w-full min-h-11 flex items-center gap-2.5 rounded-lg px-2 transition-colors duration-150 hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
               >
-                <ShieldCheck className="w-4 h-4 shrink-0 text-stone-warm" aria-hidden="true" />
+                <ShieldCheck className="w-4 h-4 shrink-0 text-ink/60" aria-hidden="true" />
                 <span className="flex-1 min-w-0 flex flex-col items-start">
                   <span className="text-[13px] text-ink leading-tight">ATS Compatibility</span>
-                  <span className="text-[11px] text-stone-warm leading-tight truncate w-full">
+                  <span className="text-[11px] text-ink/60 leading-tight truncate w-full">
                     Will your resume pass the filter?
                   </span>
                 </span>
-                <ExternalLink className="w-3.5 h-3.5 text-stone-warm shrink-0" aria-hidden="true" />
+                <ExternalLink className="w-3.5 h-3.5 text-ink/60 shrink-0" aria-hidden="true" />
                 <span className="sr-only">Sponsored link, opens in a new tab</span>
               </a>
             )
@@ -716,7 +716,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                     } catch { /* ignore */ }
                   }
                 }}
-                className="w-full flex flex-col items-center gap-1.5 py-2 px-1 mt-1 rounded-lg hover:bg-black/5 transition-colors duration-150 text-stone-warm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
+                className="w-full flex flex-col items-center gap-1.5 py-2 px-1 mt-1 rounded-lg hover:bg-black/5 transition-colors duration-150 text-ink/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
                 title="Sponsored: job matches"
               >
                 <div className="w-7 h-7 flex items-center justify-center rounded-lg bg-white border border-gray-200">
@@ -744,14 +744,14 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                 }}
                 className="w-full min-h-11 flex items-center gap-2.5 rounded-lg px-2 transition-colors duration-150 hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
               >
-                <JobSparkleIcon className="w-4 h-4 shrink-0 text-stone-warm" />
+                <JobSparkleIcon className="w-4 h-4 shrink-0 text-ink/60" />
                 <span className="flex-1 min-w-0 flex flex-col items-start">
                   <span className="text-[13px] text-ink leading-tight">Job Matches</span>
-                  <span className="text-[11px] text-stone-warm leading-tight truncate w-full">
+                  <span className="text-[11px] text-ink/60 leading-tight truncate w-full">
                     Matched to your resume skills
                   </span>
                 </span>
-                <ChevronRight className="w-3.5 h-3.5 text-stone-warm shrink-0" aria-hidden="true" />
+                <ChevronRight className="w-3.5 h-3.5 text-ink/60 shrink-0" aria-hidden="true" />
               </Link>
             )
           )}
@@ -761,7 +761,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
       {/* Keyboard shortcut hint */}
       {!isCollapsed && (
         <div className="shrink-0 px-4 py-2.5 bg-chalk border-t border-gray-200/40">
-          <p className="text-[10px] text-stone-warm text-center">
+          <p className="text-[10px] text-ink/60 text-center">
             Press{" "}
             <kbd className="px-1.5 py-0.5 bg-white rounded text-[9px] font-mono border border-gray-300">
               Ctrl

@@ -156,7 +156,7 @@ export const InlineTextEditor: React.FC<InlineTextEditorProps> = ({
         focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent
         transition-colors duration-150
         ${disabled ? 'cursor-default hover:border-transparent hover:bg-transparent' : ''}
-        ${!value ? 'text-stone-warm italic' : ''}
+        ${!value ? 'text-ink/60 italic' : ''}
         ${textClassName}
         ${className}
       `.trim().replace(/\s+/g, ' ')}

@@ -21,7 +21,7 @@ export default function TechResumeGuide() {
       ]}
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           In the competitive world of tech, your resume isn't just a document;
           it's your digital handshake. It needs to speak the language of code,
           frameworks, and problem-solving, immediately demonstrating your value
@@ -44,7 +44,7 @@ export default function TechResumeGuide() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Why Your Tech Resume Needs Special Attention
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Unlike traditional resumes, a tech resume prioritizes different
           elements. While soft skills are important, demonstrable hard skills, a
           strong project portfolio, and an understanding of industry-specific
@@ -86,7 +86,7 @@ export default function TechResumeGuide() {
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           1. Contact Information & Online Presence
         </h3>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Beyond your name and contact details, this is where you showcase your
           digital footprint.
         </p>
@@ -121,7 +121,7 @@ export default function TechResumeGuide() {
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           2. Professional Summary/Objective (Optional but Recommended)
         </h3>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           A concise paragraph or bulleted list that acts as your elevator pitch.
           Tailor it for each application.
         </p>
@@ -147,7 +147,7 @@ export default function TechResumeGuide() {
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           3. Technical Skills Section: Your Tech Toolbox
         </h3>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           This is arguably the most critical section for tech roles. Categorize
           your skills for readability and ATS compatibility.
         </p>
@@ -206,7 +206,7 @@ export default function TechResumeGuide() {
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           4. Work Experience: Showcase Your Impact
         </h3>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           For each role, focus on quantifiable achievements and the technologies
           you used. Use the STAR method (Situation, Task, Action, Result) in
           your bullet points.
@@ -238,7 +238,7 @@ export default function TechResumeGuide() {
         <h3 className="2xl font-bold text-ink mt-8 mb-4">
           5. Projects: Your Live Portfolio
         </h3>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           This section is GOLD for tech professionals, especially those early in
           their careers or looking to switch domains.
         </p>
@@ -271,7 +271,7 @@ export default function TechResumeGuide() {
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           6. Education & Certifications
         </h3>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Standard academic information, but don't forget relevant tech
           certifications.
         </p>
@@ -301,7 +301,7 @@ export default function TechResumeGuide() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           ATS Optimization for Tech Resumes
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Applicant Tracking Systems (ATS) are used by almost all large tech
           companies. Your resume must be readable by these bots first.
         </p>
@@ -311,7 +311,7 @@ export default function TechResumeGuide() {
             <h4 className="font-bold text-ink mb-3">
               ✅ ATS-Friendly Practices:
             </h4>
-            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
+            <ul className="list-disc pl-6 space-y-1 text-ink/60 text-sm">
               <li>
                 Use standard headings (e.g., "Skills", "Experience",
                 "Education").
@@ -326,7 +326,7 @@ export default function TechResumeGuide() {
             <h4 className="font-bold text-ink mb-3">
               ❌ ATS Traps to Avoid:
             </h4>
-            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
+            <ul className="list-disc pl-6 space-y-1 text-ink/60 text-sm">
               <li>Infographic resumes.</li>
               <li>Excessive jargon not relevant to the job.</li>
               <li>
@@ -342,7 +342,7 @@ export default function TechResumeGuide() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Tailoring Your Resume for Specific Tech Roles
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           A software engineer resume will differ from a data scientist's, and
           both will differ from a UX designer's. Always customize!
         </p>
@@ -376,7 +376,7 @@ export default function TechResumeGuide() {
           Final Tips for a Winning Tech Resume
         </h2>
 
-        <ul className="list-disc pl-6 space-y-3 text-lg leading-relaxed text-stone-warm">
+        <ul className="list-disc pl-6 space-y-3 text-lg leading-relaxed text-ink/60">
           <li>
             <strong>Keep it Concise:</strong> Aim for one page if you have less
             than 10 years of experience, two pages if more.
@@ -426,7 +426,7 @@ export default function TechResumeGuide() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Beyond the Resume: The Developer's Ecosystem
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           While your resume is critical, remember it's part of a larger
           ecosystem. A strong LinkedIn profile, an active GitHub, participation
           in developer communities, and even a personal blog can significantly
@@ -434,7 +434,7 @@ export default function TechResumeGuide() {
           to find you.
         </p>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-6">
+        <p className="text-lg leading-relaxed text-ink/60 mt-6">
           Mastering your tech resume is an ongoing process. By focusing on
           clarity, relevance, and demonstrable skills, you'll significantly
           increase your chances of landing that dream developer job in 2026 and

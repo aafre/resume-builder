@@ -35,7 +35,7 @@ export default function ProofSection({ metrics, className = '' }: ProofSectionPr
           </div>
 
           {/* Label */}
-          <div className="text-sm text-stone-warm font-medium">
+          <div className="text-sm text-ink/60 font-medium">
             {metric.label}
           </div>
         </div>

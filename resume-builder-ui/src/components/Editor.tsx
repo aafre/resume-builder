@@ -34,7 +34,7 @@ const LoadingSpinner = () => (
   <div className="min-h-screen bg-chalk flex items-center justify-center" role="status" aria-live="polite">
     <div className="text-center">
       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
-      <p className="text-xl text-stone-warm">Loading…</p>
+      <p className="text-xl text-ink/60">Loading…</p>
     </div>
   </div>
 );

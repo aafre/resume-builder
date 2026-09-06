@@ -44,7 +44,7 @@ export default function TemplatesPage() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
             Why Choose Our Free Resume Templates?
           </h2>
-          <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-12">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-4xl mx-auto text-center leading-relaxed mb-12">
             Unlike other resume builders that charge for premium templates or add watermarks,
             EasyFreeResume offers all templates completely free. Every design has been tested
             for ATS compatibility and created by professional designers.
@@ -97,7 +97,7 @@ export default function TemplatesPage() {
                 1
               </div>
               <h3 className="text-xl font-semibold mb-2">Choose a Template</h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Browse our collection and select the design that fits your industry and style.
               </p>
             </div>
@@ -106,7 +106,7 @@ export default function TemplatesPage() {
                 2
               </div>
               <h3 className="text-xl font-semibold mb-2">Fill In Your Details</h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Add your experience, education, and skills using our intuitive editor.
               </p>
             </div>
@@ -115,7 +115,7 @@ export default function TemplatesPage() {
                 3
               </div>
               <h3 className="text-xl font-semibold mb-2">Download Instantly</h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Export your professional resume as PDF. No watermarks, no sign-up required.
               </p>
             </div>

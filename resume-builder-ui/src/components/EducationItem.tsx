@@ -50,7 +50,7 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
           <h3 className="text-lg font-semibold">Entry {index + 1}</h3>
           <button
             onClick={() => onRemove(index)}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center text-stone-warm hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center text-ink/60 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             aria-label="Delete education entry"
             title="Delete this entry"
           >

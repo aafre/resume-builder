@@ -105,7 +105,7 @@ export default function JobKeywordsPage() {
               <h2 className="text-2xl font-extrabold text-ink tracking-tight mb-4">
                 What hiring teams look for in {jobData.title.toLowerCase()} keywords
               </h2>
-              <p className="text-stone-warm font-extralight leading-relaxed">
+              <p className="text-ink/60 font-extralight leading-relaxed">
                 {jobData.roleIntro}
               </p>
             </div>
@@ -132,7 +132,7 @@ export default function JobKeywordsPage() {
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
             Core {jobData.title.toLowerCase()} skills (soft skills)
           </h2>
-          <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+          <p className="text-lg text-ink/60 font-extralight mb-8 leading-relaxed">
             These keywords describe essential interpersonal and professional abilities that employers look for
             in {jobData.title.toLowerCase()} roles. Include these throughout your work experience to demonstrate
             your competencies.
@@ -160,7 +160,7 @@ export default function JobKeywordsPage() {
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
             Technical skills & tools (hard skills)
           </h2>
-          <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+          <p className="text-lg text-ink/60 font-extralight mb-8 leading-relaxed">
             Listing specific technologies and tools you've used is critical for ATS optimization. These keywords
             demonstrate your technical expertise and readiness to contribute immediately.
           </p>
@@ -212,7 +212,7 @@ export default function JobKeywordsPage() {
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
               Methodologies and processes
             </h2>
-            <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight mb-8 leading-relaxed">
               These keywords show you understand industry-standard workflows and best practices. They demonstrate
               your ability to work within established frameworks and contribute to team efficiency.
             </p>
@@ -241,7 +241,7 @@ export default function JobKeywordsPage() {
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
               Relevant certifications
             </h2>
-            <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight mb-8 leading-relaxed">
               Certifications validate your expertise and commitment to professional development. Include these
               prominently on your resume with completion dates to strengthen your application.
             </p>
@@ -271,7 +271,7 @@ export default function JobKeywordsPage() {
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
               Metrics and KPIs
             </h2>
-            <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight mb-8 leading-relaxed">
               Quantifying your achievements with specific metrics makes your resume stand out. Use these KPIs
               to demonstrate the measurable impact you've made in previous roles.
             </p>
@@ -299,7 +299,7 @@ export default function JobKeywordsPage() {
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 text-center">
             How to use these keywords: examples
           </h2>
-          <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed text-center max-w-3xl mx-auto">
+          <p className="text-lg text-ink/60 font-extralight mb-8 leading-relaxed text-center max-w-3xl mx-auto">
             Compare these two resume bullets to see how incorporating specific keywords transforms a generic
             statement into an ATS-optimized, impactful achievement.
           </p>
@@ -308,7 +308,7 @@ export default function JobKeywordsPage() {
               <h4 className="font-bold text-ink mb-4">
                 ❌ Generic (Before)
               </h4>
-              <p className="text-stone-warm mb-4">
+              <p className="text-ink/60 mb-4">
                 {example.before}
               </p>
               <h4 className="font-bold text-accent-text mb-4">
@@ -335,7 +335,7 @@ export default function JobKeywordsPage() {
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
               Keyword phrases for {jobData.title.toLowerCase()} resumes
             </h2>
-            <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight mb-8 leading-relaxed">
               ATS systems don't just look for single words—they scan for multi-word phrases that
               indicate specific expertise. Include these 2-5 word combinations naturally in your resume.
             </p>
@@ -366,7 +366,7 @@ export default function JobKeywordsPage() {
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
               Ready-to-adapt resume bullets
             </h2>
-            <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight mb-8 leading-relaxed">
               Here are real resume bullets that incorporate keywords naturally while demonstrating
               measurable impact. Adapt these to your own experience.
             </p>
@@ -396,7 +396,7 @@ export default function JobKeywordsPage() {
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
               Common {jobData.title.toLowerCase()} resume mistakes
             </h2>
-            <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight mb-8 leading-relaxed">
               Avoid these pitfalls that can hurt your chances of getting past the ATS or impressing
               hiring managers.
             </p>

@@ -47,7 +47,7 @@ export default function ResumeBuilderForITProfessionals() {
             ].map((tip, i) => (
               <div key={i} className="bg-white rounded-2xl p-6 shadow-sm border border-black/[0.06]">
                 <h3 className="font-display text-lg font-bold text-ink mb-2">{tip.title}</h3>
-                <p className="text-stone-warm font-extralight leading-relaxed">{tip.desc}</p>
+                <p className="text-ink/60 font-extralight leading-relaxed">{tip.desc}</p>
               </div>
             ))}
           </div>
@@ -63,7 +63,7 @@ export default function ResumeBuilderForITProfessionals() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4 text-center">
             Common IT Resume Mistakes That Get You Rejected
           </h2>
-          <p className="text-lg md:text-xl font-extralight text-stone-warm leading-relaxed text-center mb-10 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 leading-relaxed text-center mb-10 max-w-3xl mx-auto">
             Tech recruiters review hundreds of resumes per week. These mistakes send yours straight to
             the rejection pile — even when you have the skills for the job.
           </p>
@@ -95,13 +95,13 @@ export default function ResumeBuilderForITProfessionals() {
                   <span className="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">✗</span>
                   <div>
                     <h3 className="font-display text-lg font-bold text-ink mb-1">{item.mistake}</h3>
-                    <p className="text-stone-warm font-extralight leading-relaxed">{item.fix}</p>
+                    <p className="text-ink/60 font-extralight leading-relaxed">{item.fix}</p>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-          <p className="text-lg text-stone-warm font-extralight leading-relaxed mt-8 text-center">
+          <p className="text-lg text-ink/60 font-extralight leading-relaxed mt-8 text-center">
             Not sure which skills to highlight? Use our{' '}
             <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">resume keyword scanner</Link>{' '}
             to compare your resume against the job description and identify exactly what is missing.
@@ -115,7 +115,7 @@ export default function ResumeBuilderForITProfessionals() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6">
             Resume Keywords by IT Role
           </h2>
-          <p className="text-lg text-stone-warm font-extralight mb-6 leading-relaxed">
+          <p className="text-lg text-ink/60 font-extralight mb-6 leading-relaxed">
             Different IT roles require different keyword strategies. Browse our curated keyword
             lists for your specific role, or read our guide on{' '}
             <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline font-medium">how to list skills on a resume</Link>{' '}
@@ -171,11 +171,11 @@ export default function ResumeBuilderForITProfessionals() {
             ].map((item, i) => (
               <div key={i} className="bg-white rounded-2xl p-6 shadow-sm border border-black/[0.06]">
                 <h3 className="font-display text-lg font-bold text-ink mb-2">{item.q}</h3>
-                <p className="text-stone-warm font-extralight leading-relaxed">{item.a}</p>
+                <p className="text-ink/60 font-extralight leading-relaxed">{item.a}</p>
               </div>
             ))}
           </div>
-          <p className="text-lg text-stone-warm font-extralight leading-relaxed mt-8 text-center">
+          <p className="text-lg text-ink/60 font-extralight leading-relaxed mt-8 text-center">
             For a deeper dive, read our complete{' '}
             <Link to="/blog/tech-resume-guide" className="text-accent-text hover:underline font-medium">tech resume writing guide</Link>.
           </p>

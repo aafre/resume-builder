@@ -74,7 +74,7 @@ export default function ComparisonTable({
                             <span className="text-red-500 text-xl">✗</span>
                           )
                         ) : (
-                          <span className="text-stone-warm">{value}</span>
+                          <span className="text-ink/60">{value}</span>
                         )}
                       </td>
                     );

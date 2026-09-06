@@ -112,7 +112,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
         <h3 className="text-lg font-medium">Experience #{index + 1}</h3>
         <button
           onClick={() => onDelete(index)}
-          className="inline-flex min-h-11 min-w-11 items-center justify-center text-stone-warm hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          className="inline-flex min-h-11 min-w-11 items-center justify-center text-ink/60 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white"
           aria-label="Delete experience entry"
           title="Delete this experience"
         >
@@ -200,7 +200,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
                               every job. Now neutral until you reach for it. */}
                           <button
                             onClick={() => handleDescRemove(descIndex)}
-                            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-stone-warm hover:text-red-700 hover:bg-red-50 transition-colors duration-150 flex-shrink-0 mt-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-ink/60 hover:text-red-700 hover:bg-red-50 transition-colors duration-150 flex-shrink-0 mt-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                             title="Remove description point"
                             aria-label="Remove description point"
                           >
@@ -215,7 +215,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
             )}
           </div>
           {item.description.length === 0 && (
-            <p className="mt-2 text-sm text-stone-warm">
+            <p className="mt-2 text-sm text-ink/60">
               Nothing here yet. One bullet per line: what you did, and what
               changed because of it. Numbers land hardest — "cut invoice errors
               by 30%" beats "improved accuracy".

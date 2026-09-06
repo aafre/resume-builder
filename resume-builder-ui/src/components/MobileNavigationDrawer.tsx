@@ -131,7 +131,7 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
       : "text-ink/80 hover:bg-black/5 hover:text-ink";
 
   const chipState = (isActive: boolean) =>
-    isActive ? "bg-accent/10 text-accent-text" : "bg-chalk-dark text-stone-warm";
+    isActive ? "bg-accent/10 text-accent-text" : "bg-chalk-dark text-ink/60";
 
   const optionRow =
     "w-full min-h-11 flex flex-row items-center gap-3 px-3 py-2 text-left rounded-lg transition-colors duration-150 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset";
@@ -164,12 +164,12 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
             all, so the affordance was writing a cheque the component could not
             cash. Removed rather than faked. */}
         <div className="shrink-0 flex items-center justify-between gap-2 px-3 py-3 border-b border-gray-200/60 bg-chalk">
-          <h2 className="px-1 text-[11px] font-semibold uppercase tracking-wider text-stone-warm">
+          <h2 className="px-1 text-[11px] font-semibold uppercase tracking-wider text-ink/60">
             Sections
           </h2>
           <button
             onClick={onClose}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center p-2 text-stone-warm hover:text-ink hover:bg-white rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center p-2 text-ink/60 hover:text-ink hover:bg-white rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
             aria-label="Close navigation"
           >
             <X size={18} aria-hidden="true" />
@@ -260,13 +260,13 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
                       <span className="block h-full w-1/2 animate-pulse rounded-full bg-ink/60" />
                     </span>
                   ) : (
-                    <Download size={16} className="text-stone-warm shrink-0" aria-hidden="true" />
+                    <Download size={16} className="text-ink/60 shrink-0" aria-hidden="true" />
                   )}
                   <span className="flex flex-col items-start">
                     <span className="text-[13px]">
                       {loadingSave ? "Saving..." : "Save My Work"}
                     </span>
-                    <span className="text-[11px] leading-tight text-stone-warm">
+                    <span className="text-[11px] leading-tight text-ink/60">
                       Download YAML file
                     </span>
                   </span>
@@ -283,13 +283,13 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
                       <span className="block h-full w-1/2 animate-pulse rounded-full bg-ink/60" />
                     </span>
                   ) : (
-                    <Upload size={16} className="text-stone-warm shrink-0" aria-hidden="true" />
+                    <Upload size={16} className="text-ink/60 shrink-0" aria-hidden="true" />
                   )}
                   <span className="flex flex-col items-start">
                     <span className="text-[13px]">
                       {loadingLoad ? "Loading..." : "Load My Work"}
                     </span>
-                    <span className="text-[11px] leading-tight text-stone-warm">
+                    <span className="text-[11px] leading-tight text-ink/60">
                       Upload YAML file
                     </span>
                   </span>
@@ -300,10 +300,10 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
                   onClick={() => handleAction(onStartFresh)}
                   className={`${optionRow} text-ink hover:bg-red-50 hover:text-red-800`}
                 >
-                  <RotateCcw size={16} className="text-stone-warm shrink-0" aria-hidden="true" />
+                  <RotateCcw size={16} className="text-ink/60 shrink-0" aria-hidden="true" />
                   <span className="flex flex-col items-start">
                     <span className="text-[13px]">Start Fresh</span>
-                    <span className="text-[11px] leading-tight text-stone-warm">
+                    <span className="text-[11px] leading-tight text-ink/60">
                       Clear and start over
                     </span>
                   </span>
@@ -314,10 +314,10 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
                   onClick={() => handleAction(onHelp)}
                   className={`${optionRow} text-ink hover:bg-black/5`}
                 >
-                  <HelpCircle size={16} className="text-stone-warm shrink-0" aria-hidden="true" />
+                  <HelpCircle size={16} className="text-ink/60 shrink-0" aria-hidden="true" />
                   <span className="flex flex-col items-start">
                     <span className="text-[13px]">Help &amp; Tips</span>
-                    <span className="text-[11px] leading-tight text-stone-warm">Usage guide</span>
+                    <span className="text-[11px] leading-tight text-ink/60">Usage guide</span>
                   </span>
                 </button>
 
@@ -330,10 +330,10 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
                   onClick={onClose}
                   className={`${optionRow} text-ink hover:bg-black/5`}
                 >
-                  <LifeBuoy size={16} className="text-stone-warm shrink-0" aria-hidden="true" />
+                  <LifeBuoy size={16} className="text-ink/60 shrink-0" aria-hidden="true" />
                   <span className="flex flex-col items-start">
                     <span className="text-[13px]">Contact Support</span>
-                    <span className="text-[11px] leading-tight text-stone-warm">Ask a question</span>
+                    <span className="text-[11px] leading-tight text-ink/60">Ask a question</span>
                   </span>
                 </Link>
               </div>

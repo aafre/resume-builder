@@ -42,11 +42,11 @@ export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
             </div>
             <div>
               <h2 id={titleId} className="text-xl font-bold text-ink">Storage Full</h2>
-              <p className="text-sm text-stone-warm mt-1">You've reached the 5-resume limit</p>
+              <p className="text-sm text-ink/60 mt-1">You've reached the 5-resume limit</p>
             </div>
           </div>
 
-          <p className="text-stone-warm mb-6">
+          <p className="text-ink/60 mb-6">
             You've reached the 5-resume limit for free accounts.
             Delete an old resume to create a new one.
           </p>

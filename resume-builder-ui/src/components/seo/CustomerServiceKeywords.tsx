@@ -49,7 +49,7 @@ export default function CustomerServiceKeywords() {
             Customer Service Resume Keywords List
           </h2>
           <div className="max-w-4xl mx-auto bg-white rounded-2xl p-8 shadow-premium border border-black/[0.06] mb-8">
-            <p className="text-lg text-stone-warm font-extralight leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight leading-relaxed">
               Below you will find 150+ customer service resume keywords organized by role, industry,
               and skill type. Each keyword has been selected based on what ATS systems and hiring
               managers look for in 2026. Use this list alongside your target job description to build a
@@ -73,17 +73,17 @@ export default function CustomerServiceKeywords() {
             How to choose the right customer service keywords for your resume
           </h2>
           <div className="max-w-4xl mx-auto bg-white rounded-2xl p-8 shadow-premium border border-black/[0.06]">
-            <p className="text-lg text-stone-warm font-extralight mb-6 leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight mb-6 leading-relaxed">
               "Customer service" is broad — a call center agent, a retail associate, and a customer success manager
               all fall under this umbrella, but hiring managers search for very different skills. The keywords
               you choose need to match the <em>specific</em> role you're applying for, not just generic service terms.
             </p>
-            <p className="text-lg text-stone-warm font-extralight mb-6 leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight mb-6 leading-relaxed">
               Start with the job description. Highlight every skill, tool, and metric mentioned — those
               are your target keywords. Then cross-reference them with the lists below. If a keyword appears
               in both the job posting and our list, it belongs on your resume.
             </p>
-            <p className="text-lg text-stone-warm font-extralight leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight leading-relaxed">
               Don't stuff your resume with every keyword on this page. A focused set of 15–20 relevant
               keywords woven naturally into your experience bullets will outperform a resume that lists
               50 generic terms in a skills section. ATS systems look for keywords <em>in context</em>,
@@ -99,7 +99,7 @@ export default function CustomerServiceKeywords() {
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
             Keywords by customer service role
           </h2>
-          <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+          <p className="text-lg text-ink/60 font-extralight mb-8 leading-relaxed">
             Different customer service roles require different keywords. Find your target role below
             and prioritize these terms on your resume.
           </p>
@@ -109,7 +109,7 @@ export default function CustomerServiceKeywords() {
               <h3 className="font-bold text-ink mb-3 text-lg">
                 Retail Customer Service Representative
               </h3>
-              <p className="text-stone-warm text-sm mb-3">
+              <p className="text-ink/60 text-sm mb-3">
                 Focus on sales floor interactions, product knowledge, and point-of-sale systems.
               </p>
               <ul className="space-y-1 text-ink/80 text-sm list-disc list-inside">
@@ -126,7 +126,7 @@ export default function CustomerServiceKeywords() {
               <h3 className="font-bold text-ink mb-3 text-lg">
                 Call Center Agent / Phone Support
               </h3>
-              <p className="text-stone-warm text-sm mb-3">
+              <p className="text-ink/60 text-sm mb-3">
                 Emphasize call volume, metrics, and telephone-specific skills.
               </p>
               <ul className="space-y-1 text-ink/80 text-sm list-disc list-inside">
@@ -143,7 +143,7 @@ export default function CustomerServiceKeywords() {
               <h3 className="font-bold text-ink mb-3 text-lg">
                 Technical Support Specialist
               </h3>
-              <p className="text-stone-warm text-sm mb-3">
+              <p className="text-ink/60 text-sm mb-3">
                 Highlight diagnostic abilities, technical tools, and knowledge base contributions.
               </p>
               <ul className="space-y-1 text-ink/80 text-sm list-disc list-inside">
@@ -160,7 +160,7 @@ export default function CustomerServiceKeywords() {
               <h3 className="font-bold text-ink mb-3 text-lg">
                 Customer Success Manager
               </h3>
-              <p className="text-stone-warm text-sm mb-3">
+              <p className="text-ink/60 text-sm mb-3">
                 Focus on retention, account growth, and strategic relationship management.
               </p>
               <ul className="space-y-1 text-ink/80 text-sm list-disc list-inside">
@@ -177,7 +177,7 @@ export default function CustomerServiceKeywords() {
               <h3 className="font-bold text-ink mb-3 text-lg">
                 Help Desk / IT Support
               </h3>
-              <p className="text-stone-warm text-sm mb-3">
+              <p className="text-ink/60 text-sm mb-3">
                 Combine customer service soft skills with IT-specific tools and processes.
               </p>
               <ul className="grid md:grid-cols-2 gap-x-6 gap-y-1 text-ink/80 text-sm list-disc list-inside">
@@ -199,7 +199,7 @@ export default function CustomerServiceKeywords() {
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
             Industry-specific customer service keywords
           </h2>
-          <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+          <p className="text-lg text-ink/60 font-extralight mb-8 leading-relaxed">
             Customer service looks different in every industry. The keywords below are tailored to
             specific sectors — use them to show employers you understand their world, not just generic
             support principles.
@@ -288,7 +288,7 @@ export default function CustomerServiceKeywords() {
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
             Core customer service skills (soft skills)
           </h2>
-          <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+          <p className="text-lg text-ink/60 font-extralight mb-8 leading-relaxed">
             These keywords describe the essential interpersonal abilities needed for any customer
             service role. They demonstrate your ability to work with people effectively.
           </p>
@@ -333,7 +333,7 @@ export default function CustomerServiceKeywords() {
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
             Technical skills & software (hard skills)
           </h2>
-          <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+          <p className="text-lg text-ink/60 font-extralight mb-8 leading-relaxed">
             Listing specific tools you've used is critical. It shows you can jump into a new role
             with minimal training and demonstrates your technical competency.
           </p>
@@ -381,7 +381,7 @@ export default function CustomerServiceKeywords() {
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
             Processes and metrics
           </h2>
-          <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+          <p className="text-lg text-ink/60 font-extralight mb-8 leading-relaxed">
             These keywords show you understand the business side of customer service and can work
             with performance metrics that matter to employers.
           </p>
@@ -425,7 +425,7 @@ export default function CustomerServiceKeywords() {
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
             Customer service keywords to avoid
           </h2>
-          <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+          <p className="text-lg text-ink/60 font-extralight mb-8 leading-relaxed">
             Some phrases are so overused they have lost all meaning. Recruiters skim past them, and ATS
             systems do not weight them highly. Replace these with specific, measurable alternatives.
           </p>
@@ -435,7 +435,7 @@ export default function CustomerServiceKeywords() {
               <h3 className="font-bold text-ink mb-2">
                 "Team player"
               </h3>
-              <p className="text-stone-warm text-sm mb-3">
+              <p className="text-ink/60 text-sm mb-3">
                 Too vague — every applicant says this. It tells the employer nothing concrete.
               </p>
               <p className="text-ink/80 text-sm">
@@ -448,7 +448,7 @@ export default function CustomerServiceKeywords() {
               <h3 className="font-bold text-ink mb-2">
                 "Hard worker"
               </h3>
-              <p className="text-stone-warm text-sm mb-3">
+              <p className="text-ink/60 text-sm mb-3">
                 Show impact instead of declaring effort. Metrics speak louder than adjectives.
               </p>
               <p className="text-ink/80 text-sm">
@@ -461,7 +461,7 @@ export default function CustomerServiceKeywords() {
               <h3 className="font-bold text-ink mb-2">
                 "People person"
               </h3>
-              <p className="text-stone-warm text-sm mb-3">
+              <p className="text-ink/60 text-sm mb-3">
                 Demonstrate it with numbers instead of claiming it as a trait.
               </p>
               <p className="text-ink/80 text-sm">
@@ -474,7 +474,7 @@ export default function CustomerServiceKeywords() {
               <h3 className="font-bold text-ink mb-2">
                 "Good communicator"
               </h3>
-              <p className="text-stone-warm text-sm mb-3">
+              <p className="text-ink/60 text-sm mb-3">
                 Prove it with achievements, not self-assessment.
               </p>
               <p className="text-ink/80 text-sm">
@@ -487,7 +487,7 @@ export default function CustomerServiceKeywords() {
               <h3 className="font-bold text-ink mb-2">
                 "Detail-oriented"
               </h3>
-              <p className="text-stone-warm text-sm mb-3">
+              <p className="text-ink/60 text-sm mb-3">
                 Show accuracy metrics rather than using a buzzword.
               </p>
               <p className="text-ink/80 text-sm">
@@ -514,7 +514,7 @@ export default function CustomerServiceKeywords() {
               <h4 className="font-bold text-ink mb-4">
                 ❌ Generic (Before)
               </h4>
-              <p className="text-stone-warm mb-4">
+              <p className="text-ink/60 mb-4">
                 "Answered customer emails and helped solve problems."
               </p>
               <h4 className="font-bold text-accent-text mb-4">
@@ -536,7 +536,7 @@ export default function CustomerServiceKeywords() {
               <h4 className="font-bold text-ink mb-4">
                 ❌ Generic (Before)
               </h4>
-              <p className="text-stone-warm mb-4">
+              <p className="text-ink/60 mb-4">
                 "Took phone calls from customers and resolved their issues."
               </p>
               <h4 className="font-bold text-accent-text mb-4">
@@ -559,7 +559,7 @@ export default function CustomerServiceKeywords() {
               <h4 className="font-bold text-ink mb-4">
                 ❌ Generic (Before)
               </h4>
-              <p className="text-stone-warm mb-4">
+              <p className="text-ink/60 mb-4">
                 "Managed customer accounts and helped with renewals."
               </p>
               <h4 className="font-bold text-accent-text mb-4">
@@ -582,7 +582,7 @@ export default function CustomerServiceKeywords() {
               <h4 className="font-bold text-ink mb-4">
                 ❌ Generic (Before)
               </h4>
-              <p className="text-stone-warm mb-4">
+              <p className="text-ink/60 mb-4">
                 "Helped customers with computer problems and fixed technical issues."
               </p>
               <h4 className="font-bold text-accent-text mb-4">
@@ -605,7 +605,7 @@ export default function CustomerServiceKeywords() {
               <h4 className="font-bold text-ink mb-4">
                 ❌ Generic (Before)
               </h4>
-              <p className="text-stone-warm mb-4">
+              <p className="text-ink/60 mb-4">
                 "Made outbound calls to customers and sold products."
               </p>
               <h4 className="font-bold text-accent-text mb-4">
@@ -628,7 +628,7 @@ export default function CustomerServiceKeywords() {
               <h4 className="font-bold text-ink mb-4">
                 ❌ Generic (Before)
               </h4>
-              <p className="text-stone-warm mb-4">
+              <p className="text-ink/60 mb-4">
                 "Worked with enterprise clients to ensure satisfaction and renew contracts."
               </p>
               <h4 className="font-bold text-accent-text mb-4">
@@ -651,7 +651,7 @@ export default function CustomerServiceKeywords() {
               <h4 className="font-bold text-ink mb-4">
                 ❌ Generic (Before)
               </h4>
-              <p className="text-stone-warm mb-4">
+              <p className="text-ink/60 mb-4">
                 "Answered technical questions from customers about the software."
               </p>
               <h4 className="font-bold text-accent-text mb-4">
@@ -667,7 +667,7 @@ export default function CustomerServiceKeywords() {
               </p>
             </div>
 
-            <p className="text-center text-stone-warm mt-6">
+            <p className="text-center text-ink/60 mt-6">
               Want to see a full resume using these keywords?{' '}
               <Link
                 to="/examples/customer-service-representative"
@@ -686,7 +686,7 @@ export default function CustomerServiceKeywords() {
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
             How to find your personal customer service keywords
           </h2>
-          <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+          <p className="text-lg text-ink/60 font-extralight mb-8 leading-relaxed">
             The most effective keywords aren't just pulled from a list — they're the overlap between
             what the employer wants and what you actually know. Here's how to find yours:
           </p>
@@ -696,7 +696,7 @@ export default function CustomerServiceKeywords() {
               <h3 className="text-lg font-bold text-ink mb-3">
                 Step 1: Collect 3–5 job descriptions for your target role
               </h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Search for your exact target title (e.g., "Customer Success Manager" not just "customer
                 service"). Copy the requirements and qualifications sections into a document.
               </p>
@@ -706,7 +706,7 @@ export default function CustomerServiceKeywords() {
               <h3 className="text-lg font-bold text-ink mb-3">
                 Step 2: Highlight repeated skills and tools
               </h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 If "Salesforce" or "Zendesk" appears in 4 out of 5 job descriptions, it's a must-have
                 keyword. If "ITIL" appears once, it's nice-to-have. Focus on the skills that appear most
                 frequently — those are the ones the ATS is configured to scan for.
@@ -717,7 +717,7 @@ export default function CustomerServiceKeywords() {
               <h3 className="text-lg font-bold text-ink mb-3">
                 Step 3: Match them to your real experience
               </h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Only include keywords for skills you genuinely have. For each keyword, you should be able
                 to describe a specific situation where you used that skill. If you list "Salesforce" but
                 can't discuss it in an interview, it will backfire.
@@ -728,7 +728,7 @@ export default function CustomerServiceKeywords() {
               <h3 className="text-lg font-bold text-ink mb-3">
                 Step 4: Weave keywords into your experience bullets
               </h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Don't just list keywords in a skills section — embed them in your experience bullets with
                 context and metrics. "Managed 120+ tickets/week in <strong>Zendesk</strong>" is far
                 stronger than listing "Zendesk" in a skills table. See the before/after examples above.
@@ -744,7 +744,7 @@ export default function CustomerServiceKeywords() {
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
             How to tailor these keywords to your resume
           </h2>
-          <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+          <p className="text-lg text-ink/60 font-extralight mb-8 leading-relaxed">
             Having a keyword list is only half the battle. Follow these five steps to integrate them
             effectively. For a deeper dive, read our{' '}
             <Link
@@ -760,7 +760,7 @@ export default function CustomerServiceKeywords() {
               <h3 className="text-lg font-bold text-ink mb-3">
                 Step 1: Copy the job posting into a text editor
               </h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Paste the full job description into a plain-text editor. Strip out formatting so you
                 can focus purely on the words the employer chose. This is your keyword source document.
               </p>
@@ -770,7 +770,7 @@ export default function CustomerServiceKeywords() {
               <h3 className="text-lg font-bold text-ink mb-3">
                 Step 2: Highlight customer service keywords that match your experience
               </h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Go through the posting line by line. Bold or highlight every skill, tool, metric, and
                 qualification you genuinely possess. Cross-reference with the keyword lists on this
                 page — if a term appears in both the job posting and our list, it is a high-priority
@@ -782,7 +782,7 @@ export default function CustomerServiceKeywords() {
               <h3 className="text-lg font-bold text-ink mb-3">
                 Step 3: Integrate keywords naturally into your bullet points
               </h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Avoid dumping keywords into a standalone skills block. Instead, weave them into your
                 experience bullet points with action verbs and context. For example: "Resolved
                 customer complaints using <strong>Zendesk</strong> and <strong>active
@@ -794,7 +794,7 @@ export default function CustomerServiceKeywords() {
               <h3 className="text-lg font-bold text-ink mb-3">
                 Step 4: Quantify everything with metrics
               </h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Wherever possible, attach a number to your keywords: CSAT scores, tickets resolved per
                 week, response time averages, retention rates, NPS improvements. Metrics turn keywords
                 from buzzwords into evidence. See our before/after examples above for inspiration.
@@ -805,7 +805,7 @@ export default function CustomerServiceKeywords() {
               <h3 className="text-lg font-bold text-ink mb-3">
                 Step 5: Run your resume through an ATS checker
               </h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Before submitting, test your resume against the job description using an ATS
                 compatibility tool. This will show you which keywords are present, which are missing,
                 and where you need to adjust. Learn more in our{' '}
@@ -829,7 +829,7 @@ export default function CustomerServiceKeywords() {
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-6">
             Explore more resume keywords by industry
           </h2>
-          <p className="text-lg text-stone-warm font-extralight mb-6 leading-relaxed">
+          <p className="text-lg text-ink/60 font-extralight mb-6 leading-relaxed">
             Browse keyword guides for other industries and roles on our{' '}
             <Link to="/resume-keywords" className="text-accent-text hover:text-ink underline font-medium">
               Resume Keywords Hub
@@ -845,15 +845,15 @@ export default function CustomerServiceKeywords() {
           <div className="grid md:grid-cols-3 gap-4">
             <Link to="/resume-keywords/sales" className="bg-chalk-dark rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Sales Keywords</h3>
-              <p className="text-stone-warm text-sm">Pipeline, quota attainment, CRM</p>
+              <p className="text-ink/60 text-sm">Pipeline, quota attainment, CRM</p>
             </Link>
             <Link to="/resume-keywords/administrative-assistant" className="bg-chalk-dark rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Admin Assistant Keywords</h3>
-              <p className="text-stone-warm text-sm">Office management, scheduling, Microsoft 365</p>
+              <p className="text-ink/60 text-sm">Office management, scheduling, Microsoft 365</p>
             </Link>
             <Link to="/resume-keywords/nursing" className="bg-chalk-dark rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Nursing Keywords</h3>
-              <p className="text-stone-warm text-sm">BLS, ACLS, Epic, patient care</p>
+              <p className="text-ink/60 text-sm">BLS, ACLS, Epic, patient care</p>
             </Link>
           </div>
         </div>

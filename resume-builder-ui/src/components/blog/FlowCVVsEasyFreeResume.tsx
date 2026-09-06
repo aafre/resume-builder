@@ -47,7 +47,7 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
           ★
         </span>
       ))}
-      <span className="ml-2 text-sm font-medium text-stone-warm">
+      <span className="ml-2 text-sm font-medium text-ink/60">
         {rating}/{max}
       </span>
     </div>
@@ -113,13 +113,13 @@ export default function FlowCVVsEasyFreeResume() {
               <p className="font-bold text-accent-text text-lg mb-2">EasyFreeResume</p>
               <StarRating rating={5} />
               <p className="text-2xl font-bold text-accent-text mt-2">No Account</p>
-              <p className="text-sm text-stone-warm">Better privacy, simpler</p>
+              <p className="text-sm text-ink/60">Better privacy, simpler</p>
             </div>
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-              <p className="font-bold text-stone-warm text-lg mb-2">FlowCV</p>
+              <p className="font-bold text-ink/60 text-lg mb-2">FlowCV</p>
               <StarRating rating={4} />
               <p className="text-2xl font-bold text-accent-text mt-2">Free + Pro</p>
-              <p className="text-sm text-stone-warm">Account required</p>
+              <p className="text-sm text-ink/60">Account required</p>
             </div>
           </div>
           <p className="text-green-800 mt-4 text-center font-medium">
@@ -127,7 +127,7 @@ export default function FlowCVVsEasyFreeResume() {
           </p>
         </div>
 
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           FlowCV is one of the few resume builders that actually offers free PDF downloads.
           So how does it compare to EasyFreeResume, another genuinely free option?
           Let's break down the differences.
@@ -155,7 +155,7 @@ export default function FlowCVVsEasyFreeResume() {
                 <th className="px-6 py-4 text-left font-bold text-ink">Feature</th>
                 <th className="px-6 py-4 text-center font-bold text-accent-text">EasyFreeResume</th>
                 <th className="px-6 py-4 text-center font-bold text-accent-text">FlowCV</th>
-                <th className="px-6 py-4 text-center font-bold text-stone-warm">Winner</th>
+                <th className="px-6 py-4 text-center font-bold text-ink/60">Winner</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-black/[0.06]">
@@ -164,7 +164,7 @@ export default function FlowCVVsEasyFreeResume() {
                 <td className="px-6 py-4 text-center text-accent-text font-bold">✅ Yes</td>
                 <td className="px-6 py-4 text-center text-accent-text font-bold">✅ Yes</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-stone-warm text-white">Tie</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-ink/60 text-white">Tie</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
@@ -188,7 +188,7 @@ export default function FlowCVVsEasyFreeResume() {
                 <td className="px-6 py-4 text-center text-accent-text">✅ All templates</td>
                 <td className="px-6 py-4 text-center text-accent-text">✅ Yes</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-stone-warm text-white">Tie</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-ink/60 text-white">Tie</span>
                 </td>
               </tr>
               <tr>
@@ -238,7 +238,7 @@ export default function FlowCVVsEasyFreeResume() {
           The Privacy Difference
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           This is the biggest distinction between the two platforms:
         </p>
 
@@ -305,11 +305,11 @@ export default function FlowCVVsEasyFreeResume() {
           What FlowCV Does Well
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-4">
+        <p className="text-lg leading-relaxed text-ink/60 mb-4">
           To be fair, FlowCV has genuine strengths:
         </p>
 
-        <ul className="list-disc list-inside space-y-2 text-stone-warm mb-8">
+        <ul className="list-disc list-inside space-y-2 text-ink/60 mb-8">
           <li>Actually free PDF downloads (rare in this space)</li>
           <li>More template designs to choose from</li>
           <li>Built-in cover letter builder</li>
@@ -317,7 +317,7 @@ export default function FlowCVVsEasyFreeResume() {
           <li>Cloud sync across devices</li>
         </ul>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           If these features matter to you and you're okay with creating an account,
           FlowCV is a solid choice. But if privacy and simplicity are priorities,
           EasyFreeResume is the better option.
@@ -332,7 +332,7 @@ export default function FlowCVVsEasyFreeResume() {
           {FLOWCV_FAQS.map((faq, i) => (
             <div key={i} className="bg-chalk-dark rounded-xl p-5">
               <h3 className="font-bold text-ink mb-2">{faq.question}</h3>
-              <p className="text-stone-warm">{faq.answer}</p>
+              <p className="text-ink/60">{faq.answer}</p>
             </div>
           ))}
         </div>

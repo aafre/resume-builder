@@ -297,7 +297,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
       <div className="min-h-screen bg-chalk flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
-          <p className="text-xl text-stone-warm">
+          <p className="text-xl text-ink/60">
             Redirecting to your resume...
           </p>
         </div>
@@ -311,7 +311,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
       <div className="min-h-screen bg-chalk flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
-          <p className="text-xl text-stone-warm">
+          <p className="text-xl text-ink/60">
             Loading beautiful templates...
           </p>
         </div>
@@ -345,7 +345,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
           <h1 className="text-4xl md:text-5xl font-bold text-ink mb-6">
             Free Resume Templates
           </h1>
-          <p className="text-xl font-extralight text-stone-warm max-w-2xl mx-auto">
+          <p className="text-xl font-extralight text-ink/60 max-w-2xl mx-auto">
             Professional, ATS-friendly designs that get you interviews. Choose a template and start building in minutes.
           </p>
         </div>
@@ -406,7 +406,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
                           <h3 className="font-display text-2xl font-bold text-ink mb-2 group-hover:text-accent-text transition-colors">
                             {template.name}
                           </h3>
-                          <p className="text-stone-warm leading-relaxed">
+                          <p className="text-ink/60 leading-relaxed">
                             {template.description}
                           </p>
                         </div>

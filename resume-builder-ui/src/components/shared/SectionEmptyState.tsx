@@ -31,7 +31,7 @@ export const SectionEmptyState: React.FC<SectionEmptyStateProps> = ({
 }) => (
   <div className="rounded-xl bg-chalk-dark p-5 text-center">
     <p className="text-sm font-semibold text-ink">{headline}</p>
-    <p className="mx-auto mt-1 max-w-prose text-sm text-stone-warm">{hint}</p>
+    <p className="mx-auto mt-1 max-w-prose text-sm text-ink/60">{hint}</p>
     <button type="button" onClick={onAdd} className="btn-ghost-add mt-4">
       <MdAdd className="text-lg" aria-hidden="true" />
       <span>{addLabel}</span>

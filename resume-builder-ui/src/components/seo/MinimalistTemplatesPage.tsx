@@ -35,7 +35,7 @@ export default function MinimalistTemplatesPage() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4">
             Clean, Simple Templates
           </h2>
-          <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-2xl mx-auto">
             Let your qualifications speak for themselves with our minimalist designs.
             No clutter, no distractions—just professional presentation.
           </p>
@@ -55,7 +55,7 @@ export default function MinimalistTemplatesPage() {
               ⏱️
             </div>
             <h3 className="text-xl font-semibold mb-2">Quick to Scan</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Recruiters spend 6-7 seconds on initial resume screening. Clean layouts
               help them find key information instantly.
             </p>
@@ -65,7 +65,7 @@ export default function MinimalistTemplatesPage() {
               🎯
             </div>
             <h3 className="text-xl font-semibold mb-2">Content First</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Without design distractions, your experience, skills, and achievements
               become the focal point.
             </p>
@@ -75,7 +75,7 @@ export default function MinimalistTemplatesPage() {
               ✅
             </div>
             <h3 className="text-xl font-semibold mb-2">ATS Perfect</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Simple formatting means ATS systems parse your resume flawlessly
               every single time.
             </p>
@@ -99,7 +99,7 @@ export default function MinimalistTemplatesPage() {
                 <tr className="bg-chalk-dark">
                   <th className="px-6 py-4 text-left font-bold text-ink">Aspect</th>
                   <th className="px-6 py-4 text-center font-bold text-accent-text">Minimalist</th>
-                  <th className="px-6 py-4 text-center font-bold text-stone-warm">Complex/Graphic</th>
+                  <th className="px-6 py-4 text-center font-bold text-ink/60">Complex/Graphic</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-black/[0.06]">

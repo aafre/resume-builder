@@ -26,7 +26,7 @@ export default function AnonymousStorageBadge({ onSignInClick }: AnonymousStorag
         className="
           flex min-h-11 items-center gap-2 px-3 py-1.5 rounded-full
           bg-white border border-gray-200
-          text-stone-warm font-medium text-xs
+          text-ink/60 font-medium text-xs
           hover:bg-black/5 hover:text-ink
           transition-all duration-200
           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2
@@ -63,7 +63,7 @@ export default function AnonymousStorageBadge({ onSignInClick }: AnonymousStorag
             Save to the cloud too
           </h3>
 
-          <p className="text-xs text-stone-warm mb-3 leading-relaxed">
+          <p className="text-xs text-ink/60 mb-3 leading-relaxed">
             Your resume is saved on this device and stays there. A free account also keeps it
             in the cloud, so you can pick it up on another device.
           </p>

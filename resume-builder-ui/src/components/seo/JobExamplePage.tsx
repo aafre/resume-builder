@@ -51,7 +51,7 @@ const NotFound = ({ slug }: { slug: string }) => (
   <div className="min-h-screen bg-chalk flex items-center justify-center">
     <div className="text-center">
       <h1 className="text-4xl font-extrabold text-ink mb-4">Resume Example Not Found</h1>
-      <p className="text-stone-warm mb-6">
+      <p className="text-ink/60 mb-6">
         We could not find a resume example for "{slug}".
       </p>
       <Link
@@ -259,7 +259,7 @@ export default function JobExamplePage() {
       {/* Career Outlook Intro */}
       {(dbEntry?.careerOutlook || data.meta.careerOutlook) && (
         <div className="max-w-4xl mx-auto mb-8 px-4">
-          <p className="text-lg font-extralight text-stone-warm leading-relaxed">
+          <p className="text-lg font-extralight text-ink/60 leading-relaxed">
             {dbEntry?.careerOutlook || data.meta.careerOutlook}
           </p>
         </div>
@@ -274,7 +274,7 @@ export default function JobExamplePage() {
               <div className="bg-white rounded-2xl shadow-premium border border-black/[0.06] overflow-hidden">
                 <div className="bg-chalk px-6 py-4 border-b border-black/[0.06] flex items-center justify-between">
                   <h2 className="font-bold text-ink">Resume Preview</h2>
-                  <span className="text-sm text-stone-warm">
+                  <span className="text-sm text-ink/60">
                     Template: {data.resume.template.charAt(0).toUpperCase() + data.resume.template.slice(1)}
                   </span>
                 </div>
@@ -305,7 +305,7 @@ export default function JobExamplePage() {
                   <div className="text-center border-b border-black/[0.06] pb-6 mb-6">
                     <h3 className="text-2xl font-bold text-ink">{data.resume.contact.name}</h3>
                     <p className="text-lg text-accent-text mt-1">{data.resume.contact.title}</p>
-                    <p className="text-stone-warm mt-2 text-sm">
+                    <p className="text-ink/60 mt-2 text-sm">
                       {data.resume.contact.email} | {data.resume.contact.phone} | {data.resume.contact.location}
                     </p>
                   </div>
@@ -324,14 +324,14 @@ export default function JobExamplePage() {
                         <div className="flex justify-between items-start mb-1">
                           <div>
                             <p className="font-semibold text-ink">{exp.title}</p>
-                            <p className="text-stone-warm">{exp.company}</p>
+                            <p className="text-ink/60">{exp.company}</p>
                           </div>
-                          <p className="text-stone-warm text-sm">{exp.dates}</p>
+                          <p className="text-ink/60 text-sm">{exp.dates}</p>
                         </div>
                         <ul className="mt-2 space-y-1">
                           {exp.bullets.map((bullet, bIndex) => (
                             <li key={bIndex} className="text-ink/80 text-sm pl-4 relative">
-                              <span className="absolute left-0 text-stone-warm">&bull;</span>
+                              <span className="absolute left-0 text-ink/60">&bull;</span>
                               {bullet}
                             </li>
                           ))}
@@ -347,9 +347,9 @@ export default function JobExamplePage() {
                       <div key={index} className="flex justify-between items-start mb-1">
                         <div>
                           <p className="font-semibold text-ink">{edu.degree}</p>
-                          <p className="text-stone-warm">{edu.school}</p>
+                          <p className="text-ink/60">{edu.school}</p>
                         </div>
-                        <p className="text-stone-warm text-sm">{edu.year}</p>
+                        <p className="text-ink/60 text-sm">{edu.year}</p>
                       </div>
                     ))}
                   </div>
@@ -373,7 +373,7 @@ export default function JobExamplePage() {
                       <ul className="space-y-1">
                         {data.resume.certifications.map((cert, index) => (
                           <li key={index} className="text-ink/80 text-sm pl-4 relative">
-                            <span className="absolute left-0 text-stone-warm">&bull;</span>
+                            <span className="absolute left-0 text-ink/60">&bull;</span>
                             {cert}
                           </li>
                         ))}
@@ -390,7 +390,7 @@ export default function JobExamplePage() {
                 <h3 className="text-xl font-extrabold text-ink mb-4">
                   Use This Template
                 </h3>
-                <p className="text-stone-warm font-extralight mb-6">
+                <p className="text-ink/60 font-extralight mb-6">
                   Click below to open this resume in our free editor. Customize the content with your own experience.
                 </p>
 
@@ -418,7 +418,7 @@ export default function JobExamplePage() {
 
                 <div className="mt-6 pt-6 border-t border-black/[0.06]">
                   <h4 className="font-bold text-ink mb-3">What you get:</h4>
-                  <ul className="space-y-2 text-sm text-stone-warm">
+                  <ul className="space-y-2 text-sm text-ink/60">
                     <li className="flex items-center gap-2">
                       <span className="text-accent-text">&#10003;</span>
                       ATS-optimized format
@@ -459,7 +459,7 @@ export default function JobExamplePage() {
             <h2 className="text-xl font-bold text-ink mb-2">
               Optimize Your Resume With the Right Keywords
             </h2>
-            <p className="text-stone-warm font-extralight mb-4">
+            <p className="text-ink/60 font-extralight mb-4">
               Pair this resume example with our curated list of ATS-optimized keywords for {matchingKeywordTitle.toLowerCase()} roles to maximize your interview chances.
             </p>
             <Link
@@ -488,7 +488,7 @@ export default function JobExamplePage() {
                   className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-sm hover:shadow-premium hover:-translate-y-1 transition-all duration-300"
                 >
                   <h3 className="font-bold text-ink mb-2">{job.title}</h3>
-                  <p className="text-sm text-stone-warm line-clamp-2">
+                  <p className="text-sm text-ink/60 line-clamp-2">
                     {job.metaDescription}
                   </p>
                   <span className="inline-block mt-3 text-accent-text text-sm font-medium">

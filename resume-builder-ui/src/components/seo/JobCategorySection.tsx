@@ -37,7 +37,7 @@ export default function JobCategorySection({ title, jobs, id }: JobCategorySecti
                 <h4 className="text-xl font-bold text-ink mb-2">
                   {job.title}
                 </h4>
-                <p className="text-stone-warm mb-4 text-sm">
+                <p className="text-ink/60 mb-4 text-sm">
                   {keywordCount}+ keywords
                   {job.keywords.technical.length > 0 &&
                     ` including ${job.keywords.technical.slice(0, 2).join(', ')}${job.keywords.technical.length > 2 ? ', and more' : ''}`}

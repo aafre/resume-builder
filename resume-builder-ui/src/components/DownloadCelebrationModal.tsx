@@ -130,7 +130,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
             </h2>
             <p
               id={descriptionId}
-              className="text-lg text-stone-warm text-center mb-4"
+              className="text-lg text-ink/60 text-center mb-4"
             >
               Your PDF has been saved to your device.
             </p>
@@ -152,7 +152,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
               </div>
 
               {/* Value Proposition */}
-              <p className="text-stone-warm text-center mb-6">
+              <p className="text-ink/60 text-center mb-6">
                 Create a free account to save this version securely to the cloud and
                 edit it anytime.
               </p>
@@ -195,7 +195,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
               {/* Divider */}
               <div className="flex items-center gap-3 mb-4">
                 <div className="flex-1 h-px bg-black/[0.06]" />
-                <span className="text-xs font-semibold text-stone-warm uppercase tracking-wider">
+                <span className="text-xs font-semibold text-ink/60 uppercase tracking-wider">
                   What&apos;s Next?
                 </span>
                 <div className="flex-1 h-px bg-black/[0.06]" />
@@ -215,11 +215,11 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                       <p className="text-sm font-semibold text-ink">
                         {affiliateConfig.resumeReview.label}
                       </p>
-                      <p className="text-sm text-stone-warm">
+                      <p className="text-sm text-ink/60">
                         {affiliateConfig.resumeReview.description}
                       </p>
                     </div>
-                    <ExternalLink className="w-4 h-4 text-stone-warm flex-shrink-0" />
+                    <ExternalLink className="w-4 h-4 text-ink/60 flex-shrink-0" />
                   </a>
                 )}
 
@@ -228,7 +228,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                 <div className="mt-4">
                   {/* Section header */}
                   {jobSearchParams && (
-                    <p className="text-xs font-medium text-stone-warm mb-2">
+                    <p className="text-xs font-medium text-ink/60 mb-2">
                       Jobs matching &ldquo;{jobSearchParams.displayTitle}&rdquo;
                       {jobSearchParams.location && ` near ${jobSearchParams.location}`}
                     </p>
@@ -266,7 +266,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                               <p className="text-sm font-semibold text-ink truncate">
                                 {job.title}
                               </p>
-                              <p className="text-xs text-stone-warm truncate">
+                              <p className="text-xs text-ink/60 truncate">
                                 {[job.company, job.location]
                                   .filter(Boolean)
                                   .join(" · ")}
@@ -279,7 +279,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                                 </p>
                               )}
                             </div>
-                            <ExternalLink className="w-4 h-4 text-stone-warm flex-shrink-0" />
+                            <ExternalLink className="w-4 h-4 text-ink/60 flex-shrink-0" />
                           </a>
                         );
                       })}
@@ -307,7 +307,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
           <div className="mt-6 animate-dcm-content-fade-up" style={{ animationDelay: '225ms' }}>
             <div className="flex items-center gap-3 mb-4">
               <div className="flex-1 h-px bg-black/[0.06]" />
-              <span className="text-xs font-semibold text-stone-warm uppercase tracking-wider">
+              <span className="text-xs font-semibold text-ink/60 uppercase tracking-wider">
                 One more thing
               </span>
               <div className="flex-1 h-px bg-black/[0.06]" />
@@ -317,7 +317,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
               <p className="text-sm font-semibold text-ink mb-1">
                 Did we save you from a paywall?
               </p>
-              <p className="text-xs text-stone-warm mb-3">
+              <p className="text-xs text-ink/60 mb-3">
                 Most &ldquo;free&rdquo; resume builders charge you at the last step. We didn&apos;t.
                 Help other job seekers find us — leave a quick review on Trustpilot.
               </p>

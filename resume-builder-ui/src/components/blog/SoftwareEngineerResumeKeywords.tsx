@@ -20,7 +20,7 @@ export default function SoftwareEngineerResumeKeywords() {
       ]}
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           In 2026, over 75% of tech companies use Applicant Tracking Systems to screen resumes before a human ever reads them. If your software engineer resume doesn't include the right keywords, it gets filtered out — regardless of your skills. This guide lists 75+ essential keywords organized by category, with tips on how to use them naturally.
         </p>
 
@@ -35,7 +35,7 @@ export default function SoftwareEngineerResumeKeywords() {
           Programming Languages
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           This is the most critical section. List the languages you know, and
           be honest about your proficiency level (e.g., Expert, Proficient).
         </p>
@@ -93,7 +93,7 @@ export default function SoftwareEngineerResumeKeywords() {
           Frameworks and Libraries
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Listing relevant frameworks shows you can build real-world
           applications efficiently. Organize by technology stack or
           specialization.
@@ -178,7 +178,7 @@ export default function SoftwareEngineerResumeKeywords() {
           Databases and Cloud Technologies
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Modern software engineering is deeply tied to data and the cloud.
           These keywords are essential for most roles.
         </p>
@@ -235,7 +235,7 @@ export default function SoftwareEngineerResumeKeywords() {
           Development Methodologies & Tools
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           These keywords demonstrate how you work and collaborate with a team.
           They're crucial for showing you understand modern software development
           practices.
@@ -315,13 +315,13 @@ export default function SoftwareEngineerResumeKeywords() {
           Software Engineering Concepts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           These keywords show a deeper understanding of computer science
           principles and software engineering best practices.
         </p>
 
         <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-6">
-          <div className="grid md:grid-cols-2 gap-6 text-stone-warm">
+          <div className="grid md:grid-cols-2 gap-6 text-ink/60">
             <div>
               <h4 className="font-bold text-ink mb-3">Core CS Concepts:</h4>
               <ul className="list-disc pl-5 text-sm space-y-1">
@@ -387,7 +387,7 @@ export default function SoftwareEngineerResumeKeywords() {
           AI and Machine Learning Keywords
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           AI/ML skills are the fastest-growing keyword category in software engineering job postings. Even if you're not applying for a dedicated ML role, mentioning AI-adjacent skills shows you're current with industry trends.
         </p>
 
@@ -444,12 +444,12 @@ export default function SoftwareEngineerResumeKeywords() {
           Security and Compliance Keywords
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Security is no longer just for dedicated security engineers. Most software engineering roles now expect some security awareness. Including these keywords shows you write secure code by default.
         </p>
 
         <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-6">
-          <div className="grid md:grid-cols-2 gap-6 text-stone-warm">
+          <div className="grid md:grid-cols-2 gap-6 text-ink/60">
             <div>
               <h4 className="font-bold text-ink mb-3">Security Practices:</h4>
               <ul className="list-disc pl-5 text-sm space-y-1">
@@ -493,7 +493,7 @@ export default function SoftwareEngineerResumeKeywords() {
             </p>
             <div className="bg-white p-4 rounded-lg text-sm">
               <p className="font-medium text-ink mb-2">Example Format:</p>
-              <div className="text-stone-warm space-y-1">
+              <div className="text-ink/60 space-y-1">
                 <p><strong>Programming Languages:</strong> Python (Expert), JavaScript (Advanced), Java (Intermediate)</p>
                 <p><strong>Frameworks:</strong> React, Django, Node.js, Spring Boot</p>
                 <p><strong>Databases:</strong> PostgreSQL, MongoDB, Redis</p>
@@ -609,7 +609,7 @@ export default function SoftwareEngineerResumeKeywords() {
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Listing every technology you've ever touched
             </h4>
-            <p className="text-stone-warm mb-2">
+            <p className="text-ink/60 mb-2">
               Including technologies you used once in a tutorial dilutes your
               actual expertise
             </p>
@@ -623,7 +623,7 @@ export default function SoftwareEngineerResumeKeywords() {
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Using outdated technology keywords
             </h4>
-            <p className="text-stone-warm mb-2">
+            <p className="text-ink/60 mb-2">
               Technologies like Flash, Internet Explorer-specific CSS, or very
               old framework versions
             </p>
@@ -637,7 +637,7 @@ export default function SoftwareEngineerResumeKeywords() {
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Forgetting to include proficiency levels
             </h4>
-            <p className="text-stone-warm mb-2">
+            <p className="text-ink/60 mb-2">
               Just listing "Python" doesn't tell recruiters your skill level
             </p>
             <p className="text-accent-text">
@@ -675,7 +675,7 @@ export default function SoftwareEngineerResumeKeywords() {
           </ol>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-8">
+        <p className="text-lg leading-relaxed text-ink/60 mt-8">
           By strategically including these keywords and backing them up with
           concrete examples of your work, you'll create a software
           engineer resume that passes ATS screens and impresses hiring managers.
@@ -687,7 +687,7 @@ export default function SoftwareEngineerResumeKeywords() {
           Related Resources
         </h2>
 
-        <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
+        <ul className="list-disc list-inside space-y-2 text-lg text-ink/60">
           <li>
             <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">
               How to Use Resume Keywords to Beat the ATS

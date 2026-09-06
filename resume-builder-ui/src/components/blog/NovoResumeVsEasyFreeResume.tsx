@@ -16,7 +16,7 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
           ★
         </span>
       ))}
-      <span className="ml-2 text-sm font-medium text-stone-warm">
+      <span className="ml-2 text-sm font-medium text-ink/60">
         {rating}/{max}
       </span>
     </div>
@@ -72,13 +72,13 @@ export default function NovoResumeVsEasyFreeResume() {
               <p className="font-bold text-accent-text text-lg mb-2">EasyFreeResume</p>
               <StarRating rating={5} />
               <p className="text-3xl font-bold text-accent-text mt-2">$0</p>
-              <p className="text-sm text-stone-warm">All features free</p>
+              <p className="text-sm text-ink/60">All features free</p>
             </div>
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-              <p className="font-bold text-stone-warm text-lg mb-2">NovoResume</p>
+              <p className="font-bold text-ink/60 text-lg mb-2">NovoResume</p>
               <StarRating rating={4} />
               <p className="text-3xl font-bold text-red-600 mt-2">$99</p>
-              <p className="text-sm text-stone-warm">Per year (Premium)</p>
+              <p className="text-sm text-ink/60">Per year (Premium)</p>
             </div>
           </div>
           <p className="text-green-800 mt-4 text-center font-medium">
@@ -86,7 +86,7 @@ export default function NovoResumeVsEasyFreeResume() {
           </p>
         </div>
 
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           NovoResume has gained popularity for its clean, modern templates—especially among
           European job seekers. But the best templates require a premium subscription.
           Here's how it compares to a completely free alternative.
@@ -103,7 +103,7 @@ export default function NovoResumeVsEasyFreeResume() {
                 <th className="px-6 py-4 text-left font-bold text-ink">Feature</th>
                 <th className="px-6 py-4 text-center font-bold text-accent-text">EasyFreeResume</th>
                 <th className="px-6 py-4 text-center font-bold text-accent-text">NovoResume</th>
-                <th className="px-6 py-4 text-center font-bold text-stone-warm">Winner</th>
+                <th className="px-6 py-4 text-center font-bold text-ink/60">Winner</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-black/[0.06]">
@@ -136,7 +136,7 @@ export default function NovoResumeVsEasyFreeResume() {
                 <td className="px-6 py-4 text-center text-accent-text">✅ All templates</td>
                 <td className="px-6 py-4 text-center text-accent-text">✅ Yes</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-stone-warm text-white">Tie</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-ink/60 text-white">Tie</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
@@ -160,7 +160,7 @@ export default function NovoResumeVsEasyFreeResume() {
                 <td className="px-6 py-4 text-center text-accent-text">✅ Supported</td>
                 <td className="px-6 py-4 text-center text-accent-text">✅ Specialized</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-stone-warm text-white">Tie</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-ink/60 text-white">Tie</span>
                 </td>
               </tr>
             </tbody>
@@ -233,18 +233,18 @@ export default function NovoResumeVsEasyFreeResume() {
           What NovoResume Does Well
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-4">
+        <p className="text-lg leading-relaxed text-ink/60 mb-4">
           To be fair, NovoResume has some strengths:
         </p>
 
-        <ul className="list-disc list-inside space-y-2 text-stone-warm mb-8">
+        <ul className="list-disc list-inside space-y-2 text-ink/60 mb-8">
           <li>Clean, modern template designs</li>
           <li>Good support for European CV formats (Europass)</li>
           <li>Cover letter builder included</li>
           <li>Website builder for online portfolios</li>
         </ul>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           However, these extra features come at a cost. If you just need a professional,
           ATS-friendly resume, you can get that for free elsewhere.
         </p>
@@ -308,19 +308,19 @@ export default function NovoResumeVsEasyFreeResume() {
         <div className="space-y-4 my-8">
           <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
             <h4 className="font-bold text-ink mb-2">Is NovoResume actually free?</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               NovoResume offers a limited free tier with basic templates and restricted downloads. The best templates, full customization, and unlimited PDF exports require a premium plan starting at $16/month or $99/year. EasyFreeResume offers all templates and unlimited downloads for free.
             </p>
           </div>
           <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
             <h4 className="font-bold text-ink mb-2">Does NovoResume put a watermark on free resumes?</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               NovoResume's free tier includes NovoResume branding on exported PDFs. To remove the branding and get a clean, professional PDF, you need a premium subscription. EasyFreeResume never adds watermarks or branding to your downloads.
             </p>
           </div>
           <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
             <h4 className="font-bold text-ink mb-2">Is NovoResume good for ATS?</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Yes, NovoResume templates are generally ATS-compatible. Their templates use clean formatting that most ATS systems can parse correctly. However, some of the more design-heavy premium templates may have minor ATS issues. Both NovoResume and EasyFreeResume produce ATS-friendly output.
             </p>
           </div>

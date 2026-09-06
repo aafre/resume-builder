@@ -21,7 +21,7 @@ export default function AICoverLetterPrompts() {
       noindex
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           A great cover letter can be the difference between an interview and a rejection &mdash; but
           most people hate writing them. These 25+ AI prompts work with any major AI tool (ChatGPT,
           Claude, Gemini, Copilot, DeepSeek) and cover every scenario from standard applications to
@@ -72,7 +72,7 @@ export default function AICoverLetterPrompts() {
           Tailored Cover Letter Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           These prompts generate complete, job-specific cover letters. The key is providing enough
           context for the AI to write something that sounds like you, not like a template.
         </p>
@@ -158,7 +158,7 @@ export default function AICoverLetterPrompts() {
           Opening Hook Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           The first sentence determines whether the hiring manager keeps reading. These prompts
           generate attention-grabbing openers that lead with value instead of the tired
           &ldquo;I am writing to apply for...&rdquo; formula.
@@ -217,7 +217,7 @@ export default function AICoverLetterPrompts() {
           Career Change Cover Letter Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Switching careers is one of the hardest cover letter scenarios. You need to acknowledge the
           transition, frame it as a strength, and prove your transferable skills &mdash; all without
           being defensive. For resume-specific guidance, see our{' '}
@@ -294,7 +294,7 @@ export default function AICoverLetterPrompts() {
           Internal Transfer &amp; Referral Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Internal applications and referral-based applications need a different tone. You already
           have context and relationships &mdash; your letter should reflect that.
         </p>
@@ -345,7 +345,7 @@ export default function AICoverLetterPrompts() {
           Follow-Up Email Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Following up shows genuine interest &mdash; but there is a fine line between persistent and
           pushy. These prompts generate professional follow-ups for every stage of the application process.
         </p>
@@ -403,7 +403,7 @@ export default function AICoverLetterPrompts() {
           Thank-You Note Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Sending a thank-you note within 24 hours of an interview is one of the simplest ways to
           stand out. These prompts generate notes that go beyond &ldquo;thank you for your time.&rdquo;
         </p>
@@ -467,7 +467,7 @@ export default function AICoverLetterPrompts() {
           Review &amp; Polish Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Already have a draft? Use these prompts to tighten, improve, and de-AI your cover letter
           before sending.
         </p>
@@ -528,38 +528,38 @@ export default function AICoverLetterPrompts() {
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Full cover letter draft</td>
                 <td className="px-4 py-4 text-center text-accent-text font-medium">Claude</td>
-                <td className="px-4 py-4 text-stone-warm text-sm">Best writing quality, follows complex instructions precisely</td>
+                <td className="px-4 py-4 text-ink/60 text-sm">Best writing quality, follows complex instructions precisely</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Company research + letter</td>
                 <td className="px-4 py-4 text-center text-accent-text font-medium">Copilot</td>
-                <td className="px-4 py-4 text-stone-warm text-sm">Web search finds recent company news to reference</td>
+                <td className="px-4 py-4 text-ink/60 text-sm">Web search finds recent company news to reference</td>
               </tr>
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Quick iterations</td>
                 <td className="px-4 py-4 text-center text-accent-text font-medium">ChatGPT</td>
-                <td className="px-4 py-4 text-stone-warm text-sm">Fast responses, good at generating multiple versions</td>
+                <td className="px-4 py-4 text-ink/60 text-sm">Fast responses, good at generating multiple versions</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Tone matching</td>
                 <td className="px-4 py-4 text-center text-accent-text font-medium">Claude</td>
-                <td className="px-4 py-4 text-stone-warm text-sm">Excellent at adjusting formality and voice</td>
+                <td className="px-4 py-4 text-ink/60 text-sm">Excellent at adjusting formality and voice</td>
               </tr>
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Job description analysis</td>
                 <td className="px-4 py-4 text-center text-accent-text font-medium">DeepSeek R1</td>
-                <td className="px-4 py-4 text-stone-warm text-sm">Reasoning model catches nuances in requirements</td>
+                <td className="px-4 py-4 text-ink/60 text-sm">Reasoning model catches nuances in requirements</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Free + no sign-up</td>
                 <td className="px-4 py-4 text-center text-accent-text font-medium">Copilot / DeepSeek</td>
-                <td className="px-4 py-4 text-stone-warm text-sm">Most generous free tiers for resume/cover letter tasks</td>
+                <td className="px-4 py-4 text-ink/60 text-sm">Most generous free tiers for resume/cover letter tasks</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           For model-specific prompts optimized for each tool, see our guides for{' '}
           <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">Claude</Link>,{' '}
           <Link to="/blog/gemini-resume-prompts" className="text-accent-text hover:underline">Gemini</Link>, and the{' '}
@@ -607,7 +607,7 @@ export default function AICoverLetterPrompts() {
               </div>
               <div>
                 <h3 className="font-bold text-ink mb-1">{tip.title}</h3>
-                <p className="text-stone-warm">{tip.desc}</p>
+                <p className="text-ink/60">{tip.desc}</p>
               </div>
             </div>
           ))}
@@ -647,7 +647,7 @@ export default function AICoverLetterPrompts() {
           ].map((faq, i) => (
             <div key={i} className="bg-chalk-dark rounded-xl p-5">
               <h3 className="font-bold text-ink mb-2">{faq.q}</h3>
-              <p className="text-stone-warm">{faq.a}</p>
+              <p className="text-ink/60">{faq.a}</p>
             </div>
           ))}
         </div>

@@ -93,7 +93,7 @@
 .btn-ghost-add {
   @apply w-full inline-flex min-h-11 items-center justify-center gap-2 rounded-lg
          border-2 border-dashed border-gray-300 px-4 py-2.5
-         text-[13px] font-medium text-stone-warm
+         text-[13px] font-medium text-ink/60
          transition-colors duration-200
          hover:border-accent/70 hover:bg-accent/[0.06] hover:text-accent-text;
 }
@@ -112,7 +112,7 @@
    min-h-11 because 44px applies in the editor's densest rows too. */
 .btn-destructive-ghost {
   @apply inline-flex min-h-11 items-center justify-center gap-1.5 rounded-lg
-         border border-gray-300 px-3 text-sm font-medium text-stone-warm
+         border border-gray-300 px-3 text-sm font-medium text-ink/60
          transition-colors duration-200
          hover:border-red-300 hover:bg-red-50 hover:text-red-700
          focus-visible:border-red-300 focus-visible:bg-red-50 focus-visible:text-red-700
@@ -154,7 +154,7 @@
    150ms/opacity transition is acknowledgement-tier feedback and inherits the
    global prefers-reduced-motion block below. */
 .markdown-hint {
-  @apply flex items-center gap-1.5 text-xs text-stone-warm;
+  @apply flex items-center gap-1.5 text-xs text-ink/60;
   opacity: 0;
   transition: opacity 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }

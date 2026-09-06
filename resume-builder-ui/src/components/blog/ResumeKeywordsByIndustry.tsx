@@ -19,7 +19,7 @@ export default function ResumeKeywordsByIndustry() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Every industry has its own vocabulary. Using the wrong keywords — or generic terms instead of industry-specific ones — means your resume won't match what ATS systems and recruiters are scanning for. This guide organizes the most important resume keywords by industry so you can jump straight to your field.
         </p>
 
@@ -59,7 +59,7 @@ export default function ResumeKeywordsByIndustry() {
           Technology / Software Engineering
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Tech resumes live and die by specific tool and language names. Generic terms like "programming" won't match — you need exact platform names.
         </p>
 
@@ -92,7 +92,7 @@ export default function ResumeKeywordsByIndustry() {
           </div>
         </div>
 
-        <p className="text-sm text-stone-warm mt-3">
+        <p className="text-sm text-ink/60 mt-3">
           For a deep dive, see our <Link to="/blog/software-engineer-resume-keywords" className="text-accent-text hover:underline">75+ software engineer resume keywords guide</Link>.
         </p>
 
@@ -101,7 +101,7 @@ export default function ResumeKeywordsByIndustry() {
           Healthcare / Nursing
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Healthcare resumes require precise clinical terminology and certification names. Abbreviations matter — include both the abbreviation and the full term.
         </p>
 
@@ -139,7 +139,7 @@ export default function ResumeKeywordsByIndustry() {
           Finance / Banking / Accounting
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Finance roles demand precision in both technical skills and regulatory knowledge. Certifications carry significant weight.
         </p>
 
@@ -177,7 +177,7 @@ export default function ResumeKeywordsByIndustry() {
           Marketing / Digital Marketing
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Marketing is one of the fastest-evolving fields. Keywords shift with platform changes and new tools. Here's what's relevant in 2026.
         </p>
 
@@ -346,7 +346,7 @@ export default function ResumeKeywordsByIndustry() {
           </div>
         </div>
 
-        <p className="text-sm text-stone-warm mt-3">
+        <p className="text-sm text-ink/60 mt-3">
           For a comprehensive breakdown, see our <Link to="/blog/customer-service-resume-keywords-guide" className="text-accent-text hover:underline">customer service resume keywords guide</Link>.
         </p>
 
@@ -423,12 +423,12 @@ export default function ResumeKeywordsByIndustry() {
           Universal Keywords (Every Industry)
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Regardless of your industry, these keywords appear in almost every job description. Include the ones relevant to your experience:
         </p>
 
         <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-6">
-          <div className="grid md:grid-cols-3 gap-6 text-stone-warm">
+          <div className="grid md:grid-cols-3 gap-6 text-ink/60">
             <div>
               <h4 className="font-bold text-ink mb-3">Leadership:</h4>
               <ul className="list-disc pl-5 text-sm space-y-1">
@@ -481,7 +481,7 @@ export default function ResumeKeywordsByIndustry() {
               </div>
               <div>
                 <h3 className="font-bold text-ink mb-1">{step.title}</h3>
-                <p className="text-stone-warm">{step.desc}</p>
+                <p className="text-ink/60">{step.desc}</p>
               </div>
             </div>
           ))}
@@ -506,7 +506,7 @@ export default function ResumeKeywordsByIndustry() {
           Related Resources
         </h2>
 
-        <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
+        <ul className="list-disc list-inside space-y-2 text-lg text-ink/60">
           <li>
             <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">
               How to Use Resume Keywords to Beat the ATS

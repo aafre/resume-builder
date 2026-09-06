@@ -49,7 +49,7 @@ export default function StepByStep({
                 </h3>
 
                 {/* Step description */}
-                <p className="text-stone-warm text-center leading-relaxed">
+                <p className="text-ink/60 text-center leading-relaxed">
                   {step.description}
                 </p>
               </div>

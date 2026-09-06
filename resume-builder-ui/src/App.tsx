@@ -1081,7 +1081,7 @@ function AppContent() {
       )}
 
       {/* Footer - Always visible, static positioning */}
-      <footer id="app-footer" data-nosnippet className="bg-chalk-dark text-stone-warm border-t border-black/[0.06] mt-auto">
+      <footer id="app-footer" data-nosnippet className="bg-chalk-dark text-ink/60 border-t border-black/[0.06] mt-auto">
         <Footer />
       </footer>
     </div>

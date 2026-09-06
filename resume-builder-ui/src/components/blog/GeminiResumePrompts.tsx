@@ -24,7 +24,7 @@ export default function GeminiResumePrompts() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Google Gemini excels at research and analysis tasks, making it particularly useful for
           analyzing job descriptions, extracting keywords, and understanding what companies are
           looking for. These prompts leverage Gemini's strengths for resume writing. For a broader look at how AI can transform your job application materials, see our <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline">complete AI resume writing guide</Link>.
@@ -84,7 +84,7 @@ export default function GeminiResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           For pre-built keyword lists organized by role, browse our{' '}
           <Link to="/resume-keywords" className="text-accent-text hover:underline">resume keywords by job title</Link>
           {' '}pages &mdash; they pair well with Gemini&rsquo;s extraction prompts above.
@@ -94,7 +94,7 @@ export default function GeminiResumePrompts() {
           Resume Content Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Once you've analyzed the job description, use these prompts to generate polished resume content. Gemini also works well for <Link to="/blog/ai-cover-letter-prompts" className="text-accent-text hover:underline">AI-powered cover letter writing</Link> using the same research context.
         </p>
 
@@ -141,7 +141,7 @@ export default function GeminiResumePrompts() {
           Optimization Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           After generating your content, run it through our <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">free ATS keyword scanner</Link> to verify your resume matches the job description before submitting.
         </p>
 
@@ -212,19 +212,19 @@ export default function GeminiResumePrompts() {
         {/* AI Resume Tools */}
         <div className="my-12">
           <h2 className="text-2xl font-bold text-ink mb-2">Explore Other AI Resume Tools</h2>
-          <p className="text-stone-warm font-extralight mb-6">Each AI has different strengths for resume writing. Try multiple tools to find what works best for you.</p>
+          <p className="text-ink/60 font-extralight mb-6">Each AI has different strengths for resume writing. Try multiple tools to find what works best for you.</p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             <Link to="/blog/ai-resume-prompts-hub" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">AI Resume Prompts Hub</h3>
-              <p className="text-sm text-stone-warm">Compare all AI tools side by side</p>
+              <p className="text-sm text-ink/60">Compare all AI tools side by side</p>
             </Link>
             <Link to="/blog/claude-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Claude Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for analysis, structured output, and nuance</p>
+              <p className="text-sm text-ink/60">Best for analysis, structured output, and nuance</p>
             </Link>
             <Link to="/blog/ai-cover-letter-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">AI Cover Letter Prompts</h3>
-              <p className="text-sm text-stone-warm">Prompts for writing tailored cover letters</p>
+              <p className="text-sm text-ink/60">Prompts for writing tailored cover letters</p>
             </Link>
           </div>
         </div>
@@ -248,7 +248,7 @@ export default function GeminiResumePrompts() {
           Related Resources
         </h2>
 
-        <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
+        <ul className="list-disc list-inside space-y-2 text-lg text-ink/60">
           <li>
             <Link to="/blog/ai-resume-prompts-hub" className="text-accent-text hover:underline">
               AI Resume Prompts Hub — Compare All Tools

@@ -21,7 +21,7 @@ const NotFound: React.FC = () => {
           </h1>
 
           {/* 404 Message */}
-          <p className="font-display text-lg font-extralight text-stone-warm mb-8 leading-relaxed">
+          <p className="font-display text-lg font-extralight text-ink/60 mb-8 leading-relaxed">
             The page you're looking for doesn't exist. It might have been moved
             or the URL might be incorrect.
           </p>
@@ -45,7 +45,7 @@ const NotFound: React.FC = () => {
           </div>
 
           {/* Help Text */}
-          <p className="text-sm text-stone-warm mt-8">
+          <p className="text-sm text-ink/60 mt-8">
             Looking for templates? Start building your resume from our homepage.
           </p>
         </div>

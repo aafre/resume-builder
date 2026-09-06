@@ -18,7 +18,7 @@ export default function CoverLetterGuide() {
       ]}
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Writing a cover letter in 2026 is no longer a formality - it's a
           strategic tool that can tip the scales in your favor. Done right, your
           cover letter can spark interest, show personality, and explain exactly
@@ -28,14 +28,14 @@ export default function CoverLetterGuide() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Why Cover Letters Still Matter in 2026
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           According to a recent survey by ResumeLab, 83% of hiring managers say
           a strong cover letter can land you an interview even if your resume
           isn't perfect. While some recruiters skim or skip them, many still
           expect one - especially for roles in marketing, communications,
           education, and leadership.
         </p>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Even in a world of LinkedIn profiles and AI screening, a well-crafted
           cover letter shows effort, interest, and professionalism. If you want
           a head start, try our{" "}
@@ -138,13 +138,13 @@ Sincerely,
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Final Thoughts
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           A good cover letter shows that you’ve done your homework, care about
           the role, and know how to communicate - all qualities employers value.
           Even if the company doesn’t require one, it can be a strategic
           advantage that sets you apart.
         </p>
-        <p className="text-lg leading-relaxed text-stone-warm mt-6">
+        <p className="text-lg leading-relaxed text-ink/60 mt-6">
           Use your cover letter to tell the story your resume can’t. Pair it
           with a polished resume — browse our{" "}
           <Link to="/examples" className="text-accent-text hover:underline font-semibold">

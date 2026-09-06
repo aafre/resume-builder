@@ -17,7 +17,7 @@ export default function RemoteWorkResume() {
       ]}
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Remote work is no longer just a perk - it's a permanent shift in how
           we work. In 2026, standing out in the digital job market means
           crafting a resume tailored for remote roles, highlighting your
@@ -39,7 +39,7 @@ export default function RemoteWorkResume() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Why Remote-Ready Resumes Matter
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Traditional resumes may not cut it anymore in the remote job market.
           Recruiters now look for clear signals that candidates can thrive
           without the structure of a traditional office. Your resume needs to
@@ -82,7 +82,7 @@ export default function RemoteWorkResume() {
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           1. Add "Remote" to Job Titles or Locations
         </h3>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Make it clear which roles were remote by adding "(Remote)" next to
           your job title or city. This signals relevant experience immediately
           and helps ATS systems identify your remote work background.
@@ -91,7 +91,7 @@ export default function RemoteWorkResume() {
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           2. Use a Summary That Highlights Remote Fit
         </h3>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Your professional summary should include remote-related keywords like
           "remote collaboration," "self-motivated," or "distributed teams."
           Here's an example:
@@ -101,7 +101,7 @@ export default function RemoteWorkResume() {
           <h4 className="font-bold text-ink mb-3">
             ✅ Remote-Optimized Professional Summary:
           </h4>
-          <div className="text-stone-warm bg-white p-4 rounded-lg italic">
+          <div className="text-ink/60 bg-white p-4 rounded-lg italic">
             "Self-driven software engineer with 6+ years of experience in
             remote-first teams. Proven ability to deliver high-impact projects
             asynchronously using GitHub, Jira, and Slack. Excellent communicator
@@ -110,7 +110,7 @@ export default function RemoteWorkResume() {
           </div>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-4">
+        <p className="text-lg leading-relaxed text-ink/60 mt-4">
           For a full breakdown of how to structure a tech resume for remote
           roles, see our{" "}
           <Link to="/examples/software-engineer" className="text-accent-text hover:underline font-semibold">
@@ -121,7 +121,7 @@ export default function RemoteWorkResume() {
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           3. Emphasize Tools and Technologies
         </h3>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Create a dedicated "Remote Tools" section or include them prominently
           under Skills. List the tools you've used regularly in remote work
           environments:
@@ -132,7 +132,7 @@ export default function RemoteWorkResume() {
             <h4 className="font-bold text-ink mb-3">
               💬 Communication Tools
             </h4>
-            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
+            <ul className="list-disc pl-6 space-y-1 text-ink/60 text-sm">
               <li>Slack, Microsoft Teams</li>
               <li>Zoom, Google Meet</li>
               <li>Discord, Telegram</li>
@@ -143,7 +143,7 @@ export default function RemoteWorkResume() {
             <h4 className="font-bold text-ink mb-3">
               📋 Project Management
             </h4>
-            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
+            <ul className="list-disc pl-6 space-y-1 text-ink/60 text-sm">
               <li>Trello, Asana</li>
               <li>ClickUp, Monday.com</li>
               <li>Jira, Linear</li>
@@ -155,7 +155,7 @@ export default function RemoteWorkResume() {
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           4. Showcase Remote-Specific Soft Skills
         </h3>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Hiring managers want candidates who can operate independently and
           handle ambiguity. Highlight achievements that demonstrate remote work
           capabilities. For tips on presenting your skills effectively, read
@@ -194,7 +194,7 @@ export default function RemoteWorkResume() {
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           5. Consider a Remote-First Resume Format
         </h3>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           If you're exclusively applying to remote jobs, consider building your
           resume around this theme. A dedicated "Remote Experience" section or
           an emphasis on distributed team impact can make your resume feel
@@ -208,7 +208,7 @@ export default function RemoteWorkResume() {
           <h4 className="font-bold text-ink mb-3">
             📄 Sample Remote-Optimized Resume Structure:
           </h4>
-          <div className="text-stone-warm bg-white p-4 rounded-lg font-mono text-sm">
+          <div className="text-ink/60 bg-white p-4 rounded-lg font-mono text-sm">
             <div className="space-y-4">
               <div>
                 <p className="font-bold">Jane Doe</p>
@@ -266,7 +266,7 @@ export default function RemoteWorkResume() {
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Not mentioning remote experience explicitly
             </h4>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               <strong>Fix:</strong> Always include "(Remote)" in job titles and
               highlight distributed team achievements.
             </p>
@@ -276,7 +276,7 @@ export default function RemoteWorkResume() {
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Overloading with jargon
             </h4>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               <strong>Fix:</strong> Focus on clarity over fluff-remote employers
               value clear communication above all.
             </p>
@@ -286,7 +286,7 @@ export default function RemoteWorkResume() {
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Listing skills without proof
             </h4>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               <strong>Fix:</strong> Show concrete examples of how you've used
               remote tools in past roles.
             </p>
@@ -323,14 +323,14 @@ export default function RemoteWorkResume() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           The Future of Remote Work
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Remote work isn't going anywhere. In fact, it's expected that over 30%
           of professional jobs will be remote by the end of 2026. If you're
           aiming for flexibility, freedom, or access to global opportunities,
           your resume needs to reflect that reality.
         </p>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-6">
+        <p className="text-lg leading-relaxed text-ink/60 mt-6">
           Tailor your resume to speak the language of remote employers. Show
           that you're proactive, reliable, and already comfortable working in
           distributed environments. The right words and proper formatting can

@@ -16,7 +16,7 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
           ★
         </span>
       ))}
-      <span className="ml-2 text-sm font-medium text-stone-warm">
+      <span className="ml-2 text-sm font-medium text-ink/60">
         {rating}/{max}
       </span>
     </div>
@@ -72,13 +72,13 @@ export default function EnhancvVsEasyFreeResume() {
               <p className="font-bold text-accent-text text-lg mb-2">EasyFreeResume</p>
               <StarRating rating={5} />
               <p className="text-3xl font-bold text-accent-text mt-2">$0</p>
-              <p className="text-sm text-stone-warm">Everything free</p>
+              <p className="text-sm text-ink/60">Everything free</p>
             </div>
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-              <p className="font-bold text-stone-warm text-lg mb-2">Enhancv</p>
+              <p className="font-bold text-ink/60 text-lg mb-2">Enhancv</p>
               <StarRating rating={4} />
               <p className="text-3xl font-bold text-red-600 mt-2">$120</p>
-              <p className="text-sm text-stone-warm">Per year (Pro)</p>
+              <p className="text-sm text-ink/60">Per year (Pro)</p>
             </div>
           </div>
           <p className="text-green-800 mt-4 text-center font-medium">
@@ -86,7 +86,7 @@ export default function EnhancvVsEasyFreeResume() {
           </p>
         </div>
 
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Enhancv is known for its modern, visually distinctive templates and content
           coaching features. It's popular among creative professionals and tech workers.
           But does it justify the $120/year price tag?
@@ -103,7 +103,7 @@ export default function EnhancvVsEasyFreeResume() {
                 <th className="px-6 py-4 text-left font-bold text-ink">Feature</th>
                 <th className="px-6 py-4 text-center font-bold text-accent-text">EasyFreeResume</th>
                 <th className="px-6 py-4 text-center font-bold text-accent-text">Enhancv</th>
-                <th className="px-6 py-4 text-center font-bold text-stone-warm">Winner</th>
+                <th className="px-6 py-4 text-center font-bold text-ink/60">Winner</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-black/[0.06]">
@@ -233,18 +233,18 @@ export default function EnhancvVsEasyFreeResume() {
           When Enhancv Might Make Sense
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-4">
+        <p className="text-lg leading-relaxed text-ink/60 mb-4">
           To be fair, Enhancv could be worth it if:
         </p>
 
-        <ul className="list-disc list-inside space-y-2 text-stone-warm mb-8">
+        <ul className="list-disc list-inside space-y-2 text-ink/60 mb-8">
           <li>You're in a creative field where visual design matters more</li>
           <li>You want built-in content coaching and suggestions</li>
           <li>You need multiple creative template options</li>
           <li>Your target companies use modern ATS that handles graphics well</li>
         </ul>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           However, for most job seekers—especially those applying to corporate jobs
           or through online portals—a clean, ATS-optimized template is what you need.
           And you can get that for free.

@@ -120,7 +120,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                   <div className="w-full border-t border-gray-300"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-stone-warm">Or use email</span>
+                  <span className="px-2 bg-white text-ink/60">Or use email</span>
                 </div>
               </div>
 
@@ -131,7 +131,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                     Email Address
                   </label>
                   <div className="relative">
-                    <MdEmail className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-warm" size={20} />
+                    <MdEmail className="absolute left-3 top-1/2 -translate-y-1/2 text-ink/60" size={20} />
                     <input
                       type="email"
                       id="email"
@@ -154,7 +154,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
               </form>
 
               {/* Footer */}
-              <p className="text-xs text-stone-warm text-center mt-6">
+              <p className="text-xs text-ink/60 text-center mt-6">
                 By continuing, you agree to our Terms of Service and Privacy Policy.
                 <br />
                 <strong>Note:</strong> Your resume will continue to save automatically.

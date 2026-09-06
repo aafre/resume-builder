@@ -18,7 +18,7 @@ export default function EasyFreeResumeFreeBlog() {
       ]}
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Updated for 2026: If you've ever searched for a "free resume builder,"
           you know the frustrating routine. You spend an hour carefully crafting
           your resume, only to be hit with a paywall when you try to download
@@ -44,7 +44,7 @@ export default function EasyFreeResumeFreeBlog() {
           </p>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           This post will explain why we built EasyFreeResume to be completely
           free and how we're able to do it sustainably.
         </p>
@@ -53,7 +53,7 @@ export default function EasyFreeResumeFreeBlog() {
           Our Mission: To Level the Job Search Playing Field
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           The job search is stressful enough without having to worry about
           hidden fees or subscription traps. We believe that everyone,
           regardless of their financial situation, deserves access to
@@ -81,7 +81,7 @@ export default function EasyFreeResumeFreeBlog() {
           </ul>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           We are a small team of developers and designers who have been in your
           shoes. We were tired of seeing essential career tools locked behind
           paywalls. So, we decided to build the tool we wish we had: one that is
@@ -92,7 +92,7 @@ export default function EasyFreeResumeFreeBlog() {
           The Problem with "Freemium" Resume Builders
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Many other resume builders operate on a "freemium" model. They lure
           you in with the promise of being free, but then they charge for
           essential features.
@@ -189,7 +189,7 @@ export default function EasyFreeResumeFreeBlog() {
           So, How Do We Keep the Lights On?
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           We keep our costs extremely low and support the site in simple,
           transparent ways that don't compromise the user experience.
         </p>
@@ -257,7 +257,7 @@ export default function EasyFreeResumeFreeBlog() {
 
         <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
           <h3 className="font-bold text-ink mb-4">💰 Our Simple Revenue Model:</h3>
-          <div className="text-stone-warm">
+          <div className="text-ink/60">
             <p className="mb-4">
               <strong>That's it.</strong> We don't sell your data, and we will
               never charge you for features that should be free.
@@ -332,7 +332,7 @@ export default function EasyFreeResumeFreeBlog() {
           Why This Matters for Your Job Search
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           When you're job searching, every dollar counts. You might need to buy
           interview clothes, pay for gas to get to interviews, or invest in
           skill development courses. The last thing you should worry about is
@@ -357,7 +357,7 @@ export default function EasyFreeResumeFreeBlog() {
           The Future of EasyFreeResume
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           As we grow, our commitment to being free remains unwavering. Here's
           what you can expect:
         </p>
@@ -400,14 +400,14 @@ export default function EasyFreeResumeFreeBlog() {
           How You Can Support Us
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           While our service is free, there are ways you can help us continue to
           improve and reach more job seekers:
         </p>
 
         <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
           <h3 className="font-bold text-ink mb-4">🤝 Ways to Support EasyFreeResume:</h3>
-          <ul className="list-disc pl-6 space-y-3 text-stone-warm">
+          <ul className="list-disc pl-6 space-y-3 text-ink/60">
             <li>
               <strong>Share with friends:</strong> Tell other job seekers about
               our free service - word of mouth is our best marketing
@@ -451,13 +451,13 @@ export default function EasyFreeResumeFreeBlog() {
           Final Thoughts: Building Trust Through Transparency
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           In an industry filled with misleading "free" tools, we choose to be
           different. We believe that transparency builds trust, and trust builds
           lasting relationships with the job seekers we serve.
         </p>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-6">
+        <p className="text-lg leading-relaxed text-ink/60 mt-6">
           We built EasyFreeResume to be a trustworthy resource for job seekers at
           every stage of their career journey. Whether you're writing your first
           resume or your fiftieth, we're here to help - and we'll never ask for

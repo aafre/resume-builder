@@ -52,7 +52,7 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
           type="button"
           onClick={onClose}
           disabled={loading}
-          className="absolute top-4 right-4 text-stone-warm hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-chalk-dark disabled:opacity-50"
+          className="absolute top-4 right-4 text-ink/60 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-chalk-dark disabled:opacity-50"
           aria-label="Close modal"
         >
           <MdClose size={24} />
@@ -72,7 +72,7 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
 
         {/* Content */}
         <div className="p-6">
-          <p className="text-stone-warm text-lg mb-2">
+          <p className="text-ink/60 text-lg mb-2">
             You're about to <span className="font-semibold">{actionLabel}</span>.
           </p>
           <p className="text-gray-600 mb-4">
@@ -107,7 +107,7 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
               type="button"
               onClick={onContinueAsGuest}
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 border-2 border-gray-300 text-ink font-semibold px-6 py-3 rounded-xl hover:border-stone-warm hover:bg-chalk transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-2 border-2 border-gray-300 text-ink font-semibold px-6 py-3 rounded-xl hover:border-ink/60 hover:bg-chalk transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <>
@@ -124,7 +124,7 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
           </div>
 
           {/* Fine print */}
-          <p className="text-xs text-stone-warm text-center mt-4">
+          <p className="text-xs text-ink/60 text-center mt-4">
             Both options are free. Sign in uses Google, LinkedIn, or email.
           </p>
         </div>

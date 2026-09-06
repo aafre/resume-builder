@@ -174,7 +174,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
         <JobSparkleIcon className="w-3.5 h-3.5 text-accent-text" />
       )}
       <div className="flex flex-col leading-none">
-        <span className="text-[10px] uppercase font-bold text-stone-warm tracking-wider group-hover:text-accent-text transition-colors">
+        <span className="text-[10px] uppercase font-bold text-ink/60 tracking-wider group-hover:text-accent-text transition-colors">
           Matches
         </span>
         <span className="text-xs font-bold text-ink tabular-nums">
@@ -221,7 +221,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
               <span className="text-sm font-medium truncate">
                 {jobCount} jobs matched to your skills
               </span>
-              <span className="text-xs text-stone-warm-inverse flex-shrink-0">View &rarr;</span>
+              <span className="text-xs text-white/60 flex-shrink-0">View &rarr;</span>
             </Link>
             <button
               onClick={dismissMobileBanner}

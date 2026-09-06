@@ -466,7 +466,7 @@ export default function JobsPage() {
           <h1 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-ink mb-2">
             {jobsConfig.hero.h1}
           </h1>
-          <p className="text-lg font-extralight text-stone-warm max-w-2xl mx-auto">
+          <p className="text-lg font-extralight text-ink/60 max-w-2xl mx-auto">
             {jobsConfig.hero.subtitle}
           </p>
         </div>
@@ -498,14 +498,14 @@ export default function JobsPage() {
                   style={{ width: `${parserProgress}%` }}
                 />
               </div>
-              <p className="text-sm text-stone-warm">{progressMessage || 'Analyzing your resume...'}</p>
+              <p className="text-sm text-ink/60">{progressMessage || 'Analyzing your resume...'}</p>
             </div>
           ) : (
             <>
               <div className="flex flex-col sm:flex-row gap-3">
                 {/* Job Title */}
                 <div className="flex-1 relative">
-                  <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-warm" />
+                  <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/60" />
                   <input
                     type="text"
                     value={titleInput}
@@ -517,7 +517,7 @@ export default function JobsPage() {
 
                 {/* Location */}
                 <div className="flex-1 relative">
-                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-warm" />
+                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/60" />
                   <input
                     type="text"
                     value={locationInput}
@@ -529,7 +529,7 @@ export default function JobsPage() {
 
                 {/* Country */}
                 <div className="relative sm:w-44">
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-warm pointer-events-none" />
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/60 pointer-events-none" />
                   <select
                     value={country}
                     onChange={(e) => setCountry(e.target.value)}
@@ -557,7 +557,7 @@ export default function JobsPage() {
               </div>
 
               {/* Drop hint */}
-              <p className="text-xs text-stone-warm text-center mt-2 flex items-center justify-center gap-1">
+              <p className="text-xs text-ink/60 text-center mt-2 flex items-center justify-center gap-1">
                 <Upload className="w-3 h-3" />
                 Or drag &amp; drop your resume (PDF/DOCX) for an instant personalized search
               </p>
@@ -595,7 +595,7 @@ export default function JobsPage() {
               <Sparkles className="w-4 h-4 text-accent-text" />
               <h3 className="text-sm font-display font-bold text-ink">Consider these related roles</h3>
             </div>
-            <p className="text-xs text-stone-warm mb-3">Based on your resume skills and experience</p>
+            <p className="text-xs text-ink/60 mb-3">Based on your resume skills and experience</p>
             <div className="flex flex-wrap gap-2">
               {suggestions.alternative_roles.map((role) => (
                 <button
@@ -616,7 +616,7 @@ export default function JobsPage() {
             <h2 className="text-lg font-display font-bold text-ink">
               {totalCount.toLocaleString()} jobs found
             </h2>
-            <span className="text-sm text-stone-warm">
+            <span className="text-sm text-ink/60">
               for &ldquo;{titleInput}&rdquo;{locationInput ? ` in ${locationInput}` : ''}
             </span>
           </div>
@@ -624,7 +624,7 @@ export default function JobsPage() {
 
         {/* Tier 3 AI Transparency */}
         {hasSearched && !loading && aiTermsUsed.length > 0 && (
-          <div className="flex items-center gap-2 mb-6 text-xs text-stone-warm">
+          <div className="flex items-center gap-2 mb-6 text-xs text-ink/60">
             <Info className="w-3.5 h-3.5 flex-shrink-0" />
             <span>Also searched for:</span>
             {aiTermsUsed.map((term) => (
@@ -647,18 +647,18 @@ export default function JobsPage() {
               </div>
               <button
                 onClick={handleClearResume}
-                className="p-1 rounded-lg hover:bg-black/5 text-stone-warm hover:text-ink transition-colors flex-shrink-0"
+                className="p-1 rounded-lg hover:bg-black/5 text-ink/60 hover:text-ink transition-colors flex-shrink-0"
                 aria-label="Clear resume context"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
-            <div className="flex items-center gap-3 mt-2 text-xs text-stone-warm flex-wrap">
+            <div className="flex items-center gap-3 mt-2 text-xs text-ink/60 flex-wrap">
               {resumeContext.displayTitle && (
                 <span className="font-medium">{resumeContext.displayTitle}</span>
               )}
               {resumeContext.displayTitle && resumeContext.skills.length > 0 && (
-                <span className="text-stone-warm">|</span>
+                <span className="text-ink/60">|</span>
               )}
               {resumeContext.skills.length > 0 && (
                 <span className="flex items-center gap-1 flex-wrap">
@@ -668,13 +668,13 @@ export default function JobsPage() {
                     </span>
                   ))}
                   {resumeContext.skills.length > 3 && (
-                    <span className="text-stone-warm">+{resumeContext.skills.length - 3}</span>
+                    <span className="text-ink/60">+{resumeContext.skills.length - 3}</span>
                   )}
                 </span>
               )}
               {resumeContext.yearsExperience > 0 && (
                 <>
-                  <span className="text-stone-warm">|</span>
+                  <span className="text-ink/60">|</span>
                   <span>{resumeContext.yearsExperience}yr exp</span>
                 </>
               )}
@@ -684,7 +684,7 @@ export default function JobsPage() {
 
         {/* Nudge Banner — when no resume */}
         {hasSearched && !loading && jobs.length > 0 && !resumeContext && (
-          <div className="flex items-center gap-2 mb-6 text-xs text-stone-warm">
+          <div className="flex items-center gap-2 mb-6 text-xs text-ink/60">
             <Upload className="w-3.5 h-3.5 text-accent-text flex-shrink-0" />
             <span>Drop your resume on the search box for personalized match scores</span>
           </div>
@@ -737,7 +737,7 @@ export default function JobsPage() {
                           </h3>
                         </div>
                       </div>
-                      <p className="text-sm text-stone-warm mb-2">
+                      <p className="text-sm text-ink/60 mb-2">
                         {[job.company, job.location].filter(Boolean).join(' · ')}
                       </p>
                       <div className="flex items-center gap-2 flex-wrap mb-3">
@@ -747,7 +747,7 @@ export default function JobsPage() {
                               ? 'bg-accent/10 text-accent-text'
                               : job.match_score >= 40
                                 ? 'bg-amber-50 text-amber-600'
-                                : 'bg-chalk-dark text-stone-warm'
+                                : 'bg-chalk-dark text-ink/60'
                           }`}>
                             {Math.round(job.match_score)}% match
                           </span>
@@ -762,7 +762,7 @@ export default function JobsPage() {
                           </span>
                         )}
                         {posted && (
-                          <span className="text-xs text-stone-warm flex items-center gap-1">
+                          <span className="text-xs text-ink/60 flex items-center gap-1">
                             <Clock className="w-3 h-3" />
                             {posted}
                           </span>
@@ -798,9 +798,9 @@ export default function JobsPage() {
         {/* No Results State */}
         {hasSearched && !loading && !error && jobs.length === 0 && (
           <div className="text-center py-12 bg-white rounded-2xl card-gradient-border shadow-premium">
-            <Search className="w-12 h-12 mx-auto mb-3 text-stone-warm" />
+            <Search className="w-12 h-12 mx-auto mb-3 text-ink/60" />
             <h3 className="text-lg font-display font-bold text-ink mb-2">No jobs found</h3>
-            <p className="text-sm text-stone-warm mb-6">Try different keywords or a broader location</p>
+            <p className="text-sm text-ink/60 mb-6">Try different keywords or a broader location</p>
             <div className="flex flex-wrap justify-center gap-2 max-w-lg mx-auto">
               {POPULAR_SEARCHES.slice(0, 6).map((title) => (
                 <button
@@ -818,9 +818,9 @@ export default function JobsPage() {
         {/* Empty State (before searching) — Popular searches */}
         {!hasSearched && !loading && (
           <div className="text-center py-12">
-            <Briefcase className="w-12 h-12 mx-auto mb-3 text-stone-warm" />
+            <Briefcase className="w-12 h-12 mx-auto mb-3 text-ink/60" />
             <p className="text-lg font-display font-bold text-ink mb-1">Search for your next opportunity</p>
-            <p className="text-sm text-stone-warm mb-6">Or try one of these popular searches</p>
+            <p className="text-sm text-ink/60 mb-6">Or try one of these popular searches</p>
             <div className="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto">
               {POPULAR_SEARCHES.map((title) => (
                 <button
@@ -837,7 +837,7 @@ export default function JobsPage() {
 
         {/* Powered by */}
         <div className="text-center mt-8 mb-12">
-          <p className="text-xs text-stone-warm">
+          <p className="text-xs text-ink/60">
             Job listings powered by Adzuna
           </p>
         </div>
@@ -860,7 +860,7 @@ export default function JobsPage() {
                 </div>
                 <div className="text-sm font-bold text-accent-text mb-1">Step 1</div>
                 <h3 className="font-display text-lg font-bold text-ink mb-2">Build Your Resume</h3>
-                <p className="text-sm font-extralight text-stone-warm">
+                <p className="text-sm font-extralight text-ink/60">
                   Create a professional, ATS-friendly resume using our free builder with proven templates.
                 </p>
               </div>
@@ -870,7 +870,7 @@ export default function JobsPage() {
                 </div>
                 <div className="text-sm font-bold text-accent-text mb-1">Step 2</div>
                 <h3 className="font-display text-lg font-bold text-ink mb-2">Search Jobs</h3>
-                <p className="text-sm font-extralight text-stone-warm">
+                <p className="text-sm font-extralight text-ink/60">
                   Find matching openings across 19 countries with salary information and direct apply links.
                 </p>
               </div>
@@ -880,7 +880,7 @@ export default function JobsPage() {
                 </div>
                 <div className="text-sm font-bold text-accent-text mb-1">Step 3</div>
                 <h3 className="font-display text-lg font-bold text-ink mb-2">Apply Directly</h3>
-                <p className="text-sm font-extralight text-stone-warm">
+                <p className="text-sm font-extralight text-ink/60">
                   Click through to apply on the employer's site with your polished resume ready to upload.
                 </p>
               </div>
@@ -903,7 +903,7 @@ export default function JobsPage() {
                   Resume Templates
                 </h3>
               </div>
-              <p className="text-sm font-extralight text-stone-warm">
+              <p className="text-sm font-extralight text-ink/60">
                 Build an ATS-friendly resume with our free professional templates.
               </p>
             </Link>
@@ -919,7 +919,7 @@ export default function JobsPage() {
                   Resume Keywords
                 </h3>
               </div>
-              <p className="text-sm font-extralight text-stone-warm">
+              <p className="text-sm font-extralight text-ink/60">
                 Industry-specific keywords to pass ATS filters and impress recruiters.
               </p>
             </Link>
@@ -935,7 +935,7 @@ export default function JobsPage() {
                   Interview Guide
                 </h3>
               </div>
-              <p className="text-sm font-extralight text-stone-warm">
+              <p className="text-sm font-extralight text-ink/60">
                 Prepare for your interview with our comprehensive guide and tips.
               </p>
             </Link>

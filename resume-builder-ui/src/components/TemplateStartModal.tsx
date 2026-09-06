@@ -114,7 +114,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-stone-warm hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-chalk-dark z-10"
+          className="absolute top-4 right-4 text-ink/60 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-chalk-dark z-10"
           aria-label="Close modal"
         >
           <MdClose className="text-2xl" />
@@ -154,12 +154,12 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
                 onClick={() => fileInputRef.current?.click()}
               >
                 <DocumentArrowUpIcon className={`w-12 h-12 mx-auto mb-3 ${
-                  isDragging ? 'text-accent-text' : 'text-stone-warm'
+                  isDragging ? 'text-accent-text' : 'text-ink/60'
                 }`} />
                 <p className="text-sm font-semibold text-ink mb-1">
                   Drop your PDF or DOCX here
                 </p>
-                <p className="text-xs text-stone-warm mb-3">
+                <p className="text-xs text-ink/60 mb-3">
                   We'll extract your data automatically
                 </p>
                 <button
@@ -179,7 +179,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
                   className="hidden"
                   onChange={handleFileInput}
                 />
-                <p className="text-xs text-stone-warm mt-2">Max 10MB • PDF or DOCX</p>
+                <p className="text-xs text-ink/60 mt-2">Max 10MB • PDF or DOCX</p>
               </div>
             )}
 
@@ -198,7 +198,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
                     style={{ width: `${progress}%` }}
                   />
                 </div>
-                <p className="text-center text-xs text-stone-warm mt-2">
+                <p className="text-center text-xs text-ink/60 mt-2">
                   {progressMessage || 'Processing...'}
                 </p>
               </div>

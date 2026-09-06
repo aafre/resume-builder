@@ -214,7 +214,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                           <button
                             type="button"
                             onClick={() => handleRemoveItem(index)}
-                            className="inline-flex min-h-11 min-w-11 items-center justify-center text-stone-warm hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                            className="inline-flex min-h-11 min-w-11 items-center justify-center text-ink/60 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                             title="Remove Certification"
                             aria-label="Remove certification"
                           >

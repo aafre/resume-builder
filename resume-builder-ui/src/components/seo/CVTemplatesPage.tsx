@@ -66,7 +66,7 @@ export default function CVTemplatesPage() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4">
             Browse CV Templates
           </h2>
-          <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-2xl mx-auto">
             Select a professional CV template that suits your industry.
             All designs are ATS-compatible and completely free.
           </p>
@@ -124,7 +124,7 @@ export default function CVTemplatesPage() {
         <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6">
           <div className="bg-white rounded-2xl shadow-premium border-l-4 border-l-accent p-6">
             <h3 className="font-display text-xl font-bold text-ink mb-4">Do Include</h3>
-            <ul className="space-y-2 text-stone-warm">
+            <ul className="space-y-2 text-ink/60">
               <li className="flex items-start">
                 <span className="text-accent-text font-bold mr-3" aria-hidden="true">&#10003;</span>
                 <span><strong>Personal profile</strong> (3-4 lines summarising your experience)</span>
@@ -149,7 +149,7 @@ export default function CVTemplatesPage() {
           </div>
           <div className="bg-white rounded-2xl shadow-premium border-l-4 border-l-red-400 p-6">
             <h3 className="font-display text-xl font-bold text-ink mb-4">Do Not Include</h3>
-            <ul className="space-y-2 text-stone-warm">
+            <ul className="space-y-2 text-ink/60">
               <li className="flex items-start">
                 <span className="text-red-600 font-bold mr-3" aria-hidden="true">&#10007;</span>
                 <span><strong>Photo</strong> (unless specifically requested)</span>
@@ -173,7 +173,7 @@ export default function CVTemplatesPage() {
             </ul>
           </div>
         </div>
-        <p className="text-center text-stone-warm mt-6 max-w-2xl mx-auto">
+        <p className="text-center text-ink/60 mt-6 max-w-2xl mx-auto">
           UK equality laws discourage personal information that could lead to discrimination.
           Focus on your skills and experience instead.
         </p>
@@ -190,13 +190,13 @@ export default function CVTemplatesPage() {
           <div className="flex flex-col md:flex-row items-center justify-center gap-8">
             <div className="text-center">
               <div className="text-6xl font-bold text-accent-text">2</div>
-              <div className="text-stone-warm">Pages Maximum</div>
+              <div className="text-ink/60">Pages Maximum</div>
             </div>
-            <div className="text-stone-warm max-w-md">
+            <div className="text-ink/60 max-w-md">
               <p className="mb-2">
                 <strong>Standard UK CV:</strong> 2 pages is the accepted length for most professional roles.
               </p>
-              <p className="text-sm text-stone-warm">
+              <p className="text-sm text-ink/60">
                 Exceptions: Academic CVs can be longer. Entry-level CVs may be 1 page.
                 Senior executives with 15+ years experience may extend to 3 pages if needed.
               </p>

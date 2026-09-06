@@ -28,13 +28,13 @@ export default function PageHero({ config, className = '' }: PageHeroProps) {
       </h1>
 
       {/* Subtitle */}
-      <p className="text-xl md:text-2xl text-stone-warm mb-4 max-w-4xl mx-auto font-extralight">
+      <p className="text-xl md:text-2xl text-ink/60 mb-4 max-w-4xl mx-auto font-extralight">
         {config.subtitle}
       </p>
 
       {/* Optional description */}
       {config.description && (
-        <p className="text-lg md:text-xl text-stone-warm mb-8 max-w-3xl mx-auto leading-relaxed font-extralight">
+        <p className="text-lg md:text-xl text-ink/60 mb-8 max-w-3xl mx-auto leading-relaxed font-extralight">
           {config.description}
         </p>
       )}

@@ -32,7 +32,7 @@ export default function RelatedArticles({ currentSlug, category, maxArticles = 3
             className="flex-shrink-0 w-[80vw] sm:w-[45vw] md:w-auto snap-start bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
           >
             <div className="mb-3">
-              <span className="font-mono text-[10px] tracking-[0.1em] text-stone-warm uppercase">
+              <span className="font-mono text-[10px] tracking-[0.1em] text-ink/60 uppercase">
                 {post.category}
               </span>
             </div>
@@ -46,11 +46,11 @@ export default function RelatedArticles({ currentSlug, category, maxArticles = 3
               </Link>
             </h3>
 
-            <p className="font-display font-extralight text-stone-warm text-sm mb-4 leading-relaxed line-clamp-2">
+            <p className="font-display font-extralight text-ink/60 text-sm mb-4 leading-relaxed line-clamp-2">
               {post.description}
             </p>
 
-            <div className="flex items-center gap-3 text-[11px] text-stone-warm font-mono">
+            <div className="flex items-center gap-3 text-[11px] text-ink/60 font-mono">
               <time dateTime={post.publishDate}>
                 {new Date(post.publishDate).toLocaleDateString('en-US', {
                   month: 'short',

@@ -16,7 +16,7 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
           ★
         </span>
       ))}
-      <span className="ml-2 text-sm font-medium text-stone-warm">
+      <span className="ml-2 text-sm font-medium text-ink/60">
         {rating}/{max}
       </span>
     </div>
@@ -72,13 +72,13 @@ export default function ResumeGeniusVsEasyFreeResume() {
               <p className="font-bold text-accent-text text-lg mb-2">EasyFreeResume</p>
               <StarRating rating={5} />
               <p className="text-3xl font-bold text-accent-text mt-2">$0</p>
-              <p className="text-sm text-stone-warm">Forever free</p>
+              <p className="text-sm text-ink/60">Forever free</p>
             </div>
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-              <p className="font-bold text-stone-warm text-lg mb-2">Resume Genius</p>
+              <p className="font-bold text-ink/60 text-lg mb-2">Resume Genius</p>
               <StarRating rating={3} />
               <p className="text-3xl font-bold text-red-600 mt-2">$95+</p>
-              <p className="text-sm text-stone-warm">Per year</p>
+              <p className="text-sm text-ink/60">Per year</p>
             </div>
           </div>
           <p className="text-green-800 mt-4 text-center font-medium">
@@ -86,7 +86,7 @@ export default function ResumeGeniusVsEasyFreeResume() {
           </p>
         </div>
 
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Resume Genius promises to help you build a professional resume in minutes. What they
           don't advertise loudly: you can't actually download your resume without paying.
           Let's compare it to a truly free option.
@@ -122,7 +122,7 @@ export default function ResumeGeniusVsEasyFreeResume() {
                 <th className="px-6 py-4 text-left font-bold text-ink">Feature</th>
                 <th className="px-6 py-4 text-center font-bold text-accent-text">EasyFreeResume</th>
                 <th className="px-6 py-4 text-center font-bold text-accent-text">Resume Genius</th>
-                <th className="px-6 py-4 text-center font-bold text-stone-warm">Winner</th>
+                <th className="px-6 py-4 text-center font-bold text-ink/60">Winner</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-black/[0.06]">
@@ -155,7 +155,7 @@ export default function ResumeGeniusVsEasyFreeResume() {
                 <td className="px-6 py-4 text-center text-accent-text">✅ All templates</td>
                 <td className="px-6 py-4 text-center text-accent-text">✅ Yes</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-stone-warm text-white">Tie</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-ink/60 text-white">Tie</span>
                 </td>
               </tr>
               <tr className="bg-green-50">

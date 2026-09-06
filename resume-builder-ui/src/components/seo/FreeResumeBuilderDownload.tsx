@@ -38,7 +38,7 @@ export default function FreeResumeBuilderDownload() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             Download in the Format You Need
           </h2>
-          <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-12">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-4xl mx-auto text-center leading-relaxed mb-12">
             Different situations call for different file formats. EasyFreeResume lets you download your resume in
             both major formats that employers and{' '}
             <Link to="/blog/ats-resume-optimization" className="text-accent-text hover:underline">
@@ -54,7 +54,7 @@ export default function FreeResumeBuilderDownload() {
                 </span>
                 <h3 className="font-display text-xl font-bold text-ink">PDF Download</h3>
               </div>
-              <p className="text-stone-warm font-extralight leading-relaxed mb-4">
+              <p className="text-ink/60 font-extralight leading-relaxed mb-4">
                 The gold standard for job applications. PDF preserves your resume layout exactly as designed —
                 fonts, spacing, and formatting stay intact on every device and operating system.
               </p>
@@ -66,7 +66,7 @@ export default function FreeResumeBuilderDownload() {
                   'Smaller file size for email attachments',
                   'Best choice for online job portals',
                 ].map((item) => (
-                  <li key={item} className="flex items-start gap-2 text-sm text-stone-warm">
+                  <li key={item} className="flex items-start gap-2 text-sm text-ink/60">
                     <span className="text-accent-text font-bold mt-0.5 flex-shrink-0">&#10003;</span>
                     <span>{item}</span>
                   </li>
@@ -80,7 +80,7 @@ export default function FreeResumeBuilderDownload() {
                 </span>
                 <h3 className="font-display text-xl font-bold text-ink">DOCX Download</h3>
               </div>
-              <p className="text-stone-warm font-extralight leading-relaxed mb-4">
+              <p className="text-ink/60 font-extralight leading-relaxed mb-4">
                 Ideal when you need to make quick edits or when an employer specifically requests a Word document.
                 Open in Microsoft Word, Google Docs, or LibreOffice.
               </p>
@@ -92,7 +92,7 @@ export default function FreeResumeBuilderDownload() {
                   'Works with track changes and comments',
                   'Good for staffing agencies that reformat resumes',
                 ].map((item) => (
-                  <li key={item} className="flex items-start gap-2 text-sm text-stone-warm">
+                  <li key={item} className="flex items-start gap-2 text-sm text-ink/60">
                     <span className="text-accent-text font-bold mt-0.5 flex-shrink-0">&#10003;</span>
                     <span>{item}</span>
                   </li>
@@ -100,7 +100,7 @@ export default function FreeResumeBuilderDownload() {
               </ul>
             </div>
           </div>
-          <p className="text-sm text-stone-warm mt-6 text-center max-w-2xl mx-auto">
+          <p className="text-sm text-ink/60 mt-6 text-center max-w-2xl mx-auto">
             Not sure which to choose? Use PDF for most online applications. Use DOCX if the job posting
             asks for Word format or if you want to edit the file later.
           </p>
@@ -116,7 +116,7 @@ export default function FreeResumeBuilderDownload() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             How to Download Your Resume in Under 5 Minutes
           </h2>
-          <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-12">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-4xl mx-auto text-center leading-relaxed mb-12">
             From first visit to a finished, downloadable resume — no account creation, no payment forms, no hoops to jump through.
           </p>
           <div className="max-w-3xl mx-auto space-y-6">
@@ -153,7 +153,7 @@ export default function FreeResumeBuilderDownload() {
                 </div>
                 <div>
                   <h3 className="font-display text-lg font-bold text-ink mb-1">{item.title}</h3>
-                  <p className="text-stone-warm font-extralight leading-relaxed">{item.desc}</p>
+                  <p className="text-ink/60 font-extralight leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -170,7 +170,7 @@ export default function FreeResumeBuilderDownload() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             Tips for Printing Your Resume
           </h2>
-          <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-12">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-4xl mx-auto text-center leading-relaxed mb-12">
             Heading to a job fair, an in-person interview, or a networking event? A printed resume still makes a strong impression.
             Here is how to get the best results from your downloaded file.
           </p>
@@ -203,7 +203,7 @@ export default function FreeResumeBuilderDownload() {
             ].map((tip) => (
               <div key={tip.title} className="bg-white rounded-2xl p-6 shadow-premium border border-black/[0.06]">
                 <h3 className="font-display text-lg font-bold text-ink mb-2">{tip.title}</h3>
-                <p className="text-stone-warm font-extralight leading-relaxed text-sm">{tip.desc}</p>
+                <p className="text-ink/60 font-extralight leading-relaxed text-sm">{tip.desc}</p>
               </div>
             ))}
           </div>
@@ -219,7 +219,7 @@ export default function FreeResumeBuilderDownload() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             Download Builders vs. Online-Only Builders
           </h2>
-          <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-12">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-4xl mx-auto text-center leading-relaxed mb-12">
             Some resume tools keep your resume locked inside their platform. EasyFreeResume gives you a file you own and control.
             See how{' '}
             <Link to="/blog/best-free-resume-builders-2026" className="text-accent-text hover:underline">
@@ -249,7 +249,7 @@ export default function FreeResumeBuilderDownload() {
                   <tr key={row.feature} className={i % 2 === 1 ? 'bg-chalk-dark' : ''}>
                     <td className="px-6 py-4 font-medium text-ink">{row.feature}</td>
                     <td className="px-6 py-4 text-center text-accent-text font-bold text-sm">{row.download}</td>
-                    <td className="px-6 py-4 text-center text-stone-warm text-sm">{row.online}</td>
+                    <td className="px-6 py-4 text-center text-ink/60 text-sm">{row.online}</td>
                   </tr>
                 ))}
               </tbody>
@@ -268,7 +268,7 @@ export default function FreeResumeBuilderDownload() {
             Which Download Format Works Best for ATS?
           </h2>
           <div className="max-w-3xl mx-auto bg-accent/[0.06] border border-accent/20 rounded-xl p-8">
-            <p className="text-lg font-extralight text-stone-warm leading-relaxed mb-6">
+            <p className="text-lg font-extralight text-ink/60 leading-relaxed mb-6">
               Applicant Tracking Systems (ATS) are software that employers use to scan and filter resumes before a
               human ever sees them. Choosing the right file format is critical to getting past these systems.
             </p>
@@ -277,7 +277,7 @@ export default function FreeResumeBuilderDownload() {
                 <span className="text-accent-text font-bold mt-0.5">&#10003;</span>
                 <div>
                   <span className="font-bold text-ink">PDF is the safest choice for most applications.</span>
-                  <span className="text-stone-warm font-extralight">
+                  <span className="text-ink/60 font-extralight">
                     {' '}Modern ATS platforms (Workday, Greenhouse, Lever) parse PDF files reliably. Our templates use
                     real text layers, not images, so ATS can read every word.
                   </span>
@@ -287,7 +287,7 @@ export default function FreeResumeBuilderDownload() {
                 <span className="text-accent-text font-bold mt-0.5">&#10003;</span>
                 <div>
                   <span className="font-bold text-ink">DOCX is preferred by some older ATS platforms.</span>
-                  <span className="text-stone-warm font-extralight">
+                  <span className="text-ink/60 font-extralight">
                     {' '}If the job posting specifically asks for a Word document, download the DOCX version. A few legacy
                     ATS tools (like older versions of Taleo) handle DOCX slightly better than PDF.
                   </span>
@@ -297,7 +297,7 @@ export default function FreeResumeBuilderDownload() {
                 <span className="text-accent-text font-bold mt-0.5">&#10003;</span>
                 <div>
                   <span className="font-bold text-ink">Include the right keywords regardless of format.</span>
-                  <span className="text-stone-warm font-extralight">
+                  <span className="text-ink/60 font-extralight">
                     {' '}Format matters, but{' '}
                     <Link to="/resume-keywords" className="text-accent-text hover:underline">
                       resume keywords
@@ -311,7 +311,7 @@ export default function FreeResumeBuilderDownload() {
                 </div>
               </div>
             </div>
-            <p className="text-sm text-stone-warm">
+            <p className="text-sm text-ink/60">
               All EasyFreeResume templates are built to be{' '}
               <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">
                 ATS-friendly
@@ -344,7 +344,7 @@ export default function FreeResumeBuilderDownload() {
               className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
             >
               <h3 className="font-display text-lg font-bold text-ink mb-2">ATS-Friendly Templates</h3>
-              <p className="text-stone-warm font-extralight text-sm">
+              <p className="text-ink/60 font-extralight text-sm">
                 Browse templates designed to pass applicant tracking systems used by Fortune 500 companies.
               </p>
             </Link>
@@ -353,7 +353,7 @@ export default function FreeResumeBuilderDownload() {
               className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
             >
               <h3 className="font-display text-lg font-bold text-ink mb-2">How to Write a Resume</h3>
-              <p className="text-stone-warm font-extralight text-sm">
+              <p className="text-ink/60 font-extralight text-sm">
                 Step-by-step guide to writing a resume that gets interviews, from structure to content.
               </p>
             </Link>
@@ -362,7 +362,7 @@ export default function FreeResumeBuilderDownload() {
               className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
             >
               <h3 className="font-display text-lg font-bold text-ink mb-2">Resume Keywords</h3>
-              <p className="text-stone-warm font-extralight text-sm">
+              <p className="text-ink/60 font-extralight text-sm">
                 Find the right keywords for your industry and role to boost your ATS score.
               </p>
             </Link>
@@ -371,7 +371,7 @@ export default function FreeResumeBuilderDownload() {
               className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
             >
               <h3 className="font-display text-lg font-bold text-ink mb-2">Resume Examples</h3>
-              <p className="text-stone-warm font-extralight text-sm">
+              <p className="text-ink/60 font-extralight text-sm">
                 See real resume examples for 25+ job titles with downloadable templates.
               </p>
             </Link>
@@ -380,7 +380,7 @@ export default function FreeResumeBuilderDownload() {
               className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
             >
               <h3 className="font-display text-lg font-bold text-ink mb-2">Best Free Resume Builders 2026</h3>
-              <p className="text-stone-warm font-extralight text-sm">
+              <p className="text-ink/60 font-extralight text-sm">
                 Independent comparison of the top free resume builders available this year.
               </p>
             </Link>
@@ -389,7 +389,7 @@ export default function FreeResumeBuilderDownload() {
               className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
             >
               <h3 className="font-display text-lg font-bold text-ink mb-2">ATS Optimization Guide</h3>
-              <p className="text-stone-warm font-extralight text-sm">
+              <p className="text-ink/60 font-extralight text-sm">
                 Learn how to format and optimize your resume so it scores high with automated screening tools.
               </p>
             </Link>

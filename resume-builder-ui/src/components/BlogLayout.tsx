@@ -122,15 +122,15 @@ export default function BlogLayout({
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {showBreadcrumbs && (
           <nav className="mb-6" aria-label="breadcrumb">
-            <ol className="flex items-center space-x-2 text-sm text-stone-warm">
+            <ol className="flex items-center space-x-2 text-sm text-ink/60">
               <li>
                 <Link to="/" className="hover:text-accent-text transition-colors">Home</Link>
               </li>
-              <li className="text-stone-warm">/</li>
+              <li className="text-ink/60">/</li>
               <li>
                 <Link to="/blog" className="hover:text-accent-text transition-colors">Blog</Link>
               </li>
-              <li className="text-stone-warm">/</li>
+              <li className="text-ink/60">/</li>
               <li className="text-ink font-semibold truncate max-w-[200px] sm:max-w-none" title={title}>{title}</li>
             </ol>
           </nav>
@@ -142,11 +142,11 @@ export default function BlogLayout({
             {title}
           </h1>
 
-          <p className="font-display text-lg md:text-xl font-extralight text-stone-warm leading-relaxed mb-6">
+          <p className="font-display text-lg md:text-xl font-extralight text-ink/60 leading-relaxed mb-6">
             {description}
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 text-sm text-stone-warm mb-6">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-ink/60 mb-6">
             <time dateTime={publishDate} className="flex items-center gap-1">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
@@ -175,13 +175,13 @@ export default function BlogLayout({
             {keywords.map((keyword, index) => (
               <span
                 key={index}
-                className={`px-3 py-1 bg-chalk-dark text-stone-warm font-mono text-[10px] tracking-[0.1em] uppercase rounded-full border border-transparent${index >= 5 ? ' hidden sm:inline-flex' : ''}`}
+                className={`px-3 py-1 bg-chalk-dark text-ink/60 font-mono text-[10px] tracking-[0.1em] uppercase rounded-full border border-transparent${index >= 5 ? ' hidden sm:inline-flex' : ''}`}
               >
                 {keyword}
               </span>
             ))}
             {keywords.length > 5 && (
-              <span className="px-3 py-1 text-stone-warm font-mono text-[10px] tracking-[0.1em] sm:hidden">
+              <span className="px-3 py-1 text-ink/60 font-mono text-[10px] tracking-[0.1em] sm:hidden">
                 +{keywords.length - 5} more
               </span>
             )}
@@ -218,7 +218,7 @@ export default function BlogLayout({
         <nav className="mt-8 pt-6 border-t border-black/[0.06] flex justify-between items-center">
           <Link
             to="/blog"
-            className="inline-flex items-center gap-2 text-stone-warm hover:text-ink font-semibold transition-colors"
+            className="inline-flex items-center gap-2 text-ink/60 hover:text-ink font-semibold transition-colors"
           >
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />

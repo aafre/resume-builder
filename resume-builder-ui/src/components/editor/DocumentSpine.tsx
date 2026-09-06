@@ -74,10 +74,10 @@ export const DocumentSpine: React.FC<DocumentSpineProps> = ({ estimate, isCollap
         title={`Resume length: ${summary}`}
       >
         <FileText
-          className={`h-4 w-4 ${fitsOnePage ? 'text-accent-text' : 'text-stone-warm'}`}
+          className={`h-4 w-4 ${fitsOnePage ? 'text-accent-text' : 'text-ink/60'}`}
           aria-hidden="true"
         />
-        <span className="text-[10px] font-medium leading-tight text-stone-warm tabular-nums">
+        <span className="text-[10px] font-medium leading-tight text-ink/60 tabular-nums">
           {pageCount}p
         </span>
         <span className="sr-only" aria-live="polite">
@@ -116,7 +116,7 @@ export const DocumentSpine: React.FC<DocumentSpineProps> = ({ estimate, isCollap
           })}
           {pageCount > MAX_RENDERED_PAGES && (
             <div
-              className="flex items-center px-1 text-[11px] font-medium text-stone-warm tabular-nums"
+              className="flex items-center px-1 text-[11px] font-medium text-ink/60 tabular-nums"
               style={{ height: PAGE_H }}
             >
               +{pageCount - MAX_RENDERED_PAGES}
@@ -132,7 +132,7 @@ export const DocumentSpine: React.FC<DocumentSpineProps> = ({ estimate, isCollap
           >
             {summary}
           </p>
-          <p className="mt-0.5 text-[11px] leading-tight text-stone-warm">
+          <p className="mt-0.5 text-[11px] leading-tight text-ink/60">
             {fitsOnePage ? 'Recruiters prefer one page.' : 'Trim bullets to pull it back.'}
           </p>
         </div>

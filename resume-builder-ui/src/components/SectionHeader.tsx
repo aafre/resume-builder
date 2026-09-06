@@ -94,7 +94,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
           <button
             type="button"
             onClick={onToggleCollapse}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-stone-warm transition-colors duration-200 hover:bg-accent/[0.06] hover:text-accent-text flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-ink/60 transition-colors duration-200 hover:bg-accent/[0.06] hover:text-accent-text flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             aria-label={isCollapsed ? "Expand section" : "Collapse section"}
             title={isCollapsed ? "Expand section" : "Collapse section"}
           >

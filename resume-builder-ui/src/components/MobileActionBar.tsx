@@ -69,13 +69,13 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
                 <div className="h-2 w-8 overflow-clip rounded-full bg-chalk-dark">
                   <div className="h-full w-1/2 animate-pulse rounded-full bg-accent" />
                 </div>
-                <span className="text-stone-warm">Saving...</span>
+                <span className="text-ink/60">Saving...</span>
               </>
             )}
             {!isSaving && lastSaved && !saveError && (
               <>
                 <div className="w-2 h-2 rounded-full bg-accent"></div>
-                <span className="text-stone-warm">Saved {getLastSavedText()}</span>
+                <span className="text-ink/60">Saved {getLastSavedText()}</span>
               </>
             )}
             {saveError && (

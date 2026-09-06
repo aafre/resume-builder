@@ -438,7 +438,7 @@ export default function AIResumePromptsHub() {
             <SectionEyebrow>The Short Answer</SectionEyebrow>
             <time
               dateTime={REVIEW_DATE}
-              className="font-mono text-[11px] tracking-[0.15em] text-stone-warm uppercase block mb-3"
+              className="font-mono text-[11px] tracking-[0.15em] text-ink/60 uppercase block mb-3"
             >
               Last reviewed {REVIEW_DATE} · Refresh cadence: Quarterly
             </time>
@@ -497,7 +497,7 @@ export default function AIResumePromptsHub() {
                   <SectionEyebrow>Methodology</SectionEyebrow>
                   <h2 id="methodology" className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">How We Reviewed These AIs</h2>
                 </div>
-                <div className="md:mt-9 space-y-4 text-stone-warm leading-relaxed">
+                <div className="md:mt-9 space-y-4 text-ink/60 leading-relaxed">
                   <p>
                     <strong>How we reviewed:</strong> We tested the six tools with the same
                     fixture: a mid-career software engineer resume with 8 experience bullets
@@ -527,7 +527,7 @@ export default function AIResumePromptsHub() {
               <div className="grid gap-6 md:grid-cols-3">
                 <div className="bg-white rounded-2xl p-8 card-gradient-border shadow-premium shadow-premium-hover hover:-translate-y-1 transition-all duration-300">
                   <h3 className="font-display text-xl font-bold text-ink">Best for bullet rewrites</h3>
-                  <p className="mt-3 text-stone-warm leading-relaxed">
+                  <p className="mt-3 text-ink/60 leading-relaxed">
                     Claude scored 5/5 because it most consistently turned responsibility
                     statements into specific outcome bullets without inventing unsupported
                     metrics.
@@ -535,14 +535,14 @@ export default function AIResumePromptsHub() {
                 </div>
                 <div className="bg-white rounded-2xl p-8 card-gradient-border shadow-premium shadow-premium-hover hover:-translate-y-1 transition-all duration-300">
                   <h3 className="font-display text-xl font-bold text-ink">Best for summaries</h3>
-                  <p className="mt-3 text-stone-warm leading-relaxed">
+                  <p className="mt-3 text-ink/60 leading-relaxed">
                     Claude scored 5/5 and ChatGPT scored 4/5. Claude produced stronger
                     senior-level framing; ChatGPT was easier to constrain to exact length.
                   </p>
                 </div>
                 <div className="bg-white rounded-2xl p-8 card-gradient-border shadow-premium shadow-premium-hover hover:-translate-y-1 transition-all duration-300">
                   <h3 className="font-display text-xl font-bold text-ink">Best for ATS keywords</h3>
-                  <p className="mt-3 text-stone-warm leading-relaxed">
+                  <p className="mt-3 text-ink/60 leading-relaxed">
                     Claude, ChatGPT, and Gemini all scored 4/5 when paired with a specific job
                     description and the <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">ATS keyword scanner</Link>.
                   </p>
@@ -556,7 +556,7 @@ export default function AIResumePromptsHub() {
               <div>
                 <SectionEyebrow>Agentic Workflow</SectionEyebrow>
                 <h2 id="workflow" className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">How to Build an AI Resume Workflow</h2>
-                <p className="mt-3 max-w-3xl text-stone-warm leading-relaxed">
+                <p className="mt-3 max-w-3xl text-ink/60 leading-relaxed">
                   The best resume prompt is not one prompt. It is a controlled sequence:
                   set the AI role, provide structured evidence, run gap analysis, rewrite
                   only supported claims, then QA the output. This workflow works in Claude
@@ -568,7 +568,7 @@ export default function AIResumePromptsHub() {
                 {WORKFLOW_STEPS.map((step) => (
                   <article key={step.title} className="bg-white rounded-2xl p-6 md:p-8 shadow-premium card-gradient-border">
                     <h3 className="font-display text-xl font-bold text-ink">{step.title}</h3>
-                    <p className="mt-3 text-stone-warm leading-relaxed">{step.description}</p>
+                    <p className="mt-3 text-ink/60 leading-relaxed">{step.description}</p>
                     <pre className="mt-4 bg-ink text-white/90 rounded-xl p-4 md:p-6 text-sm leading-relaxed overflow-x-auto">
                       <code>{step.code}</code>
                     </pre>
@@ -583,7 +583,7 @@ export default function AIResumePromptsHub() {
               <div>
                 <SectionEyebrow>Recommendations</SectionEyebrow>
                 <h2 id="tool-recommendations" className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">Tool Recommendations by AI</h2>
-                <p className="mt-3 max-w-3xl text-stone-warm leading-relaxed">
+                <p className="mt-3 max-w-3xl text-ink/60 leading-relaxed">
                   Pick the tool by task, not by brand. The same resume can move through
                   multiple tools: Gemini for JD gap analysis, Claude for final bullet
                   rewriting, ChatGPT for strict formatting, and a final human pass for
@@ -596,13 +596,13 @@ export default function AIResumePromptsHub() {
                   id={model.id}
                   className="bg-white rounded-2xl p-6 md:p-8 shadow-premium shadow-premium-hover hover:-translate-y-0.5 transition-all duration-300"
                 >
-                  <span className="font-mono text-[11px] tracking-[0.15em] text-stone-warm uppercase block mb-2">
+                  <span className="font-mono text-[11px] tracking-[0.15em] text-ink/60 uppercase block mb-2">
                     {String(idx + 1).padStart(2, "0")} / {String(MODEL_SECTIONS.length).padStart(2, "0")}
                   </span>
                   <h3 className="font-display text-xl font-bold text-ink">{model.name}</h3>
                   <p className="mt-2 font-semibold text-accent-text">Best for: {model.bestFor}</p>
                   <div className="mt-4 grid gap-4 lg:grid-cols-[1.3fr_1fr]">
-                    <div className="space-y-3 text-stone-warm leading-relaxed">
+                    <div className="space-y-3 text-ink/60 leading-relaxed">
                       <p>{model.strengths}</p>
                       <p>{model.limitations}</p>
                       {model.cta && (
@@ -634,7 +634,7 @@ export default function AIResumePromptsHub() {
             <section>
               <SectionEyebrow>Privacy</SectionEyebrow>
               <h2 id="ai-resume-privacy" className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">Is It Safe to Put My Resume in AI?</h2>
-              <p className="mt-3 text-stone-warm leading-relaxed">
+              <p className="mt-3 text-ink/60 leading-relaxed">
                 A resume can include employers, dates, location, salary clues, client names,
                 work authorization details, and proprietary project context. Treat it as
                 sensitive professional data. The safest workflow is to remove phone numbers,
@@ -674,7 +674,7 @@ export default function AIResumePromptsHub() {
             <section>
               <SectionEyebrow>ATS Accuracy</SectionEyebrow>
               <h2 id="ats-formatting-accuracy" className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">ATS Formatting: Which AI Tools Preserve It?</h2>
-              <p className="mt-3 text-stone-warm leading-relaxed">
+              <p className="mt-3 text-ink/60 leading-relaxed">
                 AI tools often damage ATS readability when the prompt asks for a visually
                 impressive resume. The risk is not the words; it is the formatting the model
                 suggests: tables, columns, icons, rating bars, decorative bullets, text boxes,
@@ -686,7 +686,7 @@ export default function AIResumePromptsHub() {
                 {ATS_ROWS.map((row) => (
                   <article key={row.provider} className="bg-white rounded-2xl p-5 shadow-premium border border-black/[0.04]">
                     <h3 className="font-display text-xl font-bold text-ink">{row.provider}: {row.rating}</h3>
-                    <p className="mt-2 text-stone-warm leading-relaxed">{row.note}</p>
+                    <p className="mt-2 text-ink/60 leading-relaxed">{row.note}</p>
                   </article>
                 ))}
               </div>
@@ -697,7 +697,7 @@ export default function AIResumePromptsHub() {
             <section>
               <SectionEyebrow>Long Resume Handling</SectionEyebrow>
               <h2 id="token-limits-long-resumes" className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">Token Limits for Long Resumes</h2>
-              <p className="mt-3 text-stone-warm leading-relaxed">
+              <p className="mt-3 text-ink/60 leading-relaxed">
                 A two-page resume plus a job description is usually small enough for modern
                 AI tools. Problems start when you paste a full career history, portfolio
                 notes, multiple job descriptions, and a long chat history into the same
@@ -754,7 +754,7 @@ export default function AIResumePromptsHub() {
             <section>
               <SectionEyebrow>Sources</SectionEyebrow>
               <h2 id="provider-references" className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">Provider References</h2>
-              <p className="mt-3 text-stone-warm leading-relaxed">
+              <p className="mt-3 text-ink/60 leading-relaxed">
                 Use provider documentation and account settings before pasting sensitive resume data
                 into any AI tool.
               </p>
@@ -798,7 +798,7 @@ export default function AIResumePromptsHub() {
                     </summary>
                     <div className="faq-content">
                       <div>
-                        <p className="mt-3 text-stone-warm leading-relaxed">{faq.answer}</p>
+                        <p className="mt-3 text-ink/60 leading-relaxed">{faq.answer}</p>
                       </div>
                     </div>
                   </details>

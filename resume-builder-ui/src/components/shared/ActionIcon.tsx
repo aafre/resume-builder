@@ -15,8 +15,8 @@ export interface ActionIconProps extends React.ButtonHTMLAttributes<HTMLButtonEl
 }
 
 const variantStyles: Record<ActionIconVariant, string> = {
-  neutral: 'text-stone-warm hover:text-ink hover:bg-chalk-dark',
-  danger: 'text-stone-warm hover:text-red-600 hover:bg-red-50',
+  neutral: 'text-ink/60 hover:text-ink hover:bg-chalk-dark',
+  danger: 'text-ink/60 hover:text-red-600 hover:bg-red-50',
 };
 
 const sizeStyles: Record<ActionIconSize, string> = {

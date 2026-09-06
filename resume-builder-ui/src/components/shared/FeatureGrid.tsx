@@ -46,7 +46,7 @@ export default function FeatureGrid({
             </h3>
 
             {/* Description */}
-            <p className="text-stone-warm leading-relaxed">{feature.description}</p>
+            <p className="text-ink/60 leading-relaxed">{feature.description}</p>
           </div>
         ))}
       </div>

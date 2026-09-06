@@ -32,7 +32,7 @@ export default function ActualFreeResumeBuilder() {
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           What "actual free" means: no paywall, no watermark, no trials
         </h2>
-        <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-12">
+        <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-4xl mx-auto text-center leading-relaxed mb-12">
           Unlike other resume builders that advertise as "free" but lock features behind paywalls,
           EasyFreeResume is completely free forever. No trial periods, no credit card required,
           no watermarks on your downloads. Every feature is accessible to everyone, always.
@@ -130,7 +130,7 @@ export default function ActualFreeResumeBuilder() {
               </tr>
             </tbody>
           </table>
-          <p className="text-sm text-stone-warm mt-4 text-center">
+          <p className="text-sm text-ink/60 mt-4 text-center">
             Comparison based on publicly available pricing from popular resume builders (Jan 2026)
           </p>
         </div>

@@ -60,7 +60,7 @@ export default function ATSFormattingRules() {
     >
       <div className="space-y-8">
         {/* Answer-first intro (<= 50 words) */}
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           The core ATS formatting rule for 2026: use a single-column layout,
           standard section headings (Experience, Education, Skills), and standard
           fonts. Avoid tables, text boxes, and information in headers or footers.
@@ -83,7 +83,7 @@ export default function ATSFormattingRules() {
         <h2 id="mechanism" className="text-3xl font-bold text-ink mt-12 mb-6">
           How an ATS Actually Reads Your Resume
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           An applicant tracking system does not "look" at your resume the way a
           person does. It runs a <strong>parser</strong> — software that reads
           your file and tries to break it apart into structured fields: your
@@ -92,7 +92,7 @@ export default function ATSFormattingRules() {
           Those fields get written into a database that recruiters search and
           filter.
         </p>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           When the layout is clean, this works. The parser reads top to bottom,
           recognizes your headings, and files each piece of information where it
           belongs. When the layout confuses it, the parser guesses — and a wrong
@@ -103,7 +103,7 @@ export default function ATSFormattingRules() {
         </p>
         <div className="rounded-lg border border-red-200/70 bg-red-50/80 p-6 my-6">
           <h3 className="font-bold text-ink mb-2">The invisible rejection</h3>
-          <p className="text-stone-warm">
+          <p className="text-ink/60">
             This is the failure mode that costs qualified people interviews. Your
             resume was never "rejected" by a recruiter — it was quietly misfiled
             or filtered out at the parsing stage. Nobody read it and decided you
@@ -111,7 +111,7 @@ export default function ATSFormattingRules() {
             and formatting is what causes it.
           </p>
         </div>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           For a broader look at how these systems score and rank candidates once
           your resume parses correctly, see our{" "}
           <Link to="/blog/ats-resume-optimization" className="text-accent-text hover:underline font-medium">
@@ -123,7 +123,7 @@ export default function ATSFormattingRules() {
         <h2 id="what-breaks" className="text-3xl font-bold text-ink mt-12 mb-6">
           What Breaks the Parser
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Most parsing failures come from a small set of design choices — usually
           the ones that make a resume look impressive in a template preview.
           Here's what to watch for.
@@ -132,7 +132,7 @@ export default function ATSFormattingRules() {
         <div className="space-y-6">
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h3 className="text-xl font-bold text-ink mb-2">Multi-column layouts</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               The biggest offender. A parser reads across the page, not down one
               column at a time. A sidebar of skills next to a main column of
               experience can be interleaved line by line, turning both into
@@ -142,7 +142,7 @@ export default function ATSFormattingRules() {
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h3 className="text-xl font-bold text-ink mb-2">Tables</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Tables look tidy but are read inconsistently. Some systems flatten
               them incorrectly; others skip cell contents. Dates, skills, or job
               titles arranged in a table can be dropped or reordered. Keep your
@@ -151,7 +151,7 @@ export default function ATSFormattingRules() {
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h3 className="text-xl font-bold text-ink mb-2">Text boxes and floating shapes</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Content inside a text box often sits outside the main document flow,
               and many parsers ignore it entirely. Anything important placed in a
               text box — a summary, a set of skills — may simply never be read.
@@ -159,7 +159,7 @@ export default function ATSFormattingRules() {
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h3 className="text-xl font-bold text-ink mb-2">Information in headers and footers</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               This one traps people constantly. Putting your name, email, and
               phone number in the page header feels natural, but some parsers do
               not read the header or footer region. Your contact information can
@@ -169,7 +169,7 @@ export default function ATSFormattingRules() {
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h3 className="text-xl font-bold text-ink mb-2">Images, icons, and charts carrying real information</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Parsers read text, not pictures. A skill bar graphic, a logo, an
               icon standing in for a phone number, or a "90% Python" rating chart
               conveys nothing to the system. If a fact only exists as an image,
@@ -178,7 +178,7 @@ export default function ATSFormattingRules() {
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h3 className="text-xl font-bold text-ink mb-2">Graphics-heavy templates</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Beautiful design-tool templates (the kind popular on Canva and
               similar builders) frequently combine several of the problems above:
               columns, text boxes, and image-based text. They win the visual
@@ -191,7 +191,7 @@ export default function ATSFormattingRules() {
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h3 className="text-xl font-bold text-ink mb-2">Decorative fonts and creative section names</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Unusual display fonts can render as garbled characters when parsed.
               And creative headings — "Where I've Been," "My Toolkit" — may not be
               recognized as the Experience or Skills sections they're meant to
@@ -203,7 +203,7 @@ export default function ATSFormattingRules() {
         <h2 id="the-rules" className="text-3xl font-bold text-ink mt-12 mb-6">
           The Rules: Do This
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Every rule below exists to make the parser's job trivial. None of them
           cost you anything a recruiter values — a clean, readable resume looks
           professional to humans too.
@@ -252,7 +252,7 @@ export default function ATSFormattingRules() {
             </li>
           </ul>
         </div>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           The simplest way to follow all of these at once is to start from a
           layout that was built for parsing. Our{" "}
           <Link to="/templates/ats-friendly" className="text-accent-text hover:underline font-medium">
@@ -295,14 +295,14 @@ export default function ATSFormattingRules() {
 
         <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
           <h3 className="font-bold text-ink mb-3">Before and after</h3>
-          <p className="text-stone-warm mb-4">
+          <p className="text-ink/60 mb-4">
             <strong>Before (parser-hostile):</strong> A two-column template with
             your name and email in a colored header, a left sidebar of skill
             rating bars, and section labels like "My Story" and "What I Do."
             After parsing, the recruiter's database shows a jumbled experience
             field, no skills, and no email address.
           </p>
-          <p className="text-stone-warm">
+          <p className="text-ink/60">
             <strong>After (parser-friendly):</strong> A single column. Your name,
             email, and phone as text on the first line. Headings that read
             "Experience," "Skills," and "Education." Skills listed as plain text.
@@ -314,7 +314,7 @@ export default function ATSFormattingRules() {
         <h2 id="file-format" className="text-3xl font-bold text-ink mt-12 mb-6">
           PDF vs .docx: The Honest Answer
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           There is no universal winner, and anyone who tells you "always use PDF"
           or "always use Word" is oversimplifying. The honest guidance:
         </p>
@@ -342,7 +342,7 @@ export default function ATSFormattingRules() {
             </li>
           </ul>
         </div>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           A quick self-test: open your resume and try to select and copy the
           text. If you can highlight it as words, the file is text-based. If it
           selects like an image, it's not — and you need to re-export it.
@@ -373,13 +373,13 @@ export default function ATSFormattingRules() {
           {FAQS.map((faq) => (
             <div key={faq.question} className="bg-chalk-dark border border-black/[0.06] rounded-lg p-5">
               <h3 className="font-bold text-ink mb-2">{faq.question}</h3>
-              <p className="text-stone-warm">{faq.answer}</p>
+              <p className="text-ink/60">{faq.answer}</p>
             </div>
           ))}
         </div>
 
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">The Bottom Line</h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Great formatting for an ATS isn't about tricks — it's about getting out
           of the parser's way. A single column, standard headings, standard
           fonts, contact details in the body, and no tables, text boxes, or
@@ -387,7 +387,7 @@ export default function ATSFormattingRules() {
           database. Do that, and your qualifications get the chance they deserve:
           to be read by a person.
         </p>
-        <p className="text-lg leading-relaxed text-stone-warm mt-4">
+        <p className="text-lg leading-relaxed text-ink/60 mt-4">
           Start from an{" "}
           <Link to="/templates/ats-friendly" className="text-accent-text hover:underline font-medium">
             ATS-friendly template

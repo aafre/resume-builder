@@ -315,11 +315,11 @@ export default function MyResumes() {
           <div className="mx-auto mb-4 h-2 w-24 overflow-hidden rounded-full bg-chalk-dark">
             <div className="h-full w-1/2 animate-pulse rounded-full bg-accent" />
           </div>
-          <p className="font-display font-extralight text-stone-warm">
+          <p className="font-display font-extralight text-ink/60">
             {authLoading ? 'Initializing authentication...' : 'Loading your resumes...'}
           </p>
           {authLoading && (
-            <p className="text-stone-warm text-sm mt-2">
+            <p className="text-ink/60 text-sm mt-2">
               If this takes more than 10 seconds, try refreshing the page
             </p>
           )}
@@ -341,7 +341,7 @@ export default function MyResumes() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <h2 className="font-display text-2xl font-extrabold tracking-tight text-ink mb-2">Error Loading Resumes</h2>
-          <p className="font-display font-extralight text-stone-warm mb-4">{error?.message || 'Failed to load resumes'}</p>
+          <p className="font-display font-extralight text-ink/60 mb-4">{error?.message || 'Failed to load resumes'}</p>
           <button
             type="button"
             onClick={() => refetch()}
@@ -366,7 +366,7 @@ export default function MyResumes() {
               My Resumes
             </h1>
           </div>
-          <p className="text-sm font-medium text-stone-warm">
+          <p className="text-sm font-medium text-ink/60">
             {resumes.length} of 5 resumes used
           </p>
         </div>
@@ -463,7 +463,7 @@ export default function MyResumes() {
             <div className="mx-auto mb-4 h-2 w-24 overflow-hidden rounded-full bg-chalk-dark">
               <div className="h-full w-1/2 animate-pulse rounded-full bg-accent" />
             </div>
-            <p className="text-center font-display font-extralight text-stone-warm">
+            <p className="text-center font-display font-extralight text-ink/60">
               Generating PDF...
             </p>
           </div>

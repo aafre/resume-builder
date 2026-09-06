@@ -36,7 +36,7 @@ const TipCard: React.FC<TipCardProps> = ({
     <div className="mb-2">{primaryTip}</div>
     <ul className="space-y-1">
       {secondaryTips.map((tip) => (
-        <li key={tip} className="text-xs text-stone-warm flex items-start gap-1.5">
+        <li key={tip} className="text-xs text-ink/60 flex items-start gap-1.5">
           <span className="text-accent-text/70 mt-0.5" aria-hidden="true">•</span>
           <span>{tip}</span>
         </li>
@@ -80,7 +80,7 @@ const FormattingHelp: React.FC = () => {
             {/* The one canonical statement of the formatting affordance. It used
                 to be repeated under every editable block; it is stated here
                 once, above the fold of the editor, and expands into detail. */}
-            <span className="block text-xs text-stone-warm truncate">
+            <span className="block text-xs text-ink/60 truncate">
               Select text to format it &middot; drag &bull;&bull;&bull; to reorder
             </span>
           </span>

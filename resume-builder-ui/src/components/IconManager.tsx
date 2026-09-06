@@ -168,7 +168,7 @@ const IconManager: React.FC<IconManagerProps> = ({
               className="w-full h-full object-cover rounded-lg"
             />
           ) : (
-            <ImageIcon className="text-stone-warm w-4 h-4" aria-hidden="true" />
+            <ImageIcon className="text-ink/60 w-4 h-4" aria-hidden="true" />
           )}
 
           {!isUploading && (

@@ -82,7 +82,7 @@ export default function JobsLandingPage() {
   if (!data) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-12 text-center">
-        <p className="text-stone-warm">No job data available for this page.</p>
+        <p className="text-ink/60">No job data available for this page.</p>
         <Link to="/jobs" className="text-accent-text hover:underline mt-2 inline-block">
           Back to Jobs
         </Link>
@@ -128,20 +128,20 @@ export default function JobsLandingPage() {
         </h1>
 
         {data.intro_copy && (
-          <p className="text-stone-warm text-base leading-relaxed mb-4">{data.intro_copy}</p>
+          <p className="text-ink/60 text-base leading-relaxed mb-4">{data.intro_copy}</p>
         )}
 
         <div className="flex flex-wrap gap-4 text-sm">
           <span className="text-accent-text font-medium">{data.total_count}+ jobs found</span>
           {data.salary_stats?.median > 0 && (
-            <span className="text-stone-warm">
+            <span className="text-ink/60">
               Median salary: {data.salary_stats.currency}
               {data.salary_stats.median.toLocaleString()}
               {data.salary_stats.source === 'estimated' && ' (est.)'}
             </span>
           )}
           {data.top_skills?.length > 0 && (
-            <span className="text-stone-warm">Top skills: {data.top_skills.slice(0, 5).join(', ')}</span>
+            <span className="text-ink/60">Top skills: {data.top_skills.slice(0, 5).join(', ')}</span>
           )}
         </div>
       </header>
@@ -265,10 +265,10 @@ function JobCard({ job }: { job: PseoJob }) {
               <ExternalLink className="w-3 h-3 flex-shrink-0" />
             </a>
           </h2>
-          <p className="text-sm text-stone-warm mt-0.5">{job.company}</p>
-          <p className="text-sm text-stone-warm mt-0.5">{job.location}</p>
+          <p className="text-sm text-ink/60 mt-0.5">{job.company}</p>
+          <p className="text-sm text-ink/60 mt-0.5">{job.location}</p>
           {job.description && (
-            <p className="text-sm text-stone-warm mt-1 line-clamp-2">{job.description}</p>
+            <p className="text-sm text-ink/60 mt-1 line-clamp-2">{job.description}</p>
           )}
         </div>
         <div className="text-right flex-shrink-0">

@@ -91,7 +91,7 @@ export default function HowToWriteResumeGuide() {
       howToSteps={HOW_TO_STEPS}
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Writing a resume from scratch can feel overwhelming, but it doesn't
           have to be. Updated for 2026, this comprehensive guide will walk you
           through every step of creating a professional resume that gets results,
@@ -145,7 +145,7 @@ export default function HowToWriteResumeGuide() {
           Step 1: Choose the Right Resume Format
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Your resume format sets the foundation for everything else. Choose the
           wrong format, and even excellent content might not get the attention
           it deserves. Not sure how long your resume should be? Our{' '}
@@ -201,7 +201,7 @@ export default function HowToWriteResumeGuide() {
           </div>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-6">
+        <p className="text-lg leading-relaxed text-ink/60 mt-6">
           Want to see how these formats look on paper? Browse our{' '}
           <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">
             ATS-friendly resume templates
@@ -218,7 +218,7 @@ export default function HowToWriteResumeGuide() {
             <h3 className="text-xl font-bold text-ink mb-3">
               1. Header & Contact Information
             </h3>
-            <p className="text-stone-warm mb-3">
+            <p className="text-ink/60 mb-3">
               Your header should be clean, professional, and easy to find.
               Include your full name, professional title, email, phone number,
               city/state, and LinkedIn URL. Leave out your full mailing address
@@ -226,7 +226,7 @@ export default function HowToWriteResumeGuide() {
             </p>
             <div className="bg-white border border-black/[0.06] rounded p-4 text-sm">
               <div className="font-bold">John Smith</div>
-              <div className="text-stone-warm">Software Engineer</div>
+              <div className="text-ink/60">Software Engineer</div>
               <div className="mt-1">
                 john.smith@email.com | (555) 123-4567 | LinkedIn: /in/johnsmith
                 | New York, NY
@@ -238,7 +238,7 @@ export default function HowToWriteResumeGuide() {
             <h3 className="text-xl font-bold text-ink mb-3">
               2. Professional Summary
             </h3>
-            <p className="text-stone-warm mb-3">
+            <p className="text-ink/60 mb-3">
               A 2-3 line snapshot of your experience, skills, and career goals.
               Think of it as your elevator pitch. The summary is where you
               distill your entire career into a few compelling sentences — get
@@ -249,7 +249,7 @@ export default function HowToWriteResumeGuide() {
               </Link>{' '}
               with 25+ ready-to-customize templates for every career level.
             </p>
-            <div className="bg-white border border-black/[0.06] rounded p-4 text-sm text-stone-warm">
+            <div className="bg-white border border-black/[0.06] rounded p-4 text-sm text-ink/60">
               "Results-driven Software Engineer with 5+ years developing
               scalable web applications. Expert in React, Python, and cloud
               technologies. Seeking to leverage full-stack expertise to drive
@@ -261,7 +261,7 @@ export default function HowToWriteResumeGuide() {
             <h3 className="text-xl font-bold text-ink mb-3">
               3. Work Experience
             </h3>
-            <p className="text-stone-warm mb-3">
+            <p className="text-ink/60 mb-3">
               The heart of your resume. Use the CAR method (Context, Action,
               Result) and lead every bullet point with a strong{' '}
               <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">
@@ -276,10 +276,10 @@ export default function HowToWriteResumeGuide() {
             </p>
             <div className="bg-white border border-black/[0.06] rounded p-4 text-sm">
               <div className="font-bold">Senior Software Engineer</div>
-              <div className="text-stone-warm">
+              <div className="text-ink/60">
                 TechCorp Inc. | 2021 - Present
               </div>
-              <ul className="list-disc list-inside mt-2 text-stone-warm space-y-1">
+              <ul className="list-disc list-inside mt-2 text-ink/60 space-y-1">
                 <li>
                   Developed and maintained 3 customer-facing web applications
                   using React and Node.js, serving 50K+ daily users
@@ -300,7 +300,7 @@ export default function HowToWriteResumeGuide() {
             <h3 className="text-xl font-bold text-ink mb-3">
               4. Education
             </h3>
-            <p className="text-stone-warm mb-3">
+            <p className="text-ink/60 mb-3">
               Include degree, institution, graduation year, and relevant
               achievements. If you graduated more than 5 years ago, keep this
               section brief — your work experience carries more weight at that
@@ -310,16 +310,16 @@ export default function HowToWriteResumeGuide() {
               <div className="font-bold">
                 Bachelor of Science in Computer Science
               </div>
-              <div className="text-stone-warm">
+              <div className="text-ink/60">
                 University of Technology | 2019
               </div>
-              <div className="text-stone-warm">Magna Cum Laude, GPA: 3.8/4.0</div>
+              <div className="text-ink/60">Magna Cum Laude, GPA: 3.8/4.0</div>
             </div>
           </div>
 
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">5. Skills</h3>
-            <p className="text-stone-warm mb-3">
+            <p className="text-ink/60 mb-3">
               Organize by categories and include both technical and soft skills.
               This section is critical for ATS screening — applicant tracking
               systems scan for exact keyword matches, so use the same terms the
@@ -340,7 +340,7 @@ export default function HowToWriteResumeGuide() {
                 <strong>Tools:</strong> Git, Docker, AWS, Jenkins
               </div>
             </div>
-            <p className="text-stone-warm text-sm mt-3">
+            <p className="text-ink/60 text-sm mt-3">
               See a complete{' '}
               <Link to="/examples/software-engineer" className="text-accent-text hover:underline">software engineer resume example</Link>
               {' '}or browse{' '}
@@ -354,7 +354,7 @@ export default function HowToWriteResumeGuide() {
           Step 3: Writing Powerful Content
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           The difference between a resume that gets interviews and one that
           disappears into a black hole usually comes down to how you describe
           your experience. The goal is to show impact, not just activity.
@@ -398,7 +398,7 @@ export default function HowToWriteResumeGuide() {
           </div>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-6">
+        <p className="text-lg leading-relaxed text-ink/60 mt-6">
           For a deeper walkthrough with more before-and-after examples, see our{' '}
           <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
             guide to quantifying resume accomplishments
@@ -409,7 +409,7 @@ export default function HowToWriteResumeGuide() {
           Step 4: Power Words That Make an Impact
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Start your bullet points with strong action verbs to create impact and
           show your contributions clearly. The verb you choose sets the tone for
           the entire bullet — "Directed a team of 12" lands harder than
@@ -451,7 +451,7 @@ export default function HowToWriteResumeGuide() {
           </div>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-6">
+        <p className="text-lg leading-relaxed text-ink/60 mt-6">
           For a comprehensive list of 200+ action verbs organized by category,
           check out our detailed guide on{' '}
           <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">
@@ -463,7 +463,7 @@ export default function HowToWriteResumeGuide() {
           Step 5: Formatting Best Practices
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Even the best content gets overlooked if the formatting is sloppy.
           Recruiters spend an average of 7 seconds on an initial resume scan —
           clean formatting ensures they can find your key qualifications
@@ -501,7 +501,7 @@ export default function HowToWriteResumeGuide() {
           Step 6: Tailoring for Each Application
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           A generic resume won't cut it in today's highly competitive job market.
           The single most impactful thing you can do is customize your resume for
           each position. It takes 15-20 minutes per application and dramatically
@@ -567,7 +567,7 @@ export default function HowToWriteResumeGuide() {
           Step 7: ATS Optimization
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Over 97% of Fortune 500 companies use Applicant Tracking Systems to
           screen resumes before a human ever sees them. If your resume is not
           ATS-optimized, it may never reach a recruiter — regardless of how
@@ -607,7 +607,7 @@ export default function HowToWriteResumeGuide() {
           </table>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           For a complete ATS strategy including keyword density, formatting
           rules, and testing methods, read our{' '}
           <Link to="/blog/resume-keywords-guide" className="text-accent-text hover:underline">
@@ -638,7 +638,7 @@ export default function HowToWriteResumeGuide() {
           Step 8: Final Review and Optimization
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Before you hit send, run through this checklist. Typos and
           inconsistencies are the fastest way to get disqualified — they signal
           carelessness to hiring managers.
@@ -664,7 +664,7 @@ export default function HowToWriteResumeGuide() {
           Common Resume Mistakes to Avoid
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Even strong candidates sabotage themselves with avoidable errors. Here
           are the most common ones we see — and how to fix them. For a deeper
           dive, read our dedicated{' '}
@@ -705,7 +705,7 @@ export default function HowToWriteResumeGuide() {
           Using AI to Speed Up Resume Writing
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           AI tools can cut your resume writing time in half — if you use them
           correctly. The key is treating AI as a drafting partner, not a
           replacement for your own judgment. Here is how to use AI effectively
@@ -717,7 +717,7 @@ export default function HowToWriteResumeGuide() {
             <h3 className="text-xl font-bold text-ink mb-3">
               Best AI Use Cases for Resumes
             </h3>
-            <ul className="list-disc pl-6 space-y-2 text-stone-warm">
+            <ul className="list-disc pl-6 space-y-2 text-ink/60">
               <li>
                 <strong>Rewriting weak bullets:</strong> Paste a duty-based bullet and ask AI to reframe it as an achievement with metrics
               </li>
@@ -746,7 +746,7 @@ export default function HowToWriteResumeGuide() {
           </div>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-6">
+        <p className="text-lg leading-relaxed text-ink/60 mt-6">
           For copy-paste ready prompts you can use right now, see our{' '}
           <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">
             25+ Claude AI resume prompts
@@ -797,7 +797,7 @@ export default function HowToWriteResumeGuide() {
           ].map((faq, i) => (
             <div key={i} className="bg-chalk-dark rounded-xl p-5">
               <h3 className="font-bold text-ink mb-2">{faq.q}</h3>
-              <p className="text-stone-warm">{faq.a}</p>
+              <p className="text-ink/60">{faq.a}</p>
             </div>
           ))}
         </div>
@@ -806,7 +806,7 @@ export default function HowToWriteResumeGuide() {
           Your Next Steps
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Writing a great resume takes time and effort, but it's one of the most
           important investments you can make in your career. Start with the
           basics outlined in this guide, then refine and customize for each
@@ -833,7 +833,7 @@ export default function HowToWriteResumeGuide() {
           </ol>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Remember, your resume is just the first step in your job search
           journey. Once you land those interviews, make sure you're prepared to
           showcase your skills and experience in person. Good luck!
@@ -847,7 +847,7 @@ export default function HowToWriteResumeGuide() {
           {FAQS.map((faq, i) => (
             <div key={i} className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
               <h4 className="font-bold text-ink mb-2">{faq.question}</h4>
-              <p className="text-stone-warm text-sm">{faq.answer}</p>
+              <p className="text-ink/60 text-sm">{faq.answer}</p>
             </div>
           ))}
         </div>

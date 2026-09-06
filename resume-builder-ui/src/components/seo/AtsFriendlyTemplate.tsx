@@ -53,7 +53,7 @@ export default function AtsFriendlyTemplate() {
               {/* Template info */}
               <div>
                 <h3 className="font-display text-2xl font-bold text-ink mb-4">Template Specifications</h3>
-                <ul className="space-y-3 text-stone-warm">
+                <ul className="space-y-3 text-ink/60">
                   <li className="flex items-start">
                     <span className="text-accent-text font-bold mr-3">✓</span>
                     <span><strong>Font:</strong> Calibri 11pt (easily parseable)</span>

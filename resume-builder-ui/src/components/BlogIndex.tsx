@@ -38,7 +38,7 @@ export default function BlogIndex() {
               <h1 className="font-display text-4xl md:text-5xl font-extrabold text-ink tracking-tight mt-3 mb-4">
                 Resume & Career Blog
               </h1>
-              <p className="font-display text-lg font-extralight text-stone-warm max-w-3xl mx-auto leading-relaxed">
+              <p className="font-display text-lg font-extralight text-ink/60 max-w-3xl mx-auto leading-relaxed">
                 Expert advice, tips, and strategies to help you create outstanding
                 resumes, navigate your career, and land your dream job.
               </p>
@@ -58,7 +58,7 @@ export default function BlogIndex() {
                       <span className="px-3 py-1 bg-accent text-ink text-sm font-bold rounded-full">
                         Featured
                       </span>
-                      <span className="font-mono text-xs tracking-[0.15em] text-stone-warm-inverse uppercase">
+                      <span className="font-mono text-xs tracking-[0.15em] text-white/60 uppercase">
                         {featuredPost.category}
                       </span>
                     </div>
@@ -72,12 +72,12 @@ export default function BlogIndex() {
                       </Link>
                     </h2>
 
-                    <p className="font-display font-extralight text-stone-warm-inverse text-lg mb-8 leading-relaxed max-w-3xl">
+                    <p className="font-display font-extralight text-white/60 text-lg mb-8 leading-relaxed max-w-3xl">
                       {featuredPost.description}
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                      <div className="flex items-center gap-4 text-sm text-stone-warm-inverse font-mono">
+                      <div className="flex items-center gap-4 text-sm text-white/60 font-mono">
                         <time dateTime={featuredPost.publishDate}>
                           {new Date(
                             featuredPost.publishDate
@@ -135,7 +135,7 @@ export default function BlogIndex() {
                       className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
                     >
                       <div className="mb-4 flex items-center gap-2">
-                        <span className="font-mono text-[10px] tracking-[0.1em] text-stone-warm uppercase">
+                        <span className="font-mono text-[10px] tracking-[0.1em] text-ink/60 uppercase">
                           {post.category}
                         </span>
                         {post.comingSoon && (
@@ -147,7 +147,7 @@ export default function BlogIndex() {
 
                       <h3 className="font-display text-lg font-extrabold mb-3 leading-tight">
                         {post.comingSoon ? (
-                          <span className="text-stone-warm cursor-not-allowed">
+                          <span className="text-ink/60 cursor-not-allowed">
                             {post.title}
                           </span>
                         ) : (
@@ -160,12 +160,12 @@ export default function BlogIndex() {
                         )}
                       </h3>
 
-                      <p className="font-display font-extralight text-stone-warm text-sm mb-4 leading-relaxed">
+                      <p className="font-display font-extralight text-ink/60 text-sm mb-4 leading-relaxed">
                         {post.description}
                       </p>
 
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3 text-xs text-stone-warm font-mono">
+                        <div className="flex items-center gap-3 text-xs text-ink/60 font-mono">
                           <time dateTime={post.publishDate}>
                             {new Date(post.publishDate).toLocaleDateString(
                               "en-US",
@@ -180,7 +180,7 @@ export default function BlogIndex() {
                         </div>
 
                         {post.comingSoon ? (
-                          <span className="text-stone-warm text-sm font-medium cursor-not-allowed">
+                          <span className="text-ink/60 text-sm font-medium cursor-not-allowed">
                             Coming Soon
                           </span>
                         ) : (
@@ -221,7 +221,7 @@ export default function BlogIndex() {
                   <h2 className="font-display text-2xl md:text-3xl font-extrabold text-white mt-3 mb-4">
                     Ready to Put These Tips into Action?
                   </h2>
-                  <p className="font-display text-lg font-extralight text-stone-warm-inverse mb-8 max-w-2xl mx-auto">
+                  <p className="font-display text-lg font-extralight text-white/60 mb-8 max-w-2xl mx-auto">
                     Create a professional resume in minutes with our free resume
                     builder
                   </p>

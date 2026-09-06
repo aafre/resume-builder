@@ -56,7 +56,7 @@ const ErrorPage: React.FC<{ message?: string }> = ({ message }) => {
           </div>
 
           {/* Help Text */}
-          <p className="text-sm text-stone-warm mt-8">
+          <p className="text-sm text-ink/60 mt-8">
             If this keeps happening, try refreshing the page or check your
             internet connection.
           </p>

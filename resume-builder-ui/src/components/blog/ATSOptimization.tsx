@@ -17,7 +17,7 @@ export default function ATSOptimization() {
       ]}
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Updated for 2026: In today's digital hiring landscape, your resume
           must first impress a robot before it reaches human eyes. Applicant
           Tracking Systems (ATS) act as digital gatekeepers, filtering out over
@@ -39,7 +39,7 @@ export default function ATSOptimization() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           What is an Applicant Tracking System (ATS)?
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           An Applicant Tracking System is software that automatically scans,
           parses, and ranks resumes based on specific criteria. These systems
           help employers manage high volumes of applications by filtering
@@ -80,39 +80,39 @@ export default function ATSOptimization() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 my-8">
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-2">Workday</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Used by many large enterprises. Modern interface but strict
               formatting requirements.
             </p>
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-2">Greenhouse</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Popular with tech companies. Good at parsing modern resume
               formats.
             </p>
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-2">Lever</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Used by growth-stage companies. Focuses on candidate experience.
             </p>
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-2">iCIMS</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Enterprise-focused system. Traditional parsing approach.
             </p>
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-2">BambooHR</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               SMB-focused platform. Generally ATS-friendly.
             </p>
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-2">Taleo</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Oracle's system. Widely used but older parsing technology.
             </p>
           </div>
@@ -159,7 +159,7 @@ export default function ATSOptimization() {
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           Section Headers and Structure
         </h3>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Use standard section headers that ATS systems recognize. Creative
           headers may confuse parsing algorithms.
         </p>
@@ -233,7 +233,7 @@ export default function ATSOptimization() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           The Science of ATS Keywords
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Keywords are the foundation of ATS optimization. These systems scan
           for specific terms, skills, and phrases that match job requirements.
           Strategic keyword placement can dramatically improve your ranking.
@@ -280,7 +280,7 @@ export default function ATSOptimization() {
         <div className="grid md:grid-cols-2 gap-6 my-8">
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">🛠️ Hard Skills</h4>
-            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
+            <ul className="list-disc pl-6 space-y-1 text-ink/60 text-sm">
               <li>Technical skills</li>
               <li>Software proficiency</li>
               <li>Programming languages</li>
@@ -291,7 +291,7 @@ export default function ATSOptimization() {
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">🤝 Soft Skills</h4>
-            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
+            <ul className="list-disc pl-6 space-y-1 text-ink/60 text-sm">
               <li>Leadership</li>
               <li>Communication</li>
               <li>Problem-solving</li>
@@ -302,7 +302,7 @@ export default function ATSOptimization() {
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">🏢 Industry Terms</h4>
-            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
+            <ul className="list-disc pl-6 space-y-1 text-ink/60 text-sm">
               <li>Industry-specific jargon</li>
               <li>Compliance standards</li>
               <li>Regulatory requirements</li>
@@ -313,7 +313,7 @@ export default function ATSOptimization() {
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">🎯 Action Words</h4>
-            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
+            <ul className="list-disc pl-6 space-y-1 text-ink/60 text-sm">
               <li>Managed, led, developed</li>
               <li>Implemented, executed</li>
               <li>Improved, optimized</li>
@@ -362,7 +362,7 @@ export default function ATSOptimization() {
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           Contact Information Best Practices
         </h3>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Even basic contact information can trip up ATS systems if not
           formatted correctly.
         </p>
@@ -435,7 +435,7 @@ export default function ATSOptimization() {
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           Skills Section Optimization
         </h3>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           The skills section is critical for ATS matching. Structure it for both
           human readers and automated systems.
         </p>
@@ -470,7 +470,7 @@ export default function ATSOptimization() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Testing Your ATS Compatibility
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Before submitting your resume, test how well ATS systems can parse
           your information. Try our free{" "}
           <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">resume keyword scanner</Link>{" "}
@@ -513,7 +513,7 @@ export default function ATSOptimization() {
             <h4 className="font-bold text-ink mb-2">
               ❌ Myth: "White text keywords will boost my ranking"
             </h4>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               <strong>Reality:</strong> Modern ATS systems detect and penalize
               hidden text. This tactic can get you blacklisted.
             </p>
@@ -523,7 +523,7 @@ export default function ATSOptimization() {
             <h4 className="font-bold text-ink mb-2">
               ❌ Myth: "More keywords = better ranking"
             </h4>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               <strong>Reality:</strong> Keyword stuffing reduces readability.
               Quality and context matter more than quantity.
             </p>
@@ -533,7 +533,7 @@ export default function ATSOptimization() {
             <h4 className="font-bold text-ink mb-2">
               ✅ Truth: "ATS systems are getting smarter"
             </h4>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               <strong>Reality:</strong> Modern systems use AI and machine
               learning to better understand context and semantic meaning.
             </p>
@@ -566,7 +566,7 @@ export default function ATSOptimization() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           The Future of ATS Technology
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           ATS systems continue evolving with artificial intelligence and machine
           learning. Future systems will better understand context, evaluate soft
           skills, and provide more nuanced candidate assessment. However, the
@@ -590,14 +590,14 @@ export default function ATSOptimization() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Key Takeaways
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           ATS optimization isn't about gaming the system – it's about presenting
           your qualifications in a format that both humans and machines can
           understand. Focus on clear formatting, strategic keyword usage, and
           authentic representation of your skills and experience.
         </p>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-6">
+        <p className="text-lg leading-relaxed text-ink/60 mt-6">
           Remember that passing ATS screening is just the first step. Once your
           resume reaches human recruiters, it must still tell a compelling story
           about your career and potential value to the organization.

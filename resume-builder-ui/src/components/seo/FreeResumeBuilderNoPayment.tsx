@@ -56,7 +56,7 @@ export default function FreeResumeBuilderNoPayment() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             Hidden Fees Other Resume Builders Charge
           </h2>
-          <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-12">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-4xl mx-auto text-center leading-relaxed mb-12">
             Most "free" resume builders advertise zero cost upfront, but the charges appear the moment you try
             to download, export, or use premium features. Here is exactly what they charge — and what
             EasyFreeResume gives you for free. For a deeper comparison, see our{' '}
@@ -125,7 +125,7 @@ export default function FreeResumeBuilderNoPayment() {
                         builder.name
                       )}
                     </td>
-                    <td className="px-6 py-4 text-stone-warm text-sm">{builder.advertised}</td>
+                    <td className="px-6 py-4 text-ink/60 text-sm">{builder.advertised}</td>
                     <td className="px-6 py-4 text-sm">
                       {builder.highlight ? (
                         <span className="text-accent-text font-bold">{builder.cost}</span>
@@ -133,12 +133,12 @@ export default function FreeResumeBuilderNoPayment() {
                         <span className="text-red-600 font-medium">{builder.cost}</span>
                       )}
                     </td>
-                    <td className="px-6 py-4 text-stone-warm text-sm">{builder.catch}</td>
+                    <td className="px-6 py-4 text-ink/60 text-sm">{builder.catch}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <p className="text-sm text-stone-warm mt-4 text-center">
+            <p className="text-sm text-ink/60 mt-4 text-center">
               Pricing data collected from publicly available information (March 2026). Prices may vary by region.
             </p>
           </div>
@@ -154,7 +154,7 @@ export default function FreeResumeBuilderNoPayment() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             What "Free" Actually Means: Freemium vs. Truly Free
           </h2>
-          <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-12">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-4xl mx-auto text-center leading-relaxed mb-12">
             The word "free" is used loosely in the resume builder industry. Understanding the difference
             can save you money and frustration.
           </p>
@@ -163,7 +163,7 @@ export default function FreeResumeBuilderNoPayment() {
               <h3 className="font-display text-xl font-bold text-ink mb-4">
                 Freemium Model
               </h3>
-              <p className="text-stone-warm font-extralight leading-relaxed mb-4">
+              <p className="text-ink/60 font-extralight leading-relaxed mb-4">
                 The builder is free to use, but the output costs money. You invest time creating your resume, then
                 face a paywall at the download step.
               </p>
@@ -176,7 +176,7 @@ export default function FreeResumeBuilderNoPayment() {
                   'Credit card required for "trials"',
                   'Designed to make you feel invested before charging',
                 ].map((item) => (
-                  <li key={item} className="flex items-start gap-2 text-sm text-stone-warm">
+                  <li key={item} className="flex items-start gap-2 text-sm text-ink/60">
                     <span className="text-red-500 font-bold mt-0.5 flex-shrink-0">&#10007;</span>
                     <span>{item}</span>
                   </li>
@@ -187,7 +187,7 @@ export default function FreeResumeBuilderNoPayment() {
               <h3 className="font-display text-xl font-bold text-ink mb-4">
                 Truly Free Model (EasyFreeResume)
               </h3>
-              <p className="text-stone-warm font-extralight leading-relaxed mb-4">
+              <p className="text-ink/60 font-extralight leading-relaxed mb-4">
                 Everything is free — building, downloading, and using your resume. Sustained through
                 non-intrusive advertising instead of user payments.
               </p>
@@ -200,7 +200,7 @@ export default function FreeResumeBuilderNoPayment() {
                   'No credit card collected',
                   'Transparent ad-supported business model',
                 ].map((item) => (
-                  <li key={item} className="flex items-start gap-2 text-sm text-stone-warm">
+                  <li key={item} className="flex items-start gap-2 text-sm text-ink/60">
                     <span className="text-accent-text font-bold mt-0.5 flex-shrink-0">&#10003;</span>
                     <span>{item}</span>
                   </li>
@@ -222,7 +222,7 @@ export default function FreeResumeBuilderNoPayment() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             Why Job Seekers Choose the No-Payment Option
           </h2>
-          <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-12">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-4xl mx-auto text-center leading-relaxed mb-12">
             Thousands of job seekers have used EasyFreeResume to create professional resumes without
             spending a dime. Here is what the no-payment experience looks like in practice.
           </p>
@@ -251,13 +251,13 @@ export default function FreeResumeBuilderNoPayment() {
                 <p className="text-ink font-medium leading-relaxed mb-4 italic">
                   "{item.quote}"
                 </p>
-                <p className="text-stone-warm font-extralight text-sm leading-relaxed">
+                <p className="text-ink/60 font-extralight text-sm leading-relaxed">
                   {item.detail}
                 </p>
               </div>
             ))}
           </div>
-          <p className="text-sm text-stone-warm mt-6 text-center">
+          <p className="text-sm text-ink/60 mt-6 text-center">
             Scenarios based on common user patterns. Want to see how free resume builders compare?
             Read our{' '}
             <Link to="/blog/best-free-resume-builders-2026" className="text-accent-text hover:underline">
@@ -277,7 +277,7 @@ export default function FreeResumeBuilderNoPayment() {
             How EasyFreeResume Stays Free Without Charging You
           </h2>
           <div className="max-w-3xl mx-auto bg-white rounded-2xl p-8 shadow-premium border border-black/[0.06]">
-            <p className="text-lg font-extralight text-stone-warm leading-relaxed mb-6">
+            <p className="text-lg font-extralight text-ink/60 leading-relaxed mb-6">
               EasyFreeResume is sustained through non-intrusive advertising. When you visit our site, you may see ads —
               that revenue covers our hosting, development, and maintenance costs. This model means:
             </p>
@@ -291,11 +291,11 @@ export default function FreeResumeBuilderNoPayment() {
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3">
                   <span className="text-accent-text font-bold mt-0.5">&#10003;</span>
-                  <span className="text-stone-warm font-extralight">{item}</span>
+                  <span className="text-ink/60 font-extralight">{item}</span>
                 </li>
               ))}
             </ul>
-            <p className="text-lg font-extralight text-stone-warm leading-relaxed mt-6">
+            <p className="text-lg font-extralight text-ink/60 leading-relaxed mt-6">
               We believe a resume builder should help you get a job, not drain your savings before you even start.
               Read more about our philosophy in our{' '}
               <Link to="/blog/how-why-easyfreeresume-completely-free" className="text-accent-text hover:underline">
@@ -325,7 +325,7 @@ export default function FreeResumeBuilderNoPayment() {
               className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
             >
               <h3 className="font-display text-lg font-bold text-ink mb-2">ATS-Friendly Templates</h3>
-              <p className="text-stone-warm font-extralight text-sm">
+              <p className="text-ink/60 font-extralight text-sm">
                 Templates optimized for applicant tracking systems — all free, no premium locks.
               </p>
             </Link>
@@ -334,7 +334,7 @@ export default function FreeResumeBuilderNoPayment() {
               className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
             >
               <h3 className="font-display text-lg font-bold text-ink mb-2">How to Write a Resume</h3>
-              <p className="text-stone-warm font-extralight text-sm">
+              <p className="text-ink/60 font-extralight text-sm">
                 Complete guide from blank page to polished resume, with examples for every section.
               </p>
             </Link>
@@ -343,7 +343,7 @@ export default function FreeResumeBuilderNoPayment() {
               className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
             >
               <h3 className="font-display text-lg font-bold text-ink mb-2">Resume Keywords</h3>
-              <p className="text-stone-warm font-extralight text-sm">
+              <p className="text-ink/60 font-extralight text-sm">
                 Industry-specific keywords that help your resume pass ATS screening.
               </p>
             </Link>
@@ -352,7 +352,7 @@ export default function FreeResumeBuilderNoPayment() {
               className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
             >
               <h3 className="font-display text-lg font-bold text-ink mb-2">Resume Examples</h3>
-              <p className="text-stone-warm font-extralight text-sm">
+              <p className="text-ink/60 font-extralight text-sm">
                 Real resume examples for 25+ job titles to inspire your own.
               </p>
             </Link>
@@ -361,7 +361,7 @@ export default function FreeResumeBuilderNoPayment() {
               className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
             >
               <h3 className="font-display text-lg font-bold text-ink mb-2">ATS Optimization Guide</h3>
-              <p className="text-stone-warm font-extralight text-sm">
+              <p className="text-ink/60 font-extralight text-sm">
                 Detailed strategies to format your resume for automated screening tools.
               </p>
             </Link>
@@ -370,7 +370,7 @@ export default function FreeResumeBuilderNoPayment() {
               className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
             >
               <h3 className="font-display text-lg font-bold text-ink mb-2">Free Download Guide</h3>
-              <p className="text-stone-warm font-extralight text-sm">
+              <p className="text-ink/60 font-extralight text-sm">
                 Everything about downloading resumes in PDF and DOCX — formats, printing tips, and ATS advice.
               </p>
             </Link>

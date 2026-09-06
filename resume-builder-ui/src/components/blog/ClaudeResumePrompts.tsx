@@ -23,7 +23,7 @@ export default function ClaudeResumePrompts() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Claude by Anthropic is one of the best AI tools for resume writing in 2026. Unlike other AI assistants that produce generic, obviously-AI-written text, Claude creates nuanced, professional content that sounds like you — just polished. These 25+ prompts are organized by task so you can jump straight to what you need.
         </p>
 
@@ -68,7 +68,7 @@ export default function ClaudeResumePrompts() {
           Which Claude Model to Use for Resumes
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Anthropic offers several Claude models. Here's which one to pick for resume writing:
         </p>
 
@@ -113,7 +113,7 @@ export default function ClaudeResumePrompts() {
           Professional Summary Prompts for Claude
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Your professional summary is the first thing recruiters read. These prompts help Claude write summaries that are specific to your experience without sounding like every other AI-generated resume. For more examples, see our <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">professional summary examples guide</Link>.
         </p>
 
@@ -145,7 +145,7 @@ export default function ClaudeResumePrompts() {
           Experience Bullet Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           The biggest resume mistake is listing responsibilities instead of achievements. These prompts help Claude transform "did X" into "achieved Y by doing X." Check our <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">guide to quantifying accomplishments</Link> for the framework behind these prompts.
         </p>
 
@@ -188,7 +188,7 @@ export default function ClaudeResumePrompts() {
           Job Description Analysis Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Claude's long context window makes it ideal for analyzing job descriptions. You can paste the entire JD and your full resume in a single prompt — something most AI tools struggle with. For a deeper dive, read our <Link to="/blog/ai-job-description-analyzer" className="text-accent-text hover:underline">AI job description analysis guide</Link>.
         </p>
 
@@ -224,7 +224,7 @@ export default function ClaudeResumePrompts() {
           Skills Section Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           A well-organized skills section helps both ATS systems and human recruiters. These prompts help Claude select the right skills and present them strategically. See also: <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">how to list skills on a resume</Link>.
         </p>
 
@@ -246,7 +246,7 @@ export default function ClaudeResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Need role-specific keywords to include? Browse our{' '}
           <Link to="/resume-keywords" className="text-accent-text hover:underline">ATS keywords by job title</Link>
           {' '}pages for curated keyword lists, or see a{' '}
@@ -259,7 +259,7 @@ export default function ClaudeResumePrompts() {
           Tailoring and ATS Optimization Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Tailoring your resume to each job application is the single most effective way to improve your callback rate. Claude excels here because it can hold your entire resume and the full job description in context simultaneously. Learn more in our <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">ATS keyword optimization guide</Link>, or browse our <Link to="/resume-keywords" className="text-accent-text hover:underline">resume keywords by job title</Link> for role-specific keyword lists.
         </p>
 
@@ -298,7 +298,7 @@ export default function ClaudeResumePrompts() {
           Cover Letter Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Claude writes cover letters that sound human — not like a form letter with your name pasted in. The key is giving Claude enough context about the company and why you're interested. For the full strategy, see our <Link to="/blog/cover-letter-guide" className="text-accent-text hover:underline">cover letter writing guide</Link>.
         </p>
 
@@ -348,7 +348,7 @@ export default function ClaudeResumePrompts() {
           Career Change Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Switching industries or roles is one of the hardest resume challenges. Claude is particularly good at finding transferable skills and reframing your experience. These prompts help you tell a compelling "pivot story."
         </p>
 
@@ -400,7 +400,7 @@ export default function ClaudeResumePrompts() {
           Polish and Review Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Before you submit, have Claude do a final review. These prompts cover everything from hiring manager perspective checks to proofreading. For more on using AI for review, see our <Link to="/blog/ai-resume-review" className="text-accent-text hover:underline">AI resume review guide</Link>.
         </p>
 
@@ -469,7 +469,7 @@ export default function ClaudeResumePrompts() {
           LinkedIn Optimization Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Your LinkedIn profile should complement your resume, not duplicate it. Claude can help adapt your resume content into LinkedIn's more conversational format.
         </p>
 
@@ -517,7 +517,7 @@ export default function ClaudeResumePrompts() {
           Before & After: Real Claude Output Examples
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Here's what Claude actually produces when you use these prompts. These are real outputs (with personal details changed) showing the quality difference.
         </p>
 
@@ -547,7 +547,7 @@ export default function ClaudeResumePrompts() {
                 <p className="font-medium text-green-800 mb-1">After:</p>
                 <p className="text-green-700 text-sm italic">"Grew company social media following from 5K to 28K across three platforms by implementing a data-driven content calendar and engagement strategy."</p>
               </div>
-              <p className="text-stone-warm text-sm">Note: Claude asked for the specific metrics before writing the improved version — it didn't invent the numbers.</p>
+              <p className="text-ink/60 text-sm">Note: Claude asked for the specific metrics before writing the improved version — it didn't invent the numbers.</p>
             </div>
           </div>
 
@@ -571,7 +571,7 @@ export default function ClaudeResumePrompts() {
           Claude vs ChatGPT for Resume Writing
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Both are capable resume assistants, but they have different strengths. Here's an honest comparison based on our testing with hundreds of prompts:
         </p>
 
@@ -684,19 +684,19 @@ export default function ClaudeResumePrompts() {
         {/* AI Resume Tools */}
         <div className="my-12">
           <h2 className="text-2xl font-bold text-ink mb-2">Explore Other AI Resume Tools</h2>
-          <p className="text-stone-warm font-extralight mb-6">Each AI has different strengths for resume writing. Try multiple tools to find what works best for you.</p>
+          <p className="text-ink/60 font-extralight mb-6">Each AI has different strengths for resume writing. Try multiple tools to find what works best for you.</p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             <Link to="/blog/ai-resume-prompts-hub" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">AI Resume Prompts Hub</h3>
-              <p className="text-sm text-stone-warm">Compare all AI tools side by side</p>
+              <p className="text-sm text-ink/60">Compare all AI tools side by side</p>
             </Link>
             <Link to="/blog/gemini-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Gemini Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for research and Google ecosystem integration</p>
+              <p className="text-sm text-ink/60">Best for research and Google ecosystem integration</p>
             </Link>
             <Link to="/blog/ai-cover-letter-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">AI Cover Letter Prompts</h3>
-              <p className="text-sm text-stone-warm">Prompts for writing tailored cover letters</p>
+              <p className="text-sm text-ink/60">Prompts for writing tailored cover letters</p>
             </Link>
           </div>
         </div>
@@ -720,7 +720,7 @@ export default function ClaudeResumePrompts() {
           Related Resources
         </h2>
 
-        <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
+        <ul className="list-disc list-inside space-y-2 text-lg text-ink/60">
           <li>
             <Link to="/blog/ai-resume-prompts-hub" className="text-accent-text hover:underline">
               AI Resume Prompts Hub — Compare All Tools

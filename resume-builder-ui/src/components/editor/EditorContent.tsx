@@ -290,7 +290,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
           </div>
           <button
             onClick={modals.closeAIWarning}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-stone-warm hover:text-ink hover:bg-black/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-ink/60 hover:text-ink hover:bg-black/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
             aria-label="Close review banner"
           >
             <X className="w-4 h-4" />
@@ -381,7 +381,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                     <h3 className="font-semibold text-ink truncate">
                       {dragDrop.draggedSection.name}
                     </h3>
-                    <p className="text-sm text-stone-warm capitalize">
+                    <p className="text-sm text-ink/60 capitalize">
                       {dragDrop.draggedSection.type?.replace(/-/g, ' ') || 'Section'}
                     </p>
                   </div>
@@ -417,7 +417,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                       {dragDrop.draggedItemInfo.label || 'Untitled'}
                     </h4>
                     {dragDrop.draggedItemInfo.sublabel && (
-                      <p className="text-xs text-stone-warm truncate">{dragDrop.draggedItemInfo.sublabel}</p>
+                      <p className="text-xs text-ink/60 truncate">{dragDrop.draggedItemInfo.sublabel}</p>
                     )}
                   </div>
                 </div>

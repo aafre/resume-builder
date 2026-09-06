@@ -119,7 +119,7 @@ export default function ContextAwareTour({
       <button
         type="button"
         onClick={handleComplete}
-        className={`absolute top-3 right-3 inline-flex min-h-11 items-center px-3 rounded-lg text-sm font-medium text-stone-warm hover:text-ink hover:bg-black/5 transition-colors duration-150 z-10 ${focusRing}`}
+        className={`absolute top-3 right-3 inline-flex min-h-11 items-center px-3 rounded-lg text-sm font-medium text-ink/60 hover:text-ink hover:bg-black/5 transition-colors duration-150 z-10 ${focusRing}`}
       >
         Skip Tour
       </button>
@@ -135,7 +135,7 @@ export default function ContextAwareTour({
           </div>
           <p
             id={descriptionId}
-            className="flex-1 text-stone-warm text-base leading-relaxed whitespace-pre-line"
+            className="flex-1 text-ink/60 text-base leading-relaxed whitespace-pre-line"
           >
             {content.description}
           </p>
@@ -180,7 +180,7 @@ export default function ContextAwareTour({
             disabled={isFirstStep}
             className={`inline-flex min-h-11 items-center px-6 rounded-lg font-medium transition-colors duration-150 ${focusRing} ${
               isFirstStep
-                ? 'text-stone-warm/40 cursor-not-allowed'
+                ? 'text-ink/25 cursor-not-allowed'
                 : 'text-ink hover:bg-black/5'
             }`}
           >

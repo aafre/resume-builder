@@ -42,11 +42,11 @@ export default function CVTemplatesHub() {
           What makes a CV ATS-friendly
         </h2>
         <div className="max-w-4xl mx-auto bg-white rounded-2xl p-8 shadow-premium border border-black/[0.06]">
-          <p className="text-lg md:text-xl font-extralight text-stone-warm mb-6 leading-relaxed">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 mb-6 leading-relaxed">
             Applicant Tracking Systems (ATS) scan CVs for specific formatting and content.
             An ATS-friendly template uses:
           </p>
-          <ul className="space-y-3 text-stone-warm">
+          <ul className="space-y-3 text-ink/60">
             <li className="flex items-start">
               <span className="text-accent-text font-bold mr-3" aria-hidden="true">&#10003;</span>
               <span><strong>Standard fonts</strong> like Arial, Calibri, or Times New Roman</span>
@@ -81,7 +81,7 @@ export default function CVTemplatesHub() {
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
           <div className="bg-white rounded-2xl shadow-premium border-l-4 border-l-accent p-6">
             <h3 className="font-display text-xl font-bold text-ink mb-4">Include</h3>
-            <ul className="space-y-2 text-stone-warm list-disc pl-5">
+            <ul className="space-y-2 text-ink/60 list-disc pl-5">
               <li>Personal profile/summary (3-4 lines)</li>
               <li>Contact details (phone, email, location)</li>
               <li>Work experience with achievements</li>
@@ -91,7 +91,7 @@ export default function CVTemplatesHub() {
           </div>
           <div className="bg-white rounded-2xl shadow-premium border-l-4 border-l-red-400 p-6">
             <h3 className="font-display text-xl font-bold text-ink mb-4">Avoid</h3>
-            <ul className="space-y-2 text-stone-warm list-disc pl-5">
+            <ul className="space-y-2 text-ink/60 list-disc pl-5">
               <li>Photo (unless specifically requested)</li>
               <li>Date of birth or age</li>
               <li>Marital status</li>
@@ -128,7 +128,7 @@ export default function CVTemplatesHub() {
             <h3 className="font-display text-lg font-bold text-ink mb-2">
               Professional ATS CV Template
             </h3>
-            <p className="text-stone-warm text-sm mb-3">
+            <p className="text-ink/60 text-sm mb-3">
               Clean, modern design that passes all ATS systems. Perfect for UK and international applications.
             </p>
             <div className="text-accent-text font-semibold text-sm">

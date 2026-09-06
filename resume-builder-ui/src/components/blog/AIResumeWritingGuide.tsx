@@ -21,13 +21,13 @@ export default function AIResumeWritingGuide() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           AI has revolutionized how we write resumes. Tools like ChatGPT, Claude, Gemini, and Grok
           can help you craft compelling content in minutes. But knowing which tool to use, how to prompt it,
           and when to rely on your own judgment makes all the difference.
         </p>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           This guide covers everything you need to know about using AI for resume writing in 2026,
           from choosing the right tool to avoiding common pitfalls.
         </p>
@@ -49,7 +49,7 @@ export default function AIResumeWritingGuide() {
           Why Use AI for Resume Writing?
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           AI won't replace your judgment, but it can dramatically speed up the resume writing process
           and help you overcome writer's block. Here's what AI does well:
         </p>
@@ -157,7 +157,7 @@ export default function AIResumeWritingGuide() {
           The AI Resume Writing Process
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Follow this step-by-step process to get the best results from AI resume writing:
         </p>
 
@@ -166,10 +166,10 @@ export default function AIResumeWritingGuide() {
             <h3 className="text-xl font-bold text-ink mb-3">
               Step 1: Gather Your Information
             </h3>
-            <p className="text-stone-warm mb-3">
+            <p className="text-ink/60 mb-3">
               Before using AI, collect:
             </p>
-            <ul className="list-disc list-inside space-y-1 text-stone-warm">
+            <ul className="list-disc list-inside space-y-1 text-ink/60">
               <li>Your current resume or job history</li>
               <li>The target job description</li>
               <li>Key achievements and metrics from each role</li>
@@ -181,7 +181,7 @@ export default function AIResumeWritingGuide() {
             <h3 className="text-xl font-bold text-ink mb-3">
               Step 2: Analyze the Job Description
             </h3>
-            <p className="text-stone-warm mb-3">
+            <p className="text-ink/60 mb-3">
               Use AI to extract key information:
             </p>
             <CopyablePrompt title="Job Description Analysis">
@@ -199,10 +199,10 @@ export default function AIResumeWritingGuide() {
             <h3 className="text-xl font-bold text-ink mb-3">
               Step 3: Generate Resume Content
             </h3>
-            <p className="text-stone-warm mb-3">
+            <p className="text-ink/60 mb-3">
               Work through each section systematically:
             </p>
-            <ol className="list-decimal list-inside space-y-2 text-stone-warm">
+            <ol className="list-decimal list-inside space-y-2 text-ink/60">
               <li>Professional summary (2-3 sentences)</li>
               <li>Experience bullets (4-6 per role)</li>
               <li>Skills section (tailored to job)</li>
@@ -214,10 +214,10 @@ export default function AIResumeWritingGuide() {
             <h3 className="text-xl font-bold text-ink mb-3">
               Step 4: Refine and Personalize
             </h3>
-            <p className="text-stone-warm mb-3">
+            <p className="text-ink/60 mb-3">
               AI output is a starting point. You must:
             </p>
-            <ul className="list-disc list-inside space-y-1 text-stone-warm">
+            <ul className="list-disc list-inside space-y-1 text-ink/60">
               <li>Verify all claims are accurate</li>
               <li>Add specific details AI couldn't know</li>
               <li>Adjust tone to match your voice</li>
@@ -229,7 +229,7 @@ export default function AIResumeWritingGuide() {
             <h3 className="text-xl font-bold text-ink mb-3">
               Step 5: Format Properly
             </h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Use an{" "}
               <Link to="/templates" className="text-accent-text underline">
                 ATS-friendly resume template
@@ -372,11 +372,11 @@ export default function AIResumeWritingGuide() {
           When NOT to Use AI
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-4">
+        <p className="text-lg leading-relaxed text-ink/60 mb-4">
           AI is a tool, not a replacement for human judgment. Consider writing manually when:
         </p>
 
-        <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
+        <ul className="list-disc list-inside space-y-2 text-lg text-ink/60">
           <li><strong>You have a unique career story</strong> – AI may genericize what makes you special</li>
           <li><strong>You're in a creative field</strong> – Your writing style matters</li>
           <li><strong>The role requires strong writing</strong> – Demonstrate your skills directly</li>
@@ -402,7 +402,7 @@ export default function AIResumeWritingGuide() {
           Related Resources
         </h2>
 
-        <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
+        <ul className="list-disc list-inside space-y-2 text-lg text-ink/60">
           <li>
             <Link to="/blog/ai-resume-prompts-hub" className="text-accent-text hover:underline">
               AI Resume Prompts Hub — Compare All Tools

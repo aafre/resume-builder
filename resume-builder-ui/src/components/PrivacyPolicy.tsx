@@ -2,7 +2,7 @@ const PrivacyPolicy = () => {
   return (
     <div className="container mx-auto my-10 px-4 sm:px-6 md:px-8">
       <h1 className="text-3xl font-bold text-center mb-6">Privacy Policy</h1>
-      <p className="text-center text-stone-warm mb-6">
+      <p className="text-center text-ink/60 mb-6">
         Last Updated: 4 August 2026
       </p>
       <div className="bg-white p-6 rounded-lg shadow-lg">

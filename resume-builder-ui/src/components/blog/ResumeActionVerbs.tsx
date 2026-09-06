@@ -43,7 +43,7 @@ export default function ResumeActionVerbs() {
       faqs={FAQS}
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           The difference between a good resume and a great one often comes down
           to word choice. Updated for 2026, action verbs remain powerful tools
           that transform passive job descriptions into dynamic achievements that
@@ -81,7 +81,7 @@ export default function ResumeActionVerbs() {
           Why Action Verbs Matter on Your Resume
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Action verbs serve multiple purposes on your resume. They help you
           pass ATS screening, grab human attention, and demonstrate your
           proactive approach to work. Many applicant tracking systems scan for specific
@@ -122,7 +122,7 @@ export default function ResumeActionVerbs() {
           200+ Action Verbs by Category
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Choose verbs that align with your industry and the specific job you're
           targeting. Each category below includes guidance on when to use those verbs
           and which roles they suit best.
@@ -708,10 +708,10 @@ export default function ResumeActionVerbs() {
         </h2>
 
         <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-          <p className="text-stone-warm mb-4">
+          <p className="text-ink/60 mb-4">
             Keep this list handy when writing your resume:
           </p>
-          <div className="grid md:grid-cols-5 gap-4 text-stone-warm text-sm">
+          <div className="grid md:grid-cols-5 gap-4 text-ink/60 text-sm">
             <div>
               <ol className="space-y-1">
                 <li>1. Achieved</li>
@@ -814,12 +814,12 @@ export default function ResumeActionVerbs() {
           {FAQS.map((faq, i) => (
             <div key={i} className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
               <h4 className="font-bold text-ink mb-2">{faq.question}</h4>
-              <p className="text-stone-warm text-sm">{faq.answer}</p>
+              <p className="text-ink/60 text-sm">{faq.answer}</p>
             </div>
           ))}
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-8">
+        <p className="text-lg leading-relaxed text-ink/60 mt-8">
           Remember, action verbs are just one element of a powerful resume in 2026.
           For a complete guide on writing compelling resume content, check out our{" "}
           <Link
@@ -866,7 +866,7 @@ export default function ResumeActionVerbs() {
           ].map((faq, i) => (
             <div key={i} className="bg-chalk-dark rounded-xl p-5">
               <h3 className="font-bold text-ink mb-2">{faq.q}</h3>
-              <p className="text-stone-warm">{faq.a}</p>
+              <p className="text-ink/60">{faq.a}</p>
             </div>
           ))}
         </div>

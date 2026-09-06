@@ -19,14 +19,14 @@ export default function HowToUseResumeKeywords() {
       ]}
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           You've crafted the perfect resume, highlighting your skills and
           accomplishments. You hit "submit" and wait, confident that you're a
           great fit for the role. Days turn into weeks, and all you hear is
           silence. What went wrong?
         </p>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           The answer might be the Applicant Tracking System (ATS). In 2026, over
           97% of large companies use an ATS to scan and filter resumes before
           they ever reach a human recruiter. If your resume isn't optimized with
@@ -43,7 +43,7 @@ export default function HowToUseResumeKeywords() {
           </p>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           This guide will teach you everything you need to know about finding
           and using resume keywords to beat the bots and land more interviews.
         </p>
@@ -52,14 +52,14 @@ export default function HowToUseResumeKeywords() {
           What Are Resume Keywords and Why Do They Matter?
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Resume keywords are specific words or phrases that relate to the
           skills, qualifications, and experience required for a particular job.
           The ATS scans your resume for these keywords to determine if you are a
           good match for the role.
         </p>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Think of it like SEO for your resume. Just as websites use keywords to
           rank on Google, your resume needs keywords to rank highly in an ATS.
         </p>
@@ -85,7 +85,7 @@ export default function HowToUseResumeKeywords() {
           Part 1: How to Find the Right Keywords for Any Job
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Never guess which keywords to use. The secret is to extract them
           directly from the employer's own materials.
         </p>
@@ -94,7 +94,7 @@ export default function HowToUseResumeKeywords() {
           1. The Job Description is Your Goldmine
         </h3>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           The single most important source for keywords is the job description
           itself. Print it out or copy it into a text editor and highlight words
           that appear frequently, especially in the "Requirements" and
@@ -128,7 +128,7 @@ export default function HowToUseResumeKeywords() {
           2. Analyze the Company's Website
         </h3>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Browse the company's "About Us" page and read their mission statement.
           This can give you keywords related to their company culture and values
           (e.g., innovation, sustainability, customer-centric).
@@ -138,7 +138,7 @@ export default function HowToUseResumeKeywords() {
           3. Use a Word Cloud Generator
         </h3>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           For a quick visual analysis, copy the text from the job description
           and paste it into a free word cloud generator like WordArt.com. The
           words that appear largest and most frequently are your primary
@@ -158,7 +158,7 @@ export default function HowToUseResumeKeywords() {
           Part 2: Where and How to Place Keywords on Your Resume
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Once you have your list of keywords, you need to strategically weave
           them into your resume. Don't just stuff them in; they need to appear
           naturally within the context of your accomplishments.
@@ -179,7 +179,7 @@ export default function HowToUseResumeKeywords() {
             </p>
             <div className="bg-white p-4 rounded-lg text-sm">
               <p className="font-medium text-ink mb-2">Example:</p>
-              <p className="italic text-stone-warm">
+              <p className="italic text-ink/60">
                 "Experienced <strong>Digital Marketing Manager</strong> with 5+
                 years expertise in <strong>SEO</strong>,{" "}
                 <strong>Google Analytics</strong>, and{" "}
@@ -205,7 +205,7 @@ export default function HowToUseResumeKeywords() {
             </p>
             <div className="bg-white p-4 rounded-lg text-sm">
               <p className="font-medium text-ink mb-2">Format:</p>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 • Programming Languages: Python, JavaScript, SQL
                 <br />
                 • Frameworks: React, Django, Node.js
@@ -246,7 +246,7 @@ export default function HowToUseResumeKeywords() {
           The Importance of Context and Quantification
         </h3>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Simply listing keywords is not enough. To impress both the ATS and the
           human recruiter, you need to provide context and quantify your
           results. For more on this, check out our guide on{" "}
@@ -268,7 +268,7 @@ export default function HowToUseResumeKeywords() {
           </p>
           <div className="bg-white p-4 rounded-lg text-sm">
             <p className="font-medium text-ink mb-2">Example:</p>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               "Implemented <strong>Salesforce CRM</strong> system for sales team
               of 25, streamlining lead management and increasing conversion rates
               by 30%."
@@ -280,7 +280,7 @@ export default function HowToUseResumeKeywords() {
           Part 3: Industry-Specific Keyword Examples
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Every industry has its own unique language. To help you get started,
           we've created detailed keyword guides for specific fields. Browse all
           of them on our{" "}
@@ -296,7 +296,7 @@ export default function HowToUseResumeKeywords() {
         <div className="grid md:grid-cols-2 gap-6 my-8">
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h4 className="font-bold text-ink mb-3">💻 For Tech Roles:</h4>
-            <p className="text-stone-warm mb-3">
+            <p className="text-ink/60 mb-3">
               Dive into our list of{" "}
               <Link
                 to="/resume-keywords/software-engineer"
@@ -306,7 +306,7 @@ export default function HowToUseResumeKeywords() {
               </Link>
               .
             </p>
-            <div className="text-sm text-stone-warm">
+            <div className="text-sm text-ink/60">
               Common keywords: Python, React, Agile, CI/CD, AWS, Microservices
             </div>
           </div>
@@ -315,7 +315,7 @@ export default function HowToUseResumeKeywords() {
             <h4 className="font-bold text-ink mb-3">
               🤝 For Customer-Facing Roles:
             </h4>
-            <p className="text-stone-warm mb-3">
+            <p className="text-ink/60 mb-3">
               Check out our{" "}
               <Link
                 to="/resume-keywords/customer-service"
@@ -325,7 +325,7 @@ export default function HowToUseResumeKeywords() {
               </Link>
               .
             </p>
-            <div className="text-sm text-stone-warm">
+            <div className="text-sm text-ink/60">
               Common keywords: CRM, Zendesk, Customer Satisfaction, Conflict
               Resolution
             </div>
@@ -340,7 +340,7 @@ export default function HowToUseResumeKeywords() {
           1. Use Exact Keyword Variations
         </h3>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           ATS systems can be surprisingly literal. If a job posting asks for
           "Project Management," don't just use "Managing Projects." Include the
           exact phrase as well as variations.
@@ -362,7 +362,7 @@ export default function HowToUseResumeKeywords() {
           2. Strategic Keyword Density
         </h3>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Aim for 2-3% keyword density. This means if your resume is 500 words,
           your target keywords should appear about 10-15 times total across all
           variations.
@@ -381,7 +381,7 @@ export default function HowToUseResumeKeywords() {
           3. ATS-Friendly Formatting
         </h3>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Even with perfect keywords, poor formatting can kill your ATS
           performance. Follow these formatting rules:
         </p>
@@ -408,7 +408,7 @@ export default function HowToUseResumeKeywords() {
           1. The Plain Text Test
         </h3>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Copy your resume and paste it into a plain text editor (like Notepad).
           If it looks readable and your keywords are still visible, your resume
           will likely pass ATS screening.
@@ -418,7 +418,7 @@ export default function HowToUseResumeKeywords() {
           2. Keyword Matching Score
         </h3>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Create a simple checklist: Does your resume include at least 60-70%
           of the keywords mentioned in the job description? If not, revise and
           add more relevant keywords.
@@ -447,7 +447,7 @@ export default function HowToUseResumeKeywords() {
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Using only acronyms or only full terms
             </h4>
-            <p className="text-stone-warm mb-2">
+            <p className="text-ink/60 mb-2">
               <strong>Example:</strong> Only writing "SEO" but never "Search
               Engine Optimization"
             </p>
@@ -460,7 +460,7 @@ export default function HowToUseResumeKeywords() {
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Including irrelevant keywords
             </h4>
-            <p className="text-stone-warm mb-2">
+            <p className="text-ink/60 mb-2">
               <strong>Example:</strong> Adding "Machine Learning" to your resume
               when you have no ML experience
             </p>
@@ -474,7 +474,7 @@ export default function HowToUseResumeKeywords() {
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Forgetting location-specific keywords
             </h4>
-            <p className="text-stone-warm mb-2">
+            <p className="text-ink/60 mb-2">
               <strong>Example:</strong> Not including "Remote" or specific city
               names when relevant
             </p>
@@ -489,7 +489,7 @@ export default function HowToUseResumeKeywords() {
           Beyond Keywords: The Complete ATS Strategy
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           While keywords are crucial, they're just one piece of the puzzle. Here
           are additional factors that influence ATS performance:
         </p>
@@ -549,14 +549,14 @@ export default function HowToUseResumeKeywords() {
           Worked Example: Job Posting → Keywords → Resume Bullet
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Let's walk through a real workflow. Imagine you're applying for a
           Marketing Manager role. Here's how to extract and use keywords step by step.
         </p>
 
         <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-6">
           <h4 className="font-bold text-ink mb-3">Sample Job Posting (excerpt):</h4>
-          <p className="text-stone-warm text-sm italic">
+          <p className="text-ink/60 text-sm italic">
             "We're looking for a Marketing Manager experienced in <strong>SEO</strong>,{' '}
             <strong>Google Analytics</strong>, and <strong>social media marketing</strong>.
             You'll manage <strong>paid advertising campaigns</strong>, develop{' '}
@@ -569,7 +569,7 @@ export default function HowToUseResumeKeywords() {
         <div className="space-y-4 my-6">
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-2">Step 1: Extract Keywords</h4>
-            <p className="text-stone-warm text-sm mb-2">
+            <p className="text-ink/60 text-sm mb-2">
               Highlighted terms from above: SEO, Google Analytics, social media marketing,
               paid advertising campaigns, content strategy, KPIs, conversion rate, ROAS,
               HubSpot, A/B testing.
@@ -581,7 +581,7 @@ export default function HowToUseResumeKeywords() {
 
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-2">Step 2: Before (Generic Resume Bullet)</h4>
-            <p className="text-stone-warm text-sm italic">
+            <p className="text-ink/60 text-sm italic">
               "Managed digital marketing campaigns and analyzed results."
             </p>
             <p className="text-red-600 text-xs mt-1">Keywords matched: 0/10</p>
@@ -606,7 +606,7 @@ export default function HowToUseResumeKeywords() {
           Browse Keywords by Industry
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           We've created detailed keyword guides for specific industries and roles.
           Each page includes 50–150+ curated keywords, before/after examples, and
           tools lists organized by category.
@@ -615,31 +615,31 @@ export default function HowToUseResumeKeywords() {
         <div className="grid md:grid-cols-2 gap-4 my-6">
           <Link to="/resume-keywords/customer-service" className="block bg-chalk-dark border border-black/[0.06] rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300">
             <h4 className="font-bold text-ink mb-1">Customer Service Keywords</h4>
-            <p className="text-stone-warm text-sm">CRM, CSAT, conflict resolution, Zendesk</p>
+            <p className="text-ink/60 text-sm">CRM, CSAT, conflict resolution, Zendesk</p>
           </Link>
           <Link to="/resume-keywords/software-engineer" className="block bg-chalk-dark border border-black/[0.06] rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300">
             <h4 className="font-bold text-ink mb-1">Software Engineer Keywords</h4>
-            <p className="text-stone-warm text-sm">Python, React, AWS, CI/CD, microservices</p>
+            <p className="text-ink/60 text-sm">Python, React, AWS, CI/CD, microservices</p>
           </Link>
           <Link to="/resume-keywords/product-manager" className="block bg-chalk-dark border border-black/[0.06] rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300">
             <h4 className="font-bold text-ink mb-1">Product Manager Keywords</h4>
-            <p className="text-stone-warm text-sm">Roadmap, OKRs, A/B testing, user research</p>
+            <p className="text-ink/60 text-sm">Roadmap, OKRs, A/B testing, user research</p>
           </Link>
           <Link to="/resume-keywords/sales" className="block bg-chalk-dark border border-black/[0.06] rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300">
             <h4 className="font-bold text-ink mb-1">Sales Keywords</h4>
-            <p className="text-stone-warm text-sm">Pipeline, quota, CRM, lead generation</p>
+            <p className="text-ink/60 text-sm">Pipeline, quota, CRM, lead generation</p>
           </Link>
           <Link to="/resume-keywords/marketing" className="block bg-chalk-dark border border-black/[0.06] rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300">
             <h4 className="font-bold text-ink mb-1">Marketing Keywords</h4>
-            <p className="text-stone-warm text-sm">SEO, Google Analytics, content strategy</p>
+            <p className="text-ink/60 text-sm">SEO, Google Analytics, content strategy</p>
           </Link>
           <Link to="/resume-keywords/nursing" className="block bg-chalk-dark border border-black/[0.06] rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300">
             <h4 className="font-bold text-ink mb-1">Nursing Keywords</h4>
-            <p className="text-stone-warm text-sm">BLS, ACLS, Epic, patient assessment</p>
+            <p className="text-ink/60 text-sm">BLS, ACLS, Epic, patient assessment</p>
           </Link>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           See the full list on our{' '}
           <Link to="/resume-keywords" className="text-accent-text hover:text-ink underline">
             Resume Keywords Hub
@@ -657,25 +657,25 @@ export default function HowToUseResumeKeywords() {
         <div className="space-y-4 my-6">
           <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
             <h4 className="font-bold text-ink mb-2">How many keywords should I include on my resume?</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Aim for 15–25 unique keywords from the job description, used naturally across your summary, skills, and experience sections. You don't need to include every keyword — focus on the ones you genuinely have experience with and that appear most frequently in the posting.
             </p>
           </div>
           <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
             <h4 className="font-bold text-ink mb-2">Should I use the exact keywords from the job description?</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Yes. ATS systems often do literal string matching. If the job says "Project Management," include that exact phrase — not just "managed projects." Include both the full term and common abbreviations (e.g., "Search Engine Optimization (SEO)").
             </p>
           </div>
           <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
             <h4 className="font-bold text-ink mb-2">Where should I place the most important keywords?</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               The professional summary is scanned first — put your top 3–5 keywords there. Then place them in context within your experience bullet points with metrics. Your skills section acts as a keyword safety net for terms that don't fit naturally in bullet points.
             </p>
           </div>
           <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
             <h4 className="font-bold text-ink mb-2">Is keyword stuffing penalized by ATS?</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Modern ATS systems like Greenhouse, Lever, and Workday can flag resumes with unnatural keyword density. More importantly, once your resume passes ATS, a human recruiter will read it — and keyword-stuffed resumes look unprofessional. Write naturally and let keywords appear in context.
             </p>
           </div>
@@ -692,50 +692,50 @@ export default function HowToUseResumeKeywords() {
           <div className="space-y-3">
             <label className="flex items-start space-x-3">
               <input type="checkbox" className="mt-1" />
-              <span className="text-stone-warm">
+              <span className="text-ink/60">
                 Analyzed the job description for primary and secondary keywords
               </span>
             </label>
             <label className="flex items-start space-x-3">
               <input type="checkbox" className="mt-1" />
-              <span className="text-stone-warm">
+              <span className="text-ink/60">
                 Included exact keyword phrases from the job posting
               </span>
             </label>
             <label className="flex items-start space-x-3">
               <input type="checkbox" className="mt-1" />
-              <span className="text-stone-warm">
+              <span className="text-ink/60">
                 Used keywords naturally in context with quantifiable results
               </span>
             </label>
             <label className="flex items-start space-x-3">
               <input type="checkbox" className="mt-1" />
-              <span className="text-stone-warm">
+              <span className="text-ink/60">
                 Included both acronyms and full terms for technical skills
               </span>
             </label>
             <label className="flex items-start space-x-3">
               <input type="checkbox" className="mt-1" />
-              <span className="text-stone-warm">
+              <span className="text-ink/60">
                 Used ATS-friendly formatting (no headers, simple fonts, standard sections)
               </span>
             </label>
             <label className="flex items-start space-x-3">
               <input type="checkbox" className="mt-1" />
-              <span className="text-stone-warm">
+              <span className="text-ink/60">
                 Tested readability with plain text conversion
               </span>
             </label>
             <label className="flex items-start space-x-3">
               <input type="checkbox" className="mt-1" />
-              <span className="text-stone-warm">
+              <span className="text-ink/60">
                 Achieved 60-70% keyword match with job requirements
               </span>
             </label>
           </div>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Beating the ATS isn't about tricking the system; it's about clearly
           communicating that you are the right person for the job in a language
           the system understands. By tailoring your resume with specific
@@ -743,7 +743,7 @@ export default function HowToUseResumeKeywords() {
           of getting noticed.
         </p>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-6">
+        <p className="text-lg leading-relaxed text-ink/60 mt-6">
           Remember, once your resume passes the ATS and reaches human recruiters,
           the real work begins. Make sure you're prepared for the interview
           process by practicing your responses and building confidence in your

@@ -19,12 +19,6 @@ module.exports = {
           DEFAULT: '#fafaf8',
           dark: '#f0efe9',
         },
-        // Warm grey is surface-polarity-paired: each token is AA-valid only against
-        // the polarity it was measured on. Never use one on the other's ground.
-        // stone-warm on Chalk / white / Chalk Dark (strictest): 5.38 / 5.62 / 4.88
-        'stone-warm': '#6b6761',
-        // ...-inverse on ink / ink-light / white-5%-over-ink-light: 7.90 / 7.03 / 6.19
-        'stone-warm-inverse': '#a8a4a0',
         accent: '#00d47e',
         'accent-text': '#007a48',
       },
@@ -38,8 +32,11 @@ module.exports = {
             '--tw-prose-bullets': theme('colors.accent'),
             '--tw-prose-quotes': theme('colors.ink.DEFAULT'),
             '--tw-prose-quote-borders': theme('colors.accent'),
-            '--tw-prose-counters': theme('colors.stone-warm'),
-            '--tw-prose-captions': theme('colors.stone-warm'),
+            // Muted/secondary text is ink at 60% opacity, not a separate token — see
+            // "no bespoke grey" note on the color palette below. rgba() here because
+            // theme() returns a flat hex, not an opacity-aware value.
+            '--tw-prose-counters': 'rgba(12, 12, 12, 0.6)',
+            '--tw-prose-captions': 'rgba(12, 12, 12, 0.6)',
             '--tw-prose-code': theme('colors.ink.DEFAULT'),
             '--tw-prose-pre-code': '#e5e7eb',
             '--tw-prose-pre-bg': theme('colors.ink.DEFAULT'),

@@ -28,7 +28,7 @@ export default function RelatedJobsSection({ job, limit = 6 }: RelatedJobsSectio
         <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-4 text-center">
           Related Resume Keywords
         </h2>
-        <p className="text-lg text-stone-warm font-extralight mb-8 text-center max-w-3xl mx-auto">
+        <p className="text-lg text-ink/60 font-extralight mb-8 text-center max-w-3xl mx-auto">
           Explore keywords for other roles in your field to discover transferable skills and broaden your job search.
         </p>
 
@@ -46,7 +46,7 @@ export default function RelatedJobsSection({ job, limit = 6 }: RelatedJobsSectio
                   {relatedJob.title}
                 </h3>
 
-                <p className="text-sm text-stone-warm mb-4">
+                <p className="text-sm text-ink/60 mb-4">
                   {keywordCount}+ ATS-optimized keywords
                   {relatedJob.keywords.technical.length > 0 &&
                     ` including ${relatedJob.keywords.technical.slice(0, 2).join(', ')}${relatedJob.keywords.technical.length > 2 ? ', and more' : ''}`}

@@ -22,7 +22,7 @@ export default function ResumeVsCvDifference() {
       ]}
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           "Should I send a resume or a CV?" This is a common question that can
           trip up even experienced job seekers. Updated for 2026, this guide clarifies the key differences. While often used
           interchangeably, a <strong>resume</strong> and a <strong>CV (Curriculum Vitae)</strong> are
@@ -45,7 +45,7 @@ export default function ResumeVsCvDifference() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           What is a Resume?
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           A <strong>resume</strong> is a concise, usually one-page (sometimes two, for more
           experienced professionals) summary of your skills, experience, and
           education, tailored specifically for the job you're applying for. Its
@@ -88,11 +88,11 @@ export default function ResumeVsCvDifference() {
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           When to Use a Resume:
         </h3>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           You'll use a resume for most <strong>private sector jobs</strong> in the United
           States and Canada. This includes roles in:
         </p>
-        <ul className="list-disc pl-6 space-y-2 text-stone-warm">
+        <ul className="list-disc pl-6 space-y-2 text-ink/60">
           <li>
             Corporate positions (e.g., Marketing Manager, Software Engineer,
             Sales Associate)
@@ -108,7 +108,7 @@ export default function ResumeVsCvDifference() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           What is a CV (Curriculum Vitae)?
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           A <strong>CV (Curriculum Vitae)</strong>, Latin for "course of life," is a
           detailed, comprehensive document that outlines your entire academic
           and professional history. Unlike a resume, a CV is typically longer,
@@ -151,11 +151,11 @@ export default function ResumeVsCvDifference() {
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           When to Use a CV:
         </h3>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           CVs are primarily used for **academic, research, medical, and
           international roles.** You'll need a CV for:
         </p>
-        <ul className="list-disc pl-6 space-y-2 text-stone-warm">
+        <ul className="list-disc pl-6 space-y-2 text-ink/60">
           <li>Academic positions (professorships, research fellowships)</li>
           <li>Medical residencies and fellowships</li>
           <li>Scientific research roles</li>
@@ -202,13 +202,13 @@ export default function ResumeVsCvDifference() {
           <table className="min-w-full bg-white border border-black/[0.06] rounded-xl shadow-sm">
             <thead>
               <tr className="bg-chalk-dark border-b">
-                <th className="py-3 px-4 text-left text-sm font-semibold text-stone-warm">
+                <th className="py-3 px-4 text-left text-sm font-semibold text-ink/60">
                   Feature
                 </th>
-                <th className="py-3 px-4 text-left text-sm font-semibold text-stone-warm">
+                <th className="py-3 px-4 text-left text-sm font-semibold text-ink/60">
                   Resume
                 </th>
-                <th className="py-3 px-4 text-left text-sm font-semibold text-stone-warm">
+                <th className="py-3 px-4 text-left text-sm font-semibold text-ink/60">
                   CV (Curriculum Vitae)
                 </th>
               </tr>
@@ -218,11 +218,11 @@ export default function ResumeVsCvDifference() {
                 <td className="py-3 px-4 border-b text-ink font-medium">
                   Purpose
                 </td>
-                <td className="py-3 px-4 border-b text-stone-warm">
+                <td className="py-3 px-4 border-b text-ink/60">
                   Brief summary of relevant skills and experience for a specific
                   job.
                 </td>
-                <td className="py-3 px-4 border-b text-stone-warm">
+                <td className="py-3 px-4 border-b text-ink/60">
                   Detailed overview of entire academic and professional history.
                 </td>
               </tr>
@@ -230,10 +230,10 @@ export default function ResumeVsCvDifference() {
                 <td className="py-3 px-4 border-b text-ink font-medium">
                   Length
                 </td>
-                <td className="py-3 px-4 border-b text-stone-warm">
+                <td className="py-3 px-4 border-b text-ink/60">
                   1-2 pages, concise.
                 </td>
-                <td className="py-3 px-4 border-b text-stone-warm">
+                <td className="py-3 px-4 border-b text-ink/60">
                   2-5+ pages, comprehensive.
                 </td>
               </tr>
@@ -241,11 +241,11 @@ export default function ResumeVsCvDifference() {
                 <td className="py-3 px-4 border-b text-ink font-medium">
                   Content Focus
                 </td>
-                <td className="py-3 px-4 border-b text-stone-warm">
+                <td className="py-3 px-4 border-b text-ink/60">
                   Work experience, accomplishments, skills directly related to
                   job opening.
                 </td>
-                <td className="py-3 px-4 border-b text-stone-warm">
+                <td className="py-3 px-4 border-b text-ink/60">
                   Publications, presentations, research, grants, teaching,
                   awards, academic history.
                 </td>
@@ -254,10 +254,10 @@ export default function ResumeVsCvDifference() {
                 <td className="py-3 px-4 border-b text-ink font-medium">
                   Customization
                 </td>
-                <td className="py-3 px-4 border-b text-stone-warm">
+                <td className="py-3 px-4 border-b text-ink/60">
                   Highly customized for each job application.
                 </td>
-                <td className="py-3 px-4 border-b text-stone-warm">
+                <td className="py-3 px-4 border-b text-ink/60">
                   Generally static, with minor tweaks for specific applications.
                 </td>
               </tr>
@@ -265,10 +265,10 @@ export default function ResumeVsCvDifference() {
                 <td className="py-3 px-4 border-b text-ink font-medium">
                   Geographic Usage
                 </td>
-                <td className="py-3 px-4 border-b text-stone-warm">
+                <td className="py-3 px-4 border-b text-ink/60">
                   Primarily US & Canada (private sector).
                 </td>
-                <td className="py-3 px-4 border-b text-stone-warm">
+                <td className="py-3 px-4 border-b text-ink/60">
                   Academic/medical worldwide; common for all jobs in Europe,
                   Asia, Africa.
                 </td>
@@ -280,7 +280,7 @@ export default function ResumeVsCvDifference() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Key Takeaways for Job Seekers
         </h2>
-        <ul className="list-disc pl-6 space-y-3 text-lg leading-relaxed text-stone-warm">
+        <ul className="list-disc pl-6 space-y-3 text-lg leading-relaxed text-ink/60">
           <li>
             Always <strong>read the job description carefully</strong> to determine if a
             "resume," "CV," or "application" is requested.
@@ -316,7 +316,7 @@ export default function ResumeVsCvDifference() {
           </p>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-6">
+        <p className="text-lg leading-relaxed text-ink/60 mt-6">
           Ready to optimize your resume or build your comprehensive CV? Explore
           our tools and guides on EasyFreeResume.com to perfect your documents
           for any career path.
@@ -327,7 +327,7 @@ export default function ResumeVsCvDifference() {
           <div className="bg-white border-2 border-black/[0.06] rounded-xl p-6 text-center">
             <div className="text-4xl mb-3">&#127482;&#127480;</div>
             <h4 className="text-xl font-bold text-ink mb-2">US/Canada Job Search?</h4>
-            <p className="text-stone-warm mb-4">Build a professional resume</p>
+            <p className="text-ink/60 mb-4">Build a professional resume</p>
             <Link
               to="/free-resume-builder-no-sign-up"
               className="inline-block px-6 py-3 bg-accent text-ink font-semibold rounded-lg hover:bg-accent/90 transition-colors"
@@ -338,7 +338,7 @@ export default function ResumeVsCvDifference() {
           <div className="bg-white border-2 border-black/[0.06] rounded-xl p-6 text-center">
             <div className="text-4xl mb-3">&#127468;&#127463;</div>
             <h4 className="text-xl font-bold text-ink mb-2">UK/Europe/International?</h4>
-            <p className="text-stone-warm mb-4">Build a professional CV</p>
+            <p className="text-ink/60 mb-4">Build a professional CV</p>
             <Link
               to="/free-cv-builder-no-sign-up"
               className="inline-block px-6 py-3 bg-accent text-ink font-semibold rounded-lg hover:bg-accent/90 transition-colors"

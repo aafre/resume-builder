@@ -250,7 +250,7 @@ const LandingPage: React.FC = () => {
               still lands inside the first viewport, and its sequence is gated
               on scroll-into-view anyway, so it plays when it is actually seen. */}
           <div className="lg:col-start-1 lg:row-start-2">
-            <p className="font-display text-lg md:text-xl font-extralight text-stone-warm max-w-lg leading-relaxed mb-8">
+            <p className="font-display text-lg md:text-xl font-extralight text-ink/60 max-w-lg leading-relaxed mb-8">
               Build your resume for free online with ATS-friendly templates. Download as PDF instantly — no sign up, no payment, no watermarks.
             </p>
 
@@ -343,7 +343,7 @@ const LandingPage: React.FC = () => {
                 <CountUp end={resumeCountValue} separator="," suffix="+" duration={2.5} enableScrollSpy scrollSpyOnce />
               )}
             </p>
-            <p className="font-display text-sm font-extralight text-stone-warm tracking-wide">Resumes Created</p>
+            <p className="font-display text-sm font-extralight text-ink/60 tracking-wide">Resumes Created</p>
           </div>
           <div className="text-center sm:px-16">
             <p className="font-mono text-3xl md:text-4xl font-normal text-ink mb-1">
@@ -353,7 +353,7 @@ const LandingPage: React.FC = () => {
                 <CountUp end={100} suffix="%" duration={2} enableScrollSpy scrollSpyOnce />
               )}
             </p>
-            <p className="font-display text-sm font-extralight text-stone-warm tracking-wide">ATS Compatible</p>
+            <p className="font-display text-sm font-extralight text-ink/60 tracking-wide">ATS Compatible</p>
           </div>
         </RevealSection>
       </section>
@@ -367,7 +367,7 @@ const LandingPage: React.FC = () => {
       <section className="bg-chalk py-20 px-4 cv-auto cv-h-300">
         <div className="max-w-6xl mx-auto">
           <RevealSection className="text-center mb-12">
-            <span className="font-mono text-xs tracking-[0.15em] text-stone-warm uppercase mb-4 block">
+            <span className="font-mono text-xs tracking-[0.15em] text-ink/60 uppercase mb-4 block">
               TRUSTED BY PROFESSIONALS FROM
             </span>
           </RevealSection>
@@ -394,7 +394,7 @@ const LandingPage: React.FC = () => {
             <h2 className="font-display text-3xl md:text-5xl font-extrabold text-ink mb-4 tracking-tight">
               Why Job Seekers Choose Our Free Resume Builder
             </h2>
-            <p className="font-display text-lg font-extralight text-stone-warm mb-16 max-w-2xl">
+            <p className="font-display text-lg font-extralight text-ink/60 mb-16 max-w-2xl">
               Trusted by job seekers worldwide to create resumes that stand out
             </p>
           </RevealSection>
@@ -413,7 +413,7 @@ const LandingPage: React.FC = () => {
                     <h3 className="font-display text-xl font-extrabold text-ink mb-2">
                       {item.title}
                     </h3>
-                    <p className="font-display font-extralight text-stone-warm leading-relaxed">
+                    <p className="font-display font-extralight text-ink/60 leading-relaxed">
                       {item.description}
                     </p>
                   </div>
@@ -448,7 +448,7 @@ const LandingPage: React.FC = () => {
                 </div>
                 <div className="flex-1 flex justify-center">
                   <div className="bg-white/5 rounded-md px-4 py-1">
-                    <span className="font-mono text-[11px] text-stone-warm-inverse">youtube.com/@EasyFreeResume</span>
+                    <span className="font-mono text-[11px] text-white/60">youtube.com/@EasyFreeResume</span>
                   </div>
                 </div>
               </div>
@@ -519,9 +519,9 @@ const LandingPage: React.FC = () => {
                 >
                   <h3 className="font-display text-lg font-extrabold text-ink mb-2 flex items-center justify-between">
                     {resource.title}
-                    <ArrowRightIcon className="w-4 h-4 text-stone-warm group-hover:text-accent-text group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
+                    <ArrowRightIcon className="w-4 h-4 text-ink/60 group-hover:text-accent-text group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
                   </h3>
-                  <p className="font-display font-extralight text-stone-warm text-sm leading-relaxed">
+                  <p className="font-display font-extralight text-ink/60 text-sm leading-relaxed">
                     {resource.desc}
                   </p>
                 </a>
@@ -547,14 +547,14 @@ const LandingPage: React.FC = () => {
             <div className="grid md:grid-cols-2 gap-10 lg:gap-14">
               <div>
                 <h3 className="font-display text-xl font-extrabold text-ink mb-3">Truly Free Downloads — No Surprises</h3>
-                <p className="font-display font-extralight text-stone-warm leading-relaxed">
+                <p className="font-display font-extralight text-ink/60 leading-relaxed">
                   Other resume builders advertise "free" but charge $2–$25 the moment you try to download your PDF. EasyFreeResume is different: every template, every download, and every feature is 100% free. No credit card, no trial, no paywall.{' '}
                   <Link to="/free-resume-builder-download" className="text-accent-text hover:underline">Download your resume for free</Link> as many times as you need.
                 </p>
               </div>
               <div>
                 <h3 className="font-display text-xl font-extrabold text-ink mb-3">No Sign-Up Required — Start Instantly</h3>
-                <p className="font-display font-extralight text-stone-warm leading-relaxed">
+                <p className="font-display font-extralight text-ink/60 leading-relaxed">
                   Skip the forms and email verification. Our{' '}
                   <Link to="/free-resume-builder-no-sign-up" className="text-accent-text hover:underline">no sign-up resume builder</Link>{' '}
                   lets you start creating your resume the moment you arrive. Optionally create a free account later to save your work to the cloud and manage multiple versions.
@@ -562,7 +562,7 @@ const LandingPage: React.FC = () => {
               </div>
               <div>
                 <h3 className="font-display text-xl font-extrabold text-ink mb-3">ATS-Friendly Templates That Get Results</h3>
-                <p className="font-display font-extralight text-stone-warm leading-relaxed">
+                <p className="font-display font-extralight text-ink/60 leading-relaxed">
                   Every template is engineered to pass{' '}
                   <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">Applicant Tracking Systems</Link>{' '}
                   used by 99% of Fortune 500 companies. Clean formatting, proper heading hierarchy, and machine-readable layouts ensure your resume reaches a human recruiter.
@@ -570,7 +570,7 @@ const LandingPage: React.FC = () => {
               </div>
               <div>
                 <h3 className="font-display text-xl font-extrabold text-ink mb-3">AI-Powered Resume Writing</h3>
-                <p className="font-display font-extralight text-stone-warm leading-relaxed">
+                <p className="font-display font-extralight text-ink/60 leading-relaxed">
                   Use built-in AI features to write compelling bullet points, tailor your resume to job descriptions, and find the right{' '}
                   <Link to="/resume-keywords" className="text-accent-text hover:underline">resume keywords</Link>{' '}
                   for your industry. Powered by{' '}
@@ -617,7 +617,7 @@ const LandingPage: React.FC = () => {
                 <div key={i} className="bg-white rounded-2xl p-8 border border-black/[0.04] shadow-sm">
                   <span className="font-mono text-3xl text-accent-text mb-4 block">{item.step}</span>
                   <h3 className="font-display text-lg font-extrabold text-ink mb-2">{item.title}</h3>
-                  <p className="font-display font-extralight text-stone-warm leading-relaxed text-sm">{item.desc}</p>
+                  <p className="font-display font-extralight text-ink/60 leading-relaxed text-sm">{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -644,7 +644,7 @@ const LandingPage: React.FC = () => {
             <h2 className="font-display text-3xl md:text-5xl font-extrabold text-ink mb-4 text-center tracking-tight">
               Frequently Asked Questions
             </h2>
-            <p className="font-display text-lg font-extralight text-stone-warm mb-12 text-center max-w-2xl mx-auto">
+            <p className="font-display text-lg font-extralight text-ink/60 mb-12 text-center max-w-2xl mx-auto">
               Everything you need to know about building your free resume
             </p>
           </RevealSection>
@@ -659,12 +659,12 @@ const LandingPage: React.FC = () => {
                     {faq.question}
                   </h3>
                   <ChevronDownIcon
-                    className="w-5 h-5 text-stone-warm transition-all duration-300 flex-shrink-0 group-open:rotate-180 group-open:text-accent-text"
+                    className="w-5 h-5 text-ink/60 transition-all duration-300 flex-shrink-0 group-open:rotate-180 group-open:text-accent-text"
                   />
                 </summary>
                 <div className="faq-content">
                   <div>
-                    <p className="font-display font-extralight text-stone-warm pb-5 leading-relaxed">
+                    <p className="font-display font-extralight text-ink/60 pb-5 leading-relaxed">
                       {faq.answer}
                     </p>
                   </div>
@@ -690,7 +690,7 @@ const LandingPage: React.FC = () => {
                 <h2 className="font-display text-3xl md:text-[3.5rem] font-extrabold text-white mb-6 tracking-tight leading-tight">
                   Ready to Land Your Dream Job?
                 </h2>
-                <p className="font-display text-lg font-extralight text-stone-warm-inverse mb-10 max-w-xl mx-auto leading-relaxed">
+                <p className="font-display text-lg font-extralight text-white/60 mb-10 max-w-xl mx-auto leading-relaxed">
                   Join thousands of job seekers who've successfully created
                   professional resumes with our free builder.
                 </p>
