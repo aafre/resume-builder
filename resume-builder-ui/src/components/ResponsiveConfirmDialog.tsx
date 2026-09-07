@@ -118,6 +118,7 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
           {/* Actions - Mobile: Stack vertically, Desktop: Side by side */}
           <div className="p-6 border-t border-gray-200 space-y-3 lg:space-y-0 lg:flex lg:gap-3 lg:justify-end">
             <button
+              autoFocus
               onClick={onClose}
               disabled={isLoading}
               className="w-full lg:w-auto px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700
