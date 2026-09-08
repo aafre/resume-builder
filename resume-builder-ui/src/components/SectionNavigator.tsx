@@ -32,6 +32,7 @@ import { extractJobSearchParams } from "../utils/resumeDataExtractor";
 import type { ContactInfo, Section as ResumeSection } from "../types";
 import DocumentSpine from "./editor/DocumentSpine";
 import { useResumeLength } from "../hooks/editor/useResumeLength";
+import { PhaseLabel, WorkingRail } from "./shared/GenerationPhase";
 
 interface Section {
   name: string;
@@ -50,6 +51,8 @@ interface SectionNavigatorProps {
   onStartFresh: () => void;
   onHelp: () => void;
   isGenerating?: boolean;
+  /** What the PDF build is doing right now; null when idle */
+  generatingPhase?: string | null;
   /** Whether the preview button is being clicked (saving, validating) */
   isOpeningPreview?: boolean;
   /** Whether the preview is being generated */
@@ -89,6 +92,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   onStartFresh,
   onHelp,
   isGenerating,
+  generatingPhase,
   isOpeningPreview = false,
   isGeneratingPreview,
   previewIsStale,
@@ -464,16 +468,22 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               isCollapsed ? "flex-col gap-1 py-2.5 px-1" : "flex-row gap-2 px-4 py-2.5"
             }`}
           >
-            <MdFileDownload className={isCollapsed ? "text-lg" : "text-base"} />
-            <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
-              {isGenerating
-                ? isCollapsed
-                  ? "..."
-                  : "Generating..."
-                : isCollapsed
-                ? "PDF"
-                : "Download Resume"}
-            </span>
+            {isGenerating && !isCollapsed ? (
+              <WorkingRail className="h-[3px] w-4 shrink-0" />
+            ) : (
+              <MdFileDownload className={isCollapsed ? "text-lg" : "text-base"} />
+            )}
+            {isGenerating && !isCollapsed ? (
+              <PhaseLabel
+                phase={generatingPhase}
+                fallback="Building your PDF"
+                className="text-[13px] truncate"
+              />
+            ) : (
+              <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
+                {isGenerating ? "..." : isCollapsed ? "PDF" : "Download Resume"}
+              </span>
+            )}
           </button>
 
           {/* Tier 2 — secondary work controls */}

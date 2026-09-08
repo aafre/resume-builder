@@ -1045,3 +1045,29 @@ div[data-google-query-id] {
   background-clip: content-box;
 }
 .sheet-pan::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.45); background-clip: content-box; }
+
+/* ── PDF build wait ─────────────────────────────────────────────────────────
+   The download button's phase label and its indeterminate rail. Both live here
+   rather than in Tailwind arbitrary classes so the reduced-motion fallback can
+   remove the rail outright instead of freezing it mid-sweep. */
+@keyframes phase-in {
+  from { opacity: 0; transform: translateY(3px); filter: blur(2px); }
+  to   { opacity: 1; transform: none;            filter: none; }
+}
+.phase-in {
+  animation: phase-in 260ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes phase-sweep {
+  0%   { transform: translateX(-110%); }
+  100% { transform: translateX(320%); }
+}
+.phase-sweep {
+  animation: phase-sweep 1.15s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* An unmoving track would read as a stalled progress bar. Drop it; the phase
+     text already says what is happening. */
+  .phase-rail { display: none !important; }
+}

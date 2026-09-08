@@ -48,6 +48,7 @@ export interface EditorModalsLoadingStates {
   loadingStartFresh: boolean;
   loadingLoad: boolean;
   isDownloading: boolean;
+  downloadPhase: string | null;
 }
 
 /**
@@ -255,6 +256,7 @@ export const EditorModals: React.FC<EditorModalsProps> = ({
         previewUrl={preview.previewUrl}
         isGenerating={preview.isGenerating}
         isDownloading={loading.isDownloading}
+        downloadPhase={loading.downloadPhase}
         isStale={preview.isStale}
         error={preview.error}
         onRefresh={actions.handleRefreshPreview}
