@@ -17,7 +17,7 @@ module.exports = {
         },
         chalk: {
           DEFAULT: '#fafaf8',
-          dark: '#f0efe9',
+          dark: '#f6f6f5',
         },
         accent: '#00d47e',
         'accent-text': '#007a48',

@@ -5,7 +5,7 @@ colors:
   ink: "#0c0c0c"
   ink-light: "#1a1a1a"
   chalk: "#fafaf8"
-  chalk-dark: "#f0efe9"
+  chalk-dark: "#f6f6f5"
   accent: "#00d47e"
   accent-text: "#007a48"
 typography:
@@ -114,7 +114,7 @@ The system gets its force from typography, not decoration. Headings are set at w
 Components feel **tactile and confident**. Targets are generous (44px minimum, everywhere, including the dense editor), presses respond visibly, and states are unambiguous. The audience includes people writing their first resume at 11pm and unsure whether they are doing it right, so the interface must feel forgiving to touch rather than delicate and expensive.
 
 **Key Characteristics:**
-- Light-dominant: warm off-white grounds (`#fafaf8`, `#f0efe9`), near-black ink, no dark mode
+- Light-dominant: near-white grounds (`#fafaf8`, `#f6f6f5`), near-black ink, no dark mode
 - Extreme type contrast: weight 800 against weight 200, with nothing decorative in between
 - One accent, used as a signal rather than as a brand wash
 - Flat at rest; shadow is a response to state, not a property of cards
@@ -133,8 +133,8 @@ A near-monochrome warm-grey system carrying a single high-chroma green that is s
 - **Ink** (`#0c0c0c`): All primary text and headings, and the fill for the dark CTA blocks that close marketing pages.
 - **Ink Light** (`#1a1a1a`): Dark chrome surfaces — the demo/mockup shell on the landing page. Distinguishes a device frame from a true ink block.
 - **Chalk** (`#fafaf8`): The default page ground and the resting state of most sections. Warm enough to read as paper rather than as a UI grey.
-- **Chalk Dark** (`#f0efe9`): The alternate surface — resource cards, the footer, and every other section when sections alternate. Provides depth by tone rather than by shadow.
-- **Muted text** — `text-ink/60` on light grounds, `text-white/60` on dark grounds: body copy, subtitles, and supporting text. There is no bespoke grey token for this; it's the primary neutral (Ink / white) at reduced opacity, so it can never introduce a hue the rest of the system doesn't already have. **`ink/60` measures 5.09:1 on Chalk, 5.16:1 on white, 4.93:1 on Chalk Dark. `white/60` measures 7.28:1 on Ink, 6.93:1 on Ink Light** — both clear AA at body size on every ground in the system.
+- **Chalk Dark** (`#f6f6f5`): The alternate surface — resource cards, the footer, and every other section when sections alternate. Provides depth by tone rather than by shadow.
+- **Muted text** — `text-ink/60` on light grounds, `text-white/60` on dark grounds: body copy, subtitles, and supporting text. There is no bespoke grey token for this; it's the primary neutral (Ink / white) at reduced opacity, so it can never introduce a hue the rest of the system doesn't already have. **`ink/60` measures 5.09:1 on Chalk, 5.16:1 on white, 5.01:1 on Chalk Dark. `white/60` measures 7.28:1 on Ink, 6.93:1 on Ink Light** — both clear AA at body size on every ground in the system.
 
 This replaces the earlier `stone-warm` / `stone-warm-inverse` tokens (`#6b6761` / `#a8a4a0`), a pair of hand-picked warm greys that carried a taupe/brown cast the rest of the palette doesn't share — `stone-warm` alone was on ~1,750 call sites, so that off-hue was the ambient color of most body text on the site. Opacity of an existing token fixes the hue mismatch at the root with no new value to maintain, and matches or beats every prior contrast ratio.
 
@@ -156,17 +156,17 @@ Standard Tailwind `gray-{200,300,600,700}` remains acceptable for borders, form 
 
 WCAG 2.2 AA requires 4.5:1 for text under 24px (or under 19px bold), 3:1 for large text, and 3:1 for focus indicators and non-text UI boundaries.
 
-Ratios are given against all three light grounds the system actually paints text on. **Chalk Dark (`#f0efe9`) is the strictest of the three, not white** — every foreground token must be chosen against it, because resource cards, the footer, and every alternating section sit on it.
+Ratios are given against all three light grounds the system actually paints text on. **Chalk Dark (`#f6f6f5`) is the strictest of the three, not white** — every foreground token must be chosen against it, because resource cards, the footer, and every alternating section sit on it.
 
-| Pairing | on Chalk `#fafaf8` | on white `#ffffff` | on Chalk Dark `#f0efe9` | Verdict |
+| Pairing | on Chalk `#fafaf8` | on white `#ffffff` | on Chalk Dark `#f6f6f5` | Verdict |
 |---|---|---|---|---|
-| Ink | 18.72:1 | 19.56:1 | 16.98:1 | Passes everything |
+| Ink | 18.72:1 | 19.56:1 | 18.09:1 | Passes everything |
 | Ink on Signal Green (primary button label) | — | — | — | 9.98:1, passes everything |
-| Deep Signal | 5.18:1 | 5.42:1 | 4.70:1 | Passes AA text on all three, and the 3:1 non-text threshold |
-| Muted text (`ink/60`) | 5.09:1 | 5.16:1 | 4.93:1 | Passes AA at body size on all three |
-| Muted text inverse (`white/60`) on a light ground | 1.03:1 | 1.00:1 | 1.09:1 | **Fails AA on light grounds — near-invisible, dark grounds only** |
-| Deep Signal focus ring | 5.18:1 | 5.42:1 | 4.70:1 | Passes the 3:1 focus-indicator threshold with margin |
-| Signal Green | 1.87:1 | 1.96:1 | 1.70:1 | **Fills and decorative halos only — never text, never a focus ring** |
+| Deep Signal | 5.18:1 | 5.42:1 | 5.01:1 | Passes AA text on all three, and the 3:1 non-text threshold |
+| Muted text (`ink/60`) | 5.09:1 | 5.16:1 | 5.01:1 | Passes AA at body size on all three |
+| Muted text inverse (`white/60`) on a light ground | 1.03:1 | 1.00:1 | 1.04:1 | **Fails AA on light grounds — near-invisible, dark grounds only** |
+| Deep Signal focus ring | 5.18:1 | 5.42:1 | 5.01:1 | Passes the 3:1 focus-indicator threshold with margin |
+| Signal Green | 1.87:1 | 1.96:1 | 1.81:1 | **Fills and decorative halos only — never text, never a focus ring** |
 
 And against the dark grounds, which the system paints text on in the closing-CTA blocks, the blog featured card, the editor mobile banner, and the landing-page mockup chrome:
 
