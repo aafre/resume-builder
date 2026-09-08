@@ -301,7 +301,9 @@ export const EditorContent: React.FC<EditorContentProps> = ({
 
       {/* Contact Information Section */}
       {contactInfo && (
-        <div ref={refs.contactInfoRef}>
+        {/* The one .section-card with no drag grip beneath it, so it carries the
+            section step itself rather than inheriting it from the next grip. */}
+        <div ref={refs.contactInfoRef} className="mb-edit-section">
           <ContactInfoSection
             contactInfo={contactInfo}
             onUpdate={setContactInfo}

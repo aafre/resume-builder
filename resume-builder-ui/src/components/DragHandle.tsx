@@ -74,15 +74,22 @@ const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false 
           and the only focus state was the browser default `outline: auto 1px`,
           the one unstyled focus state on the surface.
 
+          It is now `min-h-edit-section` (48px), not `min-h-11`, because this
+          strip IS the gap between two sections -- the separator and the control
+          are the same 48px. Previously the card also carried `mb-8`, so the grip
+          stacked on top of a margin and the real interval was ~76px, most of it
+          invisible. Still above the 44px floor; the floor is a minimum, and the
+          section step is the larger of the two constraints.
+
           Quiet by default is preserved: the dots stay hidden until the card is
-          hovered or the grip is focused. The 44px hit area is always there. */}
+          hovered or the grip is focused. The hit area is always there. */}
       {!disabled && (
         <div
           {...attributes}
           {...listeners}
           className={`
             group/handle touch-none
-            w-full min-h-11 rounded-t-xl cursor-grab active:cursor-grabbing
+            w-full min-h-edit-section rounded-t-xl cursor-grab active:cursor-grabbing
             ${isDragging ? 'bg-accent/[0.06]' : 'bg-transparent group-hover:bg-black/[0.03]'}
             transition-colors duration-150 ease-out
             flex items-center justify-center

@@ -150,9 +150,14 @@
      - The 12px Default: 16px is reserved for marketing feature cards.
    Depth is now tonal and earned on interaction, which is what a workbench
    should do. */
+/* No bottom margin: the drag grip above the NEXT card is the section separator
+   and is sized to `--edit-gap-section`. The margin used to stack on top of the
+   grip's 44px, so two section bodies sat ~76px apart with 44 of it invisible
+   dead space. A card that is not preceded by a grip (ContactInfoSection) sets
+   the section step at its call site. */
 .section-card {
   @apply bg-white rounded-xl border border-gray-200 shadow-sm
-         p-4 sm:p-6 lg:p-8 mb-4 sm:mb-8
+         p-4 sm:p-6 lg:p-8
          transition-shadow duration-200 hover:shadow-md;
 }
 
