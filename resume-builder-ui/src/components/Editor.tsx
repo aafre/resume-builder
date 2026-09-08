@@ -6,7 +6,6 @@ import { usePreview } from "../hooks/usePreview";
 import { useAuth } from "../contexts/AuthContext";
 import { useConversion } from "../contexts/ConversionContext";
 import { processSectionsForExport } from "../services/yamlService";
-import { useEditorContext } from "../contexts/EditorContext";
 import usePreferencePersistence from "../hooks/usePreferencePersistence";
 
 // Import extracted hooks
@@ -98,7 +97,6 @@ const Editor: React.FC = () => {
   const [searchParams] = useSearchParams();
 
   // Get context for footer integration
-  const { setIsSidebarCollapsed: setContextIsSidebarCollapsed } = useEditorContext();
 
   // ===== LAYER 1: Core State Hooks =====
   const modalManager = useModalManager();
@@ -161,7 +159,6 @@ const Editor: React.FC = () => {
     sections,
     contactInfoRef,
     sectionRefs,
-    setContextIsSidebarCollapsed,
   });
 
   // ===== LAYER 3: Complex Logic Hooks =====

@@ -64,11 +64,16 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
 
   return (
     <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-t border-gray-200 shadow-sm">
-      {/* Build status. Full width, so the phase can be read as a sentence rather
-          than truncated inside a third-width button. Outranks the save line and
-          shows for anonymous users too — the build is what they're waiting on. */}
-      {isGenerating && (
-        <div className="px-4 py-1 bg-chalk border-b border-gray-200/60">
+      {/* Status strip — ALWAYS rendered, even with nothing to say.
+          `--mobile-action-bar-height` is what the content column reserves at the
+          bottom of the page, and it was a guess: this strip used to appear and
+          disappear with build/save state, so the bar was ~92px for an anonymous
+          user at rest and ~116px mid-save, against one fixed 110px reservation.
+          Wrong in both directions, on the one surface where the Reserved Space
+          Rule matters most. The strip's height is now constant and the
+          reservation can be true. */}
+      <div className="h-6 px-4 flex items-center justify-center bg-chalk border-b border-gray-200/60">
+        {isGenerating && (
           <div className="flex items-center justify-center gap-2 text-xs">
             <WorkingRail className="h-1.5 w-8 shrink-0" />
             <PhaseLabel
@@ -77,12 +82,10 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
               className="text-ink/60"
             />
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Auto-save status bar (subtle, above buttons) - only for authenticated users */}
-      {!isGenerating && isAuthenticated && (isSaving || lastSaved || saveError) && (
-        <div className="px-4 py-1 bg-chalk border-b border-gray-200/60">
+        {/* Auto-save status - only for authenticated users */}
+        {!isGenerating && isAuthenticated && (isSaving || lastSaved || saveError) && (
           <div className="flex items-center justify-center gap-2 text-xs">
             {isSaving && (
               <>
@@ -105,8 +108,8 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
               </>
             )}
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Main action buttons - Grid layout for consistent spacing */}
       <div className="grid grid-cols-3 gap-3 px-4 py-3 safe-area-inset-bottom">

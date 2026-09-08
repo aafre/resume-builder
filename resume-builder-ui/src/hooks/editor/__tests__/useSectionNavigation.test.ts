@@ -33,11 +33,17 @@ const createMockDiv = (top: number, height: number): HTMLDivElement => {
   return div;
 };
 
+/**
+ * scrollToSection offsets by the sticky header plus a 16px breathing gap, read
+ * from --header-height-desktop. jsdom loads no stylesheet, so chromeHeight()
+ * falls back to its documented 72px desktop default.
+ */
+const SCROLL_OFFSET = 72 + 16;
+
 describe('useSectionNavigation', () => {
   let sections: Section[];
   let contactInfoRef: RefObject<HTMLDivElement>;
   let sectionRefs: RefObject<(HTMLDivElement | null)[]>;
-  let setContextIsSidebarCollapsed: ReturnType<typeof vi.fn>;
   let originalScrollY: number;
   let originalInnerHeight: number;
 
@@ -58,7 +64,6 @@ describe('useSectionNavigation', () => {
     contactInfoRef = createMockRef(contactDiv);
     sectionRefs = createMockRef([section0Div, section1Div, section2Div]);
 
-    setContextIsSidebarCollapsed = vi.fn();
 
     // Save and mock window properties
     originalScrollY = window.scrollY;
@@ -84,7 +89,6 @@ describe('useSectionNavigation', () => {
           sections,
           contactInfoRef,
           sectionRefs,
-          setContextIsSidebarCollapsed,
         })
       );
 
@@ -99,7 +103,6 @@ describe('useSectionNavigation', () => {
           sections,
           contactInfoRef,
           sectionRefs,
-          setContextIsSidebarCollapsed,
         })
       );
 
@@ -112,7 +115,6 @@ describe('useSectionNavigation', () => {
           sections,
           contactInfoRef,
           sectionRefs,
-          setContextIsSidebarCollapsed,
         })
       );
 
@@ -129,7 +131,6 @@ describe('useSectionNavigation', () => {
           sections,
           contactInfoRef,
           sectionRefs,
-          setContextIsSidebarCollapsed,
         })
       );
 
@@ -146,7 +147,6 @@ describe('useSectionNavigation', () => {
           sections,
           contactInfoRef,
           sectionRefs,
-          setContextIsSidebarCollapsed,
         })
       );
 
@@ -163,41 +163,7 @@ describe('useSectionNavigation', () => {
       expect(result.current.isSidebarCollapsed).toBe(false);
     });
 
-    it('should call setContextIsSidebarCollapsed when collapsing', () => {
-      const { result } = renderHook(() =>
-        useSectionNavigation({
-          sections,
-          contactInfoRef,
-          sectionRefs,
-          setContextIsSidebarCollapsed,
-        })
-      );
 
-      act(() => {
-        result.current.setIsSidebarCollapsed(true);
-      });
-
-      expect(setContextIsSidebarCollapsed).toHaveBeenCalledTimes(1);
-      expect(setContextIsSidebarCollapsed).toHaveBeenCalledWith(true);
-    });
-
-    it('should call setContextIsSidebarCollapsed when expanding', () => {
-      const { result } = renderHook(() =>
-        useSectionNavigation({
-          sections,
-          contactInfoRef,
-          sectionRefs,
-          setContextIsSidebarCollapsed,
-        })
-      );
-
-      act(() => {
-        result.current.setIsSidebarCollapsed(false);
-      });
-
-      expect(setContextIsSidebarCollapsed).toHaveBeenCalledTimes(1);
-      expect(setContextIsSidebarCollapsed).toHaveBeenCalledWith(false);
-    });
   });
 
   describe('scrollToSection', () => {
@@ -214,7 +180,6 @@ describe('useSectionNavigation', () => {
           sections,
           contactInfoRef,
           sectionRefs,
-          setContextIsSidebarCollapsed,
         })
       );
 
@@ -224,7 +189,7 @@ describe('useSectionNavigation', () => {
 
       expect(scrollToMock).toHaveBeenCalledTimes(1);
       expect(scrollToMock).toHaveBeenCalledWith({
-        top: -100, // 0 (top) + 0 (pageYOffset) - 100 (yOffset)
+        top: -SCROLL_OFFSET, // 0 (top) + 0 (pageYOffset) - offset
         behavior: 'smooth',
       });
     });
@@ -235,7 +200,6 @@ describe('useSectionNavigation', () => {
           sections,
           contactInfoRef,
           sectionRefs,
-          setContextIsSidebarCollapsed,
         })
       );
 
@@ -245,7 +209,7 @@ describe('useSectionNavigation', () => {
 
       expect(scrollToMock).toHaveBeenCalledTimes(1);
       expect(scrollToMock).toHaveBeenCalledWith({
-        top: 100, // 200 (top) + 0 (pageYOffset) - 100 (yOffset)
+        top: 200 - SCROLL_OFFSET, // 200 (top) + 0 (pageYOffset) - offset
         behavior: 'smooth',
       });
     });
@@ -256,7 +220,6 @@ describe('useSectionNavigation', () => {
           sections,
           contactInfoRef,
           sectionRefs,
-          setContextIsSidebarCollapsed,
         })
       );
 
@@ -266,7 +229,7 @@ describe('useSectionNavigation', () => {
 
       expect(scrollToMock).toHaveBeenCalledTimes(1);
       expect(scrollToMock).toHaveBeenCalledWith({
-        top: 400, // 500 (top) + 0 (pageYOffset) - 100 (yOffset)
+        top: 500 - SCROLL_OFFSET, // 500 (top) + 0 (pageYOffset) - offset
         behavior: 'smooth',
       });
     });
@@ -277,7 +240,6 @@ describe('useSectionNavigation', () => {
           sections,
           contactInfoRef,
           sectionRefs,
-          setContextIsSidebarCollapsed,
         })
       );
 
@@ -296,7 +258,6 @@ describe('useSectionNavigation', () => {
           sections,
           contactInfoRef,
           sectionRefs: nullSectionRefs,
-          setContextIsSidebarCollapsed,
         })
       );
 
@@ -318,7 +279,6 @@ describe('useSectionNavigation', () => {
           sections,
           contactInfoRef: nullContactRef,
           sectionRefs,
-          setContextIsSidebarCollapsed,
         })
       );
 
@@ -340,7 +300,6 @@ describe('useSectionNavigation', () => {
           sections,
           contactInfoRef,
           sectionRefs,
-          setContextIsSidebarCollapsed,
         })
       );
 
@@ -365,7 +324,6 @@ describe('useSectionNavigation', () => {
           sections,
           contactInfoRef,
           sectionRefs,
-          setContextIsSidebarCollapsed,
         })
       );
 
@@ -384,7 +342,6 @@ describe('useSectionNavigation', () => {
           sections,
           contactInfoRef,
           sectionRefs,
-          setContextIsSidebarCollapsed,
         })
       );
 
@@ -403,8 +360,7 @@ describe('useSectionNavigation', () => {
             sections,
             contactInfoRef,
             sectionRefs,
-            setContextIsSidebarCollapsed,
-          }),
+            }),
         { initialProps: { sections } }
       );
 
@@ -435,7 +391,6 @@ describe('useSectionNavigation', () => {
           sections: emptySections,
           contactInfoRef,
           sectionRefs: emptySectionRefs,
-          setContextIsSidebarCollapsed,
         })
       );
 
@@ -450,7 +405,6 @@ describe('useSectionNavigation', () => {
           sections,
           contactInfoRef: nullContactRef,
           sectionRefs,
-          setContextIsSidebarCollapsed,
         })
       );
 
@@ -466,7 +420,6 @@ describe('useSectionNavigation', () => {
           sections,
           contactInfoRef,
           sectionRefs: nullSectionRefs,
-          setContextIsSidebarCollapsed,
         })
       );
 
@@ -480,7 +433,6 @@ describe('useSectionNavigation', () => {
           sections,
           contactInfoRef,
           sectionRefs,
-          setContextIsSidebarCollapsed,
         })
       );
 
@@ -499,7 +451,6 @@ describe('useSectionNavigation', () => {
           sections,
           contactInfoRef,
           sectionRefs,
-          setContextIsSidebarCollapsed,
         })
       );
 
@@ -515,7 +466,6 @@ describe('useSectionNavigation', () => {
 
       expect(result.current.isSidebarCollapsed).toBe(true);
       expect(result.current.activeSectionIndex).toBe(1);
-      expect(setContextIsSidebarCollapsed).toHaveBeenCalledWith(true);
     });
 
     it('should maintain state across multiple scroll operations', () => {
@@ -524,7 +474,6 @@ describe('useSectionNavigation', () => {
           sections,
           contactInfoRef,
           sectionRefs,
-          setContextIsSidebarCollapsed,
         })
       );
 
