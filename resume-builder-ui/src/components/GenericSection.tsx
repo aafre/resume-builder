@@ -140,7 +140,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
         <div>
           {section.type === "text" && (
             <>
-            <MarkdownHint className="mb-2" />
+            <MarkdownHint className="mb-edit-field" />
             <RichTextArea
               value={section.content || ""}
               onChange={(value) => handleContentChange(value)}
@@ -153,7 +153,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
         {/* Bulleted List - Keep original full-width layout */}
         {section.type === "bulleted-list" && (
           <>
-            <MarkdownHint className="mb-2" />
+            <MarkdownHint className="mb-edit-field" />
             {Array.isArray(section.content) && section.content.length > 0 && (
               <ItemDndContext
                 items={section.content}
@@ -172,7 +172,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                   <>
                     {section.content.map((item: string, index: number) => (
                       <SortableItem key={itemIds[index]} id={itemIds[index]}>
-                        <div className="mb-4">
+                        <div className="mb-edit-group">
                           <div className="flex items-center gap-2">
                             <div className="flex-1">
                               <RichTextInput
@@ -207,7 +207,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                 onAdd={handleAddItem}
               />
             ) : (
-              <GhostButton onClick={handleAddItem} className="mt-2">
+              <GhostButton onClick={handleAddItem} className="mt-edit-field">
                 Add Item
               </GhostButton>
             )}
@@ -217,8 +217,8 @@ const GenericSection: React.FC<GenericSectionProps> = ({
         {/* Inline List - Compact flex wrap layout */}
         {section.type === "inline-list" && (
           <>
-            <MarkdownHint className="mb-2" />
-            <div className="space-y-2 mb-4">
+            <MarkdownHint className="mb-edit-field" />
+            <div className="space-y-edit-field mb-edit-group">
               {Array.isArray(section.content) && section.content.length > 0 && (
                 <ItemDndContext
                   items={section.content}
@@ -281,8 +281,8 @@ const GenericSection: React.FC<GenericSectionProps> = ({
         {/* Dynamic Column List - CSS Grid layout */}
         {section.type === "dynamic-column-list" && (
           <>
-            <MarkdownHint className="mb-2" />
-            <div className="space-y-2 mb-4">
+            <MarkdownHint className="mb-edit-field" />
+            <div className="space-y-edit-field mb-edit-group">
               {Array.isArray(section.content) && section.content.length > 0 && (
                 <ItemDndContext
                   items={section.content}

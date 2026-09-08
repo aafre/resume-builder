@@ -299,10 +299,10 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         </div>
       )}
 
-      {/* Contact Information Section */}
+      {/* Contact Information Section — the one .section-card with no drag grip
+          beneath it, so it carries the section step itself rather than
+          inheriting it from the next card's grip. */}
       {contactInfo && (
-        {/* The one .section-card with no drag grip beneath it, so it carries the
-            section step itself rather than inheriting it from the next grip. */}
         <div ref={refs.contactInfoRef} className="mb-edit-section">
           <ContactInfoSection
             contactInfo={contactInfo}

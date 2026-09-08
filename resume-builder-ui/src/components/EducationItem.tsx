@@ -60,7 +60,7 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
         </div>
         <div className="mt-edit-group">
           {supportsIcons && iconRegistry && (
-            <div className="mb-4">
+            <div className="mb-edit-group">
               <IconManager
                 value={data.icon || null}
                 onChange={(filename, file) => onIconChange(index, filename, file)}
@@ -70,9 +70,9 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
               />
             </div>
           )}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-edit-group">
             <div>
-              <label className="block text-ink font-medium mb-1">
+              <label className="block text-ink font-medium mb-edit-field">
                 Degree
               </label>
               <RichTextInput
@@ -83,7 +83,7 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
               />
             </div>
             <div>
-              <label className="block text-ink font-medium mb-1">
+              <label className="block text-ink font-medium mb-edit-field">
                 School
               </label>
               <RichTextInput
@@ -94,7 +94,7 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
               />
             </div>
             <div>
-              <label className="block text-ink font-medium mb-1">
+              <label className="block text-ink font-medium mb-edit-field">
                 Year
               </label>
               <input
@@ -107,7 +107,7 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
               />
             </div>
             <div>
-              <label className="block text-ink font-medium mb-1">
+              <label className="block text-ink font-medium mb-edit-field">
                 Field of Study
               </label>
               <RichTextInput

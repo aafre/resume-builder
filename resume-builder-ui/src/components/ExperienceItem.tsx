@@ -128,7 +128,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
 
       <div className="mt-edit-group">
         {supportsIcons && iconRegistry && (
-          <div className="mb-4">
+          <div className="mb-edit-group">
             <IconManager
               value={item.icon || null}
               onChange={handleIconChange}
@@ -139,9 +139,9 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-edit-group mb-edit-block">
           <div>
-            <label className="block text-ink font-medium mb-1">Company</label>
+            <label className="block text-ink font-medium mb-edit-field">Company</label>
             <RichTextInput
               value={item.company}
               onChange={(value) => handleUpdateField("company", value)}
@@ -150,7 +150,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
             />
           </div>
           <div>
-            <label className="block text-ink font-medium mb-1">Title</label>
+            <label className="block text-ink font-medium mb-edit-field">Title</label>
             <RichTextInput
               value={item.title}
               onChange={(value) => handleUpdateField("title", value)}
@@ -159,7 +159,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
             />
           </div>
           <div>
-            <label className="block text-ink font-medium mb-1">Dates</label>
+            <label className="block text-ink font-medium mb-edit-field">Dates</label>
             <input
               type="text"
               value={item.dates}
@@ -171,11 +171,11 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
         </div>
 
         <div className="w-full">
-          <label className="block text-ink font-medium mb-1">
+          <label className="block text-ink font-medium mb-edit-field">
             Job Description & Achievements
           </label>
           <MarkdownHint />
-          <div className="space-y-3 mt-2">
+          <div className="space-y-edit-group mt-edit-field">
             {item.description.length > 0 && (
               <ItemDndContext
                 items={item.description}
@@ -206,7 +206,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
                               every job. Now neutral until you reach for it. */}
                           <button
                             onClick={() => handleDescRemove(descIndex)}
-                            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-ink/60 hover:text-red-700 hover:bg-red-50 transition-colors duration-150 flex-shrink-0 mt-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-ink/60 hover:text-red-700 hover:bg-red-50 transition-colors duration-150 flex-shrink-0 mt-edit-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                             title="Remove description point"
                             aria-label="Remove description point"
                           >
@@ -221,7 +221,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
             )}
           </div>
           {item.description.length === 0 && (
-            <p className="mt-2 text-sm text-ink/60">
+            <p className="mt-edit-field text-sm text-ink/60">
               Nothing here yet. One bullet per line: what you did, and what
               changed because of it. Numbers land hardest — "cut invoice errors
               by 30%" beats "improved accuracy".
@@ -233,7 +233,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
           <button
             type="button"
             onClick={handleDescAdd}
-            className="btn-ghost-add mt-3"
+            className="btn-ghost-add mt-edit-group"
           >
             <MdAdd className="text-lg" aria-hidden="true" />
             <span>Add Description Point</span>
