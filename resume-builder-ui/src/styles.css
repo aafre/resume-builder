@@ -43,8 +43,16 @@
   --header-height-mobile: 64px;
   --header-height-desktop: 72px;
 
-  /* Mobile action bar (mobile/tablet only) */
-  --mobile-action-bar-height: 110px;
+  /* Mobile action bar (mobile/tablet only). Measured, not guessed: 24px status
+     strip + 1px border + 44px button row + 24px py-3 + 24px of the
+     `safe-area-inset-bottom` utility's 0.75rem floor = 117px. The strip is
+     always rendered (see MobileActionBar) so this is now a constant rather than
+     a number that was right in neither auth state.
+     On a device whose inset exceeds that 12px floor, the utility grows and the
+     bar grows with it, so the reservation adds the same overflow. */
+  --mobile-action-bar-height: calc(
+    117px + max(0px, env(safe-area-inset-bottom, 0px) - 0.75rem)
+  );
 
   /* ── Workbench density scale ──
      DESIGN.md's spacing scale (8/16/24/32/48/80) applied to the editor. The
