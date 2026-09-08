@@ -137,7 +137,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
       />
 
       {!isCollapsed && (
-        <div className="mt-4">
+        <div>
           {section.type === "text" && (
             <>
             <MarkdownHint className="mb-2" />
