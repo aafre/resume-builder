@@ -988,3 +988,60 @@ div[data-google-query-id] {
   z-index: 2147483647 !important;
 }
 
+
+/* ---------------------------------------------------------------------------
+   /templates — the template reader
+   ------------------------------------------------------------------------- */
+
+/* The card preview and the full-screen sheet share view-transition-name:
+   template-sheet, so the browser morphs one into the other. Exactly one
+   element carries that name at a time (TemplateCarousel moves it). Firefox has
+   no View Transitions yet and simply cuts, which is the correct fallback.
+   The global prefers-reduced-motion rule above collapses these to ~0ms, and
+   withViewTransition() skips the transition entirely in that case. */
+::view-transition-old(template-sheet),
+::view-transition-new(template-sheet) {
+  /* The sheet changes aspect ratio between templates; height:100% keeps both
+     snapshots filling the morph box instead of squashing mid-flight. */
+  height: 100%;
+  object-fit: contain;
+  animation-duration: 380ms;
+  animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+::view-transition-group(template-sheet) {
+  animation-duration: 380ms;
+  animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Connector behind the three "How to Create Your Resume" steps. Transform-only,
+   so the global prefers-reduced-motion rule collapses it, and the untransformed
+   default is the finished full-width rule — the fallback is the end state, not
+   a missing line. */
+@keyframes steps-rule-draw {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@supports (animation-timeline: view()) {
+  .steps-rule {
+    animation: steps-rule-draw linear both;
+    animation-timeline: view();
+    animation-range: entry 20% cover 45%;
+  }
+}
+
+/* The 1:1 pan surface in the template reader sits on an ink ground, where the
+   browser's default light scrollbar is the one thing on screen nobody drew. */
+.sheet-pan {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
+}
+.sheet-pan::-webkit-scrollbar { width: 10px; height: 10px; }
+.sheet-pan::-webkit-scrollbar-track { background: transparent; }
+.sheet-pan::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: 9999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+.sheet-pan::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.45); background-clip: content-box; }

@@ -4,6 +4,7 @@
  * Target keywords: "free resume templates", "ats resume templates"
  */
 
+import { CheckBadgeIcon } from '@heroicons/react/24/solid';
 import SEOPageLayout from '../shared/SEOPageLayout';
 import PageHero from '../shared/PageHero';
 import FeatureGrid from '../shared/FeatureGrid';
@@ -40,11 +41,14 @@ export default function TemplatesPage() {
 
       {/* Why Our Templates Section */}
       <RevealSection variant="fade-up">
-        <div className="my-16 cv-auto cv-h-400">
-          <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
+        <div className="my-16 cv-auto cv-h-400 text-center">
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block">
+            Every template, free
+          </span>
+          <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6">
             Why Choose Our Free Resume Templates?
           </h2>
-          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-4xl mx-auto text-center leading-relaxed mb-12">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-3xl mx-auto leading-relaxed mb-12 md:mb-16">
             Unlike other resume builders that charge for premium templates or add watermarks,
             EasyFreeResume offers all templates completely free. Every design has been tested
             for ATS compatibility and created by professional designers.
@@ -55,71 +59,76 @@ export default function TemplatesPage() {
       {config.features && <FeatureGrid features={config.features} />}
 
       {/* ATS Compatibility Section */}
-      <div className="my-16">
-        <div className="max-w-5xl mx-auto bg-accent/[0.06] border border-accent/20 rounded-xl p-8">
-          <h3 className="text-2xl font-bold text-ink mb-4 text-center">
-            ATS-Tested and Approved
-          </h3>
-          <p className="text-ink leading-relaxed mb-6 text-center">
-            Our templates have been tested with major Applicant Tracking Systems to ensure
-            your resume gets through automated screening and into human hands.
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-            <div className="bg-white p-4 rounded-lg shadow-sm">
-              <p className="font-semibold text-ink">Workday</p>
-              <p className="text-accent-text text-sm">✓ Compatible</p>
+      <RevealSection variant="fade-up" stagger>
+        <div className="my-16">
+          <div className="max-w-4xl mx-auto rounded-3xl border border-ink/10 bg-white overflow-clip">
+            <div className="px-6 md:px-10 pt-10 pb-8 text-center">
+              <h3 className="font-display text-2xl font-extrabold tracking-tight text-ink mb-4">
+                ATS-Tested and Approved
+              </h3>
+              <p className="font-extralight text-ink/60 leading-relaxed max-w-2xl mx-auto">
+                Our templates have been tested with major Applicant Tracking Systems to ensure
+                your resume gets through automated screening and into human hands.
+              </p>
             </div>
-            <div className="bg-white p-4 rounded-lg shadow-sm">
-              <p className="font-semibold text-ink">Taleo</p>
-              <p className="text-accent-text text-sm">✓ Compatible</p>
-            </div>
-            <div className="bg-white p-4 rounded-lg shadow-sm">
-              <p className="font-semibold text-ink">iCIMS</p>
-              <p className="text-accent-text text-sm">✓ Compatible</p>
-            </div>
-            <div className="bg-white p-4 rounded-lg shadow-sm">
-              <p className="font-semibold text-ink">Greenhouse</p>
-              <p className="text-accent-text text-sm">✓ Compatible</p>
-            </div>
+            {/* gap-px over an ink ground draws the hairlines, so the grid
+                reflows from 4 columns to 2 without any border bookkeeping. */}
+            <ul className="grid grid-cols-2 md:grid-cols-4 gap-px bg-ink/10 border-t border-ink/10">
+              {['Workday', 'Taleo', 'iCIMS', 'Greenhouse'].map((ats) => (
+                <li
+                  key={ats}
+                  className="flex flex-col items-center gap-2 px-4 py-6 bg-white"
+                >
+                  <CheckBadgeIcon className="w-5 h-5 text-accent-text" aria-hidden="true" />
+                  <p className="font-semibold text-ink">{ats}</p>
+                  <p className="font-mono text-xs tracking-[0.15em] uppercase text-ink/60">
+                    Compatible
+                  </p>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-      </div>
+      </RevealSection>
 
       {/* How to Use Section with implicit HowTo schema */}
       <RevealSection variant="fade-up">
         <div className="my-16 cv-auto cv-h-400">
-          <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
+          <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-12 md:mb-16 text-center">
             How to Create Your Resume
           </h2>
-          <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-accent text-ink rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                1
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Choose a Template</h3>
-              <p className="text-ink/60">
-                Browse our collection and select the design that fits your industry and style.
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-accent text-ink rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                2
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Fill In Your Details</h3>
-              <p className="text-ink/60">
-                Add your experience, education, and skills using our intuitive editor.
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-accent text-ink rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                3
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Download Instantly</h3>
-              <p className="text-ink/60">
-                Export your professional resume as PDF. No watermarks, no sign-up required.
-              </p>
-            </div>
-          </div>
+          {/* The connector is the sequence: one rule behind the three steps,
+              drawn left-to-right as the section scrolls into view. */}
+          <ol className="relative max-w-4xl mx-auto grid md:grid-cols-3 gap-10 md:gap-8">
+            <span
+              aria-hidden="true"
+              className="steps-rule hidden md:block absolute left-[16.666%] right-[16.666%] top-8 h-px bg-ink/15 origin-left"
+            />
+            {[
+              {
+                title: 'Choose a Template',
+                body: 'Browse our collection and select the design that fits your industry and style.',
+              },
+              {
+                title: 'Fill In Your Details',
+                body: 'Add your experience, education, and skills using our intuitive editor.',
+              },
+              {
+                title: 'Download Instantly',
+                body: 'Export your professional resume as PDF. No watermarks, no sign-up required.',
+              },
+            ].map((step, i) => (
+              <li key={step.title} className="relative text-center">
+                <span className="relative z-10 w-16 h-16 bg-accent text-ink rounded-full flex items-center justify-center font-mono text-lg font-medium mx-auto mb-6 ring-8 ring-chalk">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <h3 className="font-display text-xl font-extrabold tracking-tight text-ink mb-2">
+                  {step.title}
+                </h3>
+                <p className="font-extralight text-ink/60 leading-relaxed">{step.body}</p>
+              </li>
+            ))}
+          </ol>
         </div>
       </RevealSection>
 
