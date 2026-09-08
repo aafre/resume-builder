@@ -45,6 +45,22 @@
 
   /* Mobile action bar (mobile/tablet only) */
   --mobile-action-bar-height: 110px;
+
+  /* ── Workbench density scale ──
+     DESIGN.md's spacing scale (8/16/24/32/48/80) applied to the editor. The
+     marketing scale is about section rhythm on a page you read; this is about
+     grouping on a page you operate, so it needs the tighter steps and one
+     clearly-largest step. Four values, no half-steps: the editor previously ran
+     `mb-4` at every tier of the hierarchy, which is why nothing grouped.
+
+     The point is the RATIO, not the numbers. field and group are tight so a
+     control and its label read as one thing; section is 3x block so the
+     boundary between two sections is the largest interval on the page and the
+     squint test resolves. Change these here, never at a call site. */
+  --edit-gap-field: 8px;    /* label -> control, inside one control group     */
+  --edit-gap-group: 16px;   /* field group -> field group, item -> item       */
+  --edit-gap-block: 24px;   /* section header -> section body                 */
+  --edit-gap-section: 48px; /* section -> section                             */
 }
 
 /* 2026 Modern Button System */

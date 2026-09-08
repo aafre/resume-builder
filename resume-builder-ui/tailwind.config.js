@@ -71,6 +71,11 @@ module.exports = {
         'header-mobile': 'var(--header-height-mobile)',
         'header-desktop': 'var(--header-height-desktop)',
         'mobile-bar': 'var(--mobile-action-bar-height)',
+        // Workbench density scale — editor surfaces only. See styles.css.
+        'edit-field': 'var(--edit-gap-field)',
+        'edit-group': 'var(--edit-gap-group)',
+        'edit-block': 'var(--edit-gap-block)',
+        'edit-section': 'var(--edit-gap-section)',
       },
     },
   },

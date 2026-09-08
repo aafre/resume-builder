@@ -221,6 +221,35 @@ Fixed chrome heights are exposed as CSS custom properties and consumed as Tailwi
 
 Below-fold sections carry `content-visibility: auto` with a paired `.cv-h-*` intrinsic-size hint. Adding a new below-fold section without an intrinsic-size estimate reintroduces layout shift on a site whose traffic depends on Core Web Vitals.
 
+### App surfaces — the workbench density scale
+
+The section padding above is marketing rhythm and does not apply to the editor or
+my-resumes. A workbench needs tighter intervals and, more importantly, *different*
+intervals per tier — the editor's original failure was `mb-4` at every level of the
+hierarchy, so a label sat as far from its field as one section sat from the next and
+nothing grouped. Four steps, declared as custom properties in `styles.css` and exposed as
+Tailwind spacing:
+
+| Class suffix | Value | Role |
+|---|---|---|
+| `edit-field` | 8px | label → control; inside one control group |
+| `edit-group` | 16px | field group → field group; item → item within a section |
+| `edit-block` | 24px | section header → section body |
+| `edit-section` | 48px | section → section |
+
+Written as `mb-edit-block`, `gap-edit-group`, `space-y-edit-field`. What matters is the
+ratio: `section` is 3× `block`, so the boundary between two sections is the largest
+interval on the page. Adjust the scale at its definition, never at a call site, and do not
+introduce half-steps — the ten one-off half-steps (`mt-0.5`, `gap-2.5`, `mt-px`, …) that
+this scale replaced were how the surface lost its rhythm the first time.
+
+**App surfaces run their own type scale, deliberately.** The editor sets body at 400
+weight / 14–16px and its `h1` at 800 / 24px, against the marketing scale's 200 / 20–24px
+body and 800 / clamp-to-72px display. This is not drift and must not be "corrected": the
+Two-Weight Rule governs editorial text, and 200-weight at 14px in a dense form is a
+legibility failure. Control chrome stays in the 500/600 band. The rule that does carry
+across is the *contrast* between weights, not the specific pair.
+
 ### Named Rules
 
 **The Reserved Space Rule.** Anything that arrives late — ads, images, async status, revealed sections — reserves its final height before it arrives. The scroll-reveal system animates opacity and transform only, never height or width, for exactly this reason. Ad slots carry explicit min-heights. This rule is not negotiable on a site funded by search traffic.
