@@ -1,5 +1,6 @@
 import React from "react";
 import { MdMenu, MdFileDownload, MdVisibility, MdRefresh } from "react-icons/md";
+import { PhaseLabel, WorkingRail } from "./shared/GenerationPhase";
 
 interface MobileActionBarProps {
   onNavigationClick: () => void;
@@ -7,6 +8,8 @@ interface MobileActionBarProps {
   onDownloadClick: () => void;
   isSaving?: boolean;
   isGenerating?: boolean;
+  /** What the PDF build is doing right now; null when idle */
+  generatingPhase?: string | null;
   /** Whether the preview button is being clicked (saving, validating) */
   isOpeningPreview?: boolean;
   /** Whether the preview is being generated */
@@ -28,6 +31,7 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
   onDownloadClick,
   isSaving = false,
   isGenerating = false,
+  generatingPhase = null,
   isOpeningPreview = false,
   isGeneratingPreview = false,
   previewIsStale = false,
@@ -60,9 +64,28 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
 
   return (
     <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-t border-gray-200 shadow-sm">
-      {/* Auto-save status bar (subtle, above buttons) - only for authenticated users */}
-      {isAuthenticated && (isSaving || lastSaved || saveError) && (
-        <div className="px-4 py-1 bg-chalk border-b border-gray-200/60">
+      {/* Status strip — ALWAYS rendered, even with nothing to say.
+          `--mobile-action-bar-height` is what the content column reserves at the
+          bottom of the page, and it was a guess: this strip used to appear and
+          disappear with build/save state, so the bar was ~92px for an anonymous
+          user at rest and ~116px mid-save, against one fixed 110px reservation.
+          Wrong in both directions, on the one surface where the Reserved Space
+          Rule matters most. The strip's height is now constant and the
+          reservation can be true. */}
+      <div className="h-6 px-4 flex items-center justify-center bg-chalk border-b border-gray-200/60">
+        {isGenerating && (
+          <div className="flex items-center justify-center gap-2 text-xs">
+            <WorkingRail className="h-1.5 w-8 shrink-0" />
+            <PhaseLabel
+              phase={generatingPhase}
+              fallback="Building your PDF"
+              className="text-ink/60"
+            />
+          </div>
+        )}
+
+        {/* Auto-save status - only for authenticated users */}
+        {!isGenerating && isAuthenticated && (isSaving || lastSaved || saveError) && (
           <div className="flex items-center justify-center gap-2 text-xs">
             {isSaving && (
               <>
@@ -85,8 +108,8 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
               </>
             )}
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Main action buttons - Grid layout for consistent spacing */}
       <div className="grid grid-cols-3 gap-3 px-4 py-3 safe-area-inset-bottom">
@@ -149,10 +172,8 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
         >
           {isGenerating ? (
             <>
-              <span className="mb-1.5 h-2 w-10 overflow-clip rounded-full bg-ink/15">
-                <span className="block h-full w-1/2 animate-pulse rounded-full bg-ink/60" />
-              </span>
-              <span className="text-xs font-semibold">Creating...</span>
+              <WorkingRail className="mb-1.5 h-1.5 w-10" />
+              <span className="text-xs font-semibold">Building...</span>
             </>
           ) : (
             <>

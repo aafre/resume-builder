@@ -28,10 +28,12 @@ import { PanelRightClose, PanelRightOpen, ShieldCheck, ChevronRight, ExternalLin
 import { JobSparkleIcon } from "./icons/JobSparkleIcon";
 import { Link } from "react-router-dom";
 import { affiliateConfig, hasAnyAffiliate } from "../config/affiliate";
+import { chromeHeight } from "../utils/chromeHeight";
 import { extractJobSearchParams } from "../utils/resumeDataExtractor";
 import type { ContactInfo, Section as ResumeSection } from "../types";
 import DocumentSpine from "./editor/DocumentSpine";
 import { useResumeLength } from "../hooks/editor/useResumeLength";
+import { PhaseLabel, WorkingRail } from "./shared/GenerationPhase";
 
 interface Section {
   name: string;
@@ -50,6 +52,8 @@ interface SectionNavigatorProps {
   onStartFresh: () => void;
   onHelp: () => void;
   isGenerating?: boolean;
+  /** What the PDF build is doing right now; null when idle */
+  generatingPhase?: string | null;
   /** Whether the preview button is being clicked (saving, validating) */
   isOpeningPreview?: boolean;
   /** Whether the preview is being generated */
@@ -89,6 +93,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   onStartFresh,
   onHelp,
   isGenerating,
+  generatingPhase,
   isOpeningPreview = false,
   isGeneratingPreview,
   previewIsStale,
@@ -124,35 +129,37 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   const sidebarRef = useRef<HTMLElement>(null);
   const onCollapseChangeRef = useRef(onCollapseChange);
 
-  // Calculate header height on mount and resize
+  // Top offset for the fixed rail: the header, sized by the CSS custom property
+  // that also sizes the header itself, plus the dev-only environment banner.
+  //
+  // This used to measure the header's offsetHeight on a MutationObserver watching
+  // `document.body` with { childList, subtree, attributes } -- which recomputed
+  // the rail's position on every DOM mutation anywhere in the app, including
+  // every keystroke that toggled a class on a form field. The header's height is
+  // a constant per breakpoint and lives in a CSS var; the only thing that
+  // genuinely needs observing is the dev banner, and a ResizeObserver on that one
+  // element is the tool for it.
   useEffect(() => {
-    const calculateHeaderHeight = () => {
-      const header = document.querySelector("header");
-      const devBanner = document.querySelector('[class*="bg-red-600"]');
+    const devBanner = document.querySelector('[class*="bg-red-600"]');
 
-      let totalHeaderHeight = 0;
+    const update = () =>
+      setHeaderHeight(
+        chromeHeight(devBanner instanceof HTMLElement ? devBanner.offsetHeight : 0)
+      );
 
-      if (devBanner && devBanner instanceof HTMLElement) {
-        totalHeaderHeight += devBanner.offsetHeight;
-      }
+    update();
 
-      if (header && header instanceof HTMLElement) {
-        totalHeaderHeight += header.offsetHeight;
-      }
+    window.addEventListener("resize", update);
 
-      setHeaderHeight(totalHeaderHeight || 72);
-    };
-
-    calculateHeaderHeight();
-
-    window.addEventListener("resize", calculateHeaderHeight);
-
-    const observer = new MutationObserver(calculateHeaderHeight);
-    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+    let observer: ResizeObserver | undefined;
+    if (devBanner instanceof HTMLElement && typeof ResizeObserver !== "undefined") {
+      observer = new ResizeObserver(update);
+      observer.observe(devBanner);
+    }
 
     return () => {
-      window.removeEventListener("resize", calculateHeaderHeight);
-      observer.disconnect();
+      window.removeEventListener("resize", update);
+      observer?.disconnect();
     };
   }, []);
 
@@ -464,16 +471,22 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               isCollapsed ? "flex-col gap-1 py-2.5 px-1" : "flex-row gap-2 px-4 py-2.5"
             }`}
           >
-            <MdFileDownload className={isCollapsed ? "text-lg" : "text-base"} />
-            <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
-              {isGenerating
-                ? isCollapsed
-                  ? "..."
-                  : "Generating..."
-                : isCollapsed
-                ? "PDF"
-                : "Download Resume"}
-            </span>
+            {isGenerating && !isCollapsed ? (
+              <WorkingRail className="h-[3px] w-4 shrink-0" />
+            ) : (
+              <MdFileDownload className={isCollapsed ? "text-lg" : "text-base"} />
+            )}
+            {isGenerating && !isCollapsed ? (
+              <PhaseLabel
+                phase={generatingPhase}
+                fallback="Building your PDF"
+                className="text-[13px] truncate"
+              />
+            ) : (
+              <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
+                {isGenerating ? "..." : isCollapsed ? "PDF" : "Download Resume"}
+              </span>
+            )}
           </button>
 
           {/* Tier 2 — secondary work controls */}

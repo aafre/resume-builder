@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback, useId, lazy, Suspense 
 import ModalShell from './shared/ModalShell';
 import { MdClose, MdRefresh, MdFileDownload, MdWarning } from 'react-icons/md';
 import { isMobileDevice } from '../utils/deviceDetection';
+import { PhaseLabel, WorkingRail } from "./shared/GenerationPhase";
 
 // Lazy-load PDF.js viewer (only loaded on mobile devices)
 const PdfViewerMobile = lazy(() =>
@@ -14,6 +15,8 @@ interface PreviewModalProps {
   previewUrl: string | null;
   isGenerating: boolean;
   isDownloading: boolean;
+  /** What the PDF build is doing right now; null when idle */
+  downloadPhase?: string | null;
   isStale: boolean;
   error: string | null;
   onRefresh: () => void;
@@ -28,6 +31,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
   previewUrl,
   isGenerating,
   isDownloading,
+  downloadPhase = null,
   isStale,
   error,
   onRefresh,
@@ -229,8 +233,12 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
               >
                 {isDownloading ? (
                   <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
-                    <span>Downloading...</span>
+                    <WorkingRail className="h-1.5 w-8 shrink-0 !bg-white/25 [&>span]:!bg-white/80" />
+                    <PhaseLabel
+                      phase={downloadPhase}
+                      fallback="Building your PDF"
+                      className="truncate"
+                    />
                   </>
                 ) : (
                   <>

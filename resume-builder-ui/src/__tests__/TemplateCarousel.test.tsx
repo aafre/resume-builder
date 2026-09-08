@@ -1,4 +1,5 @@
 import { render, screen, waitFor, cleanup } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import TemplateCarousel from '../components/TemplateCarousel';
@@ -96,5 +97,56 @@ describe('TemplateCarousel', () => {
     // All should have decoding="async"
     expect(img1).toHaveAttribute('decoding', 'async');
     expect(img3).toHaveAttribute('decoding', 'async');
+  });
+
+  it('offers a start CTA on every card, not just a selected one', async () => {
+    render(
+      <MemoryRouter>
+        <TemplateCarousel />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByAltText('Template 1')).toBeInTheDocument();
+    });
+
+    // The old design put the real CTA only on the "selected" card and gave the
+    // others a button that did nothing but select. Every card starts now.
+    expect(
+      screen.getAllByRole('button', { name: /start with this template/i })
+    ).toHaveLength(mockTemplates.length);
+  });
+
+  it('opens the reader from a card and steps through templates with the arrow keys', async () => {
+    const user = userEvent.setup();
+    render(
+      <MemoryRouter>
+        <TemplateCarousel />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByAltText('Template 1')).toBeInTheDocument();
+    });
+
+    await user.click(
+      screen.getByRole('button', { name: /read the template 2 template at full size/i })
+    );
+
+    const dialog = await screen.findByRole('dialog');
+    expect(dialog).toHaveTextContent('Template 2');
+    expect(screen.getByAltText('Template 2 resume template preview')).toBeInTheDocument();
+
+    // jsdom has no startViewTransition, so this exercises the plain-update
+    // fallback path — which is also what Firefox gets.
+    await user.keyboard('{ArrowRight}');
+    expect(
+      await screen.findByAltText('Template 3 resume template preview')
+    ).toBeInTheDocument();
+
+    await user.keyboard('{Escape}');
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
   });
 });

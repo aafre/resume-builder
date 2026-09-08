@@ -15,7 +15,7 @@ interface ContactInfoSectionProps {
 
 /** Form label — interface chrome, so it stays in the 500/600 band per the
  *  Two-Weight Rule. Only the colour moves onto tokens. */
-const LABEL = "block text-ink font-semibold mb-2 text-sm";
+const LABEL = "block text-ink font-semibold mb-edit-field text-sm";
 
 /** Text input / select — 8px control radius, Deep Signal focus ring. */
 const FIELD =
@@ -36,15 +36,15 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
     <div className="section-card">
       {/* Title role: 1.25rem / 700 / ink — the same setting SectionHeader gives
           every other section title, so the page has one type spine. */}
-      <h2 className="font-display text-xl font-bold text-ink mb-2">
+      <h2 className="font-display text-xl font-bold text-ink mb-edit-field">
         Contact Information
       </h2>
-      <p className="font-display text-base font-extralight text-ink/60 mb-6">
+      <p className="font-display text-base font-extralight text-ink/60 mb-edit-block">
         Start by filling out your basic contact information
       </p>
 
       {/* Responsive Grid: 1 column mobile, 2 columns tablet/desktop */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-edit-group mb-edit-block">
         {/* Name Field */}
         <div>
           <label className={LABEL}>Name</label>
@@ -115,11 +115,11 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
       </div>
 
       {/* Social Links Section */}
-      <div className="border-t border-gray-200 pt-6">
-        <h3 className="font-display text-base font-bold text-ink mb-2">
+      <div className="border-t border-gray-200 pt-edit-block">
+        <h3 className="font-display text-base font-bold text-ink mb-edit-field">
           Social Links
         </h3>
-        <p className="font-display text-base font-extralight text-ink/60 mb-6">
+        <p className="font-display text-base font-extralight text-ink/60 mb-edit-block">
           Add links to your professional profiles (LinkedIn, GitHub, etc.)
         </p>
 
@@ -128,17 +128,21 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
              telling you to go press a green button somewhere else — two
              controls for one action, and the dashed border spent on a div that
              could not be clicked. */
-          <p className="font-display text-base font-extralight text-ink/60 mb-4">
+          <p className="font-display text-base font-extralight text-ink/60 mb-edit-group">
             No social links added yet.
           </p>
         ) : (
-          <div className="space-y-4 mb-4">
+          <div className="space-y-edit-group mb-edit-group">
             {socialLinks.map((link, index) => (
+              // Chalk Dark, not Chalk: this row sits on the white section card,
+              // and Chalk (#fafaf8) against white is not a visible ground — the
+              // border was doing all the separating. Tonal separation instead,
+              // and no hover lift: a static form row is not going anywhere.
               <div
                 key={index}
-                className="bg-chalk rounded-xl p-4 border border-gray-200 shadow-sm transition-shadow duration-200 hover:shadow-md"
+                className="bg-chalk-dark rounded-xl p-4"
               >
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-edit-group">
                   {/* Platform Dropdown */}
                   <div>
                     <label className={LABEL}>Platform</label>
@@ -181,7 +185,7 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
                     {socialLinkErrors[index] && (
                       /* red-600 (4.83:1 on white, 4.75:1 on Chalk) — red-500
                          measures 3.76:1 and fails AA at this size. */
-                      <p className="text-red-600 text-xs mt-1 flex items-start gap-1">
+                      <p className="text-red-600 text-xs mt-edit-field flex items-start gap-1">
                         <TriangleAlert
                           className="h-3.5 w-3.5 shrink-0 mt-px"
                           strokeWidth={1.75}
@@ -221,7 +225,7 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
                 </div>
 
                 {/* Remove Button */}
-                <div className="mt-3 flex justify-end">
+                <div className="mt-edit-group flex justify-end">
                   <button
                     type="button"
                     onClick={() => onRemoveSocialLink(index)}

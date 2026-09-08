@@ -45,7 +45,8 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
 }) => {
   return (
     <SortableItem id={id}>
-      <div className="bg-chalk-dark p-6 mb-6 rounded-xl border border-gray-200 shadow-sm">
+      {/* Tonal separation only — see the note in ExperienceItem. */}
+      <div className="bg-chalk-dark p-4 sm:p-6 mb-edit-group rounded-xl">
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-semibold">Entry {index + 1}</h3>
           <button
@@ -57,9 +58,9 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
             <MdDelete className="text-xl" />
           </button>
         </div>
-        <div className="mt-4">
+        <div className="mt-edit-group">
           {supportsIcons && iconRegistry && (
-            <div className="mb-4">
+            <div className="mb-edit-group">
               <IconManager
                 value={data.icon || null}
                 onChange={(filename, file) => onIconChange(index, filename, file)}
@@ -69,9 +70,9 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
               />
             </div>
           )}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-edit-group">
             <div>
-              <label className="block text-ink font-medium mb-1">
+              <label className="block text-ink font-medium mb-edit-field">
                 Degree
               </label>
               <RichTextInput
@@ -82,7 +83,7 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
               />
             </div>
             <div>
-              <label className="block text-ink font-medium mb-1">
+              <label className="block text-ink font-medium mb-edit-field">
                 School
               </label>
               <RichTextInput
@@ -93,7 +94,7 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
               />
             </div>
             <div>
-              <label className="block text-ink font-medium mb-1">
+              <label className="block text-ink font-medium mb-edit-field">
                 Year
               </label>
               <input
@@ -106,7 +107,7 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
               />
             </div>
             <div>
-              <label className="block text-ink font-medium mb-1">
+              <label className="block text-ink font-medium mb-edit-field">
                 Field of Study
               </label>
               <RichTextInput

@@ -4,6 +4,7 @@
 import { useState, useEffect, useCallback, RefObject } from 'react';
 import { Section } from '../../types';
 import { UseSectionNavigationReturn } from '../../types/editor';
+import { chromeHeight } from '../../utils/chromeHeight';
 
 /**
  * Props for useSectionNavigation hook (dependency injection from Layer 1)
@@ -12,7 +13,6 @@ export interface UseSectionNavigationProps {
   sections: Section[];
   contactInfoRef: RefObject<HTMLDivElement>;
   sectionRefs: RefObject<(HTMLDivElement | null)[]>;
-  setContextIsSidebarCollapsed: (collapsed: boolean) => void;
 }
 
 /**
@@ -20,7 +20,7 @@ export interface UseSectionNavigationProps {
  *
  * Manages section navigation and scroll detection including:
  * - Active section tracking based on scroll position
- * - Sidebar collapse state synced with EditorContext
+ * - Sidebar collapse state
  * - Scroll-to-section functionality with smooth scrolling
  * - Passive scroll listener for performance
  *
@@ -32,7 +32,6 @@ export interface UseSectionNavigationProps {
  *   sections,
  *   contactInfoRef,
  *   sectionRefs,
- *   setContextIsSidebarCollapsed
  * });
  *
  * // Track active section during scroll
@@ -45,30 +44,14 @@ export const useSectionNavigation = ({
   sections,
   contactInfoRef,
   sectionRefs,
-  setContextIsSidebarCollapsed,
 }: UseSectionNavigationProps): UseSectionNavigationReturn => {
-  // Scroll offset to account for fixed headers (in pixels)
-  const SCROLL_Y_OFFSET = -100;
-
   // Track active section: -1 for contact info, 0+ for sections
   const [activeSectionIndex, setActiveSectionIndex] = useState<number>(-1);
 
-  // Track sidebar collapse state (local + context sync)
-  const [isSidebarCollapsed, setIsSidebarCollapsedLocal] = useState(false);
-
-  /**
-   * Wrapper for setIsSidebarCollapsed that syncs with EditorContext
-   * This ensures the footer knows about sidebar state changes
-   *
-   * @param collapsed - New collapsed state
-   */
-  const setIsSidebarCollapsed = useCallback(
-    (collapsed: boolean) => {
-      setIsSidebarCollapsedLocal(collapsed);
-      setContextIsSidebarCollapsed(collapsed);
-    },
-    [setContextIsSidebarCollapsed]
-  );
+  // The rail's collapsed state. It used to be mirrored into EditorContext "so
+  // the footer knows about sidebar state changes" -- nothing ever read it back;
+  // the gutter is driven by this value passed down as a prop.
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   /**
    * Scrolls to a specific section with smooth animation
@@ -85,8 +68,15 @@ export const useSectionNavigation = ({
         index === -1 ? contactInfoRef.current : sectionRefs.current?.[index];
 
       if (targetRef) {
+        // Clear the sticky header plus a 16px breathing gap, so the section
+        // title does not land flush against the chrome. Read at click time
+        // because the header height is breakpoint-dependent. This was a bare
+        // `-100`, a third independent opinion about how tall the chrome is
+        // (the CSS vars say 64 / 72).
         const y =
-          targetRef.getBoundingClientRect().top + window.pageYOffset + SCROLL_Y_OFFSET;
+          targetRef.getBoundingClientRect().top +
+          window.pageYOffset -
+          (chromeHeight() + 16);
 
         window.scrollTo({ top: y, behavior: 'smooth' });
       }

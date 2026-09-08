@@ -6,7 +6,6 @@ import { usePreview } from "../hooks/usePreview";
 import { useAuth } from "../contexts/AuthContext";
 import { useConversion } from "../contexts/ConversionContext";
 import { processSectionsForExport } from "../services/yamlService";
-import { useEditorContext } from "../contexts/EditorContext";
 import usePreferencePersistence from "../hooks/usePreferencePersistence";
 
 // Import extracted hooks
@@ -48,11 +47,11 @@ const EditorSkeleton = () => (
     <span className="sr-only">Loading your resume…</span>
     <div
       aria-hidden="true"
-      className="mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8 max-w-4xl lg:max-w-none lg:mr-[296px]"
+      className="mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8 max-w-4xl lg:max-w-[calc(64rem+296px)] lg:pr-[296px]"
     >
       <div className="h-8 w-64 rounded-lg bg-chalk-dark animate-pulse mb-4"></div>
 
-      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-4">
+      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-edit-section">
         <div className="h-5 w-44 rounded-md bg-chalk-dark animate-pulse mb-4"></div>
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="h-11 rounded-lg bg-chalk-dark animate-pulse"></div>
@@ -62,17 +61,17 @@ const EditorSkeleton = () => (
         </div>
       </div>
 
-      <div className="h-12 rounded-xl border border-gray-200 bg-white mb-4"></div>
+      <div className="h-12 rounded-xl border border-gray-200 bg-white mb-edit-section"></div>
 
-      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-4">
+      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-edit-section">
         <div className="h-5 w-40 rounded-md bg-chalk-dark animate-pulse mb-4"></div>
         <div className="h-24 rounded-lg bg-chalk-dark animate-pulse"></div>
       </div>
-      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-4">
+      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-edit-section">
         <div className="h-5 w-32 rounded-md bg-chalk-dark animate-pulse mb-4"></div>
         <div className="h-40 rounded-lg bg-chalk-dark animate-pulse"></div>
       </div>
-      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-4">
+      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-edit-section">
         <div className="h-5 w-36 rounded-md bg-chalk-dark animate-pulse mb-4"></div>
         <div className="h-24 rounded-lg bg-chalk-dark animate-pulse"></div>
       </div>
@@ -98,7 +97,6 @@ const Editor: React.FC = () => {
   const [searchParams] = useSearchParams();
 
   // Get context for footer integration
-  const { setIsSidebarCollapsed: setContextIsSidebarCollapsed } = useEditorContext();
 
   // ===== LAYER 1: Core State Hooks =====
   const modalManager = useModalManager();
@@ -161,7 +159,6 @@ const Editor: React.FC = () => {
     sections,
     contactInfoRef,
     sectionRefs,
-    setContextIsSidebarCollapsed,
   });
 
   // ===== LAYER 3: Complex Logic Hooks =====
@@ -452,6 +449,7 @@ const Editor: React.FC = () => {
           handleOpenPreview: editorActions.handleOpenPreview,
           handleStartFresh: editorActions.handleStartFresh,
           isDownloading: editorActions.isDownloading,
+          downloadPhase: editorActions.downloadPhase,
           isOpeningPreview: editorActions.isOpeningPreview,
         }}
         preview={{
@@ -492,6 +490,7 @@ const Editor: React.FC = () => {
           loadingStartFresh: editorActions.loadingStartFresh,
           loadingLoad: fileOperations.loadingLoad,
           isDownloading: editorActions.isDownloading,
+          downloadPhase: editorActions.downloadPhase,
         }}
         isAnonymous={isAnonymous}
         isAuthenticated={isAuthenticated}

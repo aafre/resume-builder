@@ -134,7 +134,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({
         isCollapsed={isCollapsed}
         onToggleCollapse={handleToggleCollapse}
       />
-      {!isCollapsed && education.length > 0 && <MarkdownHint className="mb-4" />}
+      {!isCollapsed && education.length > 0 && <MarkdownHint className="mb-edit-field" />}
       {!isCollapsed && education.length === 0 && (
         <SectionEmptyState
           headline="No education yet."
@@ -180,7 +180,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({
       {/* The empty state carries its own add control, so this one stands down
           while the section is empty — never two "add" buttons on one card. */}
       {!isCollapsed && education.length > 0 && (
-        <GhostButton onClick={handleAddItem} className="mt-4">
+        <GhostButton onClick={handleAddItem} className="mt-edit-group">
           Add Entry
         </GhostButton>
       )}

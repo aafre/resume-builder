@@ -122,6 +122,7 @@ export interface EditorContentEditorActionsProps {
   handleOpenPreview: () => Promise<void>;
   handleStartFresh: () => void;
   isDownloading: boolean;
+  downloadPhase: string | null;
   isOpeningPreview: boolean;
 }
 
@@ -264,8 +265,10 @@ export const EditorContent: React.FC<EditorContentProps> = ({
 
   return (
     <div
-      className={`mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-[calc(var(--mobile-action-bar-height)+1rem)] lg:pb-[1rem] max-w-4xl lg:max-w-none transition-all duration-300 ${
-        navigation.isSidebarCollapsed ? 'lg:mr-[88px]' : 'lg:mr-[296px]'
+      className={`mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-[calc(var(--mobile-action-bar-height)+1rem)] lg:pb-[1rem] max-w-4xl transition-all duration-300 ${
+        navigation.isSidebarCollapsed
+          ? 'lg:max-w-[calc(64rem+88px)] lg:pr-[88px]'
+          : 'lg:max-w-[calc(64rem+296px)] lg:pr-[296px]'
       }`}
     >
       {/* Page heading — the only h1 on the editor route. Names the document
@@ -298,9 +301,11 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         </div>
       )}
 
-      {/* Contact Information Section */}
+      {/* Contact Information Section — the one .section-card with no drag grip
+          beneath it, so it carries the section step itself rather than
+          inheriting it from the next card's grip. */}
       {contactInfo && (
-        <div ref={refs.contactInfoRef}>
+        <div ref={refs.contactInfoRef} className="mb-edit-section">
           <ContactInfoSection
             contactInfo={contactInfo}
             onUpdate={setContactInfo}
@@ -467,6 +472,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         onDownloadClick={editorActions.handleGenerateResume}
         isSaving={saveStatus.saveStatus === 'saving'}
         isGenerating={editorActions.isDownloading}
+        generatingPhase={editorActions.downloadPhase}
         isOpeningPreview={editorActions.isOpeningPreview}
         isGeneratingPreview={preview.isGenerating}
         previewIsStale={preview.isStale}
@@ -504,6 +510,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         onStartFresh={editorActions.handleStartFresh}
         onHelp={modals.openHelpModal}
         isGenerating={editorActions.isDownloading}
+        generatingPhase={editorActions.downloadPhase}
         isOpeningPreview={editorActions.isOpeningPreview}
         isGeneratingPreview={preview.isGenerating}
         previewIsStale={preview.isStale}

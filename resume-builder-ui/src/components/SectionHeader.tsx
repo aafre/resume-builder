@@ -87,7 +87,11 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
     : title;
 
   return (
-    <div className="flex items-center justify-between mb-4">
+    // mb-edit-block is the ONLY gap between a section's title and its body.
+    // GenericSection used to add a second 16px margin on top of this, making
+    // that one section's header gap 32px -- identical to the gap between two
+    // whole sections, and 2x what the other three section types used.
+    <div className="flex items-center justify-between mb-edit-block">
       <div className="flex items-center gap-2 flex-1 min-w-0">
         {/* Collapse/Expand Button */}
         {onToggleCollapse && (

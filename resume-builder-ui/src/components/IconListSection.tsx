@@ -158,10 +158,10 @@ const IconListSection: React.FC<IconListSectionProps> = ({
             <>
               {data.map((item, index) => (
                 <SortableItem key={itemIds[index]} id={itemIds[index]}>
-                  <div className="bg-chalk-dark p-6 mb-6 rounded-xl border border-gray-200 shadow-sm">
+                  <div className="bg-chalk-dark p-6 mb-edit-block rounded-xl border border-gray-200 shadow-sm">
                     <div>
                       {iconRegistry && (
-                        <div className="mb-4">
+                        <div className="mb-edit-group">
                           <IconManager
                             value={item.icon || null}
                             onChange={(filename, file) => handleIconChange(index, filename, file)}
@@ -172,10 +172,10 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                         </div>
                       )}
                       <div>
-                        <MarkdownHint className="mb-2" />
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <MarkdownHint className="mb-edit-field" />
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-edit-group">
                           <div>
-                            <label className="block text-ink font-medium mb-1">
+                            <label className="block text-ink font-medium mb-edit-field">
                               Certification
                             </label>
                             <RichTextInput
@@ -188,7 +188,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                             />
                           </div>
                           <div>
-                            <label className="block text-ink font-medium mb-1">
+                            <label className="block text-ink font-medium mb-edit-field">
                               Issuer
                             </label>
                             <RichTextInput
@@ -199,7 +199,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                             />
                           </div>
                           <div>
-                            <label className="block text-ink font-medium mb-1">
+                            <label className="block text-ink font-medium mb-edit-field">
                               Date
                             </label>
                             <RichTextInput
@@ -210,7 +210,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                             />
                           </div>
                         </div>
-                        <div className="flex justify-end mt-4">
+                        <div className="flex justify-end mt-edit-group">
                           <button
                             type="button"
                             onClick={() => handleRemoveItem(index)}
