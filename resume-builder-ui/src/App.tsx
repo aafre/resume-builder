@@ -193,7 +193,7 @@ const EditorLoadingSkeleton = () => (
     <span className="sr-only">Loading your resume editor…</span>
     <div
       aria-hidden="true"
-      className="mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8 max-w-4xl lg:max-w-5xl lg:mr-[296px]"
+      className="mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8 max-w-4xl lg:max-w-[calc(64rem+296px)] lg:pr-[296px]"
     >
       {/* Page heading */}
       <div className="h-8 w-64 rounded-lg bg-chalk-dark animate-pulse mb-4"></div>
