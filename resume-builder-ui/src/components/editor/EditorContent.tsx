@@ -122,6 +122,7 @@ export interface EditorContentEditorActionsProps {
   handleOpenPreview: () => Promise<void>;
   handleStartFresh: () => void;
   isDownloading: boolean;
+  downloadPhase: string | null;
   isOpeningPreview: boolean;
 }
 
@@ -467,6 +468,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         onDownloadClick={editorActions.handleGenerateResume}
         isSaving={saveStatus.saveStatus === 'saving'}
         isGenerating={editorActions.isDownloading}
+        generatingPhase={editorActions.downloadPhase}
         isOpeningPreview={editorActions.isOpeningPreview}
         isGeneratingPreview={preview.isGenerating}
         previewIsStale={preview.isStale}
@@ -504,6 +506,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         onStartFresh={editorActions.handleStartFresh}
         onHelp={modals.openHelpModal}
         isGenerating={editorActions.isDownloading}
+        generatingPhase={editorActions.downloadPhase}
         isOpeningPreview={editorActions.isOpeningPreview}
         isGeneratingPreview={preview.isGenerating}
         previewIsStale={preview.isStale}

@@ -452,6 +452,7 @@ const Editor: React.FC = () => {
           handleOpenPreview: editorActions.handleOpenPreview,
           handleStartFresh: editorActions.handleStartFresh,
           isDownloading: editorActions.isDownloading,
+          downloadPhase: editorActions.downloadPhase,
           isOpeningPreview: editorActions.isOpeningPreview,
         }}
         preview={{
@@ -492,6 +493,7 @@ const Editor: React.FC = () => {
           loadingStartFresh: editorActions.loadingStartFresh,
           loadingLoad: fileOperations.loadingLoad,
           isDownloading: editorActions.isDownloading,
+          downloadPhase: editorActions.downloadPhase,
         }}
         isAnonymous={isAnonymous}
         isAuthenticated={isAuthenticated}
