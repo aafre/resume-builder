@@ -128,7 +128,7 @@ export const PdfViewerMobile: React.FC<PdfViewerMobileProps> = ({
   }, [pdfUrl, onLoad, onError]);
 
   return (
-    <div className="w-full h-full overflow-y-auto bg-gray-100 p-4">
+    <div className="w-full h-full overflow-y-auto bg-chalk-dark p-4">
       <div ref={containerRef} className="flex flex-col items-center">
         {pages.map((page, index) => (
           <img

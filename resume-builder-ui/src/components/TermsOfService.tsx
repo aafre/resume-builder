@@ -2,7 +2,7 @@ const TermsOfService = () => {
   return (
     <div className="container mx-auto my-10 px-4 sm:px-6 md:px-8">
       <h1 className="text-3xl font-bold text-center mb-6">Terms of Service</h1>
-      <p className="text-center text-gray-500 mb-6">
+      <p className="text-center text-ink/60 mb-6">
         Last Updated: 1 January 2026
       </p>
       <div className="bg-white p-6 rounded-lg shadow-lg">
@@ -101,7 +101,7 @@ const TermsOfService = () => {
           For inquiries, please contact us on Github by creating an issue{" "}
           <a
             href="https://github.com/aafre/resume-builder/issues"
-            className="text-accent underline"
+            className="text-accent-text underline"
           >
             here
           </a>

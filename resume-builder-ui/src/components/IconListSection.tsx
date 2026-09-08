@@ -7,6 +7,7 @@ import { MdDelete } from "react-icons/md";
 import ItemDndContext from "./ItemDndContext";
 import SortableItem from "./SortableItem";
 import { GhostButton } from "./shared/GhostButton";
+import { SectionEmptyState } from "./shared/SectionEmptyState";
 
 interface Certification {
   certification: string;
@@ -125,7 +126,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
   };
 
   return (
-    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8 mb-4 sm:mb-8 border-l-4 border-l-accent border border-gray-200/60">
+    <div className="section-card">
       <SectionHeader
         title={sectionName}
         isEditing={isEditing}
@@ -157,7 +158,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
             <>
               {data.map((item, index) => (
                 <SortableItem key={itemIds[index]} id={itemIds[index]}>
-                  <div className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md">
+                  <div className="bg-chalk-dark p-6 mb-6 rounded-xl border border-gray-200 shadow-sm">
                     <div>
                       {iconRegistry && (
                         <div className="mb-4">
@@ -174,7 +175,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                         <MarkdownHint className="mb-2" />
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <div>
-                            <label className="block text-gray-700 font-medium mb-1">
+                            <label className="block text-ink font-medium mb-1">
                               Certification
                             </label>
                             <RichTextInput
@@ -187,7 +188,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                             />
                           </div>
                           <div>
-                            <label className="block text-gray-700 font-medium mb-1">
+                            <label className="block text-ink font-medium mb-1">
                               Issuer
                             </label>
                             <RichTextInput
@@ -198,7 +199,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                             />
                           </div>
                           <div>
-                            <label className="block text-gray-700 font-medium mb-1">
+                            <label className="block text-ink font-medium mb-1">
                               Date
                             </label>
                             <RichTextInput
@@ -213,7 +214,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                           <button
                             type="button"
                             onClick={() => handleRemoveItem(index)}
-                            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            className="inline-flex min-h-11 min-w-11 items-center justify-center text-ink/60 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                             title="Remove Certification"
                             aria-label="Remove certification"
                           >
@@ -229,7 +230,17 @@ const IconListSection: React.FC<IconListSectionProps> = ({
           )}
         </ItemDndContext>
       )}
-      {!isCollapsed && (
+      {!isCollapsed && data.length === 0 && (
+        <SectionEmptyState
+          headline="No certifications yet."
+          hint="Add a licence, certification or course — its name, who issued it, and the year. One line each is enough; recruiters scan this section, they don't read it."
+          addLabel="Add Item"
+          onAdd={handleAddItem}
+        />
+      )}
+      {/* The empty state carries its own add control, so this one stands down
+          while the section is empty — never two "add" buttons on one card. */}
+      {!isCollapsed && data.length > 0 && (
         <GhostButton onClick={handleAddItem}>
           Add Item
         </GhostButton>

@@ -327,7 +327,7 @@ describe("FormattingBubbleMenu", () => {
       const boldButton = screen.queryByLabelText("Bold");
       if (boldButton) {
         // Hover state should be defined in classes
-        expect(boldButton.className).toContain("hover:bg-gray-100");
+        expect(boldButton.className).toContain("hover:bg-chalk-dark");
       }
     });
   });

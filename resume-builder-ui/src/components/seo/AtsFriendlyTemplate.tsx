@@ -53,29 +53,29 @@ export default function AtsFriendlyTemplate() {
               {/* Template info */}
               <div>
                 <h3 className="font-display text-2xl font-bold text-ink mb-4">Template Specifications</h3>
-                <ul className="space-y-3 text-stone-warm">
+                <ul className="space-y-3 text-ink/60">
                   <li className="flex items-start">
-                    <span className="text-accent font-bold mr-3">✓</span>
+                    <span className="text-accent-text font-bold mr-3">✓</span>
                     <span><strong>Font:</strong> Calibri 11pt (easily parseable)</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-accent font-bold mr-3">✓</span>
+                    <span className="text-accent-text font-bold mr-3">✓</span>
                     <span><strong>Layout:</strong> Single-column design</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-accent font-bold mr-3">✓</span>
+                    <span className="text-accent-text font-bold mr-3">✓</span>
                     <span><strong>Margins:</strong> 1-inch on all sides</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-accent font-bold mr-3">✓</span>
+                    <span className="text-accent-text font-bold mr-3">✓</span>
                     <span><strong>Size:</strong> US Letter (8.5" x 11")</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-accent font-bold mr-3">✓</span>
+                    <span className="text-accent-text font-bold mr-3">✓</span>
                     <span><strong>Sections:</strong> Summary, Experience, Education, Skills</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-accent font-bold mr-3">✓</span>
+                    <span className="text-accent-text font-bold mr-3">✓</span>
                     <span><strong>Formats:</strong> DOCX, PDF available</span>
                   </li>
                 </ul>

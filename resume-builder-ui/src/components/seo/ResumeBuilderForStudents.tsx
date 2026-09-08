@@ -83,7 +83,7 @@ export default function ResumeBuilderForStudents() {
             ].map((tip, i) => (
               <div key={i} className="bg-white rounded-2xl p-6 shadow-sm border border-black/[0.06] border-l-4 border-l-accent">
                 <h3 className="font-display text-lg font-bold text-ink mb-2">{tip.title}</h3>
-                <p className="text-stone-warm font-extralight leading-relaxed">{tip.desc}</p>
+                <p className="text-ink/60 font-extralight leading-relaxed">{tip.desc}</p>
               </div>
             ))}
           </div>
@@ -99,7 +99,7 @@ export default function ResumeBuilderForStudents() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             5 Common Student Resume Mistakes
           </h2>
-          <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-10">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-4xl mx-auto text-center leading-relaxed mb-10">
             Career centers see these errors on nearly every first draft. Fixing them will
             immediately set your resume apart from other applicants.
           </p>
@@ -133,7 +133,7 @@ export default function ResumeBuilderForStudents() {
                   </span>
                   <div>
                     <h3 className="font-display text-lg font-bold text-ink mb-2">{item.mistake}</h3>
-                    <p className="text-stone-warm font-extralight leading-relaxed">{item.fix}</p>
+                    <p className="text-ink/60 font-extralight leading-relaxed">{item.fix}</p>
                   </div>
                 </div>
               </div>
@@ -179,12 +179,12 @@ export default function ResumeBuilderForStudents() {
               >
                 <summary className="flex items-center justify-between cursor-pointer px-6 py-5 font-display font-bold text-ink hover:bg-chalk-dark/50 transition-colors duration-200">
                   <span className="pr-4">{faq.question}</span>
-                  <span className="text-accent text-xl flex-shrink-0 transition-transform duration-300 group-open:rotate-45">
+                  <span className="text-accent-text text-xl flex-shrink-0 transition-transform duration-300 group-open:rotate-45">
                     +
                   </span>
                 </summary>
                 <div className="px-6 pb-5">
-                  <p className="text-stone-warm font-extralight leading-relaxed">
+                  <p className="text-ink/60 font-extralight leading-relaxed">
                     {faq.answer}
                   </p>
                 </div>

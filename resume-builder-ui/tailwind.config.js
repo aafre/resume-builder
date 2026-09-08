@@ -19,8 +19,6 @@ module.exports = {
           DEFAULT: '#fafaf8',
           dark: '#f0efe9',
         },
-        'stone-warm': '#8a8680',
-        mist: '#a8a4a0',
         accent: '#00d47e',
         'accent-text': '#007a48',
       },
@@ -29,19 +27,22 @@ module.exports = {
           css: {
             '--tw-prose-body': theme('colors.ink.DEFAULT'),
             '--tw-prose-headings': theme('colors.ink.DEFAULT'),
-            '--tw-prose-links': theme('colors.accent'),
+            '--tw-prose-links': theme('colors.accent-text'),
             '--tw-prose-bold': theme('colors.ink.DEFAULT'),
             '--tw-prose-bullets': theme('colors.accent'),
             '--tw-prose-quotes': theme('colors.ink.DEFAULT'),
             '--tw-prose-quote-borders': theme('colors.accent'),
-            '--tw-prose-counters': theme('colors.stone-warm'),
-            '--tw-prose-captions': theme('colors.stone-warm'),
+            // Muted/secondary text is ink at 60% opacity, not a separate token — see
+            // "no bespoke grey" note on the color palette below. rgba() here because
+            // theme() returns a flat hex, not an opacity-aware value.
+            '--tw-prose-counters': 'rgba(12, 12, 12, 0.6)',
+            '--tw-prose-captions': 'rgba(12, 12, 12, 0.6)',
             '--tw-prose-code': theme('colors.ink.DEFAULT'),
             '--tw-prose-pre-code': '#e5e7eb',
             '--tw-prose-pre-bg': theme('colors.ink.DEFAULT'),
             fontFamily: theme('fontFamily.display').join(', '),
             a: {
-              color: theme('colors.accent'),
+              color: theme('colors.accent-text'),
               textDecoration: 'none',
               '&:hover': {
                 color: theme('colors.ink.DEFAULT'),
@@ -69,9 +70,7 @@ module.exports = {
       spacing: {
         'header-mobile': 'var(--header-height-mobile)',
         'header-desktop': 'var(--header-height-desktop)',
-        'footer': 'var(--footer-height)',
         'mobile-bar': 'var(--mobile-action-bar-height)',
-        'tablet-toolbar': 'var(--tablet-toolbar-height)',
       },
     },
   },

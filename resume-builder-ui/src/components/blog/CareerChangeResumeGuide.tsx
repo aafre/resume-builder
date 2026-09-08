@@ -20,7 +20,7 @@ export default function CareerChangeResumeGuide() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Switching careers is one of the hardest resume challenges. Your experience does not
           map neatly to the new role, and you are competing against candidates who have direct
           experience. But a well-crafted career change resume can bridge that gap &mdash; by
@@ -31,14 +31,14 @@ export default function CareerChangeResumeGuide() {
         <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
           <h2 className="font-bold text-ink mb-4 text-lg">Table of Contents</h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#when-you-need" className="text-accent hover:underline">When You Need a Career Change Resume</a></li>
-            <li><a href="#right-format" className="text-accent hover:underline">Choosing the Right Format</a></li>
-            <li><a href="#summary" className="text-accent hover:underline">Writing a Career Change Summary</a></li>
-            <li><a href="#transferable-skills" className="text-accent hover:underline">The Transferable Skills Framework</a></li>
-            <li><a href="#experience" className="text-accent hover:underline">Rewriting Your Experience Section</a></li>
-            <li><a href="#examples" className="text-accent hover:underline">Career Change Resume Examples</a></li>
-            <li><a href="#mistakes" className="text-accent hover:underline">Common Mistakes to Avoid</a></li>
-            <li><a href="#faq" className="text-accent hover:underline">FAQ</a></li>
+            <li><a href="#when-you-need" className="text-accent-text hover:underline">When You Need a Career Change Resume</a></li>
+            <li><a href="#right-format" className="text-accent-text hover:underline">Choosing the Right Format</a></li>
+            <li><a href="#summary" className="text-accent-text hover:underline">Writing a Career Change Summary</a></li>
+            <li><a href="#transferable-skills" className="text-accent-text hover:underline">The Transferable Skills Framework</a></li>
+            <li><a href="#experience" className="text-accent-text hover:underline">Rewriting Your Experience Section</a></li>
+            <li><a href="#examples" className="text-accent-text hover:underline">Career Change Resume Examples</a></li>
+            <li><a href="#mistakes" className="text-accent-text hover:underline">Common Mistakes to Avoid</a></li>
+            <li><a href="#faq" className="text-accent-text hover:underline">FAQ</a></li>
           </ol>
         </nav>
 
@@ -47,32 +47,32 @@ export default function CareerChangeResumeGuide() {
           When You Need a Career Change Resume
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           A standard chronological resume works when your next job is a logical extension of your
           last one. But if you are switching industries, functions, or both, a traditional resume
           actually works against you &mdash; it highlights the wrong experience and buries the
           skills that matter for the new role.
         </p>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-4">
+        <p className="text-lg leading-relaxed text-ink/60 mt-4">
           You need a career change resume if:
         </p>
 
-        <ul className="space-y-3 text-lg text-stone-warm">
+        <ul className="space-y-3 text-lg text-ink/60">
           <li className="flex gap-3 items-start">
-            <span className="text-accent mt-1.5">&#x2022;</span>
+            <span className="text-accent-text mt-1.5">&#x2022;</span>
             <span>You are moving to a different industry (e.g., teaching to tech)</span>
           </li>
           <li className="flex gap-3 items-start">
-            <span className="text-accent mt-1.5">&#x2022;</span>
+            <span className="text-accent-text mt-1.5">&#x2022;</span>
             <span>You are changing job functions (e.g., sales to product management)</span>
           </li>
           <li className="flex gap-3 items-start">
-            <span className="text-accent mt-1.5">&#x2022;</span>
+            <span className="text-accent-text mt-1.5">&#x2022;</span>
             <span>You are returning to work after a long gap</span>
           </li>
           <li className="flex gap-3 items-start">
-            <span className="text-accent mt-1.5">&#x2022;</span>
+            <span className="text-accent-text mt-1.5">&#x2022;</span>
             <span>Your most relevant experience is not from your most recent job</span>
           </li>
         </ul>
@@ -82,7 +82,7 @@ export default function CareerChangeResumeGuide() {
           Choosing the Right Resume Format
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           The format you choose determines how recruiters read your story. For career changers,
           the wrong format can bury your strengths.
         </p>
@@ -99,17 +99,17 @@ export default function CareerChangeResumeGuide() {
             <tbody className="divide-y divide-black/[0.06]">
               <tr>
                 <td className="px-6 py-4 font-medium text-ink">Chronological</td>
-                <td className="px-6 py-4 text-stone-warm">Same-field promotions. NOT for career changers.</td>
+                <td className="px-6 py-4 text-ink/60">Same-field promotions. NOT for career changers.</td>
                 <td className="px-6 py-4 text-red-600 text-sm">Highlights irrelevant experience</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-6 py-4 font-medium text-ink">Functional</td>
-                <td className="px-6 py-4 text-stone-warm">Grouping skills over job titles. Hides timeline gaps.</td>
+                <td className="px-6 py-4 text-ink/60">Grouping skills over job titles. Hides timeline gaps.</td>
                 <td className="px-6 py-4 text-yellow-600 text-sm">Some recruiters dislike it; can look evasive</td>
               </tr>
               <tr>
-                <td className="px-6 py-4 font-medium text-accent font-bold">Hybrid (Recommended)</td>
-                <td className="px-6 py-4 text-stone-warm">Career changers. Leads with skills, follows with timeline.</td>
+                <td className="px-6 py-4 font-medium text-accent-text font-bold">Hybrid (Recommended)</td>
+                <td className="px-6 py-4 text-ink/60">Career changers. Leads with skills, follows with timeline.</td>
                 <td className="px-6 py-4 text-green-600 text-sm">Low risk &mdash; ATS-friendly and recruiter-approved</td>
               </tr>
             </tbody>
@@ -132,12 +132,12 @@ export default function CareerChangeResumeGuide() {
           Writing a Career Change Professional Summary
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Your summary is the single most important section on a career change resume. It must
           accomplish three things in 2-3 sentences: establish your new professional identity,
           highlight transferable skills, and explain (briefly) why the transition makes sense.
           For more examples, see our{' '}
-          <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+          <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
             professional summary examples guide
           </Link>.
         </p>
@@ -187,7 +187,7 @@ export default function CareerChangeResumeGuide() {
           The Transferable Skills Framework
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Transferable skills are the bridge between your old career and your new one. The key
           is not just listing them &mdash; it is showing how they apply to the target role.
         </p>
@@ -221,7 +221,7 @@ export default function CareerChangeResumeGuide() {
               </div>
               <div>
                 <h3 className="font-bold text-ink mb-1">{step.title}</h3>
-                <p className="text-stone-warm">{step.desc}</p>
+                <p className="text-ink/60">{step.desc}</p>
               </div>
             </div>
           ))}
@@ -242,34 +242,34 @@ export default function CareerChangeResumeGuide() {
                 <tr>
                   <td className="px-4 py-3 font-medium text-ink">Teaching</td>
                   <td className="px-4 py-3 text-ink">UX Design / Training</td>
-                  <td className="px-4 py-3 text-stone-warm">Curriculum design, user research, accessibility, presentation, stakeholder management</td>
+                  <td className="px-4 py-3 text-ink/60">Curriculum design, user research, accessibility, presentation, stakeholder management</td>
                 </tr>
                 <tr className="bg-chalk-dark">
                   <td className="px-4 py-3 font-medium text-ink">Sales</td>
                   <td className="px-4 py-3 text-ink">Product Management</td>
-                  <td className="px-4 py-3 text-stone-warm">Customer discovery, market analysis, revenue ownership, cross-functional collaboration, data-driven decisions</td>
+                  <td className="px-4 py-3 text-ink/60">Customer discovery, market analysis, revenue ownership, cross-functional collaboration, data-driven decisions</td>
                 </tr>
                 <tr>
                   <td className="px-4 py-3 font-medium text-ink">Military</td>
                   <td className="px-4 py-3 text-ink">Operations / Project Mgmt</td>
-                  <td className="px-4 py-3 text-stone-warm">Team leadership, logistics, risk assessment, process optimization, mission-critical decision-making</td>
+                  <td className="px-4 py-3 text-ink/60">Team leadership, logistics, risk assessment, process optimization, mission-critical decision-making</td>
                 </tr>
                 <tr className="bg-chalk-dark">
                   <td className="px-4 py-3 font-medium text-ink">Retail</td>
                   <td className="px-4 py-3 text-ink">Customer Success</td>
-                  <td className="px-4 py-3 text-stone-warm">Client relationship management, conflict resolution, upselling, inventory/resource management</td>
+                  <td className="px-4 py-3 text-ink/60">Client relationship management, conflict resolution, upselling, inventory/resource management</td>
                 </tr>
                 <tr>
                   <td className="px-4 py-3 font-medium text-ink">Journalism</td>
                   <td className="px-4 py-3 text-ink">Content Marketing</td>
-                  <td className="px-4 py-3 text-stone-warm">Writing, research, deadline management, audience analysis, SEO, editorial planning</td>
+                  <td className="px-4 py-3 text-ink/60">Writing, research, deadline management, audience analysis, SEO, editorial planning</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <p className="text-stone-warm text-sm mt-3">
+          <p className="text-ink/60 text-sm mt-3">
             For role-specific keyword lists, browse our{' '}
-            <Link to="/resume-keywords" className="text-accent hover:underline">resume keywords by job title</Link> pages.
+            <Link to="/resume-keywords" className="text-accent-text hover:underline">resume keywords by job title</Link> pages.
           </p>
         </div>
 
@@ -278,7 +278,7 @@ export default function CareerChangeResumeGuide() {
           Rewriting Your Experience Section
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           The goal is not to hide your past &mdash; it is to reframe it. Every bullet should
           answer: &ldquo;How does this prove I can do the new job?&rdquo;
         </p>
@@ -329,11 +329,11 @@ export default function CareerChangeResumeGuide() {
           </div>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-6">
+        <p className="text-lg leading-relaxed text-ink/60 mt-6">
           Notice the pattern: same underlying experience, different framing. The achievements are
           real &mdash; the language has been translated to speak to the new audience. For help
           rewriting your bullets, try our{' '}
-          <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+          <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
             guide to quantifying accomplishments
           </Link>.
         </p>
@@ -343,9 +343,9 @@ export default function CareerChangeResumeGuide() {
           Career Change Resume Examples
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           These simplified examples show the hybrid format in action. Browse our{' '}
-          <Link to="/examples/software-engineer" className="text-accent hover:underline">resume examples library</Link>
+          <Link to="/examples/software-engineer" className="text-accent-text hover:underline">resume examples library</Link>
           {' '}for full, downloadable templates.
         </p>
 
@@ -354,11 +354,11 @@ export default function CareerChangeResumeGuide() {
           <div className="bg-white border border-black/[0.06] rounded-lg p-5 text-sm space-y-4">
             <div>
               <p className="font-bold text-ink text-base">Sarah Chen</p>
-              <p className="text-stone-warm">Portland, OR | sarah.chen@email.com | portfolio.sarahchen.dev</p>
+              <p className="text-ink/60">Portland, OR | sarah.chen@email.com | portfolio.sarahchen.dev</p>
             </div>
             <div>
               <p className="font-bold text-ink border-b border-black/10 pb-1 mb-2">PROFESSIONAL SUMMARY</p>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 UX designer with 6 years of experience designing learning experiences for diverse
                 audiences. Google UX certified with three end-to-end case studies. Brings deep
                 expertise in user research, accessibility design, and iterative content development
@@ -367,7 +367,7 @@ export default function CareerChangeResumeGuide() {
             </div>
             <div>
               <p className="font-bold text-ink border-b border-black/10 pb-1 mb-2">CORE COMPETENCIES</p>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 User Research &bull; Wireframing (Figma) &bull; Usability Testing &bull; Accessibility
                 (WCAG 2.1) &bull; Information Architecture &bull; Design Thinking &bull; Stakeholder
                 Presentations &bull; Agile Collaboration
@@ -376,15 +376,15 @@ export default function CareerChangeResumeGuide() {
             <div>
               <p className="font-bold text-ink border-b border-black/10 pb-1 mb-2">RELEVANT EXPERIENCE</p>
               <p className="font-bold text-ink">UX Design Intern &mdash; TechStartup Inc. (2025-2026)</p>
-              <p className="text-stone-warm">&bull; Conducted 24 user interviews to inform redesign of onboarding flow, reducing drop-off by 18%</p>
+              <p className="text-ink/60">&bull; Conducted 24 user interviews to inform redesign of onboarding flow, reducing drop-off by 18%</p>
               <p className="font-bold text-ink mt-2">English Teacher &mdash; Lincoln High School (2019-2025)</p>
-              <p className="text-stone-warm">&bull; Designed learning experiences for 150+ students with varied needs, improving assessment scores 23%</p>
-              <p className="text-stone-warm">&bull; Built interactive digital curriculum using LMS tools, increasing student engagement by 35%</p>
+              <p className="text-ink/60">&bull; Designed learning experiences for 150+ students with varied needs, improving assessment scores 23%</p>
+              <p className="text-ink/60">&bull; Built interactive digital curriculum using LMS tools, increasing student engagement by 35%</p>
             </div>
             <div>
               <p className="font-bold text-ink border-b border-black/10 pb-1 mb-2">EDUCATION &amp; CERTIFICATIONS</p>
-              <p className="text-stone-warm">Google UX Design Professional Certificate (2025)</p>
-              <p className="text-stone-warm">B.A. English Literature &mdash; University of Oregon (2019)</p>
+              <p className="text-ink/60">Google UX Design Professional Certificate (2025)</p>
+              <p className="text-ink/60">B.A. English Literature &mdash; University of Oregon (2019)</p>
             </div>
           </div>
         </div>
@@ -423,7 +423,7 @@ export default function CareerChangeResumeGuide() {
           ].map((item, i) => (
             <div key={i} className="bg-chalk-dark rounded-xl p-5">
               <h3 className="font-bold text-red-700 mb-2">{item.mistake}</h3>
-              <p className="text-stone-warm">{item.fix}</p>
+              <p className="text-ink/60">{item.fix}</p>
             </div>
           ))}
         </div>
@@ -466,7 +466,7 @@ export default function CareerChangeResumeGuide() {
           ].map((faq, i) => (
             <div key={i} className="bg-chalk-dark rounded-xl p-5">
               <h3 className="font-bold text-ink mb-2">{faq.q}</h3>
-              <p className="text-stone-warm">{faq.a}</p>
+              <p className="text-ink/60">{faq.a}</p>
             </div>
           ))}
         </div>
@@ -476,13 +476,13 @@ export default function CareerChangeResumeGuide() {
           <h3 className="font-bold text-ink mb-3">Related Guides</h3>
           <ul className="space-y-2 text-ink/80">
             <li>
-              <Link to="/blog/resume-employment-gaps" className="text-accent hover:underline">
+              <Link to="/blog/resume-employment-gaps" className="text-accent-text hover:underline">
                 How to Explain Employment Gaps on Your Resume
               </Link>{' '}
               &mdash; detailed strategies for every type of gap
             </li>
             <li>
-              <Link to="/blog/return-to-work-programs" className="text-accent hover:underline">
+              <Link to="/blog/return-to-work-programs" className="text-accent-text hover:underline">
                 Return to Work Programs Guide
               </Link>{' '}
               &mdash; paid returnships at top companies for career returners

@@ -49,13 +49,13 @@ export default function TemplatesHub() {
             What makes a resume ATS-friendly
           </h2>
           <div className="max-w-4xl mx-auto bg-white rounded-2xl p-8 shadow-premium border border-black/[0.06]">
-            <p className="text-lg md:text-xl font-extralight text-stone-warm mb-6 leading-relaxed">
+            <p className="text-lg md:text-xl font-extralight text-ink/60 mb-6 leading-relaxed">
               Applicant Tracking Systems (ATS) scan resumes for specific formatting and content.
               Over 75% of large employers use ATS software like Workday, Taleo, iCIMS, and Greenhouse
               to filter applications before a human recruiter ever sees them.
               An ATS-friendly template uses:
             </p>
-            <ul className="space-y-3 text-stone-warm">
+            <ul className="space-y-3 text-ink/60">
               <li className="flex items-start">
                 <span className="text-accent font-bold mr-3">1</span>
                 <span><strong>Standard fonts</strong> like Arial, Calibri, or Times New Roman — decorative fonts get misread</span>
@@ -92,7 +92,7 @@ export default function TemplatesHub() {
             <div className="bg-white rounded-2xl p-6 shadow-premium border-2 border-accent/30">
               <div className="text-accent font-bold text-sm uppercase tracking-wider mb-3">ATS-Friendly Template</div>
               <h3 className="font-display text-xl font-bold text-ink mb-4">What the ATS sees:</h3>
-              <div className="bg-chalk-dark rounded-lg p-4 text-sm text-stone-warm font-mono space-y-2">
+              <div className="bg-chalk-dark rounded-lg p-4 text-sm text-ink/60 font-mono space-y-2">
                 <p><strong>Name:</strong> John Smith</p>
                 <p><strong>Title:</strong> Software Engineer</p>
                 <p><strong>Experience:</strong></p>
@@ -107,7 +107,7 @@ export default function TemplatesHub() {
             <div className="bg-white rounded-2xl p-6 shadow-premium border-2 border-red-200">
               <div className="text-red-500 font-bold text-sm uppercase tracking-wider mb-3">Graphic-Heavy Template</div>
               <h3 className="font-display text-xl font-bold text-ink mb-4">What the ATS sees:</h3>
-              <div className="bg-chalk-dark rounded-lg p-4 text-sm text-stone-warm font-mono space-y-2">
+              <div className="bg-chalk-dark rounded-lg p-4 text-sm text-ink/60 font-mono space-y-2">
                 <p>John SmithSoftware Engineer</p>
                 <p>Senior Developer Acme CorpJan</p>
                 <p>2022PresentLed team of 5</p>
@@ -143,7 +143,7 @@ export default function TemplatesHub() {
               <h3 className="font-display text-lg font-bold text-ink mb-2">
                 Professional ATS Template
               </h3>
-              <p className="text-stone-warm text-sm mb-3">
+              <p className="text-ink/60 text-sm mb-3">
                 Clean, modern design that passes all ATS systems. Perfect for any industry.
               </p>
               <div className="text-accent font-semibold text-sm">
@@ -161,33 +161,33 @@ export default function TemplatesHub() {
             Tested on the ATS systems employers actually use
           </h2>
           <div className="max-w-4xl mx-auto">
-            <p className="text-lg md:text-xl font-extralight text-stone-warm text-center leading-relaxed mb-8">
+            <p className="text-lg md:text-xl font-extralight text-ink/60 text-center leading-relaxed mb-8">
               Different companies use different ATS platforms. Our templates are tested against the most common ones to ensure your resume parses correctly regardless of which system the employer uses.
             </p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div className="bg-white rounded-xl p-5 shadow-premium border border-black/[0.06] text-center">
                 <div className="font-display font-bold text-ink text-lg">Workday</div>
-                <p className="text-mist text-xs mt-1">Fortune 500 standard</p>
+                <p className="text-ink/60 text-xs mt-1">Fortune 500 standard</p>
               </div>
               <div className="bg-white rounded-xl p-5 shadow-premium border border-black/[0.06] text-center">
                 <div className="font-display font-bold text-ink text-lg">Taleo (Oracle)</div>
-                <p className="text-mist text-xs mt-1">Enterprise & government</p>
+                <p className="text-ink/60 text-xs mt-1">Enterprise & government</p>
               </div>
               <div className="bg-white rounded-xl p-5 shadow-premium border border-black/[0.06] text-center">
                 <div className="font-display font-bold text-ink text-lg">iCIMS</div>
-                <p className="text-mist text-xs mt-1">Large employers</p>
+                <p className="text-ink/60 text-xs mt-1">Large employers</p>
               </div>
               <div className="bg-white rounded-xl p-5 shadow-premium border border-black/[0.06] text-center">
                 <div className="font-display font-bold text-ink text-lg">Greenhouse</div>
-                <p className="text-mist text-xs mt-1">Tech & startups</p>
+                <p className="text-ink/60 text-xs mt-1">Tech & startups</p>
               </div>
               <div className="bg-white rounded-xl p-5 shadow-premium border border-black/[0.06] text-center">
                 <div className="font-display font-bold text-ink text-lg">Lever</div>
-                <p className="text-mist text-xs mt-1">Mid-size tech</p>
+                <p className="text-ink/60 text-xs mt-1">Mid-size tech</p>
               </div>
               <div className="bg-white rounded-xl p-5 shadow-premium border border-black/[0.06] text-center">
                 <div className="font-display font-bold text-ink text-lg">BambooHR</div>
-                <p className="text-mist text-xs mt-1">Small to mid-size</p>
+                <p className="text-ink/60 text-xs mt-1">Small to mid-size</p>
               </div>
             </div>
           </div>
@@ -203,7 +203,7 @@ export default function TemplatesHub() {
           <div className="max-w-4xl mx-auto space-y-4">
             <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-accent">
               <h3 className="font-display text-lg font-bold text-ink mb-2">1. Match keywords from the job description</h3>
-              <p className="text-stone-warm text-sm leading-relaxed">
+              <p className="text-ink/60 text-sm leading-relaxed">
                 ATS systems rank resumes by keyword match. Read the job posting, identify required
                 skills and qualifications, and mirror that exact language in your resume. Use our{' '}
                 <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">free ATS keyword scanner</Link> to
@@ -212,7 +212,7 @@ export default function TemplatesHub() {
             </div>
             <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-accent">
               <h3 className="font-display text-lg font-bold text-ink mb-2">2. Use both acronyms and full terms</h3>
-              <p className="text-stone-warm text-sm leading-relaxed">
+              <p className="text-ink/60 text-sm leading-relaxed">
                 Write "Search Engine Optimization (SEO)" or "Amazon Web Services (AWS)" the first time you mention
                 a term. Some ATS systems search for the acronym, others for the full phrase. Including both ensures
                 you're matched. See our{' '}
@@ -222,7 +222,7 @@ export default function TemplatesHub() {
             </div>
             <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-accent">
               <h3 className="font-display text-lg font-bold text-ink mb-2">3. Don't sacrifice readability for keywords</h3>
-              <p className="text-stone-warm text-sm leading-relaxed">
+              <p className="text-ink/60 text-sm leading-relaxed">
                 After passing the ATS, your resume will be read by a human. Keyword-stuffed bullets
                 that read awkwardly will get rejected at the human review stage. Write naturally and
                 weave keywords into achievement-focused statements.
@@ -230,7 +230,7 @@ export default function TemplatesHub() {
             </div>
             <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-accent">
               <h3 className="font-display text-lg font-bold text-ink mb-2">4. Submit in the right format</h3>
-              <p className="text-stone-warm text-sm leading-relaxed">
+              <p className="text-ink/60 text-sm leading-relaxed">
                 When in doubt, submit as DOCX — it's the safest format for ATS parsing. If the application
                 specifically asks for PDF, use our PDF export which produces clean, parseable files.
                 Never submit as JPG, PNG, or other image formats.
@@ -249,28 +249,28 @@ export default function TemplatesHub() {
           <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6">
             <div className="bg-white rounded-2xl shadow-premium border-l-4 border-l-red-400 p-6">
               <h3 className="font-display text-lg font-bold text-ink mb-2">Using headers and footers for contact info</h3>
-              <p className="text-stone-warm text-sm">
+              <p className="text-ink/60 text-sm">
                 Many ATS systems cannot read content in headers/footers. Put your name, email, and phone
                 in the main body of the document.
               </p>
             </div>
             <div className="bg-white rounded-2xl shadow-premium border-l-4 border-l-red-400 p-6">
               <h3 className="font-display text-lg font-bold text-ink mb-2">Saving from Canva or design tools</h3>
-              <p className="text-stone-warm text-sm">
+              <p className="text-ink/60 text-sm">
                 PDFs exported from graphic design tools often contain images of text rather than actual
                 text. The ATS sees a blank page. Always use a proper resume builder or word processor.
               </p>
             </div>
             <div className="bg-white rounded-2xl shadow-premium border-l-4 border-l-red-400 p-6">
               <h3 className="font-display text-lg font-bold text-ink mb-2">Creative section titles</h3>
-              <p className="text-stone-warm text-sm">
+              <p className="text-ink/60 text-sm">
                 "Where I've Been" instead of "Experience" or "What I Know" instead of "Skills" — the
                 ATS won't recognize these. Stick to standard section names.
               </p>
             </div>
             <div className="bg-white rounded-2xl shadow-premium border-l-4 border-l-red-400 p-6">
               <h3 className="font-display text-lg font-bold text-ink mb-2">Using text boxes or columns</h3>
-              <p className="text-stone-warm text-sm">
+              <p className="text-ink/60 text-sm">
                 Text boxes and multi-column layouts created in Word can cause content to be read out of
                 order or skipped entirely. Use a single-column layout for maximum compatibility.
               </p>
@@ -288,19 +288,19 @@ export default function TemplatesHub() {
           <div className="grid sm:grid-cols-2 gap-4">
             <Link to="/blog/ats-resume-optimization" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">ATS Resume Optimization Guide</h3>
-              <p className="text-stone-warm text-xs">Beat the bots and land interviews</p>
+              <p className="text-ink/60 text-xs">Beat the bots and land interviews</p>
             </Link>
             <Link to="/blog/how-to-use-resume-keywords" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">How to Use Resume Keywords</h3>
-              <p className="text-stone-warm text-xs">The ultimate keyword optimization guide</p>
+              <p className="text-ink/60 text-xs">The ultimate keyword optimization guide</p>
             </Link>
             <Link to="/resume-keyword-scanner" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Free ATS Keyword Scanner</h3>
-              <p className="text-stone-warm text-xs">Check your resume against any job description</p>
+              <p className="text-ink/60 text-xs">Check your resume against any job description</p>
             </Link>
             <Link to="/blog/resume-mistakes-to-avoid" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">10 Resume Mistakes to Avoid</h3>
-              <p className="text-stone-warm text-xs">Critical errors that kill your chances</p>
+              <p className="text-ink/60 text-xs">Critical errors that kill your chances</p>
             </Link>
           </div>
         </div>

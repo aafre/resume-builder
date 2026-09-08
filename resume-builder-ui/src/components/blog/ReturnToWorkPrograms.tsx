@@ -164,7 +164,7 @@ export default function ReturnToWorkPrograms() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Returnship programs are structured, paid programs designed for professionals re-entering the
           workforce after a career break. Major companies like JP Morgan, Goldman Sachs, Amazon, and
           Microsoft run them specifically to tap into experienced talent that traditional hiring often
@@ -176,12 +176,12 @@ export default function ReturnToWorkPrograms() {
         <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
           <h2 className="font-bold text-ink mb-4 text-lg">Table of Contents</h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#what-is-returnship" className="text-accent hover:underline">What Is a Returnship?</a></li>
-            <li><a href="#programs" className="text-accent hover:underline">Top Return-to-Work Programs (2026)</a></li>
-            <li><a href="#comparison" className="text-accent hover:underline">Program Comparison Table</a></li>
-            <li><a href="#resume-tips" className="text-accent hover:underline">How to Write a Return-to-Work Resume</a></li>
-            <li><a href="#application-tips" className="text-accent hover:underline">Application Tips</a></li>
-            <li><a href="#faq" className="text-accent hover:underline">FAQ</a></li>
+            <li><a href="#what-is-returnship" className="text-accent-text hover:underline">What Is a Returnship?</a></li>
+            <li><a href="#programs" className="text-accent-text hover:underline">Top Return-to-Work Programs (2026)</a></li>
+            <li><a href="#comparison" className="text-accent-text hover:underline">Program Comparison Table</a></li>
+            <li><a href="#resume-tips" className="text-accent-text hover:underline">How to Write a Return-to-Work Resume</a></li>
+            <li><a href="#application-tips" className="text-accent-text hover:underline">Application Tips</a></li>
+            <li><a href="#faq" className="text-accent-text hover:underline">FAQ</a></li>
           </ol>
         </nav>
 
@@ -190,7 +190,7 @@ export default function ReturnToWorkPrograms() {
           What Is a Returnship?
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           A returnship is a professional internship for experienced workers returning after a career
           break. Think of it as an on-ramp back to corporate life. Unlike entry-level internships,
           returnships are designed for mid-career and senior professionals who took time off for
@@ -223,7 +223,7 @@ export default function ReturnToWorkPrograms() {
           Top Return-to-Work Programs (2026)
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           These are the most established returnship programs at major companies. All are paid and most
           have strong conversion rates to full-time employment.
         </p>
@@ -234,7 +234,7 @@ export default function ReturnToWorkPrograms() {
               <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
                 <div>
                   <h3 className="text-xl font-bold text-ink">{program.company}</h3>
-                  <p className="text-accent font-medium text-sm">{program.name}</p>
+                  <p className="text-accent-text font-medium text-sm">{program.name}</p>
                 </div>
                 <div className="flex gap-2">
                   {program.paid && (
@@ -247,22 +247,22 @@ export default function ReturnToWorkPrograms() {
                   </span>
                 </div>
               </div>
-              <p className="text-stone-warm text-sm mb-3">{program.description}</p>
+              <p className="text-ink/60 text-sm mb-3">{program.description}</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 <div>
                   <span className="font-medium text-ink">Fields:</span>{' '}
-                  <span className="text-stone-warm">{program.fields}</span>
+                  <span className="text-ink/60">{program.fields}</span>
                 </div>
                 <div>
                   <span className="font-medium text-ink">Min. career break:</span>{' '}
-                  <span className="text-stone-warm">{program.minGap}</span>
+                  <span className="text-ink/60">{program.minGap}</span>
                 </div>
               </div>
               <a
                 href={program.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block mt-3 text-accent hover:underline text-sm font-medium"
+                className="inline-block mt-3 text-accent-text hover:underline text-sm font-medium"
               >
                 View program details &rarr;
               </a>
@@ -290,9 +290,9 @@ export default function ReturnToWorkPrograms() {
               {PROGRAMS.map((p, i) => (
                 <tr key={i} className={i % 2 === 1 ? 'bg-chalk-dark' : ''}>
                   <td className="px-4 py-3 font-medium text-ink">{p.company}</td>
-                  <td className="px-4 py-3 text-stone-warm">{p.name}</td>
-                  <td className="px-4 py-3 text-center text-stone-warm">{p.duration}</td>
-                  <td className="px-4 py-3 text-center text-stone-warm">{p.minGap}</td>
+                  <td className="px-4 py-3 text-ink/60">{p.name}</td>
+                  <td className="px-4 py-3 text-center text-ink/60">{p.duration}</td>
+                  <td className="px-4 py-3 text-center text-ink/60">{p.minGap}</td>
                   <td className="px-4 py-3 text-center text-green-600 font-medium">{p.paid ? 'Yes' : 'No'}</td>
                 </tr>
               ))}
@@ -305,7 +305,7 @@ export default function ReturnToWorkPrograms() {
           How to Write a Return-to-Work Resume
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Returnship applications are different from standard job applications. The hiring team
           already expects a career gap &mdash; your resume should focus on demonstrating that your
           skills are current and you are ready to contribute.
@@ -350,7 +350,7 @@ export default function ReturnToWorkPrograms() {
               </div>
               <div>
                 <h3 className="font-bold text-ink mb-1">{step.title}</h3>
-                <p className="text-stone-warm">{step.desc}</p>
+                <p className="text-ink/60">{step.desc}</p>
               </div>
             </div>
           ))}
@@ -360,25 +360,25 @@ export default function ReturnToWorkPrograms() {
           <h3 className="font-bold text-ink mb-3">Related Guides</h3>
           <ul className="space-y-2 text-ink/80">
             <li>
-              <Link to="/blog/resume-employment-gaps" className="text-accent hover:underline">
+              <Link to="/blog/resume-employment-gaps" className="text-accent-text hover:underline">
                 How to Explain Employment Gaps on Your Resume
               </Link>{' '}
               &mdash; detailed strategies for every type of gap
             </li>
             <li>
-              <Link to="/blog/career-change-resume-guide" className="text-accent hover:underline">
+              <Link to="/blog/career-change-resume-guide" className="text-accent-text hover:underline">
                 Career Change Resume Guide
               </Link>{' '}
               &mdash; if you are returning to a different field
             </li>
             <li>
-              <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+              <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
                 Professional Summary Examples
               </Link>{' '}
               &mdash; templates for return-to-work summaries
             </li>
             <li>
-              <Link to="/blog/how-to-write-a-resume-guide" className="text-accent hover:underline">
+              <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
                 How to Write a Resume (Complete Guide)
               </Link>{' '}
               &mdash; full step-by-step resume writing walkthrough
@@ -394,7 +394,7 @@ export default function ReturnToWorkPrograms() {
         <div className="space-y-6">
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Timing Matters</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Most returnship programs have specific application windows, often in spring (February-April)
               for summer/fall cohorts. Set alerts on company career pages and LinkedIn. Applications
               typically open 3-4 months before the program starts.
@@ -403,7 +403,7 @@ export default function ReturnToWorkPrograms() {
 
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Network Before Applying</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Connect with alumni of the program on LinkedIn. Many companies encourage referrals, and
               speaking with someone who completed the program gives you insider knowledge for your
               application and interviews. Search &ldquo;[company] returnship&rdquo; on LinkedIn to
@@ -413,7 +413,7 @@ export default function ReturnToWorkPrograms() {
 
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Prepare for the Interview Differently</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Returnship interviews focus less on &ldquo;Why did you leave?&rdquo; and more on
               &ldquo;What have you done to stay current?&rdquo; Be ready to discuss courses you
               have taken, projects you have built, and how you plan to ramp up. The companies running
@@ -424,7 +424,7 @@ export default function ReturnToWorkPrograms() {
 
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Apply to Multiple Programs</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Returnships are competitive. Apply to 3-5 programs that match your background. Each
               application should be tailored to the specific company and role &mdash; a generic resume
               sent to all programs will underperform a targeted one.
@@ -474,7 +474,7 @@ export default function ReturnToWorkPrograms() {
           ].map((faq, i) => (
             <div key={i} className="bg-chalk-dark rounded-xl p-5">
               <h3 className="font-bold text-ink mb-2">{faq.q}</h3>
-              <p className="text-stone-warm">{faq.a}</p>
+              <p className="text-ink/60">{faq.a}</p>
             </div>
           ))}
         </div>

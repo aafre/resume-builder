@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, useCallback } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, useRef, useState, useCallback, useId } from "react";
+import ModalShell from "./shared/ModalShell";
 import { ClipboardCheck, ExternalLink, ShieldAlert } from "lucide-react";
 import { affiliateConfig, hasAnyAffiliate } from "../config/affiliate";
 import { ContactInfo, Section } from "../types";
@@ -26,72 +26,14 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
   contactInfo,
   sections,
 }) => {
-  const modalRef = useRef<HTMLDivElement>(null);
+  const titleId = useId();
+  const descriptionId = useId();
   const primaryButtonRef = useRef<HTMLButtonElement>(null);
 
   const [jobs, setJobs] = useState<AdzunaJob[]>([]);
   const [jobsLoading, setJobsLoading] = useState(false);
   const [jobSearchParams, setJobSearchParams] = useState<JobSearchParams | null>(null);
 
-  // Focus management - auto-focus primary button when modal opens
-  useEffect(() => {
-    if (isOpen && primaryButtonRef.current) {
-      primaryButtonRef.current.focus();
-    }
-  }, [isOpen]);
-
-  // Handle ESC key to close modal
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
-      // Prevent body scroll when modal is open
-      document.body.style.overflow = "hidden";
-    }
-
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-      document.body.style.overflow = "";
-    };
-  }, [isOpen, onClose]);
-
-  // Focus trap - keep focus within modal
-  useEffect(() => {
-    if (!isOpen || !modalRef.current) return;
-
-    const modal = modalRef.current;
-    const focusableElements = modal.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-    const firstElement = focusableElements[0] as HTMLElement;
-    const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
-
-    const handleTab = (e: KeyboardEvent) => {
-      if (e.key !== "Tab") return;
-
-      if (e.shiftKey) {
-        // Shift + Tab
-        if (document.activeElement === firstElement) {
-          e.preventDefault();
-          lastElement?.focus();
-        }
-      } else {
-        // Tab
-        if (document.activeElement === lastElement) {
-          e.preventDefault();
-          firstElement?.focus();
-        }
-      }
-    };
-
-    modal.addEventListener("keydown", handleTab);
-    return () => modal.removeEventListener("keydown", handleTab);
-  }, [isOpen]);
 
   // Fetch jobs when modal opens
   useEffect(() => {
@@ -131,34 +73,19 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
-
   const showAffiliate = hasAnyAffiliate();
   const showJobSection = affiliateConfig.jobSearch.enabled && (jobsLoading || jobs.length > 0);
 
-  return createPortal(
-    <>
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm animate-dcm-fade-in"
-        onClick={handleBackdropClick}
-        aria-hidden="true"
-      />
-
-      {/* Modal Container */}
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-        <div
-          ref={modalRef}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="celebration-modal-title"
-          aria-describedby="celebration-modal-description"
-          className="bg-white rounded-2xl shadow-premium max-w-lg w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto animate-dcm-modal-enter"
-        >
+  return (
+    <ModalShell
+      isOpen={isOpen}
+      onClose={onClose}
+      labelledBy={titleId}
+      describedBy={descriptionId}
+      initialFocusRef={primaryButtonRef}
+      overlayClassName="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-dcm-fade-in"
+      panelClassName="bg-white rounded-2xl shadow-premium max-w-lg w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto animate-dcm-modal-enter"
+    >
           {/* Celebration Icon */}
           <div className="w-20 h-20 mx-auto mb-6 relative">
             {/* Main checkmark circle with gradient */}
@@ -196,14 +123,14 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
           {/* Title + Subtitle */}
           <div className="animate-dcm-content-fade-up" style={{ animationDelay: '75ms' }}>
             <h2
-              id="celebration-modal-title"
+              id={titleId}
               className="text-2xl sm:text-3xl font-bold text-center mb-4 text-ink"
             >
               Resume Downloaded Successfully!
             </h2>
             <p
-              id="celebration-modal-description"
-              className="text-lg text-stone-warm text-center mb-4"
+              id={descriptionId}
+              className="text-lg text-ink/60 text-center mb-4"
             >
               Your PDF has been saved to your device.
             </p>
@@ -225,7 +152,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
               </div>
 
               {/* Value Proposition */}
-              <p className="text-stone-warm text-center mb-6">
+              <p className="text-ink/60 text-center mb-6">
                 Create a free account to save this version securely to the cloud and
                 edit it anytime.
               </p>
@@ -268,7 +195,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
               {/* Divider */}
               <div className="flex items-center gap-3 mb-4">
                 <div className="flex-1 h-px bg-black/[0.06]" />
-                <span className="text-xs font-semibold text-mist uppercase tracking-wider">
+                <span className="text-xs font-semibold text-ink/60 uppercase tracking-wider">
                   What&apos;s Next?
                 </span>
                 <div className="flex-1 h-px bg-black/[0.06]" />
@@ -283,16 +210,16 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                     rel="noopener noreferrer nofollow"
                     className="flex items-center gap-4 bg-chalk-dark border border-black/[0.06] rounded-xl p-4 cursor-pointer hover:bg-white hover:shadow-lg hover:border-accent/20 hover:-translate-y-0.5 transition-all duration-200"
                   >
-                    <ClipboardCheck className="w-5 h-5 text-accent flex-shrink-0" />
+                    <ClipboardCheck className="w-5 h-5 text-accent-text flex-shrink-0" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-ink">
                         {affiliateConfig.resumeReview.label}
                       </p>
-                      <p className="text-sm text-stone-warm">
+                      <p className="text-sm text-ink/60">
                         {affiliateConfig.resumeReview.description}
                       </p>
                     </div>
-                    <ExternalLink className="w-4 h-4 text-mist flex-shrink-0" />
+                    <ExternalLink className="w-4 h-4 text-ink/60 flex-shrink-0" />
                   </a>
                 )}
 
@@ -301,7 +228,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                 <div className="mt-4">
                   {/* Section header */}
                   {jobSearchParams && (
-                    <p className="text-xs font-medium text-stone-warm mb-2">
+                    <p className="text-xs font-medium text-ink/60 mb-2">
                       Jobs matching &ldquo;{jobSearchParams.displayTitle}&rdquo;
                       {jobSearchParams.location && ` near ${jobSearchParams.location}`}
                     </p>
@@ -339,7 +266,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                               <p className="text-sm font-semibold text-ink truncate">
                                 {job.title}
                               </p>
-                              <p className="text-xs text-stone-warm truncate">
+                              <p className="text-xs text-ink/60 truncate">
                                 {[job.company, job.location]
                                   .filter(Boolean)
                                   .join(" · ")}
@@ -352,7 +279,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                                 </p>
                               )}
                             </div>
-                            <ExternalLink className="w-4 h-4 text-mist flex-shrink-0" />
+                            <ExternalLink className="w-4 h-4 text-ink/60 flex-shrink-0" />
                           </a>
                         );
                       })}
@@ -380,7 +307,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
           <div className="mt-6 animate-dcm-content-fade-up" style={{ animationDelay: '225ms' }}>
             <div className="flex items-center gap-3 mb-4">
               <div className="flex-1 h-px bg-black/[0.06]" />
-              <span className="text-xs font-semibold text-mist uppercase tracking-wider">
+              <span className="text-xs font-semibold text-ink/60 uppercase tracking-wider">
                 One more thing
               </span>
               <div className="flex-1 h-px bg-black/[0.06]" />
@@ -390,7 +317,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
               <p className="text-sm font-semibold text-ink mb-1">
                 Did we save you from a paywall?
               </p>
-              <p className="text-xs text-stone-warm mb-3">
+              <p className="text-xs text-ink/60 mb-3">
                 Most &ldquo;free&rdquo; resume builders charge you at the last step. We didn&apos;t.
                 Help other job seekers find us — leave a quick review on Trustpilot.
               </p>
@@ -415,10 +342,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </>,
-    document.body
+    </ModalShell>
   );
 };
 

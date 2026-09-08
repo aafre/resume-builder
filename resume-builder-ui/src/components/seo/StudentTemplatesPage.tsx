@@ -35,7 +35,7 @@ export default function StudentTemplatesPage() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4">
             Templates Built for Students
           </h2>
-          <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-2xl mx-auto">
             Our templates are designed to highlight education, projects, and skills—
             perfect when you're building your career from the ground up.
           </p>
@@ -52,36 +52,36 @@ export default function StudentTemplatesPage() {
           <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
             <div className="bg-white rounded-2xl shadow-premium border-l-4 border-l-accent p-6">
               <h3 className="font-display text-xl font-bold text-ink mb-4">Do Include</h3>
-              <ul className="space-y-3 text-stone-warm">
+              <ul className="space-y-3 text-ink/60">
                 <li className="flex items-start gap-2">
-                  <span className="text-accent font-bold mt-1">✓</span>
+                  <span className="text-accent-text font-bold mt-1">✓</span>
                   <span><strong>Education:</strong> Degree, major, expected graduation, GPA (if 3.0+)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-accent font-bold mt-1">✓</span>
+                  <span className="text-accent-text font-bold mt-1">✓</span>
                   <span><strong>Projects:</strong> Academic, personal, or capstone projects</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-accent font-bold mt-1">✓</span>
+                  <span className="text-accent-text font-bold mt-1">✓</span>
                   <span><strong>Skills:</strong> Technical and soft skills relevant to your field</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-accent font-bold mt-1">✓</span>
+                  <span className="text-accent-text font-bold mt-1">✓</span>
                   <span><strong>Activities:</strong> Clubs, organizations, leadership roles</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-accent font-bold mt-1">✓</span>
+                  <span className="text-accent-text font-bold mt-1">✓</span>
                   <span><strong>Internships:</strong> Any relevant work experience</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-accent font-bold mt-1">✓</span>
+                  <span className="text-accent-text font-bold mt-1">✓</span>
                   <span><strong>Volunteer Work:</strong> Shows initiative and values</span>
                 </li>
               </ul>
             </div>
             <div className="bg-white rounded-2xl shadow-premium border-l-4 border-l-red-400 p-6">
               <h3 className="font-display text-xl font-bold text-ink mb-4">Skip These</h3>
-              <ul className="space-y-3 text-stone-warm">
+              <ul className="space-y-3 text-ink/60">
                 <li className="flex items-start gap-2">
                   <span className="text-red-400 font-bold mt-1">×</span>
                   <span><strong>High School:</strong> Once in college, drop high school details</span>
@@ -121,10 +121,10 @@ export default function StudentTemplatesPage() {
           <div className="max-w-4xl mx-auto space-y-6">
             <div className="bg-white rounded-2xl p-6 card-gradient-border shadow-premium">
               <h3 className="font-display text-xl font-bold text-ink mb-3">Education Section</h3>
-              <p className="text-stone-warm mb-3">
+              <p className="text-ink/60 mb-3">
                 As a student, this is your most valuable section. Include:
               </p>
-              <ul className="list-disc list-inside text-stone-warm space-y-1">
+              <ul className="list-disc list-inside text-ink/60 space-y-1">
                 <li>Full degree name and major/minor</li>
                 <li>University name and location</li>
                 <li>Expected graduation date (or graduation date)</li>
@@ -136,10 +136,10 @@ export default function StudentTemplatesPage() {
 
             <div className="bg-white rounded-2xl p-6 card-gradient-border shadow-premium">
               <h3 className="font-display text-xl font-bold text-ink mb-3">Projects Section</h3>
-              <p className="text-stone-warm mb-3">
+              <p className="text-ink/60 mb-3">
                 Projects demonstrate practical skills when you lack work experience:
               </p>
-              <ul className="list-disc list-inside text-stone-warm space-y-1">
+              <ul className="list-disc list-inside text-ink/60 space-y-1">
                 <li>Class projects with real-world applications</li>
                 <li>Personal projects or side hustles</li>
                 <li>Hackathon projects with outcomes</li>
@@ -150,10 +150,10 @@ export default function StudentTemplatesPage() {
 
             <div className="bg-white rounded-2xl p-6 card-gradient-border shadow-premium">
               <h3 className="font-display text-xl font-bold text-ink mb-3">Activities & Leadership</h3>
-              <p className="text-stone-warm mb-3">
+              <p className="text-ink/60 mb-3">
                 Extracurriculars show soft skills employers value:
               </p>
-              <ul className="list-disc list-inside text-stone-warm space-y-1">
+              <ul className="list-disc list-inside text-ink/60 space-y-1">
                 <li>Leadership roles in clubs or organizations</li>
                 <li>Sports teams (especially captain/leadership)</li>
                 <li>Volunteer work and community service</li>
@@ -183,28 +183,28 @@ export default function StudentTemplatesPage() {
               className="block p-4 bg-accent/[0.06] border border-accent/20 rounded-xl hover:bg-accent/10 transition-colors"
             >
               <p className="font-semibold text-ink">Writing a Resume With No Experience</p>
-              <p className="text-accent text-sm">Complete guide for first-time job seekers</p>
+              <p className="text-accent-text text-sm">Complete guide for first-time job seekers</p>
             </Link>
             <Link
               to="/blog/resume-action-verbs"
               className="block p-4 bg-accent/[0.06] border border-accent/20 rounded-xl hover:bg-accent/10 transition-colors"
             >
               <p className="font-semibold text-ink">200+ Action Verbs for Resumes</p>
-              <p className="text-accent text-sm">Powerful words to describe your achievements</p>
+              <p className="text-accent-text text-sm">Powerful words to describe your achievements</p>
             </Link>
             <Link
               to="/blog/how-to-list-skills"
               className="block p-4 bg-accent/[0.06] border border-accent/20 rounded-xl hover:bg-accent/10 transition-colors"
             >
               <p className="font-semibold text-ink">How to List Skills on Your Resume</p>
-              <p className="text-accent text-sm">Showcase your abilities effectively</p>
+              <p className="text-accent-text text-sm">Showcase your abilities effectively</p>
             </Link>
             <Link
               to="/blog/job-interview-guide"
               className="block p-4 bg-accent/[0.06] border border-accent/20 rounded-xl hover:bg-accent/10 transition-colors"
             >
               <p className="font-semibold text-ink">Job Interview Guide</p>
-              <p className="text-accent text-sm">Nail your first professional interview</p>
+              <p className="text-accent-text text-sm">Nail your first professional interview</p>
             </Link>
           </div>
         </div>

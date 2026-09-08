@@ -55,7 +55,7 @@ export default function HumanizeAIResume() {
     >
       <div className="space-y-8">
         {/* Answer-first intro (<=50 words) */}
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           <strong>Humanizing an AI-written resume</strong> means editing the
           generic, uniform text that AI produces into specific, varied,
           verifiable copy that reads as written by a real person. The one-line
@@ -67,18 +67,18 @@ export default function HumanizeAIResume() {
         <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
           <h2 className="font-bold text-ink mb-4 text-lg">Table of Contents</h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#why-flagged" className="text-accent hover:underline">Why AI-Written Resumes Get Flagged</a></li>
-            <li><a href="#the-tells" className="text-accent hover:underline">The Tells That Give AI Away</a></li>
-            <li><a href="#fix-by-fix" className="text-accent hover:underline">Fix-by-Fix: Before and After Rewrites</a></li>
-            <li><a href="#honest-goal" className="text-accent hover:underline">The Honest Goal (It's Not Tricking a Detector)</a></li>
-            <li><a href="#faq" className="text-accent hover:underline">Frequently Asked Questions</a></li>
+            <li><a href="#why-flagged" className="text-accent-text hover:underline">Why AI-Written Resumes Get Flagged</a></li>
+            <li><a href="#the-tells" className="text-accent-text hover:underline">The Tells That Give AI Away</a></li>
+            <li><a href="#fix-by-fix" className="text-accent-text hover:underline">Fix-by-Fix: Before and After Rewrites</a></li>
+            <li><a href="#honest-goal" className="text-accent-text hover:underline">The Honest Goal (It's Not Tricking a Detector)</a></li>
+            <li><a href="#faq" className="text-accent-text hover:underline">Frequently Asked Questions</a></li>
           </ol>
         </nav>
 
         <h2 id="why-flagged" className="text-3xl font-bold text-ink mt-12 mb-6">
           Why AI-Written Resumes Get Flagged and Rejected
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           AI language models work by predicting the most likely next word. That
           makes their output smooth, grammatical — and predictable. Two
           properties describe this, and both AI detectors and experienced
@@ -88,7 +88,7 @@ export default function HumanizeAIResume() {
         <div className="grid md:grid-cols-2 gap-6 my-8">
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h3 className="text-xl font-bold text-ink mb-2">Perplexity</h3>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               How surprising the word choices are. Because AI reaches for the
               statistically likeliest phrasing, its text is{" "}
               <strong>low-perplexity</strong> — every sentence feels like the
@@ -97,7 +97,7 @@ export default function HumanizeAIResume() {
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h3 className="text-xl font-bold text-ink mb-2">Burstiness</h3>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               How much sentence length and complexity vary. Humans mix a
               three-word punch with a long, winding clause. AI drafts are{" "}
               <strong>low-burstiness</strong> — uniform, even, and flat. On a
@@ -106,7 +106,7 @@ export default function HumanizeAIResume() {
           </div>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           The honest version: low-variance, generic text reads as machine-written
           to software <em>and</em> to a person who screens resumes all day. You
           don't have to beat a detector to lose — a recruiter skimming twenty
@@ -117,7 +117,7 @@ export default function HumanizeAIResume() {
         <h2 id="the-tells" className="text-3xl font-bold text-ink mt-12 mb-6">
           The Tells That Give AI Away
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Before you can fix an AI draft, you have to spot the patterns. Here are
           the ones that show up most often:
         </p>
@@ -125,7 +125,7 @@ export default function HumanizeAIResume() {
         <div className="space-y-4">
           <div className="rounded-lg border border-red-200/70 bg-red-50/80 p-6">
             <h3 className="font-bold text-ink mb-2">Generic, round-number metrics with no context</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               "Increased efficiency by 30%." Thirty percent of what, measured how,
               over what period? AI loves clean numbers precisely because it has no
               real data to anchor them.
@@ -133,14 +133,14 @@ export default function HumanizeAIResume() {
           </div>
           <div className="rounded-lg border border-red-200/70 bg-red-50/80 p-6">
             <h3 className="font-bold text-ink mb-2">Uniform sentence rhythm</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Every bullet runs 12–15 words and follows the same shape. Real
               accomplishments come in different sizes, so real bullets should too.
             </p>
           </div>
           <div className="rounded-lg border border-red-200/70 bg-red-50/80 p-6">
             <h3 className="font-bold text-ink mb-2">Corporate filler</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               "Spearheaded," "leveraged synergies," "spearheaded cross-functional
               initiatives to drive impactful outcomes." Words that sound like work
               but describe nothing.
@@ -148,7 +148,7 @@ export default function HumanizeAIResume() {
           </div>
           <div className="rounded-lg border border-red-200/70 bg-red-50/80 p-6">
             <h3 className="font-bold text-ink mb-2">Hallucinated specifics</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               AI will confidently invent a tool, a certification, or a metric you
               never had. These are the most dangerous tells because they can
               collapse in an interview.
@@ -156,7 +156,7 @@ export default function HumanizeAIResume() {
           </div>
           <div className="rounded-lg border border-red-200/70 bg-red-50/80 p-6">
             <h3 className="font-bold text-ink mb-2">Em-dash overuse and identical bullet openers</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               A cascade of em dashes, and every bullet starting with the same verb
               ("Led… Led… Led…"). Vary your openers and punctuation.
             </p>
@@ -166,7 +166,7 @@ export default function HumanizeAIResume() {
         <h2 id="fix-by-fix" className="text-3xl font-bold text-ink mt-12 mb-6">
           Fix-by-Fix: Before and After Rewrites
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           The rewrites below are illustrative examples we wrote to show the
           technique — not real people's resumes. Notice how each "after" trades a
           generic claim for a specific, verifiable one.
@@ -179,7 +179,7 @@ export default function HumanizeAIResume() {
               "Spearheaded cross-functional initiatives that increased team
               efficiency by 30% and drove impactful business outcomes."
             </p>
-            <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-2">After (Humanized)</p>
+            <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-2">After (Humanized)</p>
             <p className="text-ink">
               "Reorganized the weekly release process with QA and support, cutting
               our average bug-fix turnaround from nine days to three across a team
@@ -193,7 +193,7 @@ export default function HumanizeAIResume() {
               "Leveraged data-driven strategies to optimize marketing performance
               and enhance customer engagement."
             </p>
-            <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-2">After (Humanized)</p>
+            <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-2">After (Humanized)</p>
             <p className="text-ink">
               "Rebuilt our abandoned-cart email flow in Klaviyo after noticing most
               drop-offs happened at shipping cost — recovered roughly one in six
@@ -207,7 +207,7 @@ export default function HumanizeAIResume() {
               "Utilized strong communication skills to facilitate seamless
               collaboration and deliver exceptional results."
             </p>
-            <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-2">After (Humanized)</p>
+            <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-2">After (Humanized)</p>
             <p className="text-ink">
               "Ran the daily standup for a remote team split across three time
               zones and wrote the handoff notes that kept the night shift
@@ -227,14 +227,14 @@ export default function HumanizeAIResume() {
           </ul>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Once your bullets are specific, make sure they still carry the terms
           employers scan for. Run the draft through our free{" "}
-          <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">
+          <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">
             resume keyword scanner
           </Link>{" "}
           to check coverage against a real job posting, and start from an{" "}
-          <Link to="/templates/ats-friendly" className="text-accent hover:underline font-medium">
+          <Link to="/templates/ats-friendly" className="text-accent-text hover:underline font-medium">
             ATS-friendly template
           </Link>{" "}
           so your specific, humanized content actually parses. For the full
@@ -247,7 +247,7 @@ export default function HumanizeAIResume() {
         <h2 id="honest-goal" className="text-3xl font-bold text-ink mt-12 mb-6">
           The Honest Goal: Specific and True, Not Detector-Proof
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           It's tempting to treat this as a game of beating an AI detector. It
           isn't. Here's the reality worth internalizing:
         </p>
@@ -262,14 +262,14 @@ export default function HumanizeAIResume() {
           </p>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           So the target is a resume that is <strong>truthful, specific, and well
           written</strong>. AI is a genuinely useful drafting and brainstorming
           partner — for structuring sections, getting unstuck, and turning notes
           into first-pass bullets. The mistake is shipping the raw output. Use it
           to start, then rewrite in your own detail and voice. For a full
           walkthrough of using AI well from the first draft, see our{" "}
-          <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline font-medium">
+          <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline font-medium">
             AI resume writing guide
           </Link>.
         </p>
@@ -281,13 +281,13 @@ export default function HumanizeAIResume() {
           {FAQS.map((faq) => (
             <div key={faq.question} className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
               <h3 className="font-bold text-ink mb-2">{faq.question}</h3>
-              <p className="text-stone-warm text-sm">{faq.answer}</p>
+              <p className="text-ink/60 text-sm">{faq.answer}</p>
             </div>
           ))}
         </div>
 
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">The Bottom Line</h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Humanizing an AI resume isn't about fooling anyone. It's editing toward
           the truth: replacing smooth, generic filler with the specific,
           verifiable details only you can supply. Do that, and you'll read as

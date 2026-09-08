@@ -60,7 +60,7 @@ export default function AIResumeBuilderFree() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             Why Use AI for Your Resume?
           </h2>
-          <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-10">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-4xl mx-auto text-center leading-relaxed mb-10">
             AI does not replace you — it amplifies you. Job seekers who use AI to optimize their resumes report getting
             40-60% more interview callbacks. Here is why AI-assisted resume writing is becoming the standard for competitive job markets.
           </p>
@@ -73,13 +73,13 @@ export default function AIResumeBuilderFree() {
             ].map((item) => (
               <div key={item.title} className="bg-white rounded-2xl p-6 shadow-premium border border-black/[0.06]">
                 <h3 className="font-display text-lg font-bold text-ink mb-2">{item.title}</h3>
-                <p className="text-stone-warm font-extralight leading-relaxed">{item.desc}</p>
+                <p className="text-ink/60 font-extralight leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
-          <p className="text-center mt-8 text-stone-warm font-extralight">
+          <p className="text-center mt-8 text-ink/60 font-extralight">
             Want to verify your resume hits the right keywords?{' '}
-            <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">
+            <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">
               Try our free ATS Keyword Scanner
             </Link>{' '}
             to check your match rate before applying.
@@ -100,19 +100,19 @@ export default function AIResumeBuilderFree() {
               <span className="text-2xl">🤖</span>
               <h3 className="font-display text-2xl font-bold text-ink">ChatGPT (OpenAI)</h3>
             </div>
-            <p className="text-lg font-extralight text-stone-warm leading-relaxed mb-4">
+            <p className="text-lg font-extralight text-ink/60 leading-relaxed mb-4">
               ChatGPT is the most popular AI for resume writing. GPT-4 excels at generating compelling professional summaries,
               quantified bullet points, and tailored cover letters. Its conversational interface makes iterating on content natural —
               ask it to "make this more specific" or "add metrics" and it refines on the spot.
             </p>
-            <p className="text-stone-warm font-extralight mb-4">
+            <p className="text-ink/60 font-extralight mb-4">
               <strong className="text-ink">Best for:</strong> Writing bullet points, professional summaries, cover letters, and tailoring content to specific job descriptions.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link to="/blog/ai-resume-prompts-hub" className="text-accent hover:underline font-medium">
+              <Link to="/blog/ai-resume-prompts-hub" className="text-accent-text hover:underline font-medium">
                 AI resume prompts hub →
               </Link>
-              <Link to="/blog/ai-cover-letter-prompts" className="text-accent hover:underline font-medium">
+              <Link to="/blog/ai-cover-letter-prompts" className="text-accent-text hover:underline font-medium">
                 AI cover letter prompts →
               </Link>
             </div>
@@ -124,15 +124,15 @@ export default function AIResumeBuilderFree() {
               <span className="text-2xl">🧠</span>
               <h3 className="font-display text-2xl font-bold text-ink">Claude (Anthropic)</h3>
             </div>
-            <p className="text-lg font-extralight text-stone-warm leading-relaxed mb-4">
+            <p className="text-lg font-extralight text-ink/60 leading-relaxed mb-4">
               Claude is exceptionally strong at analytical tasks — making it ideal for job description analysis and keyword extraction.
               Paste a job posting into Claude and ask it to identify every skill, qualification, and keyword the employer is looking for.
               Then use those keywords to optimize your resume for ATS compatibility.
             </p>
-            <p className="text-stone-warm font-extralight mb-4">
+            <p className="text-ink/60 font-extralight mb-4">
               <strong className="text-ink">Best for:</strong> Analyzing job descriptions, extracting ATS keywords, comparing your resume to requirements, and identifying gaps.
             </p>
-            <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline font-medium">
+            <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline font-medium">
               See our Claude resume prompts guide →
             </Link>
           </div>
@@ -143,22 +143,22 @@ export default function AIResumeBuilderFree() {
               <span className="text-2xl">✨</span>
               <h3 className="font-display text-2xl font-bold text-ink">Gemini (Google)</h3>
             </div>
-            <p className="text-lg font-extralight text-stone-warm leading-relaxed mb-4">
+            <p className="text-lg font-extralight text-ink/60 leading-relaxed mb-4">
               Google Gemini brings real-time web access and deep knowledge of industry trends to resume optimization.
               It can research what specific companies look for in candidates, identify trending skills in your field,
               and suggest keywords based on current job market data — not just static training data.
             </p>
-            <p className="text-stone-warm font-extralight mb-4">
+            <p className="text-ink/60 font-extralight mb-4">
               <strong className="text-ink">Best for:</strong> Researching industry-specific keywords, company culture alignment, trending skills, and market-aware optimization.
             </p>
-            <Link to="/blog/gemini-resume-prompts" className="text-accent hover:underline font-medium">
+            <Link to="/blog/gemini-resume-prompts" className="text-accent-text hover:underline font-medium">
               See our Gemini resume prompts guide →
             </Link>
           </div>
 
-          <p className="text-center mt-4 text-stone-warm font-extralight">
+          <p className="text-center mt-4 text-ink/60 font-extralight">
             Not sure which AI to start with? Read our{' '}
-            <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline font-medium">
+            <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline font-medium">
               complete AI resume writing guide
             </Link>{' '}
             for a side-by-side breakdown.
@@ -185,13 +185,13 @@ export default function AIResumeBuilderFree() {
             ].map((item) => (
               <div key={item.tip} className="bg-accent/[0.06] rounded-xl p-5 border border-accent/10">
                 <p className="font-bold text-ink mb-1">{item.tip}</p>
-                <p className="text-stone-warm font-extralight">{item.detail}</p>
+                <p className="text-ink/60 font-extralight">{item.detail}</p>
               </div>
             ))}
           </div>
-          <p className="text-center mt-6 text-stone-warm font-extralight">
+          <p className="text-center mt-6 text-ink/60 font-extralight">
             Pair AI-written content with an{' '}
-            <Link to="/templates/ats-friendly" className="text-accent hover:underline font-medium">
+            <Link to="/templates/ats-friendly" className="text-accent-text hover:underline font-medium">
               ATS-friendly template
             </Link>{' '}
             for maximum impact.
@@ -207,7 +207,7 @@ export default function AIResumeBuilderFree() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4 text-center">
             Related AI Guides
           </h2>
-          <p className="text-lg font-extralight text-stone-warm max-w-3xl mx-auto text-center leading-relaxed mb-10">
+          <p className="text-lg font-extralight text-ink/60 max-w-3xl mx-auto text-center leading-relaxed mb-10">
             Dive deeper into AI-powered resume writing with our detailed guides for every major AI model.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -249,7 +249,7 @@ export default function AIResumeBuilderFree() {
                 className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300 hover:-translate-y-1 block"
               >
                 <h3 className="font-display text-lg font-bold text-ink mb-2">{guide.title}</h3>
-                <p className="text-stone-warm font-extralight text-sm leading-relaxed">{guide.desc}</p>
+                <p className="text-ink/60 font-extralight text-sm leading-relaxed">{guide.desc}</p>
               </Link>
             ))}
           </div>

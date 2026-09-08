@@ -45,7 +45,7 @@ export default function JobsRoleHub() {
         <div className="h-4 bg-gray-200 rounded w-full mb-8" />
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="h-16 bg-gray-100 rounded-lg" />
+            <div key={i} className="h-16 bg-chalk-dark rounded-lg" />
           ))}
         </div>
       </div>
@@ -55,8 +55,8 @@ export default function JobsRoleHub() {
   if (!data) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-12 text-center">
-        <p className="text-mist">No data available.</p>
-        <Link to="/jobs" className="text-accent hover:underline mt-2 inline-block">
+        <p className="text-ink/60">No data available.</p>
+        <Link to="/jobs" className="text-accent-text hover:underline mt-2 inline-block">
           Back to Jobs
         </Link>
       </div>
@@ -84,12 +84,12 @@ export default function JobsRoleHub() {
       <header className="py-6">
         <h1 className="text-2xl font-bold text-ink mb-2">{data.role_display} Jobs</h1>
         {data.intro_copy && (
-          <p className="text-stone-warm text-base leading-relaxed mb-4">{data.intro_copy}</p>
+          <p className="text-ink/60 text-base leading-relaxed mb-4">{data.intro_copy}</p>
         )}
         <div className="flex flex-wrap gap-4 text-sm">
-          <span className="text-accent font-medium">{data.total_count}+ jobs across the UK</span>
+          <span className="text-accent-text font-medium">{data.total_count}+ jobs across the UK</span>
           {data.salary_stats?.median > 0 && (
-            <span className="text-stone-warm">
+            <span className="text-ink/60">
               Median salary: {data.salary_stats.currency}
               {data.salary_stats.median.toLocaleString()}
             </span>
@@ -107,7 +107,7 @@ export default function JobsRoleHub() {
             className="bg-white rounded-2xl border border-black/[0.06] p-3 hover:border-accent/30 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 text-center"
           >
             <span className="block text-sm font-medium text-ink">{loc.name}</span>
-            <span className="block text-xs text-mist mt-0.5">View jobs &rarr;</span>
+            <span className="block text-xs text-ink/60 mt-0.5">View jobs &rarr;</span>
           </Link>
         ))}
       </div>
@@ -120,7 +120,7 @@ export default function JobsRoleHub() {
             {data.top_skills.map((skill) => (
               <span
                 key={skill}
-                className="inline-block px-3 py-1 text-xs bg-accent/10 text-accent rounded-full font-medium"
+                className="inline-block px-3 py-1 text-xs bg-accent/10 text-accent-text rounded-full font-medium"
               >
                 {skill}
               </span>
@@ -138,7 +138,7 @@ export default function JobsRoleHub() {
               <Link
                 key={role.slug}
                 to={role.url}
-                className="inline-block px-3 py-1.5 text-sm bg-chalk-dark text-ink rounded-full hover:bg-accent/10 hover:text-accent transition-colors"
+                className="inline-block px-3 py-1.5 text-sm bg-chalk-dark text-ink rounded-full hover:bg-accent/10 hover:text-accent-text transition-colors"
               >
                 {role.name}
               </Link>

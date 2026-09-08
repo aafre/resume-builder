@@ -17,7 +17,7 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
           ★
         </span>
       ))}
-      <span className="ml-2 text-sm font-medium text-stone-warm">
+      <span className="ml-2 text-sm font-medium text-ink/60">
         {rating}/{max}
       </span>
     </div>
@@ -75,16 +75,16 @@ export default function ZetyVsEasyFreeResume() {
           </h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-              <p className="font-bold text-accent text-lg mb-2">EasyFreeResume</p>
+              <p className="font-bold text-accent-text text-lg mb-2">EasyFreeResume</p>
               <StarRating rating={5} />
-              <p className="text-3xl font-bold text-accent mt-2">$0</p>
-              <p className="text-sm text-stone-warm">Forever free</p>
+              <p className="text-3xl font-bold text-accent-text mt-2">$0</p>
+              <p className="text-sm text-ink/60">Forever free</p>
             </div>
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-              <p className="font-bold text-stone-warm text-lg mb-2">Zety</p>
+              <p className="font-bold text-ink/60 text-lg mb-2">Zety</p>
               <StarRating rating={3} />
               <p className="text-3xl font-bold text-red-600 mt-2">$71+</p>
-              <p className="text-sm text-stone-warm">Per year</p>
+              <p className="text-sm text-ink/60">Per year</p>
             </div>
           </div>
           <p className="text-green-800 mt-4 text-center font-medium">
@@ -92,13 +92,13 @@ export default function ZetyVsEasyFreeResume() {
           </p>
         </div>
 
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           When it comes to online resume builders, Zety is one of the biggest
           names in the game. It has a slick interface and lots of features. But
           it also comes with a price tag.
         </p>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           So, is it worth paying for a resume builder like Zety when a
           completely free alternative like EasyFreeResume exists? Let's break it
           down in a head-to-head comparison.
@@ -120,7 +120,7 @@ export default function ZetyVsEasyFreeResume() {
           The Core Features: What Do You Get?
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Let's compare the essential features that matter most when building a
           resume.
         </p>
@@ -132,13 +132,13 @@ export default function ZetyVsEasyFreeResume() {
                 <th className="px-6 py-4 text-left font-bold text-ink">
                   Feature
                 </th>
-                <th className="px-6 py-4 text-center font-bold text-accent">
+                <th className="px-6 py-4 text-center font-bold text-accent-text">
                   EasyFreeResume
                 </th>
-                <th className="px-6 py-4 text-center font-bold text-accent">
+                <th className="px-6 py-4 text-center font-bold text-accent-text">
                   Zety
                 </th>
-                <th className="px-6 py-4 text-center font-bold text-stone-warm">
+                <th className="px-6 py-4 text-center font-bold text-ink/60">
                   Winner
                 </th>
               </tr>
@@ -146,7 +146,7 @@ export default function ZetyVsEasyFreeResume() {
             <tbody className="divide-y divide-black/[0.06]">
               <tr className="bg-green-50">
                 <td className="px-6 py-4 font-medium text-ink">Cost</td>
-                <td className="px-6 py-4 text-center text-accent font-bold">
+                <td className="px-6 py-4 text-center text-accent-text font-bold">
                   100% Free
                 </td>
                 <td className="px-6 py-4 text-center text-red-600">
@@ -162,7 +162,7 @@ export default function ZetyVsEasyFreeResume() {
                 <td className="px-6 py-4 font-medium text-ink">
                   PDF Downloads
                 </td>
-                <td className="px-6 py-4 text-center text-accent">
+                <td className="px-6 py-4 text-center text-accent-text">
                   ✅ Unlimited, No Watermark
                 </td>
                 <td className="px-6 py-4 text-center text-red-600">
@@ -178,7 +178,7 @@ export default function ZetyVsEasyFreeResume() {
                 <td className="px-6 py-4 font-medium text-ink">
                   Sign-Up Required
                 </td>
-                <td className="px-6 py-4 text-center text-accent">✅ No</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ No</td>
                 <td className="px-6 py-4 text-center text-red-600">
                   ❌ Yes, mandatory
                 </td>
@@ -192,19 +192,19 @@ export default function ZetyVsEasyFreeResume() {
                 <td className="px-6 py-4 font-medium text-ink">
                   ATS-Friendly Templates
                 </td>
-                <td className="px-6 py-4 text-center text-accent">
+                <td className="px-6 py-4 text-center text-accent-text">
                   ✅ All templates optimized
                 </td>
-                <td className="px-6 py-4 text-center text-accent">✅ Yes</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Yes</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-gray-400 text-white">
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-ink/60 text-white">
                     Tie
                   </span>
                 </td>
               </tr>
               <tr className="bg-green-50">
                 <td className="px-6 py-4 font-medium text-ink">Privacy</td>
-                <td className="px-6 py-4 text-center text-accent">
+                <td className="px-6 py-4 text-center text-accent-text">
                   ✅ Local storage only
                 </td>
                 <td className="px-6 py-4 text-center text-red-600">
@@ -220,14 +220,14 @@ export default function ZetyVsEasyFreeResume() {
                 <td className="px-6 py-4 font-medium text-ink">
                   Ease of Use
                 </td>
-                <td className="px-6 py-4 text-center text-accent">
+                <td className="px-6 py-4 text-center text-accent-text">
                   ✅ Simple, intuitive editor
                 </td>
-                <td className="px-6 py-4 text-center text-accent">
+                <td className="px-6 py-4 text-center text-accent-text">
                   ✅ User-friendly interface
                 </td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-gray-400 text-white">
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-ink/60 text-white">
                     Tie
                   </span>
                 </td>
@@ -236,7 +236,7 @@ export default function ZetyVsEasyFreeResume() {
                 <td className="px-6 py-4 font-medium text-ink">
                   Multiple Resume Versions
                 </td>
-                <td className="px-6 py-4 text-center text-accent">
+                <td className="px-6 py-4 text-center text-accent-text">
                   ✅ Unlimited
                 </td>
                 <td className="px-6 py-4 text-center text-yellow-600">
@@ -263,7 +263,7 @@ export default function ZetyVsEasyFreeResume() {
           The "Premium" Features: What Are You Paying For?
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Zety justifies its cost with a few "premium" features that
           EasyFreeResume doesn't have. Let's look at them honestly.
         </p>
@@ -292,14 +292,14 @@ export default function ZetyVsEasyFreeResume() {
                   Use our comprehensive blog guides (like{" "}
                   <Link
                     to="/blog/resume-action-verbs"
-                    className="text-accent underline"
+                    className="text-accent-text underline"
                   >
                     Action Verbs for Resumes
                   </Link>{" "}
                   or{" "}
                   <Link
                     to="/blog/ai-resume-prompts-hub"
-                    className="text-accent underline"
+                    className="text-accent-text underline"
                   >
                     AI Resume Prompts
                   </Link>
@@ -331,7 +331,7 @@ export default function ZetyVsEasyFreeResume() {
                   Check out our{" "}
                   <Link
                     to="/blog/cover-letter-guide"
-                    className="text-accent underline"
+                    className="text-accent-text underline"
                   >
                     Cover Letter Writing Guide
                   </Link>{" "}
@@ -364,14 +364,14 @@ export default function ZetyVsEasyFreeResume() {
                   Use our{" "}
                   <Link
                     to="/blog/ats-resume-optimization"
-                    className="text-accent underline"
+                    className="text-accent-text underline"
                   >
                     ATS Optimization Guide
                   </Link>{" "}
                   or{" "}
                   <Link
                     to="/blog/ai-resume-review"
-                    className="text-accent underline"
+                    className="text-accent-text underline"
                   >
                     AI Resume Review Guide
                   </Link>{" "}
@@ -386,7 +386,7 @@ export default function ZetyVsEasyFreeResume() {
           The Privacy Factor: A Major Difference
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           This is one of the most important distinctions between the two
           platforms.
         </p>
@@ -397,7 +397,7 @@ export default function ZetyVsEasyFreeResume() {
               🔒 EasyFreeResume Privacy
               <WinnerBadge />
             </h3>
-            <ul className="space-y-3 text-accent">
+            <ul className="space-y-3 text-accent-text">
               <li className="flex items-start space-x-2">
                 <span className="text-green-500 font-bold">✓</span>
                 <span>Your resume data never leaves your computer</span>
@@ -454,7 +454,7 @@ export default function ZetyVsEasyFreeResume() {
           <h3 className="font-bold text-ink mb-3">
             🔍 Privacy Reality Check
           </h3>
-          <p className="text-stone-warm">
+          <p className="text-ink/60">
             For users who value privacy, EasyFreeResume's approach is a clear
             winner. In an age of data breaches and privacy concerns, keeping
             your sensitive career information on your own device is a
@@ -466,7 +466,7 @@ export default function ZetyVsEasyFreeResume() {
           Cost Analysis: The Real Price of Zety
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Let's break down what you're actually paying for with Zety's
           subscription model.
         </p>
@@ -521,7 +521,7 @@ export default function ZetyVsEasyFreeResume() {
             💚 EasyFreeResume Cost
             <WinnerBadge />
           </h3>
-          <div className="text-accent text-center">
+          <div className="text-accent-text text-center">
             <p className="text-6xl font-bold mb-2">$0</p>
             <p className="text-xl">Forever. No tricks.</p>
             <p className="text-sm mt-4">
@@ -537,7 +537,7 @@ export default function ZetyVsEasyFreeResume() {
           How to Switch from Zety to EasyFreeResume
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Already using Zety? Here's how to migrate your resume:
         </p>
 
@@ -644,7 +644,7 @@ export default function ZetyVsEasyFreeResume() {
           The Verdict: When Should You Pay for a Resume Builder?
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           After thorough testing and analysis, here's our honest assessment:
         </p>
 
@@ -670,7 +670,7 @@ export default function ZetyVsEasyFreeResume() {
             ✅ EasyFreeResume is Perfect If:
             <WinnerBadge />
           </h3>
-          <ul className="list-disc pl-6 space-y-2 text-accent">
+          <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>You want complete control over your resume content and data</li>
             <li>
               You prefer to invest money in other career development areas
@@ -690,7 +690,7 @@ export default function ZetyVsEasyFreeResume() {
           Beyond Resume Building: The Complete Job Search Strategy
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Whether you choose a free or paid resume builder, remember that your
           resume is just one piece of your job search puzzle. Here's how to
           maximize your success:
@@ -745,7 +745,7 @@ export default function ZetyVsEasyFreeResume() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Build Your Free Resume Now
           </Link>
@@ -755,14 +755,14 @@ export default function ZetyVsEasyFreeResume() {
           Is Zety Actually Free?
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           No. Zety uses what is called a "freemium bait" model. You can use the Zety resume builder
           to write and format your resume entirely for free. The editor, templates, and content
           suggestions all work without payment. However, when you click "Download" to get your
           finished resume as a PDF, you hit a paywall.
         </p>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-4">
+        <p className="text-lg leading-relaxed text-ink/60 mt-4">
           The minimum cost to download a single resume from Zety is $2.70 for a 7-day trial — which
           automatically renews at $24.70/month unless you cancel in time. Many users report discovering
           this only after spending 30-60 minutes building their resume, at which point the sunk-cost
@@ -773,7 +773,7 @@ export default function ZetyVsEasyFreeResume() {
           ATS Friendliness: Zety vs EasyFreeResume
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Both platforms produce ATS-compatible resumes. Applicant Tracking Systems parse resumes by
           reading text, heading structure, and formatting — not by recognizing which builder made them.
           What matters is the output format: clean HTML structure, standard fonts, proper heading
@@ -795,14 +795,14 @@ export default function ZetyVsEasyFreeResume() {
               'Machine-readable contact information',
             ].map((item) => (
               <li key={item} className="flex items-start gap-2">
-                <span className="text-accent font-bold">✓</span>
+                <span className="text-accent-text font-bold">✓</span>
                 <span className="text-sm">{item}</span>
               </li>
             ))}
           </ul>
           <p className="text-ink/80 mt-4 text-sm">
             Want to verify your resume passes ATS? Check our{' '}
-            <Link to="/resume-keywords" className="text-accent underline">
+            <Link to="/resume-keywords" className="text-accent-text underline">
               resume keywords guide
             </Link>{' '}
             for optimization tips.
@@ -813,27 +813,27 @@ export default function ZetyVsEasyFreeResume() {
           Is Zety Legit and Safe?
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Yes, Zety is a legitimate business. It is operated by Bold LLC (formerly Uptowork), a company
           based in the US. Your resume data is stored on their servers, and they have a standard
           privacy policy. They are not a scam — they are a real company offering a real product.
         </p>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-4">
+        <p className="text-lg leading-relaxed text-ink/60 mt-4">
           The controversy around Zety is not about legitimacy but about transparency. Common complaints include:
         </p>
 
-        <ul className="list-disc pl-6 space-y-2 text-stone-warm mt-4 mb-8">
+        <ul className="list-disc pl-6 space-y-2 text-ink/60 mt-4 mb-8">
           <li>The free builder creates an expectation of free downloads that does not match reality</li>
           <li>The $2.70 trial auto-renews at $24.70/month, catching many users off guard</li>
           <li>Cancellation processes can be frustrating and time-consuming</li>
           <li>Some users report difficulty getting refunds for unexpected charges</li>
         </ul>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           These are pricing and UX decisions, not safety issues. Your data is as safe with Zety as
           with any major SaaS platform. That said, if you prefer maximum privacy,{' '}
-          <Link to="/free-resume-builder-no-sign-up" className="text-accent underline">
+          <Link to="/free-resume-builder-no-sign-up" className="text-accent-text underline">
             EasyFreeResume stores nothing on servers
           </Link>{' '}
           — your resume data stays entirely in your browser.
@@ -856,7 +856,7 @@ export default function ZetyVsEasyFreeResume() {
           ].map(({ q, a }) => (
             <div key={q} className="bg-chalk-dark rounded-xl p-5">
               <h3 className="font-bold text-ink mb-2">{q}</h3>
-              <p className="text-stone-warm text-sm leading-relaxed">{a}</p>
+              <p className="text-ink/60 text-sm leading-relaxed">{a}</p>
             </div>
           ))}
         </div>
@@ -865,7 +865,7 @@ export default function ZetyVsEasyFreeResume() {
           Final Recommendation
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           For the vast majority of job seekers - especially those who value
           privacy, hate hidden fees, and want a straightforward tool to create a
           professional document -{" "}
@@ -879,7 +879,7 @@ export default function ZetyVsEasyFreeResume() {
           </Link>.
         </p>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-6">
+        <p className="text-lg leading-relaxed text-ink/60 mt-6">
           EasyFreeResume provides all the essential tools you need to create a
           high-quality, ATS-friendly resume without the cost. We believe that
           with a little guidance from our comprehensive blog guides, you can
@@ -897,7 +897,7 @@ export default function ZetyVsEasyFreeResume() {
           </p>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-8">
+        <p className="text-lg leading-relaxed text-ink/60 mt-8">
           Ready to see the difference? Try our free builder and see for yourself
           why thousands of job seekers choose EasyFreeResume over paid
           alternatives. You have nothing to lose - except maybe a monthly
@@ -919,7 +919,7 @@ export default function ZetyVsEasyFreeResume() {
           </div>
           <Link
             to="/templates"
-            className="bg-white text-accent px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
+            className="bg-white text-accent-text px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
           >
             Try Free
           </Link>

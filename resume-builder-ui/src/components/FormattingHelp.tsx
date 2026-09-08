@@ -28,16 +28,16 @@ const TipCard: React.FC<TipCardProps> = ({
   primaryTip,
   secondaryTips,
 }) => (
-  <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200">
+  <div className="bg-white rounded-xl p-5 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
     <div className="w-12 h-12 rounded-xl bg-chalk flex items-center justify-center mb-3">
-      <Icon className="text-accent text-2xl" aria-hidden="true" />
+      <Icon className="text-accent-text text-2xl" aria-hidden="true" />
     </div>
-    <h4 className="text-base font-semibold text-gray-900 mb-2">{title}</h4>
+    <h4 className="font-display text-base font-bold text-ink mb-2">{title}</h4>
     <div className="mb-2">{primaryTip}</div>
     <ul className="space-y-1">
       {secondaryTips.map((tip) => (
-        <li key={tip} className="text-xs text-gray-500 flex items-start gap-1.5">
-          <span className="text-accent/80 mt-0.5">•</span>
+        <li key={tip} className="text-xs text-ink/60 flex items-start gap-1.5">
+          <span className="text-accent-text/70 mt-0.5" aria-hidden="true">•</span>
           <span>{tip}</span>
         </li>
       ))}
@@ -60,27 +60,35 @@ const FormattingHelp: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-accent/[0.06] backdrop-blur-sm rounded-xl border border-accent/20 mb-6 overflow-hidden transition-all duration-200">
+    <div className="bg-accent/[0.06] rounded-xl border border-accent/20 mb-6 overflow-clip">
       {/* Header - Always visible */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center justify-between p-4 hover:bg-accent/10/50 transition-colors text-left"
+        className="w-full min-h-11 flex items-center justify-between p-4 text-left transition-colors duration-200 hover:bg-accent/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-chalk"
         aria-expanded={isExpanded}
         aria-label={isExpanded ? "Collapse help guide" : "Expand help guide"}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 min-w-0">
           <MdHelpOutline
-            className="text-accent text-xl flex-shrink-0"
+            className="text-accent-text text-xl flex-shrink-0"
             aria-hidden="true"
           />
-          <span className="text-ink font-medium text-sm">
-            Quick Start Guide
+          <span className="min-w-0">
+            <span className="block text-ink font-medium text-sm">
+              Quick Start Guide
+            </span>
+            {/* The one canonical statement of the formatting affordance. It used
+                to be repeated under every editable block; it is stated here
+                once, above the fold of the editor, and expands into detail. */}
+            <span className="block text-xs text-ink/60 truncate">
+              Select text to format it &middot; drag &bull;&bull;&bull; to reorder
+            </span>
           </span>
         </div>
         {isExpanded ? (
-          <MdExpandLess className="text-accent text-xl" aria-hidden="true" />
+          <MdExpandLess className="text-accent-text text-xl" aria-hidden="true" />
         ) : (
-          <MdExpandMore className="text-accent text-xl" aria-hidden="true" />
+          <MdExpandMore className="text-accent-text text-xl" aria-hidden="true" />
         )}
       </button>
 
@@ -97,7 +105,7 @@ const FormattingHelp: React.FC = () => {
                   {isTouchDevice ? (
                     <>
                       <MdTouchApp
-                        className="text-accent flex-shrink-0"
+                        className="text-accent-text flex-shrink-0"
                         aria-hidden="true"
                       />
                       <span className="text-sm text-ink">
@@ -107,7 +115,7 @@ const FormattingHelp: React.FC = () => {
                   ) : (
                     <>
                       <MdMouse
-                        className="text-accent flex-shrink-0"
+                        className="text-accent-text flex-shrink-0"
                         aria-hidden="true"
                       />
                       <span className="text-sm text-ink">
@@ -128,7 +136,7 @@ const FormattingHelp: React.FC = () => {
               icon={MdEdit}
               title="Edit & Format"
               primaryTip={
-                <p className="text-sm text-gray-700">
+                <p className="text-sm text-ink">
                   Select text to see formatting options
                 </p>
               }
@@ -145,12 +153,12 @@ const FormattingHelp: React.FC = () => {
                 icon={MdSaveAlt}
                 title="Local Auto-Save Active"
                 primaryTip={
-                  <p className="text-sm text-gray-700">
+                  <p className="text-sm text-ink">
                     Changes save to this browser only
                   </p>
                 }
                 secondaryTips={[
-                  "⚠️ Clearing browser data will delete your work",
+                  "Clearing browser data will delete your work",
                   "Sign in to secure your resume to the cloud",
                 ]}
               />
@@ -159,7 +167,7 @@ const FormattingHelp: React.FC = () => {
                 icon={MdCloudDone}
                 title="Cloud Sync Active"
                 primaryTip={
-                  <p className="text-sm text-gray-700">
+                  <p className="text-sm text-ink">
                     Your work is securely backed up
                   </p>
                 }

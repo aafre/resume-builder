@@ -1,5 +1,5 @@
 import React from "react";
-import { MdMenu, MdFileDownload, MdVisibility } from "react-icons/md";
+import { MdMenu, MdFileDownload, MdVisibility, MdRefresh } from "react-icons/md";
 
 interface MobileActionBarProps {
   onNavigationClick: () => void;
@@ -19,8 +19,8 @@ interface MobileActionBarProps {
 }
 
 /**
- * Mobile-first action bar with large touch targets (48x48px minimum)
- * Sticky to bottom on mobile/tablet, hidden on desktop
+ * Mobile-first action bar. Download is the conversion event and is the only
+ * filled accent control on the surface; Menu and Preview are secondary.
  */
 const MobileActionBar: React.FC<MobileActionBarProps> = ({
   onNavigationClick,
@@ -37,6 +37,7 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
 }) => {
   // Show loading on button when either opening (save/validate) or generating
   const isPreviewLoading = isOpeningPreview || isGeneratingPreview;
+  const previewStale = previewIsStale && !isPreviewLoading;
   // Format last saved time
   const getLastSavedText = () => {
     if (!lastSaved) return "";
@@ -54,30 +55,33 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
     return `${diffHours} hours ago`;
   };
 
+  const buttonBase =
+    "flex flex-col items-center justify-center min-h-11 px-3 py-2.5 rounded-lg transition-colors duration-150 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2";
+
   return (
     <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-t border-gray-200 shadow-sm">
       {/* Auto-save status bar (subtle, above buttons) - only for authenticated users */}
       {isAuthenticated && (isSaving || lastSaved || saveError) && (
-        <div className="px-4 py-1 bg-gray-50 border-b border-gray-100">
+        <div className="px-4 py-1 bg-chalk border-b border-gray-200/60">
           <div className="flex items-center justify-center gap-2 text-xs">
             {isSaving && (
               <>
-                <div className="h-2 w-8 overflow-hidden rounded-full bg-slate-200">
+                <div className="h-2 w-8 overflow-clip rounded-full bg-chalk-dark">
                   <div className="h-full w-1/2 animate-pulse rounded-full bg-accent" />
                 </div>
-                <span className="text-gray-600">Saving...</span>
+                <span className="text-ink/60">Saving...</span>
               </>
             )}
             {!isSaving && lastSaved && !saveError && (
               <>
-                <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                <span className="text-gray-600">Saved {getLastSavedText()}</span>
+                <div className="w-2 h-2 rounded-full bg-accent"></div>
+                <span className="text-ink/60">Saved {getLastSavedText()}</span>
               </>
             )}
             {saveError && (
               <>
-                <div className="w-2 h-2 rounded-full bg-red-500"></div>
-                <span className="text-red-600">Save failed - retrying...</span>
+                <div className="w-2 h-2 rounded-full bg-red-600"></div>
+                <span className="text-red-700">Save failed - retrying...</span>
               </>
             )}
           </div>
@@ -90,31 +94,42 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
         <button
           onClick={onNavigationClick}
           disabled={isGenerating || isGeneratingPreview}
-          className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 rounded-lg transition-all disabled:opacity-50 hover:bg-gray-100 active:bg-gray-200 active:scale-[0.98] border border-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+          className={`${buttonBase} border border-gray-200 bg-white text-ink hover:bg-chalk-dark active:bg-chalk-dark`}
           aria-label="Open navigation menu"
         >
-          <MdMenu className="text-2xl text-gray-700 mb-1.5" aria-hidden="true" />
-          <span className="text-xs text-gray-600 font-medium">Menu</span>
+          <MdMenu className="text-2xl mb-1.5" aria-hidden="true" />
+          <span className="text-xs font-medium">Menu</span>
         </button>
 
-        {/* Preview Button */}
+        {/* Preview Button — secondary. When the preview is behind the user's
+            edits the icon, the label and the colour all change; the previous
+            unlabelled pulsing dot carried that state on colour alone. */}
         {onPreviewClick && (
           <button
             onClick={onPreviewClick}
             disabled={isPreviewLoading || isGenerating}
-            className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 bg-accent text-ink rounded-lg shadow-sm transition-all hover:shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-            aria-label="Preview resume PDF"
-            >
-            {/* Staleness indicator */}
-            {previewIsStale && !isPreviewLoading && (
-              <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-amber-400 rounded-full border-2 border-white animate-pulse shadow-sm"></span>
-            )}
+            className={`${buttonBase} border ${
+              previewStale
+                ? "border-amber-600 bg-amber-50 text-amber-900 active:bg-amber-100"
+                : "border-gray-200 bg-white text-ink hover:bg-chalk-dark active:bg-chalk-dark"
+            }`}
+            aria-label={
+              previewStale
+                ? "Refresh preview — the preview is out of date and does not include your latest edits"
+                : "Preview resume PDF"
+            }
+          >
             {isPreviewLoading ? (
               <>
-                <span className="mb-1.5 h-2 w-10 overflow-hidden rounded-full bg-ink/15">
+                <span className="mb-1.5 h-2 w-10 overflow-clip rounded-full bg-ink/15">
                   <span className="block h-full w-1/2 animate-pulse rounded-full bg-ink/60" />
                 </span>
                 <span className="text-xs font-semibold">Loading...</span>
+              </>
+            ) : previewStale ? (
+              <>
+                <MdRefresh className="text-2xl mb-1.5" aria-hidden="true" />
+                <span className="text-xs font-semibold">Refresh</span>
               </>
             ) : (
               <>
@@ -125,17 +140,17 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
           </button>
         )}
 
-        {/* Download PDF Button */}
+        {/* Download PDF Button — the conversion action, the only accent fill */}
         <button
           onClick={onDownloadClick}
           disabled={isGenerating || isGeneratingPreview}
-          className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 bg-emerald-600 text-white rounded-lg shadow-sm transition-all hover:bg-emerald-700 hover:shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
+          className={`${buttonBase} bg-accent text-ink shadow-sm hover:shadow-md`}
           aria-label="Download resume as PDF"
         >
           {isGenerating ? (
             <>
-              <span className="mb-1.5 h-2 w-10 overflow-hidden rounded-full bg-white/30">
-                <span className="block h-full w-1/2 animate-pulse rounded-full bg-white" />
+              <span className="mb-1.5 h-2 w-10 overflow-clip rounded-full bg-ink/15">
+                <span className="block h-full w-1/2 animate-pulse rounded-full bg-ink/60" />
               </span>
               <span className="text-xs font-semibold">Creating...</span>
             </>

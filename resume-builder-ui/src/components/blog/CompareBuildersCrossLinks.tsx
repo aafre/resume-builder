@@ -37,11 +37,11 @@ export default function CompareBuildersCrossLinks({
   return (
     <div className={`${bgColor} rounded-xl p-6 mt-12`}>
       <h2 className="font-display text-2xl font-extrabold text-ink mb-4">{title}</h2>
-      <p className="font-display font-extralight text-stone-warm mb-4">{description}</p>
+      <p className="font-display font-extralight text-ink/60 mb-4">{description}</p>
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {links.map((link) => (
           <li key={link.path}>
-            <Link to={link.path} className="text-accent hover:underline">
+            <Link to={link.path} className="text-accent-text hover:underline">
               {link.label}
             </Link>
           </li>

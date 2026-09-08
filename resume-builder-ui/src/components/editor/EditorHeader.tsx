@@ -4,7 +4,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import { X } from 'lucide-react';
+import { Check, X } from 'lucide-react';
 import { JobSparkleIcon } from '../icons/JobSparkleIcon';
 import { ContactInfo, Section, SaveStatus } from '../../types';
 import { SaveStatusIndicator } from '../SaveStatusIndicator';
@@ -171,10 +171,10 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
       {loading ? (
         <div className="w-3.5 h-3.5 rounded-full border-2 border-accent/30 border-t-accent animate-spin" />
       ) : (
-        <JobSparkleIcon className="w-3.5 h-3.5 text-accent" />
+        <JobSparkleIcon className="w-3.5 h-3.5 text-accent-text" />
       )}
       <div className="flex flex-col leading-none">
-        <span className="text-[10px] uppercase font-bold text-mist tracking-wider group-hover:text-accent transition-colors">
+        <span className="text-[10px] uppercase font-bold text-ink/60 tracking-wider group-hover:text-accent-text transition-colors">
           Matches
         </span>
         <span className="text-xs font-bold text-ink tabular-nums">
@@ -215,17 +215,17 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
                 handleBadgeClick();
                 dismissMobileBanner();
               }}
-              className="flex min-h-11 items-center gap-2 flex-1 min-w-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+              className="flex min-h-11 items-center gap-2 flex-1 min-w-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
             >
               <JobSparkleIcon className="w-4 h-4 flex-shrink-0 text-accent" />
               <span className="text-sm font-medium truncate">
                 {jobCount} jobs matched to your skills
               </span>
-              <span className="text-xs text-mist flex-shrink-0">View &rarr;</span>
+              <span className="text-xs text-white/60 flex-shrink-0">View &rarr;</span>
             </Link>
             <button
               onClick={dismissMobileBanner}
-              className="ml-2 inline-flex min-h-11 min-w-11 items-center justify-center p-1 hover:bg-white/10 rounded-lg transition-colors flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+              className="ml-2 inline-flex min-h-11 min-w-11 items-center justify-center p-1 hover:bg-white/10 rounded-lg transition-colors flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
               aria-label="Dismiss"
             >
               <X className="w-4 h-4" />
@@ -234,23 +234,30 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
         </div>
       )}
 
-      {/* Idle Nudge Tooltip - Portal to body */}
+      {/* Idle Nudge - Portal to body.
+          Five minutes in is the moment an anonymous user starts wondering what
+          this is going to cost. It used to nag them to "save permanently" —
+          which contradicts the header's own "Saved on device" badge and is the
+          exact pressure Principle 1 rules out. It now answers the question
+          instead. `role="status"` carries an implicit polite live region; the
+          old `role="alert"` + `aria-live="polite"` pair was contradictory. */}
       {showIdleTooltip &&
         ReactDOM.createPortal(
           <div
-            className="fixed top-20 right-6 z-[70] bg-accent text-ink text-sm px-4 py-3 rounded-lg shadow-md"
-            role="alert"
-            aria-live="polite"
+            className="fixed top-20 right-6 z-[70] max-w-xs bg-ink text-white text-sm px-4 py-3 rounded-xl shadow-xl"
+            role="status"
           >
-            <div className="flex items-center gap-2">
-              <span aria-hidden="true">💡</span>
-              <span>Don't forget to save your progress permanently</span>
+            <div className="flex items-start gap-3">
+              <Check className="w-4 h-4 mt-0.5 flex-shrink-0 text-accent" aria-hidden="true" />
+              <p className="flex-1 leading-relaxed">
+                Saved on this device. Your PDF is free to download &mdash; no account needed.
+              </p>
               <button
                 onClick={onDismissIdleTooltip}
-                className="ml-2 inline-flex min-h-11 min-w-11 items-center justify-center rounded-md text-ink hover:bg-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/50"
-                aria-label="Dismiss reminder"
+                className="-my-1 -mr-2 inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-white hover:bg-white/10 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+                aria-label="Dismiss"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
           </div>,

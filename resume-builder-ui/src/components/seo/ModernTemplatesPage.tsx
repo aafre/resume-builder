@@ -35,7 +35,7 @@ export default function ModernTemplatesPage() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4">
             Browse Modern Templates
           </h2>
-          <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-2xl mx-auto">
             Select a modern template that matches your professional style.
             All designs are ATS-optimized and completely free.
           </p>
@@ -52,7 +52,7 @@ export default function ModernTemplatesPage() {
           <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
             <div className="bg-white rounded-2xl p-6 card-gradient-border shadow-premium">
               <h3 className="font-display text-xl font-bold text-ink mb-3">Clean Typography</h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Modern templates use contemporary sans-serif fonts with clear hierarchy.
                 Headers stand out, body text is readable, and the overall effect is polished
                 and professional.
@@ -60,21 +60,21 @@ export default function ModernTemplatesPage() {
             </div>
             <div className="bg-white rounded-2xl p-6 card-gradient-border shadow-premium">
               <h3 className="font-display text-xl font-bold text-ink mb-3">Strategic White Space</h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Generous margins and spacing between sections create visual breathing room.
                 This makes your resume easier to scan and more pleasant to read.
               </p>
             </div>
             <div className="bg-white rounded-2xl p-6 card-gradient-border shadow-premium">
               <h3 className="font-display text-xl font-bold text-ink mb-3">Subtle Color Accents</h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Modern designs often incorporate a single accent color for headers or dividers.
                 This adds personality without overwhelming the content.
               </p>
             </div>
             <div className="bg-white rounded-2xl p-6 card-gradient-border shadow-premium">
               <h3 className="font-display text-xl font-bold text-ink mb-3">Flexible Layouts</h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Whether you have extensive experience or are just starting out, modern
                 templates adapt to showcase your unique qualifications effectively.
               </p>
@@ -97,19 +97,19 @@ export default function ModernTemplatesPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center mt-6">
               <div className="bg-white p-4 rounded-lg shadow-sm">
                 <p className="font-semibold text-ink">Technology</p>
-                <p className="text-stone-warm text-sm">Software, SaaS, IT</p>
+                <p className="text-ink/60 text-sm">Software, SaaS, IT</p>
               </div>
               <div className="bg-white p-4 rounded-lg shadow-sm">
                 <p className="font-semibold text-ink">Startups</p>
-                <p className="text-stone-warm text-sm">Early-stage companies</p>
+                <p className="text-ink/60 text-sm">Early-stage companies</p>
               </div>
               <div className="bg-white p-4 rounded-lg shadow-sm">
                 <p className="font-semibold text-ink">Marketing</p>
-                <p className="text-stone-warm text-sm">Digital, content, growth</p>
+                <p className="text-ink/60 text-sm">Digital, content, growth</p>
               </div>
               <div className="bg-white p-4 rounded-lg shadow-sm">
                 <p className="font-semibold text-ink">Design</p>
-                <p className="text-stone-warm text-sm">UX, product, graphic</p>
+                <p className="text-ink/60 text-sm">UX, product, graphic</p>
               </div>
             </div>
           </div>

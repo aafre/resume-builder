@@ -11,22 +11,22 @@ export default function AuthorBio() {
             </svg>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-mono text-[10px] tracking-[0.15em] text-stone-warm uppercase mb-1">Written by</p>
+            <p className="font-mono text-[10px] tracking-[0.15em] text-ink/60 uppercase mb-1">Written by</p>
             <h3 className="font-display text-lg font-extrabold text-ink mb-2">The EasyFreeResume Team</h3>
-            <p className="font-display font-extralight text-stone-warm leading-relaxed mb-4">
+            <p className="font-display font-extralight text-ink/60 leading-relaxed mb-4">
               We're a team of career coaches, HR professionals, and developers dedicated to making professional resume building accessible to everyone — completely free, no strings attached.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
                 to="/blog"
-                className="text-sm font-medium text-accent hover:text-ink transition-colors"
+                className="text-sm font-medium text-accent-text hover:text-ink transition-colors"
               >
                 More articles &rarr;
               </Link>
-              <span className="text-mist">|</span>
+              <span className="text-ink/60">|</span>
               <Link
                 to="/templates"
-                className="text-sm font-medium text-accent hover:text-ink transition-colors"
+                className="text-sm font-medium text-accent-text hover:text-ink transition-colors"
               >
                 Browse templates &rarr;
               </Link>

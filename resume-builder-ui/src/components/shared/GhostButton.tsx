@@ -36,12 +36,12 @@ export const GhostButton: React.FC<GhostButtonProps> = ({
         w-full py-3 px-4
         flex items-center justify-center gap-2
         border-2 border-dashed border-gray-300 rounded-lg
-        text-gray-500 text-sm font-medium
+        text-ink/60 text-sm font-medium
         bg-transparent
-        hover:border-accent/70 hover:text-accent hover:bg-accent/[0.06]
-        focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-1
+        hover:border-accent/70 hover:text-accent-text hover:bg-accent/[0.06]
+        focus:outline-none focus:ring-2 focus:ring-accent-text focus:ring-offset-1
         transition-colors duration-150
-        disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-gray-300 disabled:hover:text-gray-500 disabled:hover:bg-transparent
+        disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-gray-300 disabled:hover:text-ink/60 disabled:hover:bg-transparent
         ${className}
       `.trim().replace(/\s+/g, ' ')}
       {...props}

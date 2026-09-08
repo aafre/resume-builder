@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useId } from 'react';
 import { ResumeListItem } from '../types';
+import ModalShell from './shared/ModalShell';
 
 interface DuplicateResumeModalProps {
   resume: ResumeListItem | null;
@@ -17,14 +18,13 @@ export function DuplicateResumeModal({
   isDuplicating = false
 }: DuplicateResumeModalProps) {
   const [newTitle, setNewTitle] = useState('');
+  const titleId = useId();
 
   useEffect(() => {
     if (resume) {
       setNewTitle(`Copy of ${resume.title}`);
     }
   }, [resume]);
-
-  if (!isOpen || !resume) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,14 +33,23 @@ export function DuplicateResumeModal({
     }
   };
 
+  // Data guard, distinct from the open-state guard ModalShell now owns. Safe
+  // after the hooks above, which run unconditionally.
+  if (!resume) return null;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+    <ModalShell
+      isOpen={isOpen}
+      onClose={onCancel}
+      labelledBy={titleId}
+      closeOnBackdrop={!isDuplicating}
+      panelClassName="bg-white rounded-lg shadow-xl max-w-md w-full"
+    >
         <div className="p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="flex-shrink-0">
               <svg
-                className="w-12 h-12 text-accent"
+                className="w-12 h-12 text-accent-text"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -54,14 +63,14 @@ export function DuplicateResumeModal({
               </svg>
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Duplicate Resume</h2>
-              <p className="text-sm text-gray-500 mt-1">Create a copy with a new name</p>
+              <h2 id={titleId} className="text-xl font-bold text-ink">Duplicate Resume</h2>
+              <p className="text-sm text-ink/60 mt-1">Create a copy with a new name</p>
             </div>
           </div>
 
           <form onSubmit={handleSubmit}>
             <div className="mb-6">
-              <label htmlFor="newTitle" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="newTitle" className="block text-sm font-medium text-ink mb-2">
                 New Resume Title
               </label>
               <input
@@ -71,11 +80,11 @@ export function DuplicateResumeModal({
                 onChange={(e) => setNewTitle(e.target.value)}
                 disabled={isDuplicating}
                 autoFocus
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-text focus:border-accent disabled:bg-chalk-dark disabled:cursor-not-allowed"
                 placeholder="Enter new title"
                 maxLength={200}
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-ink/60 mt-1">
                 Original: <span className="font-medium">{resume.title}</span>
               </p>
             </div>
@@ -92,14 +101,13 @@ export function DuplicateResumeModal({
                 type="button"
                 onClick={onCancel}
                 disabled={isDuplicating}
-                className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors"
+                className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:bg-chalk-dark text-ink font-medium py-2 px-4 rounded-lg transition-colors"
               >
                 Cancel
               </button>
             </div>
           </form>
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
 }

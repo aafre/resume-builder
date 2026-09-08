@@ -46,13 +46,13 @@ export default function FreeCVBuilder() {
                 </ul>
               </div>
               <div>
-                <h3 className="font-display text-xl font-bold text-stone-warm mb-4">Use a Resume if you're in:</h3>
-                <ul className="space-y-2 text-stone-warm list-disc pl-5">
+                <h3 className="font-display text-xl font-bold text-ink/60 mb-4">Use a Resume if you're in:</h3>
+                <ul className="space-y-2 text-ink/60 list-disc pl-5">
                   <li>United States</li>
                   <li>Canada</li>
                   <li>Corporate roles (US companies)</li>
                 </ul>
-                <p className="mt-4 text-sm text-mist">
+                <p className="mt-4 text-sm text-ink/60">
                   Our templates work for both—the format is the same; only the terminology differs.
                 </p>
               </div>
@@ -66,7 +66,7 @@ export default function FreeCVBuilder() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
             Build your CV instantly—no sign-up required
           </h2>
-          <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-8">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-4xl mx-auto text-center leading-relaxed mb-8">
             Start building immediately. The editor opens in seconds with no barriers. No email
             verification, no password creation, no waiting. Just click and start creating your
             professional CV right now.
@@ -87,7 +87,7 @@ export default function FreeCVBuilder() {
               <h3 className="font-display text-xl font-bold text-ink mb-2">
                 2 pages maximum
               </h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Unlike academic CVs, a job application CV in the UK should be concise. Stick to 2 pages
                 unless you have 15+ years of experience or are in academia.
               </p>
@@ -97,7 +97,7 @@ export default function FreeCVBuilder() {
               <h3 className="font-display text-xl font-bold text-ink mb-2">
                 Personal profile/summary at the top
               </h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 UK CVs typically start with a brief personal statement (3-4 lines) summarizing your
                 experience and career goals. This is expected by most UK employers.
               </p>
@@ -107,7 +107,7 @@ export default function FreeCVBuilder() {
               <h3 className="font-display text-xl font-bold text-ink mb-2">
                 No photo (unless requested)
               </h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Unlike some European countries, UK CVs typically don't include a photo. Only add one
                 if specifically requested in the job posting.
               </p>
@@ -117,7 +117,7 @@ export default function FreeCVBuilder() {
               <h3 className="font-display text-xl font-bold text-ink mb-2">
                 Reverse chronological order
               </h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 List your most recent experience first. UK recruiters scan CVs quickly and want to
                 see your current/recent role at the top.
               </p>
@@ -134,8 +134,8 @@ export default function FreeCVBuilder() {
           <div className="max-w-4xl mx-auto bg-white rounded-2xl p-8 shadow-premium border border-black/[0.06]">
             <div className="grid md:grid-cols-2 gap-8">
               <div>
-                <h3 className="font-display text-xl font-bold text-accent mb-4">We DO NOT store:</h3>
-                <ul className="space-y-2 text-stone-warm list-disc pl-5">
+                <h3 className="font-display text-xl font-bold text-accent-text mb-4">We DO NOT store:</h3>
+                <ul className="space-y-2 text-ink/60 list-disc pl-5">
                   <li>Your CV content</li>
                   <li>Your personal information</li>
                   <li>Your email address</li>
@@ -145,7 +145,7 @@ export default function FreeCVBuilder() {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-ink/80 mb-4">We only track:</h3>
-                <ul className="space-y-2 text-stone-warm list-disc pl-5">
+                <ul className="space-y-2 text-ink/60 list-disc pl-5">
                   <li>Anonymous page views (for analytics)</li>
                   <li>Error reports (to fix bugs)</li>
                   <li>Nothing that identifies you personally</li>

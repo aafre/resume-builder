@@ -21,12 +21,12 @@ export default function CopilotResumePrompts() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Microsoft Copilot is built into the tools millions already use &mdash; Bing, Edge, Windows,
           and Microsoft 365. That makes it one of the most accessible AI assistants for resume writing
           in 2026. These 20+ prompts are organized by task so you can copy, paste, and start improving
           your resume immediately. For a broader look at how AI can help with resumes, see our{' '}
-          <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">
+          <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline">
             complete AI resume writing guide
           </Link>.
         </p>
@@ -35,15 +35,15 @@ export default function CopilotResumePrompts() {
         <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
           <h2 className="font-bold text-ink mb-4 text-lg">Table of Contents</h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#why-copilot" className="text-accent hover:underline">Why Microsoft Copilot for Resume Writing</a></li>
-            <li><a href="#professional-summary" className="text-accent hover:underline">Professional Summary Prompts (#1-3)</a></li>
-            <li><a href="#experience-bullets" className="text-accent hover:underline">Experience Bullet Prompts (#4-7)</a></li>
-            <li><a href="#ats-keywords" className="text-accent hover:underline">ATS Keyword Extraction (#8-10)</a></li>
-            <li><a href="#skills-section" className="text-accent hover:underline">Skills Section Prompts (#11-13)</a></li>
-            <li><a href="#cover-letters" className="text-accent hover:underline">Cover Letter Prompts (#14-16)</a></li>
-            <li><a href="#review-polish" className="text-accent hover:underline">Review &amp; Polish Prompts (#17-20)</a></li>
-            <li><a href="#copilot-vs-others" className="text-accent hover:underline">Copilot vs ChatGPT vs Claude</a></li>
-            <li><a href="#tips" className="text-accent hover:underline">Tips for Better Results</a></li>
+            <li><a href="#why-copilot" className="text-accent-text hover:underline">Why Microsoft Copilot for Resume Writing</a></li>
+            <li><a href="#professional-summary" className="text-accent-text hover:underline">Professional Summary Prompts (#1-3)</a></li>
+            <li><a href="#experience-bullets" className="text-accent-text hover:underline">Experience Bullet Prompts (#4-7)</a></li>
+            <li><a href="#ats-keywords" className="text-accent-text hover:underline">ATS Keyword Extraction (#8-10)</a></li>
+            <li><a href="#skills-section" className="text-accent-text hover:underline">Skills Section Prompts (#11-13)</a></li>
+            <li><a href="#cover-letters" className="text-accent-text hover:underline">Cover Letter Prompts (#14-16)</a></li>
+            <li><a href="#review-polish" className="text-accent-text hover:underline">Review &amp; Polish Prompts (#17-20)</a></li>
+            <li><a href="#copilot-vs-others" className="text-accent-text hover:underline">Copilot vs ChatGPT vs Claude</a></li>
+            <li><a href="#tips" className="text-accent-text hover:underline">Tips for Better Results</a></li>
           </ol>
         </nav>
 
@@ -74,10 +74,10 @@ export default function CopilotResumePrompts() {
           Professional Summary Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Your professional summary sits at the top of your resume and sets the tone for everything
           below. These Copilot prompts produce focused, specific summaries. For more examples, see our{' '}
-          <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+          <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
             professional summary examples guide
           </Link>.
         </p>
@@ -123,11 +123,11 @@ export default function CopilotResumePrompts() {
           Experience Bullet Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Listing responsibilities instead of achievements is the most common resume mistake. These
           prompts help Copilot transform what you did into what you accomplished. For the framework
           behind this, read our{' '}
-          <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+          <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
             guide to quantifying accomplishments
           </Link>.
         </p>
@@ -185,10 +185,10 @@ export default function CopilotResumePrompts() {
           ATS Keyword Extraction Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Copilot&rsquo;s web search integration makes it particularly useful for keyword research &mdash;
           it can cross-reference job descriptions with current industry trends. You can also use our{' '}
-          <Link to="/resume-keyword-scanner" className="text-accent hover:underline">
+          <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">
             free ATS keyword scanner
           </Link>{' '}
           to check your match score against a specific job posting.
@@ -233,7 +233,7 @@ export default function CopilotResumePrompts() {
             4. Soft skills valued in this field (5-8)<br />
             5. Emerging skills trending in 2026 job postings (3-5)<br /><br />
             For a deeper list organized by role, see our{' '}
-            <Link to="/resume-keywords" className="text-accent hover:underline">resume keywords by job title</Link> pages.
+            <Link to="/resume-keywords" className="text-accent-text hover:underline">resume keywords by job title</Link> pages.
           </CopyablePrompt>
         </div>
 
@@ -242,10 +242,10 @@ export default function CopilotResumePrompts() {
           Skills Section Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           A well-organized skills section helps both ATS parsers and recruiters quickly assess your
           qualifications. For a complete walkthrough, read our{' '}
-          <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+          <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
             guide to listing skills on your resume
           </Link>.
         </p>
@@ -286,11 +286,11 @@ export default function CopilotResumePrompts() {
           Cover Letter Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Copilot&rsquo;s web access is a real advantage for cover letters &mdash; it can research the
           company, find recent news, and weave genuine details into your letter instead of generic praise.
           For prompts that work across all AI tools, check out our{' '}
-          <Link to="/blog/ai-cover-letter-prompts" className="text-accent hover:underline">
+          <Link to="/blog/ai-cover-letter-prompts" className="text-accent-text hover:underline">
             AI cover letter prompts guide
           </Link>.
         </p>
@@ -343,7 +343,7 @@ export default function CopilotResumePrompts() {
           Review &amp; Polish Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Use these prompts after writing your resume to catch errors, tighten language, and ensure
           ATS compatibility.
         </p>
@@ -436,8 +436,8 @@ export default function CopilotResumePrompts() {
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Office integration</td>
                 <td className="px-4 py-4 text-center text-green-600">Native (Word, Excel)</td>
-                <td className="px-4 py-4 text-center text-stone-warm">None</td>
-                <td className="px-4 py-4 text-center text-stone-warm">None</td>
+                <td className="px-4 py-4 text-center text-ink/60">None</td>
+                <td className="px-4 py-4 text-center text-ink/60">None</td>
               </tr>
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Instruction following</td>
@@ -447,27 +447,27 @@ export default function CopilotResumePrompts() {
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Best for</td>
-                <td className="px-4 py-4 text-center text-stone-warm text-sm">Web research + free access</td>
-                <td className="px-4 py-4 text-center text-stone-warm text-sm">General purpose</td>
-                <td className="px-4 py-4 text-center text-stone-warm text-sm">Professional writing</td>
+                <td className="px-4 py-4 text-center text-ink/60 text-sm">Web research + free access</td>
+                <td className="px-4 py-4 text-center text-ink/60 text-sm">General purpose</td>
+                <td className="px-4 py-4 text-center text-ink/60 text-sm">Professional writing</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           <strong>Our take:</strong> Copilot&rsquo;s biggest advantage is web-grounded responses &mdash; it can
           research companies, pull current job market data, and verify industry terminology while writing.
           For pure writing quality, Claude and ChatGPT still have an edge. Many job seekers get the best
           results by using Copilot for research-heavy tasks and another model for final polishing.
           See our guides for{' '}
-          <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">Claude resume prompts</Link>
+          <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">Claude resume prompts</Link>
           ,{' '}
-          <Link to="/blog/deepseek-resume-prompts" className="text-accent hover:underline">DeepSeek resume prompts</Link>
+          <Link to="/blog/deepseek-resume-prompts" className="text-accent-text hover:underline">DeepSeek resume prompts</Link>
           , and{' '}
-          <Link to="/blog/gemini-resume-prompts" className="text-accent hover:underline">Gemini resume prompts</Link>
+          <Link to="/blog/gemini-resume-prompts" className="text-accent-text hover:underline">Gemini resume prompts</Link>
           . For a broader overview, read our{' '}
-          <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">complete AI resume writing guide</Link>.
+          <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline">complete AI resume writing guide</Link>.
         </p>
 
         {/* Tips */}
@@ -509,7 +509,7 @@ export default function CopilotResumePrompts() {
               </div>
               <div>
                 <h3 className="font-bold text-ink mb-1">{tip.title}</h3>
-                <p className="text-stone-warm">{tip.desc}</p>
+                <p className="text-ink/60">{tip.desc}</p>
               </div>
             </div>
           ))}
@@ -518,27 +518,27 @@ export default function CopilotResumePrompts() {
         {/* AI Resume Tools */}
         <div className="my-12">
           <h2 className="text-2xl font-bold text-ink mb-2">Explore Other AI Resume Tools</h2>
-          <p className="text-stone-warm font-extralight mb-6">Each AI has different strengths for resume writing. Try multiple tools to find what works best for you.</p>
+          <p className="text-ink/60 font-extralight mb-6">Each AI has different strengths for resume writing. Try multiple tools to find what works best for you.</p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             <Link to="/blog/chatgpt-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">ChatGPT Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for creative writing and natural language</p>
+              <p className="text-sm text-ink/60">Best for creative writing and natural language</p>
             </Link>
             <Link to="/blog/claude-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Claude Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for analysis, structured output, and nuance</p>
+              <p className="text-sm text-ink/60">Best for analysis, structured output, and nuance</p>
             </Link>
             <Link to="/blog/gemini-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Gemini Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for research and Google ecosystem integration</p>
+              <p className="text-sm text-ink/60">Best for research and Google ecosystem integration</p>
             </Link>
             <Link to="/blog/grok-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Grok Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for conversational iteration and real-time feedback</p>
+              <p className="text-sm text-ink/60">Best for conversational iteration and real-time feedback</p>
             </Link>
             <Link to="/blog/deepseek-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">DeepSeek Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for technical roles and coding resumes</p>
+              <p className="text-sm text-ink/60">Best for technical roles and coding resumes</p>
             </Link>
           </div>
         </div>
@@ -573,7 +573,7 @@ export default function CopilotResumePrompts() {
           ].map((faq, i) => (
             <div key={i} className="bg-chalk-dark rounded-xl p-5">
               <h3 className="font-bold text-ink mb-2">{faq.q}</h3>
-              <p className="text-stone-warm">{faq.a}</p>
+              <p className="text-ink/60">{faq.a}</p>
             </div>
           ))}
         </div>

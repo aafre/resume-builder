@@ -35,12 +35,12 @@ export default function FAQSection({
             <summary className="px-6 py-4 text-left flex justify-between items-center bg-chalk hover:bg-chalk-dark transition-colors cursor-pointer list-none [&::-webkit-details-marker]:hidden">
               <span className="font-semibold text-ink pr-4">{faq.question}</span>
               <ChevronDownIcon
-                className="w-5 h-5 text-mist flex-shrink-0 transition-transform duration-200 group-open:rotate-180"
+                className="w-5 h-5 text-ink/60 flex-shrink-0 transition-transform duration-200 group-open:rotate-180"
               />
             </summary>
             <div className="faq-content">
               <div>
-                <p className="text-stone-warm leading-relaxed px-6 py-4">{faq.answer}</p>
+                <p className="text-ink/60 leading-relaxed px-6 py-4">{faq.answer}</p>
               </div>
             </div>
           </details>

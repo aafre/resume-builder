@@ -16,7 +16,7 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
           ★
         </span>
       ))}
-      <span className="ml-2 text-sm font-medium text-stone-warm">
+      <span className="ml-2 text-sm font-medium text-ink/60">
         {rating}/{max}
       </span>
     </div>
@@ -69,16 +69,16 @@ export default function CanvaVsEasyFreeResume() {
           </h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-              <p className="font-bold text-accent text-lg mb-2">EasyFreeResume</p>
+              <p className="font-bold text-accent-text text-lg mb-2">EasyFreeResume</p>
               <StarRating rating={5} />
-              <p className="text-2xl font-bold text-accent mt-2">ATS-Optimized</p>
-              <p className="text-sm text-stone-warm">Built for job applications</p>
+              <p className="text-2xl font-bold text-accent-text mt-2">ATS-Optimized</p>
+              <p className="text-sm text-ink/60">Built for job applications</p>
             </div>
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-              <p className="font-bold text-stone-warm text-lg mb-2">Canva</p>
+              <p className="font-bold text-ink/60 text-lg mb-2">Canva</p>
               <StarRating rating={3} />
               <p className="text-2xl font-bold text-red-600 mt-2">ATS Problems</p>
-              <p className="text-sm text-stone-warm">Designed for visuals, not ATS</p>
+              <p className="text-sm text-ink/60">Designed for visuals, not ATS</p>
             </div>
           </div>
           <p className="text-green-800 mt-4 text-center font-medium">
@@ -86,7 +86,7 @@ export default function CanvaVsEasyFreeResume() {
           </p>
         </div>
 
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Canva is fantastic for graphics, social media posts, and presentations. But for
           resumes that need to pass through Applicant Tracking Systems? That's where
           Canva's beautiful templates often fail.
@@ -110,7 +110,7 @@ export default function CanvaVsEasyFreeResume() {
         <div className="space-y-4 my-8">
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h3 className="font-bold text-ink mb-2">1. Graphics and Icons</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Canva templates often use icons for contact info, skill ratings, and section headers.
               ATS can't read images—it just sees blank space where your phone number should be.
             </p>
@@ -118,7 +118,7 @@ export default function CanvaVsEasyFreeResume() {
 
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h3 className="font-bold text-ink mb-2">2. Multi-Column Layouts</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Those trendy two-column designs look great but confuse ATS. The system reads
               left-to-right, line-by-line, mixing up your skills with your job titles.
             </p>
@@ -126,7 +126,7 @@ export default function CanvaVsEasyFreeResume() {
 
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h3 className="font-bold text-ink mb-2">3. Text Boxes</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Canva uses text boxes for layout control. Some ATS systems can't extract text
               from these boxes properly, resulting in jumbled or missing content.
             </p>
@@ -134,7 +134,7 @@ export default function CanvaVsEasyFreeResume() {
 
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h3 className="font-bold text-ink mb-2">4. Non-Standard Fonts</h3>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Canva's creative fonts might not be recognized by ATS, causing text to appear
               as garbled characters or not parse at all.
             </p>
@@ -150,15 +150,15 @@ export default function CanvaVsEasyFreeResume() {
             <thead>
               <tr className="bg-chalk-dark">
                 <th className="px-6 py-4 text-left font-bold text-ink">Feature</th>
-                <th className="px-6 py-4 text-center font-bold text-accent">EasyFreeResume</th>
-                <th className="px-6 py-4 text-center font-bold text-accent">Canva</th>
-                <th className="px-6 py-4 text-center font-bold text-stone-warm">Winner</th>
+                <th className="px-6 py-4 text-center font-bold text-accent-text">EasyFreeResume</th>
+                <th className="px-6 py-4 text-center font-bold text-accent-text">Canva</th>
+                <th className="px-6 py-4 text-center font-bold text-ink/60">Winner</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-black/[0.06]">
               <tr className="bg-green-50">
                 <td className="px-6 py-4 font-medium text-ink">ATS Compatibility</td>
-                <td className="px-6 py-4 text-center text-accent font-bold">✅ 100% optimized</td>
+                <td className="px-6 py-4 text-center text-accent-text font-bold">✅ 100% optimized</td>
                 <td className="px-6 py-4 text-center text-red-600">❌ Often fails</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -166,15 +166,15 @@ export default function CanvaVsEasyFreeResume() {
               </tr>
               <tr>
                 <td className="px-6 py-4 font-medium text-ink">Cost</td>
-                <td className="px-6 py-4 text-center text-accent">✅ 100% Free</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Free tier available</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ 100% Free</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Free tier available</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-gray-400 text-white">Tie</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-ink/60 text-white">Tie</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
                 <td className="px-6 py-4 font-medium text-ink">Resume-Specific</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Built for resumes</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Built for resumes</td>
                 <td className="px-6 py-4 text-center text-yellow-600">⚠️ General design tool</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -182,7 +182,7 @@ export default function CanvaVsEasyFreeResume() {
               </tr>
               <tr>
                 <td className="px-6 py-4 font-medium text-ink">Account Required</td>
-                <td className="px-6 py-4 text-center text-accent">✅ No</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ No</td>
                 <td className="px-6 py-4 text-center text-red-600">❌ Yes</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -190,7 +190,7 @@ export default function CanvaVsEasyFreeResume() {
               </tr>
               <tr className="bg-green-50">
                 <td className="px-6 py-4 font-medium text-ink">Privacy</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Local storage</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Local storage</td>
                 <td className="px-6 py-4 text-center text-red-600">❌ Cloud storage</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -198,15 +198,15 @@ export default function CanvaVsEasyFreeResume() {
               </tr>
               <tr>
                 <td className="px-6 py-4 font-medium text-ink">Template Variety</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Professional options</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Thousands of designs</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Professional options</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Thousands of designs</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-ink">Canva</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
                 <td className="px-6 py-4 font-medium text-ink">Learning Curve</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Simple, focused</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Simple, focused</td>
                 <td className="px-6 py-4 text-center text-yellow-600">⚠️ More complex</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -245,7 +245,7 @@ export default function CanvaVsEasyFreeResume() {
               Use EasyFreeResume When:
               <WinnerBadge />
             </h3>
-            <ul className="space-y-2 text-accent">
+            <ul className="space-y-2 text-accent-text">
               <li>✓ Applying through job portals (LinkedIn, Indeed)</li>
               <li>✓ Corporate or enterprise companies</li>
               <li>✓ Any online application system</li>
@@ -311,7 +311,7 @@ export default function CanvaVsEasyFreeResume() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Build Your ATS Resume
           </Link>
@@ -324,19 +324,19 @@ export default function CanvaVsEasyFreeResume() {
         <div className="space-y-4 my-8">
           <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
             <h4 className="font-bold text-ink mb-2">Are Canva resumes ATS-friendly?</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Most Canva resume templates are not ATS-friendly. They use graphics, multi-column layouts, text boxes, and non-standard fonts that ATS systems struggle to parse. If you're applying through online job portals, use a purpose-built resume builder with ATS-optimized templates instead.
             </p>
           </div>
           <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
             <h4 className="font-bold text-ink mb-2">Is Canva resume builder free?</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Canva offers a free tier with basic resume templates. However, many of the best-looking templates, premium elements, and features like background removal require Canva Pro ($12.99/month). EasyFreeResume provides all templates and features for free with no upsells.
             </p>
           </div>
           <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
             <h4 className="font-bold text-ink mb-2">Can I download a Canva resume as PDF?</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Yes, Canva allows PDF downloads on the free tier. However, the PDF format may not be ATS-parseable due to how Canva renders text and graphics. For ATS-compatible PDFs, use a dedicated resume builder that generates clean, machine-readable PDF output.
             </p>
           </div>
@@ -357,7 +357,7 @@ export default function CanvaVsEasyFreeResume() {
           </div>
           <Link
             to="/templates"
-            className="bg-white text-accent px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
+            className="bg-white text-accent-text px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
           >
             Build Free
           </Link>

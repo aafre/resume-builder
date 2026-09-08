@@ -16,7 +16,7 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
           ★
         </span>
       ))}
-      <span className="ml-2 text-sm font-medium text-stone-warm">
+      <span className="ml-2 text-sm font-medium text-ink/60">
         {rating}/{max}
       </span>
     </div>
@@ -68,16 +68,16 @@ export default function IndeedVsEasyFreeResume() {
             </h3>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-                <p className="font-bold text-accent text-lg mb-2">EasyFreeResume</p>
+                <p className="font-bold text-accent-text text-lg mb-2">EasyFreeResume</p>
                 <StarRating rating={5} />
-                <p className="text-2xl font-bold text-accent mt-2">Full Control</p>
-                <p className="text-sm text-stone-warm">Templates, PDF, privacy</p>
+                <p className="text-2xl font-bold text-accent-text mt-2">Full Control</p>
+                <p className="text-sm text-ink/60">Templates, PDF, privacy</p>
               </div>
               <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-                <p className="font-bold text-stone-warm text-lg mb-2">Indeed</p>
+                <p className="font-bold text-ink/60 text-lg mb-2">Indeed</p>
                 <StarRating rating={3} />
                 <p className="text-2xl font-bold text-yellow-600 mt-2">Limited</p>
-                <p className="text-sm text-stone-warm">Basic builder, Indeed-only focus</p>
+                <p className="text-sm text-ink/60">Basic builder, Indeed-only focus</p>
               </div>
             </div>
             <p className="text-green-800 mt-4 text-center font-medium">
@@ -85,7 +85,7 @@ export default function IndeedVsEasyFreeResume() {
             </p>
           </div>
 
-          <p className="text-xl leading-relaxed text-stone-warm font-medium">
+          <p className="text-xl leading-relaxed text-ink/60 font-medium">
             Indeed is the world's largest job search engine, and it offers a built-in resume builder.
             But "built-in" doesn't mean "best." Indeed's resume tool is designed to keep you on their
             platform — not to give you the most professional, flexible resume possible.
@@ -95,7 +95,7 @@ export default function IndeedVsEasyFreeResume() {
             Indeed Resume Builder: What You Get
           </h2>
 
-          <p className="text-lg leading-relaxed text-stone-warm mb-6">
+          <p className="text-lg leading-relaxed text-ink/60 mb-6">
             Indeed's resume builder is free and built into their job search platform. You fill in
             your details, and Indeed generates a simple resume you can use when applying to jobs
             on Indeed. Here's the catch:
@@ -104,7 +104,7 @@ export default function IndeedVsEasyFreeResume() {
           <div className="space-y-4 my-8">
             <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
               <h3 className="font-bold text-ink mb-2">1. Limited Template Options</h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Indeed offers a single, basic resume format. You can't choose between modern, classic,
                 or creative layouts. Your resume looks the same as millions of other Indeed applicants.
               </p>
@@ -112,7 +112,7 @@ export default function IndeedVsEasyFreeResume() {
 
             <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
               <h3 className="font-bold text-ink mb-2">2. Platform Lock-In</h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Indeed resumes are optimized for applying through Indeed. While you can download a PDF,
                 the formatting may not be ideal for applications on other platforms like LinkedIn,
                 company career pages, or email submissions.
@@ -121,7 +121,7 @@ export default function IndeedVsEasyFreeResume() {
 
             <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
               <h3 className="font-bold text-ink mb-2">3. Privacy Concerns</h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Your Indeed resume is stored on Indeed's servers and can be made visible to recruiters.
                 Indeed may use your data for advertising and job matching purposes. You have limited
                 control over who sees your information.
@@ -130,7 +130,7 @@ export default function IndeedVsEasyFreeResume() {
 
             <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
               <h3 className="font-bold text-ink mb-2">4. Basic Customization</h3>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Indeed's editor offers minimal formatting control. You can't adjust fonts, colors,
                 spacing, or section order the way you can with a dedicated resume builder.
               </p>
@@ -146,23 +146,23 @@ export default function IndeedVsEasyFreeResume() {
               <thead>
                 <tr className="bg-chalk-dark">
                   <th className="px-6 py-4 text-left font-bold text-ink">Feature</th>
-                  <th className="px-6 py-4 text-center font-bold text-accent">EasyFreeResume</th>
-                  <th className="px-6 py-4 text-center font-bold text-accent">Indeed</th>
-                  <th className="px-6 py-4 text-center font-bold text-stone-warm">Winner</th>
+                  <th className="px-6 py-4 text-center font-bold text-accent-text">EasyFreeResume</th>
+                  <th className="px-6 py-4 text-center font-bold text-accent-text">Indeed</th>
+                  <th className="px-6 py-4 text-center font-bold text-ink/60">Winner</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-black/[0.06]">
                 <tr>
                   <td className="px-6 py-4 font-medium text-ink">Cost</td>
-                  <td className="px-6 py-4 text-center text-accent">✅ Free</td>
-                  <td className="px-6 py-4 text-center text-accent">✅ Free</td>
+                  <td className="px-6 py-4 text-center text-accent-text">✅ Free</td>
+                  <td className="px-6 py-4 text-center text-accent-text">✅ Free</td>
                   <td className="px-6 py-4 text-center">
-                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-gray-400 text-white">Tie</span>
+                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-ink/60 text-white">Tie</span>
                   </td>
                 </tr>
                 <tr className="bg-green-50">
                   <td className="px-6 py-4 font-medium text-ink">Template Variety</td>
-                  <td className="px-6 py-4 text-center text-accent font-bold">✅ Multiple ATS templates</td>
+                  <td className="px-6 py-4 text-center text-accent-text font-bold">✅ Multiple ATS templates</td>
                   <td className="px-6 py-4 text-center text-red-600">❌ Single format</td>
                   <td className="px-6 py-4 text-center">
                     <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -170,15 +170,15 @@ export default function IndeedVsEasyFreeResume() {
                 </tr>
                 <tr>
                   <td className="px-6 py-4 font-medium text-ink">ATS Optimization</td>
-                  <td className="px-6 py-4 text-center text-accent">✅ All templates ATS-ready</td>
-                  <td className="px-6 py-4 text-center text-accent">✅ Basic ATS compatibility</td>
+                  <td className="px-6 py-4 text-center text-accent-text">✅ All templates ATS-ready</td>
+                  <td className="px-6 py-4 text-center text-accent-text">✅ Basic ATS compatibility</td>
                   <td className="px-6 py-4 text-center">
                     <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
                   </td>
                 </tr>
                 <tr className="bg-green-50">
                   <td className="px-6 py-4 font-medium text-ink">Account Required</td>
-                  <td className="px-6 py-4 text-center text-accent">✅ No</td>
+                  <td className="px-6 py-4 text-center text-accent-text">✅ No</td>
                   <td className="px-6 py-4 text-center text-red-600">❌ Yes (Indeed account)</td>
                   <td className="px-6 py-4 text-center">
                     <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -186,7 +186,7 @@ export default function IndeedVsEasyFreeResume() {
                 </tr>
                 <tr>
                   <td className="px-6 py-4 font-medium text-ink">Privacy</td>
-                  <td className="px-6 py-4 text-center text-accent">✅ Local storage</td>
+                  <td className="px-6 py-4 text-center text-accent-text">✅ Local storage</td>
                   <td className="px-6 py-4 text-center text-red-600">❌ Indeed stores data</td>
                   <td className="px-6 py-4 text-center">
                     <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -194,7 +194,7 @@ export default function IndeedVsEasyFreeResume() {
                 </tr>
                 <tr className="bg-green-50">
                   <td className="px-6 py-4 font-medium text-ink">PDF Download</td>
-                  <td className="px-6 py-4 text-center text-accent">✅ Instant, no watermarks</td>
+                  <td className="px-6 py-4 text-center text-accent-text">✅ Instant, no watermarks</td>
                   <td className="px-6 py-4 text-center text-yellow-600">⚠️ Available but basic</td>
                   <td className="px-6 py-4 text-center">
                     <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -202,7 +202,7 @@ export default function IndeedVsEasyFreeResume() {
                 </tr>
                 <tr>
                   <td className="px-6 py-4 font-medium text-ink">Customization</td>
-                  <td className="px-6 py-4 text-center text-accent">✅ Full control</td>
+                  <td className="px-6 py-4 text-center text-accent-text">✅ Full control</td>
                   <td className="px-6 py-4 text-center text-red-600">❌ Minimal</td>
                   <td className="px-6 py-4 text-center">
                     <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -210,7 +210,7 @@ export default function IndeedVsEasyFreeResume() {
                 </tr>
                 <tr className="bg-green-50">
                   <td className="px-6 py-4 font-medium text-ink">AI Features</td>
-                  <td className="px-6 py-4 text-center text-accent">✅ ChatGPT, Claude, Gemini</td>
+                  <td className="px-6 py-4 text-center text-accent-text">✅ ChatGPT, Claude, Gemini</td>
                   <td className="px-6 py-4 text-center text-yellow-600">⚠️ Basic suggestions</td>
                   <td className="px-6 py-4 text-center">
                     <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -231,7 +231,7 @@ export default function IndeedVsEasyFreeResume() {
             When to Use Indeed's Resume Builder
           </h2>
 
-          <p className="text-lg leading-relaxed text-stone-warm mb-4">
+          <p className="text-lg leading-relaxed text-ink/60 mb-4">
             Indeed's builder has one clear advantage: convenience. If you're exclusively applying
             through Indeed and want the fastest possible setup, it works. But for serious job
             seekers applying across multiple platforms, a dedicated resume builder is the better choice.
@@ -253,7 +253,7 @@ export default function IndeedVsEasyFreeResume() {
                 Use EasyFreeResume When:
                 <WinnerBadge />
               </h3>
-              <ul className="space-y-2 text-accent">
+              <ul className="space-y-2 text-accent-text">
                 <li>✓ Applying to multiple platforms</li>
                 <li>✓ Want professional, unique templates</li>
                 <li>✓ Need maximum ATS compatibility</li>
@@ -270,25 +270,25 @@ export default function IndeedVsEasyFreeResume() {
           <div className="space-y-4 my-8">
             <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
               <h4 className="font-bold text-ink mb-2">Is Indeed resume builder free?</h4>
-              <p className="text-stone-warm text-sm">
+              <p className="text-ink/60 text-sm">
                 Yes, Indeed's resume builder is completely free. However, it requires an Indeed account, stores your data on their servers, and offers only one basic template format.
               </p>
             </div>
             <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
               <h4 className="font-bold text-ink mb-2">Can I download my Indeed resume as a PDF?</h4>
-              <p className="text-stone-warm text-sm">
+              <p className="text-ink/60 text-sm">
                 Yes, Indeed allows PDF downloads of your resume. However, the formatting is basic and may not stand out compared to resumes built with dedicated resume builders that offer multiple professional templates.
               </p>
             </div>
             <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
               <h4 className="font-bold text-ink mb-2">Is an Indeed resume ATS-friendly?</h4>
-              <p className="text-stone-warm text-sm">
+              <p className="text-ink/60 text-sm">
                 Indeed resumes have basic ATS compatibility since they use simple text formatting. However, they lack the ATS-specific optimizations (proper heading hierarchy, keyword placement, clean HTML structure) that dedicated resume builders provide.
               </p>
             </div>
             <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
               <h4 className="font-bold text-ink mb-2">Can employers see my Indeed resume?</h4>
-              <p className="text-stone-warm text-sm">
+              <p className="text-ink/60 text-sm">
                 If you make your Indeed resume public, any employer on Indeed can search for and view it. This is a privacy consideration — with EasyFreeResume, your resume data stays in your browser (or private cloud account) and is never visible to third parties.
               </p>
             </div>
@@ -303,7 +303,7 @@ export default function IndeedVsEasyFreeResume() {
             </p>
             <Link
               to="/templates"
-              className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+              className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
             >
               Build Your Free Resume
             </Link>
@@ -324,7 +324,7 @@ export default function IndeedVsEasyFreeResume() {
             </div>
             <Link
               to="/templates"
-              className="bg-white text-accent px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
+              className="bg-white text-accent-text px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
             >
               Try Free
             </Link>

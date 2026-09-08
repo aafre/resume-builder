@@ -10,9 +10,7 @@ import { useResumeCount } from "../hooks/useResumeCount";
 import { useScrollReveal } from "../hooks/useScrollReveal";
 import { InContentAd, AD_CONFIG } from "./ads";
 import {
-  ArrowDownTrayIcon,
   ArrowRightIcon,
-  CheckIcon,
   ChevronDownIcon,
 } from "@heroicons/react/24/solid";
 import { TUTORIAL_VIDEO } from "../config/videoContent";
@@ -20,6 +18,13 @@ import { TUTORIAL_VIDEO } from "../config/videoContent";
 // Animation-delay for the hero build sequence (consumed by hero-* classes in styles.css).
 // Static values only — the landing route must prerender/hydrate byte-identical.
 const d = (delay: string) => ({ "--d": delay }) as React.CSSProperties;
+
+// The templates the hero deals through, as pre-rendered WebP crops of the real
+// PDF output (public/hero/, generated from docs/templates/*.png). Three, not
+// four: modern-no-icons and modern-with-icons are the same John Doe document
+// and read as duplicates at this size, so only one is in the stack. Order is
+// the resting front-to-back order; .hero-sheet[data-i] keys off the index.
+const HERO_SHEETS = ["alex_rivera", "jane_doe", "modern-with-icons"] as const;
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -59,6 +64,14 @@ const LandingPage: React.FC = () => {
   // Starts the hero build sequence when the card scrolls into view (mobile:
   // the card sits below the CTAs, so a load-triggered run would finish unseen)
   const heroVisualRef = useScrollReveal<HTMLDivElement>({ threshold: 0.3 });
+
+  // Pauses the hero's ambient loops (glow, float, bob, title sheen) once the
+  // hero scrolls out of view. They are infinite, and the title sheen repaints
+  // the LCP element via background-clip every 6s — left unpaused they burn
+  // main-thread paint for the whole session on a page users scroll 8000px of.
+  // once:false keeps the observer alive; it toggles 'offscreen', never
+  // un-reveals, so the one-shot build sequence does not replay on scroll-back.
+  const heroFrameRef = useScrollReveal<HTMLElement>({ once: false, rootMargin: '0px' });
 
   const prefersReducedMotion = useMemo(
     () =>
@@ -200,22 +213,27 @@ const LandingPage: React.FC = () => {
       />
 
       {/* ═══════════ HERO — light, asymmetric ═══════════ */}
-      <section className="relative pt-12 pb-20 md:pt-20 md:pb-28">
+      <section ref={heroFrameRef} className="hero-frame relative bg-chalk pt-12 pb-20 md:pt-20 md:pb-28">
         <div className="max-w-6xl mx-auto w-full grid lg:grid-cols-2 gap-y-10 gap-x-12 lg:gap-x-16 items-center">
           {/* Eyebrow + headline (mobile: card follows immediately, so both share the first viewport) */}
           <div>
             <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-6 block">
               FREE FOREVER. NO SIGN-UP.
             </span>
-            {/* Two-tier headline. Line sizes use per-breakpoint fluid clamps and
-                [text-wrap:balance] so the promise line always breaks cleanly
-                (no orphaned words); the highlighted phrase is an unbreakable
-                inline-block so the underline never splits across lines. */}
+            {/* Two-tier headline, set on the Two-Weight Rule: the kicker is 200
+                and the promise is 800, so the contrast lives inside the H1
+                itself. Both lines use a single continuous clamp — the previous
+                per-breakpoint lg: overrides resolved SMALLER than the base
+                clamp, so the headline shrank by 6px as the viewport crossed
+                1024px and every section H2 outranked it. [text-wrap:balance]
+                keeps the promise line from orphaning a word; the highlighted
+                phrase stays an unbreakable inline-block so the underline never
+                splits across lines. */}
             <h1 className="font-display tracking-tight text-ink">
-              <span className="hero-title-scan block text-[clamp(1.5rem,7.8vw,2.25rem)] lg:text-[clamp(1.75rem,3vw,2.5rem)] font-bold leading-tight mb-2 lg:mb-3">
+              <span className="block text-[clamp(1.125rem,4.6vw,1.75rem)] font-extralight leading-tight mb-2 lg:mb-3">
                 Free Resume Builder
               </span>{' '}
-              <span className="block text-[clamp(2rem,8.9vw,3.25rem)] lg:text-[clamp(2.5rem,4.45vw,4rem)] font-extrabold leading-[1.08] [text-wrap:balance]">
+              <span className="block text-[clamp(2.125rem,8.6vw,4.5rem)] font-extrabold leading-[1.08] [text-wrap:balance]">
                 Build Resumes That{' '}
                 <span className="relative inline-block">
                   <span className="relative z-10">Get You Hired</span>
@@ -225,9 +243,14 @@ const LandingPage: React.FC = () => {
             </h1>
           </div>
 
-          {/* Subtitle + CTAs (mobile: rendered after the visual via order-last) */}
-          <div className="order-last lg:order-none lg:col-start-1 lg:row-start-2">
-            <p className="font-display text-lg md:text-xl font-extralight text-stone-warm max-w-lg leading-relaxed mb-8">
+          {/* Subtitle + CTAs. Previously order-last, which pushed the primary
+              CTA to y=833 on a 390x844 viewport — the fold cut the button in
+              half and left the "100% free / no sign-up" reassurance line 125px
+              below it. Visual order now matches DOM and AT order. The mockup
+              still lands inside the first viewport, and its sequence is gated
+              on scroll-into-view anyway, so it plays when it is actually seen. */}
+          <div className="lg:col-start-1 lg:row-start-2">
+            <p className="font-display text-lg md:text-xl font-extralight text-ink/60 max-w-lg leading-relaxed mb-8">
               Build your resume for free online with ATS-friendly templates. Download as PDF instantly — no sign up, no payment, no watermarks.
             </p>
 
@@ -254,117 +277,46 @@ const LandingPage: React.FC = () => {
             </p>
           </div>
 
-          {/* CSS-only "builds itself" resume mockup (run-once sequence, delays
-              via --d; all animation classes defined in styles.css). Desktop:
-              right column spanning both text rows. Mobile: directly below H1,
-              inside the first viewport so the sequence plays on load. */}
+          {/* The deal — three real rendered templates stacked as paper, the
+              top sheet lifting off and settling at the back on a loop. Replaces
+              the previous skeleton-bar wireframe: the page now shows actual
+              output above the fold. Sheets are pre-rendered WebP crops of the
+              real PDFs; resting positions live in .hero-sheet's base transform,
+              so reduced motion leaves a static fan of three real resumes rather
+              than an empty frame. Desktop: right column spanning both text rows.
+              Mobile: below the CTAs, still within the first viewport; the cycle
+              is gated on scroll-into-view so it never plays unseen. */}
           <div
             ref={heroVisualRef}
             className="hero-seq flex items-center justify-center lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:self-center"
             aria-hidden="true"
           >
-            <div className="relative" style={{ perspective: '1000px' }}>
-              {/* Radial accent glow */}
-              <div className="hero-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[380px] h-[380px] lg:w-[480px] lg:h-[480px] rounded-full bg-accent/[0.07] blur-3xl pointer-events-none" />
-              <div className="hero-card-in relative" style={d('0.15s')}>
-                {/* Shadow copy behind */}
-                <div
-                  className="absolute top-4 left-4 w-full h-full bg-ink/[0.04] rounded-xl"
-                  style={{ transform: 'rotateY(-3deg)' }}
-                />
-                {/* Main mockup */}
-                <div
-                  className="hero-mockup relative w-[240px] h-[330px] lg:w-[280px] lg:h-[380px] bg-white rounded-xl p-5 lg:p-6 flex flex-col gap-2.5 lg:gap-3 border border-black/[0.06]"
-                  style={{
-                    transform: 'rotateY(-3deg)',
-                    boxShadow: '0 8px 40px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)',
-                  }}
-                >
-                  {/* Build progress bar along the card's top edge */}
-                  <div className="hero-progress absolute top-0 left-0 w-full h-0.5 bg-accent/70 rounded-t-xl" style={d('0.4s')} />
-                  {/* Name types in */}
-                  <div className="hero-type hero-type-caret self-start" style={d('0.5s')}>
-                    <span className="font-display text-lg lg:text-xl font-extrabold text-ink leading-none whitespace-nowrap">
-                      John Doe
-                    </span>
-                  </div>
-                  <div className="hero-draw h-2.5 w-24 lg:w-28 bg-accent/60 rounded-sm" style={d('1.25s')} />
-                  {/* Divider */}
-                  <div className="h-px w-full bg-gray-200 my-1" />
-                  {/* Section: experience */}
-                  <div className="hero-draw font-mono text-[8px] lg:text-[9px] tracking-[0.15em] text-ink/50 uppercase" style={d('1.45s')}>
-                    Experience
-                  </div>
-                  <div className="space-y-1.5">
-                    <div className="hero-draw h-1.5 w-full bg-gray-200 rounded-sm" style={d('1.6s')} />
-                    <div className="hero-draw h-1.5 w-[90%] bg-gray-200 rounded-sm" style={d('1.75s')} />
-                    <div className="hero-draw h-1.5 w-[75%] bg-gray-200 rounded-sm" style={d('1.9s')} />
-                  </div>
-                  {/* Section: skills */}
-                  <div className="hero-draw font-mono text-[8px] lg:text-[9px] tracking-[0.15em] text-ink/50 uppercase mt-1.5 lg:mt-2" style={d('2.15s')}>
-                    Skills
-                  </div>
-                  <div className="flex gap-1.5 flex-wrap">
-                    {['React', 'SQL', 'Python', 'Figma'].map((skill, i) => (
-                      <span
-                        key={skill}
-                        className="hero-pop inline-flex items-center h-4 px-2 bg-accent/15 rounded-full font-mono text-[8px] lg:text-[9px] text-accent-text leading-none"
-                        style={d(`${(2.25 + i * 0.12).toFixed(2)}s`)}
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                  {/* Section: education */}
-                  <div className="hero-draw font-mono text-[8px] lg:text-[9px] tracking-[0.15em] text-ink/50 uppercase mt-1.5 lg:mt-2" style={d('2.7s')}>
-                    Education
-                  </div>
-                  <div className="space-y-1.5">
-                    <div className="hero-draw h-1.5 w-[85%] bg-gray-200 rounded-sm" style={d('2.85s')} />
-                    <div className="hero-draw h-1.5 w-[60%] bg-gray-200 rounded-sm" style={d('3s')} />
-                  </div>
-                  {/* ATS scan beam sweeps down the finished resume */}
-                  <div className="absolute inset-0 rounded-xl overflow-hidden pointer-events-none">
-                    <div
-                      className="hero-scan absolute -top-12 left-0 w-full h-12 bg-gradient-to-b from-transparent via-accent/10 to-accent/30"
-                      style={d('3.1s')}
-                    />
-                  </div>
-                </div>
-                {/* Floating proof chips */}
-                <div
-                  className="hero-stamp absolute -top-4 -right-8 lg:-top-5 lg:-right-10 flex items-center gap-1.5 bg-white rounded-full px-3 py-1.5 border border-black/[0.06] shadow-lg"
-                  style={d('3.7s')}
-                >
-                  <CheckIcon className="w-3.5 h-3.5 text-accent" />
-                  <span className="font-mono text-[10px] lg:text-xs tracking-wide font-semibold text-ink">ATS 100%</span>
-                  {/* Particle burst on badge stamp (reuses dcm-particle-burst) */}
-                  {[
-                    { px: '30px', py: '-22px', size: 5, color: '#00d47e' },
-                    { px: '-26px', py: '-24px', size: 4, color: '#34d399' },
-                    { px: '24px', py: '20px', size: 4, color: '#2dd4bf' },
-                    { px: '-22px', py: '26px', size: 5, color: '#00d47e' },
-                  ].map((p, i) => (
-                    <span
-                      key={`particle-${i}`}
-                      className="hero-particle"
-                      style={{
-                        '--px': p.px,
-                        '--py': p.py,
-                        '--d': '4s',
-                        width: p.size,
-                        height: p.size,
-                        background: p.color,
-                      } as React.CSSProperties}
+            {/* Separate wrapper: carries the scroll-driven exit only, so it
+                never fights hero-card-in's entrance transform. */}
+            <div className="hero-stack-exit">
+              <div className="hero-card-in" style={d('0.15s')}>
+                <div className="hero-stack">
+                  {HERO_SHEETS.map((sheet, i) => (
+                    <img
+                      key={sheet}
+                      data-i={i}
+                      className="hero-sheet"
+                      src={`/hero/${sheet}.webp`}
+                      alt=""
+                      width={640}
+                      height={828}
+                      decoding="async"
+                      loading={i === 0 ? "eager" : "lazy"}
+                      // React 18 types accept `fetchPriority`, but the 18.3
+                      // runtime does not map it to an attribute — it warns and
+                      // drops the prop, so the priority hint never reaches the
+                      // fetch. The lowercase spelling passes straight through.
+                      // The back sheets go out at low priority so they cannot
+                      // compete with the face-up one, which is the LCP
+                      // candidate on the page carrying 97% of site clicks.
+                      {...({ fetchpriority: i === 0 ? "high" : "low" } as unknown as React.ImgHTMLAttributes<HTMLImageElement>)}
                     />
                   ))}
-                </div>
-                <div
-                  className="hero-chip absolute -bottom-4 -left-8 lg:-bottom-5 lg:-left-10 flex items-center gap-1.5 bg-white rounded-full px-3 py-1.5 border border-black/[0.06] shadow-lg"
-                  style={d('3.95s')}
-                >
-                  <ArrowDownTrayIcon className="w-3.5 h-3.5 text-accent" />
-                  <span className="font-mono text-[10px] lg:text-xs tracking-wide font-semibold text-ink">PDF ready</span>
                 </div>
               </div>
             </div>
@@ -381,7 +333,7 @@ const LandingPage: React.FC = () => {
       </div>
 
       {/* ═══════════ STATS ═══════════ */}
-      <section className="py-12">
+      <section className="bg-chalk-dark py-14">
         <RevealSection stagger className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-0 sm:divide-x sm:divide-ink/10">
           <div className="text-center sm:px-16">
             <p className="font-mono text-3xl md:text-4xl font-normal text-ink mb-1">
@@ -391,7 +343,7 @@ const LandingPage: React.FC = () => {
                 <CountUp end={resumeCountValue} separator="," suffix="+" duration={2.5} enableScrollSpy scrollSpyOnce />
               )}
             </p>
-            <p className="font-display text-sm font-extralight text-stone-warm tracking-wide">Resumes Created</p>
+            <p className="font-display text-sm font-extralight text-ink/60 tracking-wide">Resumes Created</p>
           </div>
           <div className="text-center sm:px-16">
             <p className="font-mono text-3xl md:text-4xl font-normal text-ink mb-1">
@@ -401,7 +353,7 @@ const LandingPage: React.FC = () => {
                 <CountUp end={100} suffix="%" duration={2} enableScrollSpy scrollSpyOnce />
               )}
             </p>
-            <p className="font-display text-sm font-extralight text-stone-warm tracking-wide">ATS Compatible</p>
+            <p className="font-display text-sm font-extralight text-ink/60 tracking-wide">ATS Compatible</p>
           </div>
         </RevealSection>
       </section>
@@ -415,7 +367,7 @@ const LandingPage: React.FC = () => {
       <section className="bg-chalk py-20 px-4 cv-auto cv-h-300">
         <div className="max-w-6xl mx-auto">
           <RevealSection className="text-center mb-12">
-            <span className="font-mono text-xs tracking-[0.15em] text-stone-warm uppercase mb-4 block">
+            <span className="font-mono text-xs tracking-[0.15em] text-ink/60 uppercase mb-4 block">
               TRUSTED BY PROFESSIONALS FROM
             </span>
           </RevealSection>
@@ -433,7 +385,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══════════ FEATURES — light, numbered list ═══════════ */}
-      <section className="bg-chalk py-20 px-4 cv-auto cv-h-600">
+      <section className="bg-chalk-dark py-20 px-4 cv-auto cv-h-600">
         <div className="max-w-4xl mx-auto">
           <RevealSection>
             <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block">
@@ -442,7 +394,7 @@ const LandingPage: React.FC = () => {
             <h2 className="font-display text-3xl md:text-5xl font-extrabold text-ink mb-4 tracking-tight">
               Why Job Seekers Choose Our Free Resume Builder
             </h2>
-            <p className="font-display text-lg font-extralight text-stone-warm mb-16 max-w-2xl">
+            <p className="font-display text-lg font-extralight text-ink/60 mb-16 max-w-2xl">
               Trusted by job seekers worldwide to create resumes that stand out
             </p>
           </RevealSection>
@@ -452,16 +404,16 @@ const LandingPage: React.FC = () => {
               {features.map((item, index) => (
                 <div
                   key={index}
-                  className="group flex items-start gap-6 py-8 border-b border-black/[0.06] last:border-b-0 cursor-default"
+                  className="flex items-start gap-6 py-8 border-b border-black/[0.06] last:border-b-0"
                 >
-                  <span className="font-mono text-3xl md:text-4xl text-accent/30 group-hover:text-accent transition-colors duration-300 flex-shrink-0 leading-none mt-1 w-12 md:w-16 text-right">
+                  <span className="font-mono text-3xl md:text-4xl text-accent-text flex-shrink-0 leading-none mt-1 w-12 md:w-16 text-right">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <div>
-                    <h3 className="font-display text-xl font-extrabold text-ink mb-2 group-hover:text-accent transition-colors duration-300">
+                    <h3 className="font-display text-xl font-extrabold text-ink mb-2">
                       {item.title}
                     </h3>
-                    <p className="font-display font-extralight text-stone-warm leading-relaxed">
+                    <p className="font-display font-extralight text-ink/60 leading-relaxed">
                       {item.description}
                     </p>
                   </div>
@@ -496,7 +448,7 @@ const LandingPage: React.FC = () => {
                 </div>
                 <div className="flex-1 flex justify-center">
                   <div className="bg-white/5 rounded-md px-4 py-1">
-                    <span className="font-mono text-[11px] text-mist">youtube.com/@EasyFreeResume</span>
+                    <span className="font-mono text-[11px] text-white/60">youtube.com/@EasyFreeResume</span>
                   </div>
                 </div>
               </div>
@@ -567,9 +519,9 @@ const LandingPage: React.FC = () => {
                 >
                   <h3 className="font-display text-lg font-extrabold text-ink mb-2 flex items-center justify-between">
                     {resource.title}
-                    <ArrowRightIcon className="w-4 h-4 text-stone-warm group-hover:text-accent group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
+                    <ArrowRightIcon className="w-4 h-4 text-ink/60 group-hover:text-accent-text group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
                   </h3>
-                  <p className="font-display font-extralight text-stone-warm text-sm leading-relaxed">
+                  <p className="font-display font-extralight text-ink/60 text-sm leading-relaxed">
                     {resource.desc}
                   </p>
                 </a>
@@ -580,7 +532,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══════════ WHY CHOOSE US — keyword-rich prose ═══════════ */}
-      <section className="bg-chalk py-20 px-4 cv-auto cv-h-500">
+      <section className="bg-chalk-dark py-20 px-4 cv-auto cv-h-500">
         <div className="max-w-4xl mx-auto">
           <RevealSection>
             <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block">
@@ -595,35 +547,35 @@ const LandingPage: React.FC = () => {
             <div className="grid md:grid-cols-2 gap-10 lg:gap-14">
               <div>
                 <h3 className="font-display text-xl font-extrabold text-ink mb-3">Truly Free Downloads — No Surprises</h3>
-                <p className="font-display font-extralight text-stone-warm leading-relaxed">
+                <p className="font-display font-extralight text-ink/60 leading-relaxed">
                   Other resume builders advertise "free" but charge $2–$25 the moment you try to download your PDF. EasyFreeResume is different: every template, every download, and every feature is 100% free. No credit card, no trial, no paywall.{' '}
-                  <Link to="/free-resume-builder-download" className="text-accent hover:underline">Download your resume for free</Link> as many times as you need.
+                  <Link to="/free-resume-builder-download" className="text-accent-text hover:underline">Download your resume for free</Link> as many times as you need.
                 </p>
               </div>
               <div>
                 <h3 className="font-display text-xl font-extrabold text-ink mb-3">No Sign-Up Required — Start Instantly</h3>
-                <p className="font-display font-extralight text-stone-warm leading-relaxed">
+                <p className="font-display font-extralight text-ink/60 leading-relaxed">
                   Skip the forms and email verification. Our{' '}
-                  <Link to="/free-resume-builder-no-sign-up" className="text-accent hover:underline">no sign-up resume builder</Link>{' '}
+                  <Link to="/free-resume-builder-no-sign-up" className="text-accent-text hover:underline">no sign-up resume builder</Link>{' '}
                   lets you start creating your resume the moment you arrive. Optionally create a free account later to save your work to the cloud and manage multiple versions.
                 </p>
               </div>
               <div>
                 <h3 className="font-display text-xl font-extrabold text-ink mb-3">ATS-Friendly Templates That Get Results</h3>
-                <p className="font-display font-extralight text-stone-warm leading-relaxed">
+                <p className="font-display font-extralight text-ink/60 leading-relaxed">
                   Every template is engineered to pass{' '}
-                  <Link to="/templates/ats-friendly" className="text-accent hover:underline">Applicant Tracking Systems</Link>{' '}
+                  <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">Applicant Tracking Systems</Link>{' '}
                   used by 99% of Fortune 500 companies. Clean formatting, proper heading hierarchy, and machine-readable layouts ensure your resume reaches a human recruiter.
                 </p>
               </div>
               <div>
                 <h3 className="font-display text-xl font-extrabold text-ink mb-3">AI-Powered Resume Writing</h3>
-                <p className="font-display font-extralight text-stone-warm leading-relaxed">
+                <p className="font-display font-extralight text-ink/60 leading-relaxed">
                   Use built-in AI features to write compelling bullet points, tailor your resume to job descriptions, and find the right{' '}
-                  <Link to="/resume-keywords" className="text-accent hover:underline">resume keywords</Link>{' '}
+                  <Link to="/resume-keywords" className="text-accent-text hover:underline">resume keywords</Link>{' '}
                   for your industry. Powered by{' '}
-                  <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">Claude</Link>,{' '}
-                  <Link to="/blog/gemini-resume-prompts" className="text-accent hover:underline">Gemini</Link>, and ChatGPT — all free.
+                  <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">Claude</Link>,{' '}
+                  <Link to="/blog/gemini-resume-prompts" className="text-accent-text hover:underline">Gemini</Link>, and ChatGPT — all free.
                 </p>
               </div>
             </div>
@@ -632,7 +584,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══════════ HOW TO BUILD — keyword-rich steps ═══════════ */}
-      <section className="bg-chalk-dark py-20 px-4 cv-auto cv-h-400">
+      <section className="bg-chalk py-20 px-4 cv-auto cv-h-400">
         <div className="max-w-4xl mx-auto">
           <RevealSection>
             <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
@@ -663,9 +615,9 @@ const LandingPage: React.FC = () => {
                 },
               ].map((item, i) => (
                 <div key={i} className="bg-white rounded-2xl p-8 border border-black/[0.04] shadow-sm">
-                  <span className="font-mono text-3xl text-accent/30 mb-4 block">{item.step}</span>
+                  <span className="font-mono text-3xl text-accent-text mb-4 block">{item.step}</span>
                   <h3 className="font-display text-lg font-extrabold text-ink mb-2">{item.title}</h3>
-                  <p className="font-display font-extralight text-stone-warm leading-relaxed text-sm">{item.desc}</p>
+                  <p className="font-display font-extralight text-ink/60 leading-relaxed text-sm">{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -683,7 +635,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══════════ FAQ — light, minimal ═══════════ */}
-      <section className="bg-chalk py-20 px-4 cv-auto cv-h-500">
+      <section className="bg-chalk-dark py-20 px-4 cv-auto cv-h-500">
         <div className="max-w-3xl mx-auto">
           <RevealSection>
             <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
@@ -692,7 +644,7 @@ const LandingPage: React.FC = () => {
             <h2 className="font-display text-3xl md:text-5xl font-extrabold text-ink mb-4 text-center tracking-tight">
               Frequently Asked Questions
             </h2>
-            <p className="font-display text-lg font-extralight text-stone-warm mb-12 text-center max-w-2xl mx-auto">
+            <p className="font-display text-lg font-extralight text-ink/60 mb-12 text-center max-w-2xl mx-auto">
               Everything you need to know about building your free resume
             </p>
           </RevealSection>
@@ -702,17 +654,17 @@ const LandingPage: React.FC = () => {
                 key={index}
                 className="border-b border-black/[0.06] last:border-b-0 group"
               >
-                <summary className="flex items-center justify-between w-full text-left py-5 cursor-pointer list-none [&::-webkit-details-marker]:hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-lg">
+                <summary className="flex items-center justify-between w-full text-left py-5 cursor-pointer list-none [&::-webkit-details-marker]:hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 rounded-lg">
                   <h3 className="font-display text-base font-extrabold text-ink pr-4">
                     {faq.question}
                   </h3>
                   <ChevronDownIcon
-                    className="w-5 h-5 text-stone-warm transition-all duration-300 flex-shrink-0 group-open:rotate-180 group-open:text-accent"
+                    className="w-5 h-5 text-ink/60 transition-all duration-300 flex-shrink-0 group-open:rotate-180 group-open:text-accent-text"
                   />
                 </summary>
                 <div className="faq-content">
                   <div>
-                    <p className="font-display font-extralight text-stone-warm pb-5 leading-relaxed">
+                    <p className="font-display font-extralight text-ink/60 pb-5 leading-relaxed">
                       {faq.answer}
                     </p>
                   </div>
@@ -738,7 +690,7 @@ const LandingPage: React.FC = () => {
                 <h2 className="font-display text-3xl md:text-[3.5rem] font-extrabold text-white mb-6 tracking-tight leading-tight">
                   Ready to Land Your Dream Job?
                 </h2>
-                <p className="font-display text-lg font-extralight text-mist mb-10 max-w-xl mx-auto leading-relaxed">
+                <p className="font-display text-lg font-extralight text-white/60 mb-10 max-w-xl mx-auto leading-relaxed">
                   Join thousands of job seekers who've successfully created
                   professional resumes with our free builder.
                 </p>

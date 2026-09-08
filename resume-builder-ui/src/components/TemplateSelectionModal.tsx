@@ -12,8 +12,8 @@
  * - Touch-friendly with sticky action bar on mobile
  */
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
+import React, { useCallback, useEffect, useId, useState } from 'react';
+import ModalShell from './shared/ModalShell';
 import { MdClose, MdCheck } from 'react-icons/md';
 import { fetchTemplates } from '../services/templates';
 
@@ -52,7 +52,7 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
   initialTemplateId,
   _testTemplates,
 }) => {
-  const modalRef = useRef<HTMLDivElement>(null);
+  const titleId = useId();
   const [templates, setTemplates] = useState<Template[]>(_testTemplates || []);
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(
     initialTemplateId || null
@@ -102,20 +102,6 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
     }
   }, [initialTemplateId]);
 
-  // Auto-focus modal on open
-  useEffect(() => {
-    if (isOpen && modalRef.current) {
-      modalRef.current.focus();
-    }
-  }, [isOpen]);
-
-  // Handle keyboard navigation
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      onClose();
-    }
-  };
-
   const handleContinue = () => {
     if (selectedTemplateId) {
       onSelect(selectedTemplateId);
@@ -126,42 +112,33 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
     loadTemplates();
   };
 
-  if (!isOpen) return null;
-
-  const modalContent = (
-    <div
-      className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-3 sm:p-4"
-      onClick={onClose}
-      onKeyDown={handleKeyDown}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="template-selection-modal-title"
-      data-testid="template-selection-modal-backdrop"
+  return (
+    <ModalShell
+      isOpen={isOpen}
+      onClose={onClose}
+      labelledBy={titleId}
+      overlayTestId="template-selection-modal-backdrop"
+      overlayClassName="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-3 sm:p-4"
+      panelClassName="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92dvh] sm:max-h-[90vh] overflow-hidden relative flex flex-col"
+      panelTestId="template-selection-modal"
     >
-      <div
-        ref={modalRef}
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92dvh] sm:max-h-[90vh] overflow-hidden relative flex flex-col"
-        onClick={(e) => e.stopPropagation()}
-        tabIndex={-1}
-        data-testid="template-selection-modal"
-      >
         {/* Header - compact with inline close button */}
         <div className="px-4 py-3 lg:py-4 border-b border-gray-200 flex items-center justify-between">
           <div>
             <h2
-              id="template-selection-modal-title"
-              className="text-lg lg:text-xl font-bold text-gray-800"
+              id={titleId}
+              className="text-lg lg:text-xl font-bold text-ink"
             >
               Choose Your Style
             </h2>
-            <p className="text-sm text-gray-500 mt-0.5 hidden lg:block">
+            <p className="text-sm text-ink/60 mt-0.5 hidden lg:block">
               Select a template that matches your professional image
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors p-2 rounded-full hover:bg-gray-100 -mr-2"
+            className="text-ink/60 hover:text-gray-600 transition-colors p-2 rounded-full hover:bg-chalk-dark -mr-2"
             aria-label="Close modal"
             data-testid="template-selection-close"
           >
@@ -186,7 +163,7 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
               <p className="text-red-600 mb-4">{error}</p>
               <button
                 onClick={handleRetry}
-                className="text-accent hover:text-ink/80 font-medium"
+                className="text-accent-text hover:text-ink/80 font-medium"
               >
                 Try Again
               </button>
@@ -213,7 +190,7 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
                     aria-pressed={isSelected}
                   >
                     {/* Template Preview Image - fixed width on mobile, full width on desktop */}
-                    <div className="relative w-28 sm:w-32 lg:w-full aspect-[3/4] bg-gray-50 overflow-hidden flex-shrink-0">
+                    <div className="relative w-28 sm:w-32 lg:w-full aspect-[3/4] bg-chalk overflow-hidden flex-shrink-0">
                       <img
                         src={template.image_url}
                         alt={template.name}
@@ -235,20 +212,20 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
                     <div className="flex-1 p-3 lg:p-4 flex flex-col justify-center">
                       <h3
                         className={`font-semibold text-sm lg:text-base ${
-                          isSelected ? 'text-accent' : 'text-gray-800'
+                          isSelected ? 'text-accent-text' : 'text-ink'
                         }`}
                       >
                         {template.name}
                       </h3>
                       {bestFor && (
                         <p
-                          className="text-xs text-gray-500 mt-1"
+                          className="text-xs text-ink/60 mt-1"
                           data-testid={`template-bestfor-${template.id}`}
                         >
                           {bestFor}
                         </p>
                       )}
-                      <p className="text-xs text-gray-400 mt-1 line-clamp-2 hidden lg:block">
+                      <p className="text-xs text-ink/60 mt-1 line-clamp-2 hidden lg:block">
                         {template.description}
                       </p>
                     </div>
@@ -274,11 +251,8 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
             Use This Style
           </button>
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
-
-  return createPortal(modalContent, document.body);
 };
 
 export default TemplateSelectionModal;

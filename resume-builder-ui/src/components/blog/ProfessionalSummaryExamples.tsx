@@ -45,7 +45,7 @@ export default function ProfessionalSummaryExamples() {
       faqs={FAQS}
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Your professional summary is the most important section of your
           resume — it is the first thing recruiters read and often determines
           whether they continue reading. A compelling summary can be the
@@ -56,7 +56,7 @@ export default function ProfessionalSummaryExamples() {
           guide with our{" "}
           <Link
             to="/blog/how-to-write-a-resume-guide"
-            className="text-accent hover:underline"
+            className="text-accent-text hover:underline"
           >
             complete resume writing guide
           </Link>{" "}
@@ -69,16 +69,16 @@ export default function ProfessionalSummaryExamples() {
             Table of Contents
           </h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#what-makes-effective" className="text-accent hover:underline">What Makes a Professional Summary Effective?</a></li>
-            <li><a href="#formula" className="text-accent hover:underline">Professional Summary Formula (60-Second Template)</a></li>
-            <li><a href="#by-experience" className="text-accent hover:underline">Examples by Experience Level</a></li>
-            <li><a href="#by-industry" className="text-accent hover:underline">Industry-Specific Examples</a></li>
-            <li><a href="#mistakes" className="text-accent hover:underline">Common Mistakes to Avoid</a></li>
-            <li><a href="#summary-vs-objective" className="text-accent hover:underline">Professional Summary vs. Objective Statement</a></li>
-            <li><a href="#ats-optimization" className="text-accent hover:underline">Optimizing Your Summary for ATS</a></li>
-            <li><a href="#power-words" className="text-accent hover:underline">Power Words for Your Summary</a></li>
-            <li><a href="#final-tips" className="text-accent hover:underline">Final Tips for Success</a></li>
-            <li><a href="#faq" className="text-accent hover:underline">Frequently Asked Questions</a></li>
+            <li><a href="#what-makes-effective" className="text-accent-text hover:underline">What Makes a Professional Summary Effective?</a></li>
+            <li><a href="#formula" className="text-accent-text hover:underline">Professional Summary Formula (60-Second Template)</a></li>
+            <li><a href="#by-experience" className="text-accent-text hover:underline">Examples by Experience Level</a></li>
+            <li><a href="#by-industry" className="text-accent-text hover:underline">Industry-Specific Examples</a></li>
+            <li><a href="#mistakes" className="text-accent-text hover:underline">Common Mistakes to Avoid</a></li>
+            <li><a href="#summary-vs-objective" className="text-accent-text hover:underline">Professional Summary vs. Objective Statement</a></li>
+            <li><a href="#ats-optimization" className="text-accent-text hover:underline">Optimizing Your Summary for ATS</a></li>
+            <li><a href="#power-words" className="text-accent-text hover:underline">Power Words for Your Summary</a></li>
+            <li><a href="#final-tips" className="text-accent-text hover:underline">Final Tips for Success</a></li>
+            <li><a href="#faq" className="text-accent-text hover:underline">Frequently Asked Questions</a></li>
           </ol>
         </nav>
 
@@ -96,7 +96,7 @@ export default function ProfessionalSummaryExamples() {
         <h2 id="what-makes-effective" className="text-3xl font-bold text-ink mt-12 mb-6">
           What Makes a Professional Summary Effective?
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           An effective professional summary is a 3-4 sentence paragraph that
           combines your years of experience, key skills, notable achievements,
           and the value you bring to employers. It should be tailored to your
@@ -104,14 +104,14 @@ export default function ProfessionalSummaryExamples() {
           best summaries open with a{" "}
           <Link
             to="/blog/resume-action-verbs"
-            className="text-accent hover:underline"
+            className="text-accent-text hover:underline"
           >
             strong action verb or descriptor
           </Link>{" "}
           and include at least one{" "}
           <Link
             to="/blog/quantify-resume-accomplishments"
-            className="text-accent hover:underline"
+            className="text-accent-text hover:underline"
           >
             quantified accomplishment
           </Link>{" "}
@@ -122,7 +122,7 @@ export default function ProfessionalSummaryExamples() {
           <h4 className="font-bold text-green-800 mb-3">
             Essential Elements of a Strong Summary:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-accent">
+          <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>
               <strong>Years of Experience:</strong> Establish your experience
               level upfront
@@ -183,7 +183,7 @@ export default function ProfessionalSummaryExamples() {
           </div>
           <div className="mt-4 space-y-3">
             <p className="text-ink/80 font-semibold">Filled-in example:</p>
-            <div className="bg-white border border-accent/20 rounded-lg p-5 text-sm leading-relaxed text-stone-warm italic">
+            <div className="bg-white border border-accent/20 rounded-lg p-5 text-sm leading-relaxed text-ink/60 italic">
               <p>
                 &ldquo;Marketing Manager with 6 years of experience in B2B
                 SaaS growth marketing. Known for launching campaigns that
@@ -203,13 +203,13 @@ export default function ProfessionalSummaryExamples() {
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           Entry-Level Professional Summaries
         </h3>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           For new graduates and career changers, focus on relevant education,
           internships, projects, and transferable skills. If you have limited
           work history, our{" "}
           <Link
             to="/blog/resume-no-experience"
-            className="text-accent hover:underline"
+            className="text-accent-text hover:underline"
           >
             guide to writing a resume with no experience
           </Link>{" "}
@@ -219,7 +219,7 @@ export default function ProfessionalSummaryExamples() {
         <div className="grid md:grid-cols-1 gap-6 my-8">
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">Marketing Graduate</h4>
-            <p className="text-stone-warm italic leading-relaxed">
+            <p className="text-ink/60 italic leading-relaxed">
               "Recent Marketing graduate with strong analytical and creative
               problem-solving skills demonstrated through academic projects and
               internship experience. Proficient in digital marketing tools
@@ -235,7 +235,7 @@ export default function ProfessionalSummaryExamples() {
             <h4 className="font-bold text-ink mb-3">
               Computer Science Graduate
             </h4>
-            <p className="text-stone-warm italic leading-relaxed">
+            <p className="text-ink/60 italic leading-relaxed">
               "Motivated Computer Science graduate with hands-on experience in
               Python, Java, and full-stack web development through academic
               projects and freelance work. Built 5+ web applications using React
@@ -250,7 +250,7 @@ export default function ProfessionalSummaryExamples() {
             <h4 className="font-bold text-ink mb-3">
               Career Changer (Sales to HR)
             </h4>
-            <p className="text-stone-warm italic leading-relaxed">
+            <p className="text-ink/60 italic leading-relaxed">
               "Results-driven professional with 6+ years in sales and customer
               relationship management, transitioning to Human Resources. Proven
               ability to build rapport, communicate effectively, and resolve
@@ -265,7 +265,7 @@ export default function ProfessionalSummaryExamples() {
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           Mid-Level Professional Summaries
         </h3>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           For professionals with 3-10 years of experience, emphasize career
           progression, leadership experience, and significant achievements.
         </p>
@@ -273,7 +273,7 @@ export default function ProfessionalSummaryExamples() {
         <div className="grid md:grid-cols-1 gap-6 my-8">
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">Marketing Manager</h4>
-            <p className="text-stone-warm italic leading-relaxed">
+            <p className="text-ink/60 italic leading-relaxed">
               "Strategic Marketing Manager with 7+ years driving brand growth
               and customer acquisition for B2B SaaS companies. Led campaigns
               that generated $2.5M in pipeline revenue and increased qualified
@@ -286,7 +286,7 @@ export default function ProfessionalSummaryExamples() {
 
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">Software Engineer</h4>
-            <p className="text-stone-warm italic leading-relaxed">
+            <p className="text-ink/60 italic leading-relaxed">
               "Full-Stack Software Engineer with 5+ years developing scalable
               web applications for fintech and healthcare industries.
               Architected microservices handling 10M+ daily transactions and
@@ -296,11 +296,11 @@ export default function ProfessionalSummaryExamples() {
               Seeking senior role to drive technical innovation and system
               architecture decisions."
             </p>
-            <p className="text-sm text-stone-warm mt-3">
+            <p className="text-sm text-ink/60 mt-3">
               See a{" "}
               <Link
                 to="/examples/software-engineer"
-                className="text-accent hover:underline"
+                className="text-accent-text hover:underline"
               >
                 full software engineer resume example
               </Link>{" "}
@@ -310,7 +310,7 @@ export default function ProfessionalSummaryExamples() {
 
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">Financial Analyst</h4>
-            <p className="text-stone-warm italic leading-relaxed">
+            <p className="text-ink/60 italic leading-relaxed">
               "Detail-oriented Financial Analyst with 6+ years supporting
               strategic decision-making through comprehensive financial modeling
               and analysis. Developed forecasting models that improved budget
@@ -325,7 +325,7 @@ export default function ProfessionalSummaryExamples() {
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           Senior-Level Professional Summaries
         </h3>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           For senior professionals and executives, focus on leadership impact,
           strategic achievements, and industry expertise.
         </p>
@@ -335,7 +335,7 @@ export default function ProfessionalSummaryExamples() {
             <h4 className="font-bold text-ink mb-3">
               Senior Product Manager
             </h4>
-            <p className="text-stone-warm italic leading-relaxed">
+            <p className="text-ink/60 italic leading-relaxed">
               "Strategic Product Manager with 10+ years leading product
               development for consumer technology companies. Launched 15+
               products generating $50M+ in cumulative revenue and managed
@@ -351,7 +351,7 @@ export default function ProfessionalSummaryExamples() {
             <h4 className="font-bold text-ink mb-3">
               Director of Operations
             </h4>
-            <p className="text-stone-warm italic leading-relaxed">
+            <p className="text-ink/60 italic leading-relaxed">
               "Operations Director with 12+ years optimizing business processes
               and leading high-performing teams in manufacturing and logistics.
               Reduced operational costs by 30% while improving efficiency
@@ -365,7 +365,7 @@ export default function ProfessionalSummaryExamples() {
 
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">VP of Sales</h4>
-            <p className="text-stone-warm italic leading-relaxed">
+            <p className="text-ink/60 italic leading-relaxed">
               "Results-driven Sales Executive with 15+ years building and
               scaling revenue organizations for B2B technology companies. Grew
               annual recurring revenue from $5M to $25M over 3 years while
@@ -388,7 +388,7 @@ export default function ProfessionalSummaryExamples() {
         <div className="grid md:grid-cols-1 gap-6 my-8">
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">DevOps Engineer</h4>
-            <p className="text-stone-warm italic leading-relaxed">
+            <p className="text-ink/60 italic leading-relaxed">
               "DevOps Engineer with 6+ years automating infrastructure and
               streamlining deployment processes for high-traffic applications.
               Reduced deployment time by 75% and improved system uptime to 99.9%
@@ -401,7 +401,7 @@ export default function ProfessionalSummaryExamples() {
 
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">Data Scientist</h4>
-            <p className="text-stone-warm italic leading-relaxed">
+            <p className="text-ink/60 italic leading-relaxed">
               "Data Scientist with 5+ years applying machine learning and
               statistical analysis to solve complex business problems in retail
               and finance. Built predictive models that increased customer
@@ -419,7 +419,7 @@ export default function ProfessionalSummaryExamples() {
         <div className="grid md:grid-cols-1 gap-6 my-8">
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">Registered Nurse</h4>
-            <p className="text-stone-warm italic leading-relaxed">
+            <p className="text-ink/60 italic leading-relaxed">
               "Compassionate Registered Nurse with 8+ years providing
               exceptional patient care in acute care and emergency settings.
               Demonstrated expertise in critical care, patient education, and
@@ -434,7 +434,7 @@ export default function ProfessionalSummaryExamples() {
             <h4 className="font-bold text-ink mb-3">
               Healthcare Administrator
             </h4>
-            <p className="text-stone-warm italic leading-relaxed">
+            <p className="text-ink/60 italic leading-relaxed">
               "Healthcare Administrator with 10+ years optimizing operations and
               improving patient care delivery in hospital and clinic settings.
               Reduced patient wait times by 40% and increased operational
@@ -452,7 +452,7 @@ export default function ProfessionalSummaryExamples() {
         <div className="grid md:grid-cols-1 gap-6 my-8">
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">Investment Advisor</h4>
-            <p className="text-stone-warm italic leading-relaxed">
+            <p className="text-ink/60 italic leading-relaxed">
               "Licensed Investment Advisor with 7+ years helping high-net-worth
               individuals and families achieve their financial goals. Managed
               $50M+ in client assets with average portfolio performance
@@ -468,7 +468,7 @@ export default function ProfessionalSummaryExamples() {
             <h4 className="font-bold text-ink mb-3">
               Corporate Controller
             </h4>
-            <p className="text-stone-warm italic leading-relaxed">
+            <p className="text-ink/60 italic leading-relaxed">
               "CPA-qualified Corporate Controller with 12+ years overseeing
               financial operations and reporting for mid-market companies. Led
               implementation of new ERP system that reduced month-end close by 5
@@ -489,11 +489,11 @@ export default function ProfessionalSummaryExamples() {
             <h4 className="font-bold text-ink mb-2">
               Mistake: Generic, one-size-fits-all summaries
             </h4>
-            <p className="text-stone-warm mb-2">
+            <p className="text-ink/60 mb-2">
               <strong>Example:</strong> "Hardworking professional with excellent
               communication skills seeking new opportunities for growth."
             </p>
-            <p className="text-accent">
+            <p className="text-accent-text">
               <strong>Fix:</strong> Customize your summary for each application
               with specific skills, achievements, and keywords relevant to the
               target role.
@@ -504,11 +504,11 @@ export default function ProfessionalSummaryExamples() {
             <h4 className="font-bold text-ink mb-2">
               Mistake: Focusing on what you want instead of what you offer
             </h4>
-            <p className="text-stone-warm mb-2">
+            <p className="text-ink/60 mb-2">
               <strong>Example:</strong> "Seeking a challenging position where I
               can grow my skills and advance my career."
             </p>
-            <p className="text-accent">
+            <p className="text-accent-text">
               <strong>Fix:</strong> Lead with the value you bring to employers:
               your skills, experience, and proven results.
             </p>
@@ -518,15 +518,15 @@ export default function ProfessionalSummaryExamples() {
             <h4 className="font-bold text-ink mb-2">
               Mistake: Using vague buzzwords without context
             </h4>
-            <p className="text-stone-warm mb-2">
+            <p className="text-ink/60 mb-2">
               <strong>Example:</strong> "Dynamic, results-oriented professional
               with exceptional leadership capabilities."
             </p>
-            <p className="text-accent">
+            <p className="text-accent-text">
               <strong>Fix:</strong> Support claims with specific examples and{" "}
               <Link
                 to="/blog/quantify-resume-accomplishments"
-                className="text-accent hover:underline"
+                className="text-accent-text hover:underline"
               >
                 quantifiable achievements
               </Link>{" "}
@@ -538,11 +538,11 @@ export default function ProfessionalSummaryExamples() {
             <h4 className="font-bold text-ink mb-2">
               Mistake: Writing in first person or using personal pronouns
             </h4>
-            <p className="text-stone-warm mb-2">
+            <p className="text-ink/60 mb-2">
               <strong>Example:</strong> "I am a marketing professional with 5
               years of experience in digital marketing."
             </p>
-            <p className="text-accent">
+            <p className="text-accent-text">
               <strong>Fix:</strong> Write in third person without pronouns for a
               more professional, concise tone.
             </p>
@@ -569,7 +569,7 @@ export default function ProfessionalSummaryExamples() {
         <h2 id="summary-vs-objective" className="text-3xl font-bold text-ink mt-12 mb-6">
           Professional Summary vs. Objective Statement
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm mb-4">
+        <p className="text-lg leading-relaxed text-ink/60 mb-4">
           A professional summary and an objective statement both appear at the
           top of a resume, but they serve different purposes. A{" "}
           <strong>professional summary</strong> highlights your qualifications,
@@ -579,7 +579,7 @@ export default function ProfessionalSummaryExamples() {
           because they answer the question &ldquo;Why should we hire this
           person?&rdquo; rather than &ldquo;What does this person want?&rdquo;
         </p>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           <strong>When to use an objective statement:</strong> An objective can
           still work if you are making a dramatic career change and need to
           explain why you are applying to a different field, or if you are a
@@ -591,7 +591,7 @@ export default function ProfessionalSummaryExamples() {
             <h4 className="font-bold text-green-800 mb-3">
               Professional Summary
             </h4>
-            <ul className="list-disc pl-6 space-y-2 text-accent text-sm">
+            <ul className="list-disc pl-6 space-y-2 text-accent-text text-sm">
               <li>Focuses on what you offer employers</li>
               <li>Highlights achievements and quantifiable results</li>
               <li>Demonstrates your value proposition</li>
@@ -618,13 +618,13 @@ export default function ProfessionalSummaryExamples() {
         <h2 id="ats-optimization" className="text-3xl font-bold text-ink mt-12 mb-6">
           Optimizing Your Summary for ATS
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Applicant Tracking Systems (ATS) scan your professional summary for
           keywords and phrases that match job requirements. Strategic keyword
           integration is essential for passing initial screening. Use our{" "}
           <Link
             to="/resume-keywords"
-            className="text-accent hover:underline"
+            className="text-accent-text hover:underline"
           >
             resume keywords tool
           </Link>{" "}
@@ -662,7 +662,7 @@ export default function ProfessionalSummaryExamples() {
               can be lost if your formatting confuses the parser — start with an{" "}
               <Link
                 to="/templates/ats-friendly"
-                className="text-accent hover:underline"
+                className="text-accent-text hover:underline"
               >
                 ATS-friendly resume template
               </Link>
@@ -673,7 +673,7 @@ export default function ProfessionalSummaryExamples() {
         <h2 id="power-words" className="text-3xl font-bold text-ink mt-12 mb-6">
           Power Words for Your Professional Summary
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           The words you choose set the tone for your entire resume. Opening
           with a weak descriptor like "Hardworking" signals nothing specific,
           while a precise verb like "Architected" or "Spearheaded" immediately
@@ -682,7 +682,7 @@ export default function ProfessionalSummaryExamples() {
           options, see our{" "}
           <Link
             to="/blog/resume-action-verbs"
-            className="text-accent hover:underline"
+            className="text-accent-text hover:underline"
           >
             resume action verbs guide
           </Link>.
@@ -691,28 +691,28 @@ export default function ProfessionalSummaryExamples() {
         <div className="grid md:grid-cols-2 gap-6 my-8">
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">Leadership Words</h4>
-            <p className="text-stone-warm text-sm leading-relaxed">
+            <p className="text-ink/60 text-sm leading-relaxed">
               Directed, Spearheaded, Orchestrated, Championed, Mentored,
               Transformed, Pioneered, Mobilized, Cultivated, Established
             </p>
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">Achievement Words</h4>
-            <p className="text-stone-warm text-sm leading-relaxed">
+            <p className="text-ink/60 text-sm leading-relaxed">
               Delivered, Generated, Accelerated, Exceeded, Surpassed,
               Maximized, Achieved, Optimized, Improved, Increased
             </p>
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">Technical Words</h4>
-            <p className="text-stone-warm text-sm leading-relaxed">
+            <p className="text-ink/60 text-sm leading-relaxed">
               Architected, Engineered, Automated, Implemented, Integrated,
               Developed, Designed, Deployed, Configured, Streamlined
             </p>
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">Strategy Words</h4>
-            <p className="text-stone-warm text-sm leading-relaxed">
+            <p className="text-ink/60 text-sm leading-relaxed">
               Strategized, Analyzed, Forecasted, Evaluated, Conceptualized,
               Devised, Formulated, Prioritized, Reengineered, Revitalized
             </p>
@@ -727,7 +727,7 @@ export default function ProfessionalSummaryExamples() {
             <h4 className="font-bold text-ink mb-3">
               Length Guidelines
             </h4>
-            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
+            <ul className="list-disc pl-6 space-y-1 text-ink/60 text-sm">
               <li>3-4 sentences maximum</li>
               <li>50-150 words total</li>
               <li>2-3 lines when formatted</li>
@@ -736,7 +736,7 @@ export default function ProfessionalSummaryExamples() {
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">Formatting Tips</h4>
-            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
+            <ul className="list-disc pl-6 space-y-1 text-ink/60 text-sm">
               <li>Place immediately after contact info</li>
               <li>Use standard fonts and formatting</li>
               <li>Maintain consistent paragraph style</li>
@@ -745,13 +745,13 @@ export default function ProfessionalSummaryExamples() {
           </div>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Not sure which skills to highlight in your summary? Start by
           reviewing what the job description emphasizes, then cross-reference
           with our{" "}
           <Link
             to="/blog/how-to-list-skills"
-            className="text-accent hover:underline"
+            className="text-accent-text hover:underline"
           >
             guide to listing skills on a resume
           </Link>{" "}
@@ -772,7 +772,7 @@ export default function ProfessionalSummaryExamples() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Key Takeaways
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           A compelling professional summary can significantly impact your job
           search success. It should immediately communicate your value
           proposition, highlight your most relevant qualifications, and
@@ -781,7 +781,7 @@ export default function ProfessionalSummaryExamples() {
           summary for each specific opportunity.
         </p>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-6">
+        <p className="text-lg leading-relaxed text-ink/60 mt-6">
           Remember that your professional summary is often the first — and
           sometimes only — section recruiters read. Make those few seconds count
           by crafting a summary that positions you as the ideal candidate for
@@ -798,7 +798,7 @@ export default function ProfessionalSummaryExamples() {
             <h3 className="text-xl font-bold text-ink mb-3">
               What is a professional summary on a resume?
             </h3>
-            <p className="text-lg leading-relaxed text-stone-warm">
+            <p className="text-lg leading-relaxed text-ink/60">
               A professional summary is a 3-4 sentence paragraph at the top of
               your resume that highlights your most relevant experience, core
               skills, and key accomplishments. It gives recruiters a snapshot
@@ -812,7 +812,7 @@ export default function ProfessionalSummaryExamples() {
             <h3 className="text-xl font-bold text-ink mb-3">
               How long should a professional summary be?
             </h3>
-            <p className="text-lg leading-relaxed text-stone-warm">
+            <p className="text-lg leading-relaxed text-ink/60">
               Keep it between 50 and 150 words — roughly 3-4 concise sentences
               that fit in 2-3 lines on a standard resume. Anything shorter
               feels incomplete; anything longer risks losing the recruiter's
@@ -825,7 +825,7 @@ export default function ProfessionalSummaryExamples() {
             <h3 className="text-xl font-bold text-ink mb-3">
               Should I use a summary or an objective?
             </h3>
-            <p className="text-lg leading-relaxed text-stone-warm">
+            <p className="text-lg leading-relaxed text-ink/60">
               In almost every case, use a professional summary. Summaries focus
               on the value you bring to an employer, while objectives focus on
               what you want from an employer — and recruiters care far more
@@ -840,7 +840,7 @@ export default function ProfessionalSummaryExamples() {
             <h3 className="text-xl font-bold text-ink mb-3">
               How do I write a professional summary with no experience?
             </h3>
-            <p className="text-lg leading-relaxed text-stone-warm">
+            <p className="text-lg leading-relaxed text-ink/60">
               Focus on education, relevant coursework, projects, internships,
               volunteer work, and transferable skills. Lead with your degree or
               certification, mention 2-3 relevant skills, and include at least
@@ -848,7 +848,7 @@ export default function ProfessionalSummaryExamples() {
               For a full walkthrough, see our{" "}
               <Link
                 to="/blog/resume-no-experience"
-                className="text-accent hover:underline"
+                className="text-accent-text hover:underline"
               >
                 resume with no experience guide
               </Link>.
@@ -859,7 +859,7 @@ export default function ProfessionalSummaryExamples() {
             <h3 className="text-xl font-bold text-ink mb-3">
               Should I customize my summary for each job?
             </h3>
-            <p className="text-lg leading-relaxed text-stone-warm">
+            <p className="text-lg leading-relaxed text-ink/60">
               Yes. Your professional summary should be tailored for every
               application. Read the job description carefully, identify the top
               3 requirements, and make sure your summary directly addresses
@@ -868,7 +868,7 @@ export default function ProfessionalSummaryExamples() {
               Our{" "}
               <Link
                 to="/resume-keywords"
-                className="text-accent hover:underline"
+                className="text-accent-text hover:underline"
               >
                 resume keywords tool
               </Link>{" "}
@@ -880,7 +880,7 @@ export default function ProfessionalSummaryExamples() {
             <h3 className="text-xl font-bold text-ink mb-3">
               What are the best power words for a resume summary?
             </h3>
-            <p className="text-lg leading-relaxed text-stone-warm">
+            <p className="text-lg leading-relaxed text-ink/60">
               The best words are specific to your function. For leadership
               roles, use words like "Spearheaded," "Directed," and
               "Transformed." For technical roles, try "Architected,"
@@ -890,7 +890,7 @@ export default function ProfessionalSummaryExamples() {
               by proof. Browse our full list of{" "}
               <Link
                 to="/blog/resume-action-verbs"
-                className="text-accent hover:underline"
+                className="text-accent-text hover:underline"
               >
                 200+ resume action verbs
               </Link>{" "}
@@ -911,7 +911,7 @@ export default function ProfessionalSummaryExamples() {
             <h4 className="font-bold text-ink mb-2">
               How to Write a Resume: Complete Guide
             </h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               The step-by-step process for building every section of your resume,
               from header to references.
             </p>
@@ -924,7 +924,7 @@ export default function ProfessionalSummaryExamples() {
             <h4 className="font-bold text-ink mb-2">
               200+ Resume Action Verbs
             </h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Powerful verbs organized by skill category to replace weak
               openers and make every bullet count.
             </p>
@@ -937,7 +937,7 @@ export default function ProfessionalSummaryExamples() {
             <h4 className="font-bold text-ink mb-2">
               How to Quantify Resume Accomplishments
             </h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Turn vague claims into measurable results that prove your impact
               with numbers and metrics.
             </p>
@@ -950,7 +950,7 @@ export default function ProfessionalSummaryExamples() {
             <h4 className="font-bold text-ink mb-2">
               How to List Skills on a Resume
             </h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Choose, organize, and format the skills section so it aligns with
               what ATS and hiring managers prioritize.
             </p>

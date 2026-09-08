@@ -74,11 +74,11 @@ export default function ResumeBuilderForVeterans() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             Military-to-Civilian Language Translation
           </h2>
-          <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-10">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-4xl mx-auto text-center leading-relaxed mb-10">
             Civilian recruiters do not understand military terminology. Here is how to translate
             your experience into language that resonates with hiring managers. For a deeper
             dive into reframing your career narrative, read our{' '}
-            <Link to="/blog/career-change-resume-guide" className="text-accent hover:underline">
+            <Link to="/blog/career-change-resume-guide" className="text-accent-text hover:underline">
               career change resume guide
             </Link>.
           </p>
@@ -87,7 +87,7 @@ export default function ResumeBuilderForVeterans() {
               <thead>
                 <tr className="bg-chalk-dark">
                   <th className="px-6 py-4 text-left font-bold text-ink">Military Term</th>
-                  <th className="px-6 py-4 text-left font-bold text-accent">Civilian Translation</th>
+                  <th className="px-6 py-4 text-left font-bold text-accent-text">Civilian Translation</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-black/[0.06]">
@@ -104,7 +104,7 @@ export default function ResumeBuilderForVeterans() {
                   ['AAR (After Action Review)', 'Post-Project Analysis / Lessons Learned'],
                 ].map(([mil, civ]) => (
                   <tr key={mil}>
-                    <td className="px-6 py-3 text-stone-warm text-sm">{mil}</td>
+                    <td className="px-6 py-3 text-ink/60 text-sm">{mil}</td>
                     <td className="px-6 py-3 text-ink text-sm font-medium">{civ}</td>
                   </tr>
                 ))}
@@ -123,7 +123,7 @@ export default function ResumeBuilderForVeterans() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             5 Common Veteran Resume Mistakes
           </h2>
-          <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-10">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-4xl mx-auto text-center leading-relaxed mb-10">
             Transitioning service members make these errors repeatedly. Fixing them
             can be the difference between an interview call and a rejection email.
           </p>
@@ -157,7 +157,7 @@ export default function ResumeBuilderForVeterans() {
                   </span>
                   <div>
                     <h3 className="font-display text-lg font-bold text-ink mb-2">{item.mistake}</h3>
-                    <p className="text-stone-warm font-extralight leading-relaxed">{item.fix}</p>
+                    <p className="text-ink/60 font-extralight leading-relaxed">{item.fix}</p>
                   </div>
                 </div>
               </div>
@@ -173,16 +173,16 @@ export default function ResumeBuilderForVeterans() {
             How to List Security Clearances
           </h2>
           <div className="bg-accent/[0.06] border border-accent/20 rounded-2xl p-6">
-            <p className="text-lg text-stone-warm font-extralight leading-relaxed mb-4">
+            <p className="text-lg text-ink/60 font-extralight leading-relaxed mb-4">
               An active security clearance is one of your most valuable career assets. Defense
               contractors and government agencies actively seek cleared candidates because the
               investigation process takes months and costs thousands of dollars.
             </p>
             <div className="bg-white rounded-xl p-4 border border-black/[0.06]">
               <p className="font-mono text-sm text-ink mb-1"><strong>Security Clearance</strong></p>
-              <p className="text-stone-warm text-sm">Top Secret / SCI — Active (Investigation: March 2024)</p>
+              <p className="text-ink/60 text-sm">Top Secret / SCI — Active (Investigation: March 2024)</p>
             </div>
-            <p className="text-stone-warm text-sm mt-4">
+            <p className="text-ink/60 text-sm mt-4">
               Place this section near the top of your resume, immediately after your contact information
               and summary. Include the clearance level, status, and most recent investigation date.
             </p>
@@ -225,12 +225,12 @@ export default function ResumeBuilderForVeterans() {
               >
                 <summary className="flex items-center justify-between cursor-pointer px-6 py-5 font-display font-bold text-ink hover:bg-chalk-dark/50 transition-colors duration-200">
                   <span className="pr-4">{faq.question}</span>
-                  <span className="text-accent text-xl flex-shrink-0 transition-transform duration-300 group-open:rotate-45">
+                  <span className="text-accent-text text-xl flex-shrink-0 transition-transform duration-300 group-open:rotate-45">
                     +
                   </span>
                 </summary>
                 <div className="px-6 pb-5">
-                  <p className="text-stone-warm font-extralight leading-relaxed">
+                  <p className="text-ink/60 font-extralight leading-relaxed">
                     {faq.answer}
                   </p>
                 </div>

@@ -19,7 +19,7 @@ export default function CustomerServiceResumeKeywordsGuide() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Customer service roles receive more applications than almost any other job category — and most companies use ATS software to filter them. If your resume doesn't include the right keywords, it gets rejected automatically. This guide covers every keyword category you need, with real examples showing how to use them naturally in your resume.
         </p>
 
@@ -54,8 +54,8 @@ export default function CustomerServiceResumeKeywordsGuide() {
               <p>20. Time Management</p>
             </div>
           </div>
-          <p className="text-sm text-stone-warm mt-4">
-            For a quick-reference keyword list, see our <Link to="/resume-keywords/customer-service" className="text-accent hover:underline">customer service keyword scanner page</Link>. This guide explains how and where to use each keyword category.
+          <p className="text-sm text-ink/60 mt-4">
+            For a quick-reference keyword list, see our <Link to="/resume-keywords/customer-service" className="text-accent-text hover:underline">customer service keyword scanner page</Link>. This guide explains how and where to use each keyword category.
           </p>
         </div>
 
@@ -63,7 +63,7 @@ export default function CustomerServiceResumeKeywordsGuide() {
           CRM and Software Keywords
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Nearly every customer service job posting mentions specific software. Including the exact platform names is critical — ATS systems match on exact terms, not synonyms. If the job says "Salesforce," writing "CRM software" alone won't match.
         </p>
 
@@ -107,12 +107,12 @@ export default function CustomerServiceResumeKeywordsGuide() {
           Soft Skills Keywords (That ATS Actually Scans For)
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Soft skills matter more in customer service than almost any other field. But simply listing "good communicator" won't help — you need specific, measurable phrases that both ATS systems and hiring managers value.
         </p>
 
         <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-6">
-          <div className="grid md:grid-cols-3 gap-6 text-stone-warm">
+          <div className="grid md:grid-cols-3 gap-6 text-ink/60">
             <div>
               <h4 className="font-bold text-ink mb-3">Communication:</h4>
               <ul className="list-disc pl-5 text-sm space-y-1">
@@ -153,7 +153,7 @@ export default function CustomerServiceResumeKeywordsGuide() {
           Performance Metrics Keywords
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Hiring managers want to see that you understand — and can improve — the metrics that matter. Including these terms signals that you think about customer service as a measurable business function, not just "being nice on the phone."
         </p>
 
@@ -181,7 +181,7 @@ export default function CustomerServiceResumeKeywordsGuide() {
           Industry-Specific Customer Service Keywords
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Customer service keywords vary by industry. Here are the additional terms to include depending on where you're applying:
         </p>
 
@@ -263,7 +263,7 @@ export default function CustomerServiceResumeKeywordsGuide() {
           How to Use Keywords in Your Resume (With Examples)
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           The most common mistake is dumping keywords into a skills list without context. ATS systems rank resumes higher when keywords appear in your experience bullets — not just the skills section. Here's how to do it right:
         </p>
 
@@ -306,7 +306,7 @@ export default function CustomerServiceResumeKeywordsGuide() {
           Keywords by Experience Level
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           The keywords you emphasize should match your experience level. Here's what to focus on at each stage:
         </p>
 
@@ -374,7 +374,7 @@ export default function CustomerServiceResumeKeywordsGuide() {
               <strong>Use standard section headers.</strong> "Experience," "Skills," "Education" — not "My Story" or "What I've Done."
             </li>
             <li>
-              <strong>Scan before submitting.</strong> Use our <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">free ATS keyword scanner</Link> to check your match rate against the specific job posting.
+              <strong>Scan before submitting.</strong> Use our <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">free ATS keyword scanner</Link> to check your match rate against the specific job posting.
             </li>
           </ol>
         </div>
@@ -388,7 +388,7 @@ export default function CustomerServiceResumeKeywordsGuide() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Free
           </Link>
@@ -398,29 +398,29 @@ export default function CustomerServiceResumeKeywordsGuide() {
           Related Resources
         </h2>
 
-        <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
+        <ul className="list-disc list-inside space-y-2 text-lg text-ink/60">
           <li>
-            <Link to="/resume-keywords/customer-service" className="text-accent hover:underline">
+            <Link to="/resume-keywords/customer-service" className="text-accent-text hover:underline">
               Customer Service Keywords Quick Reference List
             </Link>
           </li>
           <li>
-            <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">
+            <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">
               How to Use Resume Keywords to Beat the ATS
             </Link>
           </li>
           <li>
-            <Link to="/resume-keyword-scanner" className="text-accent hover:underline">
+            <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">
               Free ATS Keyword Scanner
             </Link>
           </li>
           <li>
-            <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+            <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
               Professional Summary Examples
             </Link>
           </li>
           <li>
-            <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+            <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
               How to List Skills on a Resume
             </Link>
           </li>

@@ -16,7 +16,7 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
           ★
         </span>
       ))}
-      <span className="ml-2 text-sm font-medium text-stone-warm">
+      <span className="ml-2 text-sm font-medium text-ink/60">
         {rating}/{max}
       </span>
     </div>
@@ -69,16 +69,16 @@ export default function ResumeIOVsEasyFreeResume() {
           </h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-              <p className="font-bold text-accent text-lg mb-2">EasyFreeResume</p>
+              <p className="font-bold text-accent-text text-lg mb-2">EasyFreeResume</p>
               <StarRating rating={5} />
-              <p className="text-3xl font-bold text-accent mt-2">$0</p>
-              <p className="text-sm text-stone-warm">Forever free</p>
+              <p className="text-3xl font-bold text-accent-text mt-2">$0</p>
+              <p className="text-sm text-ink/60">Forever free</p>
             </div>
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-              <p className="font-bold text-stone-warm text-lg mb-2">Resume.io</p>
+              <p className="font-bold text-ink/60 text-lg mb-2">Resume.io</p>
               <StarRating rating={4} />
               <p className="text-3xl font-bold text-red-600 mt-2">$45+</p>
-              <p className="text-sm text-stone-warm">Per year</p>
+              <p className="text-sm text-ink/60">Per year</p>
             </div>
           </div>
           <p className="text-green-800 mt-4 text-center font-medium">
@@ -86,7 +86,7 @@ export default function ResumeIOVsEasyFreeResume() {
           </p>
         </div>
 
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Resume.io is a popular resume builder with sleek templates and a modern interface.
           But like most "freemium" builders, the free part only gets you so far—downloading
           requires a subscription. Let's see how it stacks up against a truly free alternative.
@@ -101,15 +101,15 @@ export default function ResumeIOVsEasyFreeResume() {
             <thead>
               <tr className="bg-chalk-dark">
                 <th className="px-6 py-4 text-left font-bold text-ink">Feature</th>
-                <th className="px-6 py-4 text-center font-bold text-accent">EasyFreeResume</th>
-                <th className="px-6 py-4 text-center font-bold text-accent">Resume.io</th>
-                <th className="px-6 py-4 text-center font-bold text-stone-warm">Winner</th>
+                <th className="px-6 py-4 text-center font-bold text-accent-text">EasyFreeResume</th>
+                <th className="px-6 py-4 text-center font-bold text-accent-text">Resume.io</th>
+                <th className="px-6 py-4 text-center font-bold text-ink/60">Winner</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-black/[0.06]">
               <tr className="bg-green-50">
                 <td className="px-6 py-4 font-medium text-ink">Cost</td>
-                <td className="px-6 py-4 text-center text-accent font-bold">100% Free</td>
+                <td className="px-6 py-4 text-center text-accent-text font-bold">100% Free</td>
                 <td className="px-6 py-4 text-center text-red-600">$2.95-$24.95/month</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -117,7 +117,7 @@ export default function ResumeIOVsEasyFreeResume() {
               </tr>
               <tr>
                 <td className="px-6 py-4 font-medium text-ink">PDF Downloads</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Unlimited, No Watermark</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Unlimited, No Watermark</td>
                 <td className="px-6 py-4 text-center text-red-600">❌ Paid only</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -125,7 +125,7 @@ export default function ResumeIOVsEasyFreeResume() {
               </tr>
               <tr className="bg-green-50">
                 <td className="px-6 py-4 font-medium text-ink">Sign-Up Required</td>
-                <td className="px-6 py-4 text-center text-accent">✅ No</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ No</td>
                 <td className="px-6 py-4 text-center text-red-600">❌ Yes</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -133,15 +133,15 @@ export default function ResumeIOVsEasyFreeResume() {
               </tr>
               <tr>
                 <td className="px-6 py-4 font-medium text-ink">ATS-Friendly Templates</td>
-                <td className="px-6 py-4 text-center text-accent">✅ All optimized</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Yes</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ All optimized</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Yes</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-gray-400 text-white">Tie</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-ink/60 text-white">Tie</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
                 <td className="px-6 py-4 font-medium text-ink">Privacy</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Local storage only</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Local storage only</td>
                 <td className="px-6 py-4 text-center text-red-600">❌ Server storage</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -149,15 +149,15 @@ export default function ResumeIOVsEasyFreeResume() {
               </tr>
               <tr>
                 <td className="px-6 py-4 font-medium text-ink">Template Variety</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Professional options</td>
-                <td className="px-6 py-4 text-center text-accent">✅ 20+ templates</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Professional options</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ 20+ templates</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-gray-400 text-white">Tie</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-ink/60 text-white">Tie</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
                 <td className="px-6 py-4 font-medium text-ink">Multiple Resumes</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Unlimited</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Unlimited</td>
                 <td className="px-6 py-4 text-center text-yellow-600">⚠️ Limited free</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -223,7 +223,7 @@ export default function ResumeIOVsEasyFreeResume() {
             💚 EasyFreeResume Cost
             <WinnerBadge />
           </h3>
-          <div className="text-accent text-center">
+          <div className="text-accent-text text-center">
             <p className="text-6xl font-bold mb-2">$0</p>
             <p className="text-xl">Forever. No trials. No auto-renewals.</p>
           </div>
@@ -239,7 +239,7 @@ export default function ResumeIOVsEasyFreeResume() {
               🔒 EasyFreeResume
               <WinnerBadge />
             </h3>
-            <ul className="space-y-2 text-accent">
+            <ul className="space-y-2 text-accent-text">
               <li>✓ Data stays on your device</li>
               <li>✓ No account required</li>
               <li>✓ No data collection</li>
@@ -305,7 +305,7 @@ export default function ResumeIOVsEasyFreeResume() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Build Your Free Resume
           </Link>
@@ -326,7 +326,7 @@ export default function ResumeIOVsEasyFreeResume() {
           </div>
           <Link
             to="/templates"
-            className="bg-white text-accent px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
+            className="bg-white text-accent-text px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
           >
             Try Free
           </Link>

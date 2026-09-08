@@ -2,7 +2,14 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { useContactForm } from '../useContactForm';
-import { ContactInfo } from '../../../types';
+import { ContactInfo, SocialLink } from '../../../types';
+import type { Mock } from 'vitest';
+import { toastUndo } from '../../../utils/undoToast';
+
+vi.mock('../../../utils/undoToast', () => ({
+  toastUndo: vi.fn(),
+  UNDO_TOAST_MS: 5000,
+}));
 
 // Mock the dependencies
 vi.mock('../../../constants/socialPlatforms', () => ({
@@ -236,6 +243,43 @@ describe('useContactForm', () => {
         { platform: 'linkedin', url: 'https://linkedin.com/in/johndoe', display_text: 'LinkedIn' },
         { platform: 'twitter', url: 'https://twitter.com/johndoe', display_text: 'Twitter' },
       ];
+    });
+
+    it('offers an undo that restores the link at its original index', () => {
+      const originalLinks = [...contactInfo.social_links!];
+
+      const { result } = renderHook(() =>
+        useContactForm({ contactInfo, setContactInfo })
+      );
+
+      act(() => {
+        result.current.handleRemoveSocialLink(1);
+      });
+
+      expect(toastUndo).toHaveBeenCalledWith('Social link removed', expect.any(Function));
+
+      // Run the restore closure the toast was handed.
+      const onUndo = (toastUndo as unknown as Mock).mock.calls[0][1];
+      setContactInfo.mockClear();
+      act(() => { onUndo(); });
+
+      const restore = setContactInfo.mock.calls[0][0];
+      const afterUndo = restore({ ...contactInfo, social_links: [originalLinks[0], originalLinks[2]] });
+      expect(afterUndo.social_links?.map((l: SocialLink) => l.platform)).toEqual([
+        'github', 'linkedin', 'twitter',
+      ]);
+    });
+
+    it('does not offer an undo when the index holds nothing', () => {
+      const { result } = renderHook(() =>
+        useContactForm({ contactInfo, setContactInfo })
+      );
+
+      act(() => {
+        result.current.handleRemoveSocialLink(99);
+      });
+
+      expect(toastUndo).not.toHaveBeenCalled();
     });
 
     it('should remove social link at specified index', () => {

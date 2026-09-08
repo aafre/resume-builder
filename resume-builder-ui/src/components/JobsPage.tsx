@@ -466,7 +466,7 @@ export default function JobsPage() {
           <h1 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-ink mb-2">
             {jobsConfig.hero.h1}
           </h1>
-          <p className="text-lg font-extralight text-stone-warm max-w-2xl mx-auto">
+          <p className="text-lg font-extralight text-ink/60 max-w-2xl mx-auto">
             {jobsConfig.hero.subtitle}
           </p>
         </div>
@@ -484,7 +484,7 @@ export default function JobsPage() {
           {/* Drag overlay */}
           {dragActive && (
             <div className="absolute inset-0 bg-accent/10 border-2 border-dashed border-accent rounded-2xl z-10 flex flex-col items-center justify-center gap-2 pointer-events-none">
-              <Upload className="w-8 h-8 text-accent" />
+              <Upload className="w-8 h-8 text-accent-text" />
               <p className="text-ink font-semibold text-sm">Drop your resume here (PDF or DOCX)</p>
             </div>
           )}
@@ -498,42 +498,42 @@ export default function JobsPage() {
                   style={{ width: `${parserProgress}%` }}
                 />
               </div>
-              <p className="text-sm text-stone-warm">{progressMessage || 'Analyzing your resume...'}</p>
+              <p className="text-sm text-ink/60">{progressMessage || 'Analyzing your resume...'}</p>
             </div>
           ) : (
             <>
               <div className="flex flex-col sm:flex-row gap-3">
                 {/* Job Title */}
                 <div className="flex-1 relative">
-                  <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-mist" />
+                  <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/60" />
                   <input
                     type="text"
                     value={titleInput}
                     onChange={(e) => setTitleInput(e.target.value)}
                     placeholder="Job title (e.g. Software Engineer)"
-                    className="w-full pl-10 pr-4 py-3 border border-black/[0.06] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 border border-black/[0.06] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
                   />
                 </div>
 
                 {/* Location */}
                 <div className="flex-1 relative">
-                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-mist" />
+                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/60" />
                   <input
                     type="text"
                     value={locationInput}
                     onChange={(e) => setLocationInput(e.target.value)}
                     placeholder="City or region (optional)"
-                    className="w-full pl-10 pr-4 py-3 border border-black/[0.06] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 border border-black/[0.06] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
                   />
                 </div>
 
                 {/* Country */}
                 <div className="relative sm:w-44">
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-mist pointer-events-none" />
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/60 pointer-events-none" />
                   <select
                     value={country}
                     onChange={(e) => setCountry(e.target.value)}
-                    className="w-full appearance-none pl-4 pr-10 py-3 border border-black/[0.06] rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                    className="w-full appearance-none pl-4 pr-10 py-3 border border-black/[0.06] rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
                   >
                     {ADZUNA_COUNTRIES.map((c) => (
                       <option key={c.code} value={c.code}>{c.label}</option>
@@ -557,7 +557,7 @@ export default function JobsPage() {
               </div>
 
               {/* Drop hint */}
-              <p className="text-xs text-mist text-center mt-2 flex items-center justify-center gap-1">
+              <p className="text-xs text-ink/60 text-center mt-2 flex items-center justify-center gap-1">
                 <Upload className="w-3 h-3" />
                 Or drag &amp; drop your resume (PDF/DOCX) for an instant personalized search
               </p>
@@ -592,16 +592,16 @@ export default function JobsPage() {
         {suggestions && suggestions.alternative_roles.length > 0 && !loading && (
           <div className="mb-6 bg-chalk-dark border border-black/[0.06] rounded-2xl p-5">
             <div className="flex items-center gap-2 mb-2">
-              <Sparkles className="w-4 h-4 text-accent" />
+              <Sparkles className="w-4 h-4 text-accent-text" />
               <h3 className="text-sm font-display font-bold text-ink">Consider these related roles</h3>
             </div>
-            <p className="text-xs text-mist mb-3">Based on your resume skills and experience</p>
+            <p className="text-xs text-ink/60 mb-3">Based on your resume skills and experience</p>
             <div className="flex flex-wrap gap-2">
               {suggestions.alternative_roles.map((role) => (
                 <button
                   key={role}
                   onClick={() => handlePillClick(role)}
-                  className="px-3 py-1.5 bg-white border border-black/[0.06] text-ink text-sm font-medium rounded-full hover:text-accent hover:border-accent/30 transition-all shadow-sm"
+                  className="px-3 py-1.5 bg-white border border-black/[0.06] text-ink text-sm font-medium rounded-full hover:text-accent-text hover:border-accent/30 transition-all shadow-sm"
                 >
                   {role}
                 </button>
@@ -616,7 +616,7 @@ export default function JobsPage() {
             <h2 className="text-lg font-display font-bold text-ink">
               {totalCount.toLocaleString()} jobs found
             </h2>
-            <span className="text-sm text-stone-warm">
+            <span className="text-sm text-ink/60">
               for &ldquo;{titleInput}&rdquo;{locationInput ? ` in ${locationInput}` : ''}
             </span>
           </div>
@@ -624,11 +624,11 @@ export default function JobsPage() {
 
         {/* Tier 3 AI Transparency */}
         {hasSearched && !loading && aiTermsUsed.length > 0 && (
-          <div className="flex items-center gap-2 mb-6 text-xs text-mist">
+          <div className="flex items-center gap-2 mb-6 text-xs text-ink/60">
             <Info className="w-3.5 h-3.5 flex-shrink-0" />
             <span>Also searched for:</span>
             {aiTermsUsed.map((term) => (
-              <span key={term} className="px-2 py-0.5 bg-accent/10 text-accent rounded-full font-medium">
+              <span key={term} className="px-2 py-0.5 bg-accent/10 text-accent-text rounded-full font-medium">
                 {term}
               </span>
             ))}
@@ -640,41 +640,41 @@ export default function JobsPage() {
           <div className="mb-6 bg-accent/5 border border-accent/20 rounded-2xl p-4">
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2 min-w-0">
-                <FileText className="w-4 h-4 text-accent flex-shrink-0" />
+                <FileText className="w-4 h-4 text-accent-text flex-shrink-0" />
                 <span className="text-sm font-medium text-ink truncate">
                   Matching against: {resumeContext.fileName}
                 </span>
               </div>
               <button
                 onClick={handleClearResume}
-                className="p-1 rounded-lg hover:bg-black/5 text-mist hover:text-ink transition-colors flex-shrink-0"
+                className="p-1 rounded-lg hover:bg-black/5 text-ink/60 hover:text-ink transition-colors flex-shrink-0"
                 aria-label="Clear resume context"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
-            <div className="flex items-center gap-3 mt-2 text-xs text-stone-warm flex-wrap">
+            <div className="flex items-center gap-3 mt-2 text-xs text-ink/60 flex-wrap">
               {resumeContext.displayTitle && (
                 <span className="font-medium">{resumeContext.displayTitle}</span>
               )}
               {resumeContext.displayTitle && resumeContext.skills.length > 0 && (
-                <span className="text-mist">|</span>
+                <span className="text-ink/60">|</span>
               )}
               {resumeContext.skills.length > 0 && (
                 <span className="flex items-center gap-1 flex-wrap">
                   {resumeContext.skills.slice(0, 3).map((skill) => (
-                    <span key={skill} className="px-2 py-0.5 bg-accent/10 text-accent rounded-full">
+                    <span key={skill} className="px-2 py-0.5 bg-accent/10 text-accent-text rounded-full">
                       {skill}
                     </span>
                   ))}
                   {resumeContext.skills.length > 3 && (
-                    <span className="text-mist">+{resumeContext.skills.length - 3}</span>
+                    <span className="text-ink/60">+{resumeContext.skills.length - 3}</span>
                   )}
                 </span>
               )}
               {resumeContext.yearsExperience > 0 && (
                 <>
-                  <span className="text-mist">|</span>
+                  <span className="text-ink/60">|</span>
                   <span>{resumeContext.yearsExperience}yr exp</span>
                 </>
               )}
@@ -684,8 +684,8 @@ export default function JobsPage() {
 
         {/* Nudge Banner — when no resume */}
         {hasSearched && !loading && jobs.length > 0 && !resumeContext && (
-          <div className="flex items-center gap-2 mb-6 text-xs text-mist">
-            <Upload className="w-3.5 h-3.5 text-accent flex-shrink-0" />
+          <div className="flex items-center gap-2 mb-6 text-xs text-ink/60">
+            <Upload className="w-3.5 h-3.5 text-accent-text flex-shrink-0" />
             <span>Drop your resume on the search box for personalized match scores</span>
           </div>
         )}
@@ -732,22 +732,22 @@ export default function JobsPage() {
                           <span className="text-ink text-sm font-bold">{initial}</span>
                         </div>
                         <div className="min-w-0">
-                          <h3 className="text-base font-display font-bold text-ink group-hover:text-accent transition-colors line-clamp-2">
+                          <h3 className="text-base font-display font-bold text-ink group-hover:text-accent-text transition-colors line-clamp-2">
                             {job.title}
                           </h3>
                         </div>
                       </div>
-                      <p className="text-sm text-stone-warm mb-2">
+                      <p className="text-sm text-ink/60 mb-2">
                         {[job.company, job.location].filter(Boolean).join(' · ')}
                       </p>
                       <div className="flex items-center gap-2 flex-wrap mb-3">
                         {job.match_score != null && resumeContext && (
                           <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${
                             job.match_score >= 70
-                              ? 'bg-accent/10 text-accent'
+                              ? 'bg-accent/10 text-accent-text'
                               : job.match_score >= 40
                                 ? 'bg-amber-50 text-amber-600'
-                                : 'bg-gray-100 text-mist'
+                                : 'bg-chalk-dark text-ink/60'
                           }`}>
                             {Math.round(job.match_score)}% match
                           </span>
@@ -756,13 +756,13 @@ export default function JobsPage() {
                           <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${
                             job.salary_is_predicted
                               ? 'bg-amber-50 text-amber-600'
-                              : 'bg-accent/10 text-accent'
+                              : 'bg-accent/10 text-accent-text'
                           }`}>
                             {salary}{job.salary_is_predicted ? ' est.' : ''}
                           </span>
                         )}
                         {posted && (
-                          <span className="text-xs text-mist flex items-center gap-1">
+                          <span className="text-xs text-ink/60 flex items-center gap-1">
                             <Clock className="w-3 h-3" />
                             {posted}
                           </span>
@@ -798,15 +798,15 @@ export default function JobsPage() {
         {/* No Results State */}
         {hasSearched && !loading && !error && jobs.length === 0 && (
           <div className="text-center py-12 bg-white rounded-2xl card-gradient-border shadow-premium">
-            <Search className="w-12 h-12 mx-auto mb-3 text-mist" />
+            <Search className="w-12 h-12 mx-auto mb-3 text-ink/60" />
             <h3 className="text-lg font-display font-bold text-ink mb-2">No jobs found</h3>
-            <p className="text-sm text-stone-warm mb-6">Try different keywords or a broader location</p>
+            <p className="text-sm text-ink/60 mb-6">Try different keywords or a broader location</p>
             <div className="flex flex-wrap justify-center gap-2 max-w-lg mx-auto">
               {POPULAR_SEARCHES.slice(0, 6).map((title) => (
                 <button
                   key={title}
                   onClick={() => handlePillClick(title)}
-                  className="px-3 py-1.5 bg-chalk-dark text-ink text-xs font-medium rounded-full hover:text-accent hover:bg-accent/10 transition-colors"
+                  className="px-3 py-1.5 bg-chalk-dark text-ink text-xs font-medium rounded-full hover:text-accent-text hover:bg-accent/10 transition-colors"
                 >
                   {title}
                 </button>
@@ -818,15 +818,15 @@ export default function JobsPage() {
         {/* Empty State (before searching) — Popular searches */}
         {!hasSearched && !loading && (
           <div className="text-center py-12">
-            <Briefcase className="w-12 h-12 mx-auto mb-3 text-mist" />
+            <Briefcase className="w-12 h-12 mx-auto mb-3 text-ink/60" />
             <p className="text-lg font-display font-bold text-ink mb-1">Search for your next opportunity</p>
-            <p className="text-sm text-mist mb-6">Or try one of these popular searches</p>
+            <p className="text-sm text-ink/60 mb-6">Or try one of these popular searches</p>
             <div className="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto">
               {POPULAR_SEARCHES.map((title) => (
                 <button
                   key={title}
                   onClick={() => handlePillClick(title)}
-                  className="px-4 py-2 bg-white border border-black/[0.06] text-ink text-sm font-medium rounded-full hover:text-accent hover:border-accent/30 transition-all shadow-sm"
+                  className="px-4 py-2 bg-white border border-black/[0.06] text-ink text-sm font-medium rounded-full hover:text-accent-text hover:border-accent/30 transition-all shadow-sm"
                 >
                   {title}
                 </button>
@@ -837,7 +837,7 @@ export default function JobsPage() {
 
         {/* Powered by */}
         <div className="text-center mt-8 mb-12">
-          <p className="text-xs text-mist">
+          <p className="text-xs text-ink/60">
             Job listings powered by Adzuna
           </p>
         </div>
@@ -856,31 +856,31 @@ export default function JobsPage() {
             <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center">
                 <div className="w-14 h-14 bg-chalk-dark rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <FileText className="w-7 h-7 text-accent" />
+                  <FileText className="w-7 h-7 text-accent-text" />
                 </div>
-                <div className="text-sm font-bold text-accent mb-1">Step 1</div>
+                <div className="text-sm font-bold text-accent-text mb-1">Step 1</div>
                 <h3 className="font-display text-lg font-bold text-ink mb-2">Build Your Resume</h3>
-                <p className="text-sm font-extralight text-stone-warm">
+                <p className="text-sm font-extralight text-ink/60">
                   Create a professional, ATS-friendly resume using our free builder with proven templates.
                 </p>
               </div>
               <div className="text-center">
                 <div className="w-14 h-14 bg-chalk-dark rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Search className="w-7 h-7 text-accent" />
+                  <Search className="w-7 h-7 text-accent-text" />
                 </div>
-                <div className="text-sm font-bold text-accent mb-1">Step 2</div>
+                <div className="text-sm font-bold text-accent-text mb-1">Step 2</div>
                 <h3 className="font-display text-lg font-bold text-ink mb-2">Search Jobs</h3>
-                <p className="text-sm font-extralight text-stone-warm">
+                <p className="text-sm font-extralight text-ink/60">
                   Find matching openings across 19 countries with salary information and direct apply links.
                 </p>
               </div>
               <div className="text-center">
                 <div className="w-14 h-14 bg-chalk-dark rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Target className="w-7 h-7 text-accent" />
+                  <Target className="w-7 h-7 text-accent-text" />
                 </div>
-                <div className="text-sm font-bold text-accent mb-1">Step 3</div>
+                <div className="text-sm font-bold text-accent-text mb-1">Step 3</div>
                 <h3 className="font-display text-lg font-bold text-ink mb-2">Apply Directly</h3>
-                <p className="text-sm font-extralight text-stone-warm">
+                <p className="text-sm font-extralight text-ink/60">
                   Click through to apply on the employer's site with your polished resume ready to upload.
                 </p>
               </div>
@@ -897,13 +897,13 @@ export default function JobsPage() {
             >
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-accent" />
+                  <FileText className="w-5 h-5 text-accent-text" />
                 </div>
-                <h3 className="font-display font-bold text-ink group-hover:text-accent transition-colors">
+                <h3 className="font-display font-bold text-ink group-hover:text-accent-text transition-colors">
                   Resume Templates
                 </h3>
               </div>
-              <p className="text-sm font-extralight text-stone-warm">
+              <p className="text-sm font-extralight text-ink/60">
                 Build an ATS-friendly resume with our free professional templates.
               </p>
             </Link>
@@ -913,13 +913,13 @@ export default function JobsPage() {
             >
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center">
-                  <Target className="w-5 h-5 text-accent" />
+                  <Target className="w-5 h-5 text-accent-text" />
                 </div>
-                <h3 className="font-display font-bold text-ink group-hover:text-accent transition-colors">
+                <h3 className="font-display font-bold text-ink group-hover:text-accent-text transition-colors">
                   Resume Keywords
                 </h3>
               </div>
-              <p className="text-sm font-extralight text-stone-warm">
+              <p className="text-sm font-extralight text-ink/60">
                 Industry-specific keywords to pass ATS filters and impress recruiters.
               </p>
             </Link>
@@ -929,13 +929,13 @@ export default function JobsPage() {
             >
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center">
-                  <BookOpen className="w-5 h-5 text-accent" />
+                  <BookOpen className="w-5 h-5 text-accent-text" />
                 </div>
-                <h3 className="font-display font-bold text-ink group-hover:text-accent transition-colors">
+                <h3 className="font-display font-bold text-ink group-hover:text-accent-text transition-colors">
                   Interview Guide
                 </h3>
               </div>
-              <p className="text-sm font-extralight text-stone-warm">
+              <p className="text-sm font-extralight text-ink/60">
                 Prepare for your interview with our comprehensive guide and tips.
               </p>
             </Link>

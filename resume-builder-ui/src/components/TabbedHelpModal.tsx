@@ -1,6 +1,8 @@
 import { Fragment } from 'react';
 import { Tab } from '@headlessui/react';
 import { MdClose, MdMouse, MdTouchApp } from 'react-icons/md';
+import { useId } from 'react';
+import ModalShell from './shared/ModalShell';
 
 interface TabbedHelpModalProps {
   isOpen: boolean;
@@ -26,20 +28,25 @@ export default function TabbedHelpModal({
   isAnonymous,
   onSignInClick
 }: TabbedHelpModalProps) {
-  if (!isOpen) return null;
+  const titleId = useId();
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] overflow-hidden flex flex-col">
+    <ModalShell
+      isOpen={isOpen}
+      onClose={onClose}
+      labelledBy={titleId}
+      overlayClassName="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+      panelClassName="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] overflow-hidden flex flex-col"
+    >
         {/* Header */}
         <div className="p-6 border-b border-gray-200 flex-shrink-0">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-gray-800">
-              Help & Tips
+            <h2 id={titleId} className="text-2xl font-bold text-ink">
+              Help &amp; Tips
             </h2>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
+              className="text-ink/60 hover:text-gray-600 transition-colors"
             >
               <MdClose className="w-6 h-6" />
             </button>
@@ -55,8 +62,8 @@ export default function TabbedHelpModal({
                   className={classNames(
                     'py-3 px-4 font-medium text-sm transition-all border-b-2 -mb-px',
                     selected
-                      ? 'text-accent border-accent'
-                      : 'text-gray-600 border-transparent hover:text-gray-900 hover:border-gray-300'
+                      ? 'text-accent-text border-accent'
+                      : 'text-gray-600 border-transparent hover:text-ink hover:border-gray-300'
                   )}
                 >
                   Editor Guide
@@ -69,8 +76,8 @@ export default function TabbedHelpModal({
                   className={classNames(
                     'py-3 px-4 font-medium text-sm transition-all border-b-2 -mb-px',
                     selected
-                      ? 'text-accent border-accent'
-                      : 'text-gray-600 border-transparent hover:text-gray-900 hover:border-gray-300'
+                      ? 'text-accent-text border-accent'
+                      : 'text-gray-600 border-transparent hover:text-ink hover:border-gray-300'
                   )}
                 >
                   Saving & Data
@@ -83,8 +90,8 @@ export default function TabbedHelpModal({
                   className={classNames(
                     'py-3 px-4 font-medium text-sm transition-all border-b-2 -mb-px',
                     selected
-                      ? 'text-accent border-accent'
-                      : 'text-gray-600 border-transparent hover:text-gray-900 hover:border-gray-300'
+                      ? 'text-accent-text border-accent'
+                      : 'text-gray-600 border-transparent hover:text-ink hover:border-gray-300'
                   )}
                 >
                   FAQs
@@ -114,8 +121,7 @@ export default function TabbedHelpModal({
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
-      </div>
-    </div>
+    </ModalShell>
   );
 }
 
@@ -124,7 +130,7 @@ function EditorGuideContent() {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-3">Formatting Text</h3>
+        <h3 className="text-lg font-semibold text-ink mb-3">Formatting Text</h3>
         <p className="text-gray-600 mb-2">
           Select any text to reveal the formatting toolbar (bubble menu). You can:
         </p>
@@ -136,24 +142,24 @@ function EditorGuideContent() {
       </div>
 
       <div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-3">Reordering Sections & Items</h3>
+        <h3 className="text-lg font-semibold text-ink mb-3">Reordering Sections & Items</h3>
         <div className="text-gray-600 space-y-2">
           <p className="flex items-center gap-2">
-            <MdMouse className="text-accent flex-shrink-0" />
+            <MdMouse className="text-accent-text flex-shrink-0" />
             <span><strong>Desktop:</strong> Hover over any section or item to reveal the ••• handle, then drag to reorder</span>
           </p>
           <p className="flex items-center gap-2">
-            <MdTouchApp className="text-accent flex-shrink-0" />
+            <MdTouchApp className="text-accent-text flex-shrink-0" />
             <span><strong>Mobile:</strong> Press and hold any section or item, then drag to reorder</span>
           </p>
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-sm text-ink/60 mt-2">
             Works for sections, experience entries, education items, and bullet points.
           </p>
         </div>
       </div>
 
       <div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-3">Adding Sections</h3>
+        <h3 className="text-lg font-semibold text-ink mb-3">Adding Sections</h3>
         <p className="text-gray-600">
           Click the "Add Section" button to insert new sections like Skills, Projects, Certifications, or custom sections.
           You can add as many as you need.
@@ -161,11 +167,11 @@ function EditorGuideContent() {
       </div>
 
       <div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-3">Keyboard Shortcuts</h3>
+        <h3 className="text-lg font-semibold text-ink mb-3">Keyboard Shortcuts</h3>
         <ul className="list-disc pl-5 text-gray-600 space-y-1">
-          <li><kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-xs">Ctrl+\</kbd> - Toggle sidebar (desktop)</li>
-          <li><kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-xs">Ctrl+B</kbd> - Bold text</li>
-          <li><kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-xs">Ctrl+I</kbd> - Italic text</li>
+          <li><kbd className="px-2 py-1 bg-chalk-dark border border-gray-300 rounded text-xs">Ctrl+\</kbd> - Toggle sidebar (desktop)</li>
+          <li><kbd className="px-2 py-1 bg-chalk-dark border border-gray-300 rounded text-xs">Ctrl+B</kbd> - Bold text</li>
+          <li><kbd className="px-2 py-1 bg-chalk-dark border border-gray-300 rounded text-xs">Ctrl+I</kbd> - Italic text</li>
         </ul>
       </div>
     </div>
@@ -192,7 +198,7 @@ function AnonymousSavingContent({ onSignInClick }: { onSignInClick?: () => void 
       </div>
 
       <div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-3">How to Save Your Work (Manual)</h3>
+        <h3 className="text-lg font-semibold text-ink mb-3">How to Save Your Work (Manual)</h3>
         <ol className="list-decimal pl-5 text-gray-600 space-y-2">
           <li>Click <strong>"Backup to File"</strong> in the sidebar to download a .yaml file</li>
           <li>Store this file somewhere safe (email it to yourself, save to cloud drive, etc.)</li>
@@ -232,7 +238,7 @@ function AuthenticatedSavingContent() {
       </div>
 
       <div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-3">Cloud Storage Features</h3>
+        <h3 className="text-lg font-semibold text-ink mb-3">Cloud Storage Features</h3>
         <ul className="list-disc pl-5 text-gray-600 space-y-2">
           <li><strong>Auto-save every few seconds</strong> - No need to click save, your work is continuously backed up</li>
           <li><strong>Access from any device</strong> - Edit your resume from desktop, tablet, or mobile</li>
@@ -242,7 +248,7 @@ function AuthenticatedSavingContent() {
       </div>
 
       <div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-3">Additional Backup Options</h3>
+        <h3 className="text-lg font-semibold text-ink mb-3">Additional Backup Options</h3>
         <p className="text-gray-600 mb-2">
           While your resume is safe in the cloud, you can still create local backups:
         </p>
@@ -260,7 +266,7 @@ function FAQContent() {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-2">Is this ATS-compatible?</h3>
+        <h3 className="text-lg font-semibold text-ink mb-2">Is this ATS-compatible?</h3>
         <p className="text-gray-600">
           Yes! Our templates are designed to pass Applicant Tracking Systems (ATS) used by top companies.
           We use clean formatting, standard fonts, and avoid complex graphics that can confuse ATS scanners.
@@ -268,7 +274,7 @@ function FAQContent() {
       </div>
 
       <div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-2">Can I customize the template?</h3>
+        <h3 className="text-lg font-semibold text-ink mb-2">Can I customize the template?</h3>
         <p className="text-gray-600">
           Currently, we offer the "Modern" template with a professional, clean design.
           You can customize all content, reorder sections, and format text to match your needs.
@@ -276,7 +282,7 @@ function FAQContent() {
       </div>
 
       <div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-2">What format does it export to?</h3>
+        <h3 className="text-lg font-semibold text-ink mb-2">What format does it export to?</h3>
         <p className="text-gray-600">
           Your resume exports as a high-quality PDF file, ready to send to employers or upload to job boards.
           The PDF preserves all formatting and looks professional on any device.
@@ -284,7 +290,7 @@ function FAQContent() {
       </div>
 
       <div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-2">How many resumes can I save?</h3>
+        <h3 className="text-lg font-semibold text-ink mb-2">How many resumes can I save?</h3>
         <p className="text-gray-600">
           Free accounts can save up to 5 resumes in the cloud. This lets you create different versions
           tailored to specific roles or industries.
@@ -292,7 +298,7 @@ function FAQContent() {
       </div>
 
       <div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-2">Is my data private?</h3>
+        <h3 className="text-lg font-semibold text-ink mb-2">Is my data private?</h3>
         <p className="text-gray-600">
           Absolutely. Your resume data is encrypted (AES-256) and stored securely on Supabase servers.
           We never share your personal information with third parties. You can delete your data at any time.

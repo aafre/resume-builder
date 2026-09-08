@@ -10,7 +10,7 @@ import {
   MdSchool,
   MdStar,
   MdList,
-
+  MdMoreVert,
   MdFormatListBulleted,
   MdViewColumn,
   MdTextFields,
@@ -24,12 +24,14 @@ import {
   MdVisibility,
   MdSupport,
 } from "react-icons/md";
-import { PanelRightClose, PanelRightOpen, ShieldCheck, ChevronRight } from "lucide-react";
+import { PanelRightClose, PanelRightOpen, ShieldCheck, ChevronRight, ExternalLink } from "lucide-react";
 import { JobSparkleIcon } from "./icons/JobSparkleIcon";
 import { Link } from "react-router-dom";
-import { affiliateConfig } from "../config/affiliate";
+import { affiliateConfig, hasAnyAffiliate } from "../config/affiliate";
 import { extractJobSearchParams } from "../utils/resumeDataExtractor";
 import type { ContactInfo, Section as ResumeSection } from "../types";
+import DocumentSpine from "./editor/DocumentSpine";
+import { useResumeLength } from "../hooks/editor/useResumeLength";
 
 interface Section {
   name: string;
@@ -60,15 +62,20 @@ interface SectionNavigatorProps {
   isAuthenticated?: boolean;
   contactInfo?: ContactInfo | null;
   resumeSections?: ResumeSection[];
+  /** Last generated preview PDF; calibrates the length estimate against truth. */
+  previewUrl?: string | null;
 }
 
 const STORAGE_KEY = "resume-builder-sidebar-collapsed";
 
 /**
- * YouTube-style collapsible sidebar navigator
- * Positioned below the header, full height minus header
- * Expanded: Full labels with icons
- * Collapsed: Icons with short labels (like YouTube sidebar)
+ * Collapsible editor rail.
+ *
+ * Three tiers, not eight equals: Download (the conversion event) alone at the
+ * top of a pinned footer, Preview + Add Section as secondary, everything else
+ * behind a "More Options" disclosure. The footer sits OUTSIDE the scroll
+ * container so Download can never be pushed below the fold by a long section
+ * list or by collapsing the rail.
  */
 const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   sections,
@@ -92,14 +99,24 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   isAuthenticated = false,
   contactInfo,
   resumeSections,
+  previewUrl,
 }) => {
   // Show loading on button when either opening (save/validate) or generating
   const isPreviewLoading = isOpeningPreview || isGeneratingPreview;
+
+  // Live page-length estimate, corrected against the real PDF whenever one exists.
+  const resumeLength = useResumeLength(
+    contactInfo ?? null,
+    resumeSections ?? [],
+    previewUrl
+  );
+  const previewStale = Boolean(previewIsStale) && !isPreviewLoading;
   // Load initial state from localStorage
   const [isCollapsed, setIsCollapsed] = useState(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     return saved === "true";
   });
+  const [showMoreOptions, setShowMoreOptions] = useState(false);
 
   // Track header height and dynamic footer offset
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -187,6 +204,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   }, [isCollapsed]);
 
   const handleToggle = useCallback(() => {
+    setShowMoreOptions(false);
     setIsCollapsed((current) => !current);
   }, []);
 
@@ -206,6 +224,11 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   // Handle Start Fresh - confirmation dialog is handled by parent (Editor.tsx)
   const handleStartFresh = () => {
     onStartFresh();
+  };
+
+  const runOption = (action: () => void) => {
+    setShowMoreOptions(false);
+    action();
   };
 
   // Get icon for section based on type or name
@@ -272,33 +295,30 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
     return <MdList className="text-base" />;
   };
 
-  // Get short label for collapsed state
+  /**
+   * Collapsed-rail label. Truncates the user's own section name — it never
+   * substitutes a different word for it. A rename the user made has to survive
+   * into the navigator, or the navigator stops describing their document.
+   * The full name is always on `title` and `aria-label`.
+   */
   const getShortLabel = (section: Section): string => {
-    const name = section.name.toLowerCase();
-
-    // Check more specific patterns first, then broader ones
-    if (name.includes("contact")) return "Contact";
-    if (name.includes("professional summary") || name.includes("summary") || name.includes("objective")) return "Summary";
-    if (name.includes("professional qual") || name.includes("qualification")) return "Quals";
-    if (name.includes("key skill") || name.includes("skill") || name.includes("technical")) return "Skills";
-    if (name.includes("experience") || name.includes("work") || name.includes("employment")) return "Work";
-    if (name.includes("education") || name.includes("school") || name.includes("academic")) return "Edu";
-    if (name.includes("certification") || name.includes("certificate")) return "Certs";
-    if (name.includes("personal") || name.includes("interest") || name.includes("hobby")) return "Personal";
-    if (name.includes("project") || name.includes("portfolio")) return "Projects";
-    if (name.includes("award") || name.includes("honor")) return "Awards";
-    if (name.includes("language")) return "Lang";
-    if (name.includes("volunteer")) return "Volunteer";
-
-    // Truncate to first word or first 8 chars
-    const firstWord = section.name.split(" ")[0];
-    return firstWord.length > 8 ? firstWord.substring(0, 7) + "." : firstWord;
+    const firstWord = section.name.trim().split(/\s+/)[0] || section.name;
+    return firstWord.length > 9 ? `${firstWord.slice(0, 8)}…` : firstWord;
   };
+
+  const controlBase =
+    "w-full min-h-11 flex items-center justify-center rounded-lg font-semibold transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2";
+
+  const optionRowBase = `w-full min-h-11 flex items-center transition-colors duration-150 rounded-lg disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset ${
+    isCollapsed ? "flex-col gap-1 py-2 px-1" : "flex-row gap-3 px-3 py-2 text-left"
+  }`;
+
+  const showAffiliates = hasAnyAffiliate();
 
   return (
     <nav
       ref={sidebarRef}
-      className={`hidden lg:flex flex-col fixed right-0 bg-white/95 backdrop-blur-sm border-l border-gray-200/80 shadow-sm overflow-hidden z-[45] transition-all duration-300 ease-in-out ${
+      className={`hidden lg:flex flex-col fixed right-0 bg-white/95 backdrop-blur-sm border-l border-gray-200/80 shadow-sm overflow-clip z-[45] transition-[width] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] ${
         isCollapsed ? "w-[72px]" : "w-[280px]"
       }`}
       style={{
@@ -308,15 +328,15 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
       aria-label="Section navigation and actions"
     >
       {/* Toggle Button - Top of sidebar with subtle border */}
-      <div className="flex items-center justify-between px-3 py-3 border-b border-gray-200/60 bg-gray-50/50">
+      <div className="shrink-0 flex items-center justify-between px-3 py-3 border-b border-gray-200/60 bg-chalk">
         {!isCollapsed && (
-          <span className="text-xs font-semibold text-gray-600 uppercase tracking-wider">
+          <span className="text-xs font-semibold text-ink/60 uppercase tracking-wider">
             Navigator
           </span>
         )}
         <button
           onClick={handleToggle}
-          className={`inline-flex min-h-11 min-w-11 items-center justify-center p-2 hover:bg-white rounded-lg transition-all text-gray-500 hover:text-gray-800 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+          className={`inline-flex min-h-11 min-w-11 items-center justify-center p-2 hover:bg-white rounded-lg transition-colors duration-150 text-ink/60 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
             isCollapsed ? "mx-auto" : ""
           }`}
           aria-label={isCollapsed ? "Expand sidebar (Ctrl+\\)" : "Collapse sidebar (Ctrl+\\)"}
@@ -326,11 +346,11 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
         </button>
       </div>
 
-      {/* Sections Navigation - Scrollable */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+      {/* Sections Navigation - the only scrolling region of the rail */}
+      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-clip scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
         <div className={`${isCollapsed ? "py-3 px-1.5" : "p-3"}`} id="tour-section-navigator">
           {!isCollapsed && (
-            <h2 className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">
+            <h2 className="text-[11px] font-semibold text-ink/60 uppercase tracking-wider mb-3 px-2">
               Sections
             </h2>
           )}
@@ -338,25 +358,26 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
           {/* Contact Info */}
           <button
             onClick={() => onSectionClick(-1)}
-            className={`w-full flex items-center transition-all rounded-lg group ${
+            title="Contact Information"
+            className={`w-full flex items-center transition-colors duration-150 rounded-lg group ${
               isCollapsed
                 ? "flex-col gap-1.5 py-2.5 px-1.5 hover:bg-accent/[0.06]"
-                : "flex-row gap-3 px-3 py-2.5 hover:bg-gray-100/80"
+                : "flex-row gap-3 px-3 py-2.5 hover:bg-black/5"
             } ${
               activeSectionIndex === -1
                 ? isCollapsed
-                  ? "bg-accent/[0.06] text-ink/80"
+                  ? "bg-accent/[0.06] text-ink"
                   : "bg-accent/[0.06] ring-1 ring-accent/20 text-ink font-medium"
-                : "text-gray-700 hover:text-gray-900"
+                : "text-ink/80 hover:text-ink"
             }`}
           >
             <div
               className={`flex items-center justify-center ${
                 isCollapsed ? "w-7 h-7" : "w-6 h-6"
-              } rounded-md ${
+              } rounded-lg ${
                 activeSectionIndex === -1
-                  ? "bg-accent/10 text-accent"
-                  : "bg-gray-100/80 text-gray-500 group-hover:bg-gray-200/80 group-hover:text-gray-700"
+                  ? "bg-accent/10 text-accent-text"
+                  : "bg-chalk-dark text-ink/60 group-hover:text-ink"
               }`}
             >
               <MdPerson className="text-base" />
@@ -377,25 +398,27 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
             <button
               key={index}
               onClick={() => onSectionClick(index)}
-              className={`w-full flex items-center transition-all rounded-lg group ${
+              title={section.name}
+              aria-label={section.name}
+              className={`w-full flex items-center transition-colors duration-150 rounded-lg group ${
                 isCollapsed
                   ? "flex-col gap-1.5 py-2.5 px-1.5 hover:bg-accent/[0.06] mt-1"
-                  : "flex-row gap-3 px-3 py-2.5 hover:bg-gray-100/80 mt-0.5"
+                  : "flex-row gap-3 px-3 py-2.5 hover:bg-black/5 mt-0.5"
               } ${
                 activeSectionIndex === index
                   ? isCollapsed
-                    ? "bg-accent/[0.06] text-ink/80"
+                    ? "bg-accent/[0.06] text-ink"
                     : "bg-accent/[0.06] ring-1 ring-accent/20 text-ink font-medium"
-                  : "text-gray-700 hover:text-gray-900"
+                  : "text-ink/80 hover:text-ink"
               }`}
             >
               <div
                 className={`flex items-center justify-center ${
                   isCollapsed ? "w-7 h-7" : "w-6 h-6"
-                } rounded-md ${
+                } rounded-lg ${
                   activeSectionIndex === index
-                    ? "bg-accent/10 text-accent"
-                    : "bg-gray-100/80 text-gray-500 group-hover:bg-gray-200/80 group-hover:text-gray-700"
+                    ? "bg-accent/10 text-accent-text"
+                    : "bg-chalk-dark text-ink/60 group-hover:text-ink"
                 }`}
               >
                 {getSectionIcon(section)}
@@ -403,65 +426,277 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               <span
                 className={`${
                   isCollapsed
-                    ? "text-[11px] font-medium text-center leading-tight"
+                    ? "text-[11px] font-medium text-center leading-tight w-full truncate"
                     : "text-[13px] flex-1 truncate text-left"
                 }`}
-                title={section.name}
               >
                 {isCollapsed ? getShortLabel(section) : section.name}
               </span>
             </button>
           ))}
+        </div>
+      </div>
 
-          {/* ATS Health Check Card */}
+      {/* ── Length — the document the user is actually making ──
+          Sits directly above Actions because "does it still fit on one page?"
+          is the question that decides whether they hit Download or keep
+          editing. */}
+      <div className="shrink-0 border-t border-gray-200/60 bg-white">
+        <DocumentSpine estimate={resumeLength} isCollapsed={isCollapsed} />
+      </div>
+
+      {/* ── Actions — pinned below the scroll region so Download is always reachable ── */}
+      <div className="shrink-0 border-t border-gray-200/60 bg-white">
+        <div className={`${isCollapsed ? "py-3 px-2" : "p-4"}`}>
+          {!isCollapsed && (
+            <h3 className="text-[11px] font-semibold text-ink/60 uppercase tracking-wider mb-3 px-1">
+              Actions
+            </h3>
+          )}
+
+          {/* Tier 1 — the conversion action. The only filled accent control here. */}
+          <button
+            id="tour-download-button"
+            onClick={onDownloadResume}
+            disabled={isGenerating}
+            title="Download your resume as a PDF"
+            className={`${controlBase} bg-accent text-ink shadow-sm hover:bg-accent/90 hover:shadow-md ${
+              isCollapsed ? "flex-col gap-1 py-2.5 px-1" : "flex-row gap-2 px-4 py-2.5"
+            }`}
+          >
+            <MdFileDownload className={isCollapsed ? "text-lg" : "text-base"} />
+            <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
+              {isGenerating
+                ? isCollapsed
+                  ? "..."
+                  : "Generating..."
+                : isCollapsed
+                ? "PDF"
+                : "Download Resume"}
+            </span>
+          </button>
+
+          {/* Tier 2 — secondary work controls */}
+          {onPreviewResume && (
+            <button
+              id="tour-preview-button"
+              onClick={onPreviewResume}
+              disabled={isPreviewLoading}
+              title={
+                previewStale
+                  ? "Preview is out of date — refresh it to match your latest edits"
+                  : "Open the PDF preview"
+              }
+              aria-label={
+                previewStale
+                  ? "Refresh preview — the preview is out of date and does not include your latest edits"
+                  : "Preview PDF"
+              }
+              className={`${controlBase} border mt-2 ${
+                previewStale
+                  ? "border-amber-600 bg-amber-50 text-amber-900 hover:bg-amber-100"
+                  : "border-gray-200 bg-white text-ink hover:bg-chalk-dark hover:border-gray-300"
+              } ${isCollapsed ? "flex-col gap-1 py-2.5 px-1" : "flex-row gap-2 px-4 py-2.5"}`}
+            >
+              {isPreviewLoading ? (
+                <span className={`h-2 ${isCollapsed ? "w-8" : "w-10"} overflow-clip rounded-full bg-ink/15`}>
+                  <span className="block h-full w-1/2 animate-pulse rounded-full bg-ink/60" />
+                </span>
+              ) : previewStale ? (
+                <MdRefresh className={isCollapsed ? "text-lg" : "text-base"} aria-hidden="true" />
+              ) : (
+                <MdVisibility className={isCollapsed ? "text-lg" : "text-base"} aria-hidden="true" />
+              )}
+              <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
+                {isPreviewLoading
+                  ? isCollapsed
+                    ? "..."
+                    : "Loading..."
+                  : previewStale
+                  ? isCollapsed
+                    ? "Refresh"
+                    : "Refresh Preview"
+                  : isCollapsed
+                  ? "Preview"
+                  : "Preview PDF"}
+              </span>
+            </button>
+          )}
+
+          {previewStale && !isCollapsed && (
+            <p className="mt-1.5 px-1 text-[11px] leading-snug text-amber-900">
+              Preview is behind your edits.
+            </p>
+          )}
+
+          {/* Ghost Add — the system's "there could be more here" affordance */}
+          <button
+            onClick={onAddSection}
+            title="Add a new section"
+            className={`btn-ghost-add mt-2 ${isCollapsed ? "flex-col gap-1 py-2 px-1" : ""}`}
+          >
+            <MdAdd className="text-base" aria-hidden="true" />
+            <span className={isCollapsed ? "text-[10px] leading-tight" : "text-[13px]"}>
+              {isCollapsed ? "Add" : "Add Section"}
+            </span>
+          </button>
+
+          {/* Tier 3 — everything else, behind one disclosure */}
+          <div className="relative mt-2">
+            <button
+              onClick={() => {
+                // Collapsed rail is 68px of usable width; expand it rather than
+                // rendering an unreadable menu inside it.
+                if (isCollapsed) setIsCollapsed(false);
+                setShowMoreOptions((open) => (isCollapsed ? true : !open));
+              }}
+              aria-expanded={showMoreOptions}
+              aria-haspopup="menu"
+              className={`w-full min-h-11 flex items-center justify-center gap-2 rounded-lg text-[13px] font-medium text-ink/80 transition-colors duration-150 hover:bg-black/5 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
+                isCollapsed ? "flex-col gap-1 py-2 px-1" : "px-4 py-2"
+              }`}
+            >
+              <MdMoreVert className="text-base" aria-hidden="true" />
+              <span className={isCollapsed ? "text-[10px] leading-tight" : ""}>
+                {isCollapsed ? "More" : "More Options"}
+              </span>
+            </button>
+
+            {showMoreOptions && !isCollapsed && (
+              <div
+                role="menu"
+                className="absolute bottom-full left-0 right-0 z-10 mb-2 rounded-xl border border-gray-200 bg-white p-1 shadow-xl"
+              >
+                <button
+                  id="tour-backup-button"
+                  role="menuitem"
+                  onClick={() => runOption(onExportYAML)}
+                  disabled={loadingSave}
+                  className={`${optionRowBase} text-ink hover:bg-black/5`}
+                >
+                  <MdFileDownload className="text-base text-ink/60 shrink-0" aria-hidden="true" />
+                  <span className="flex flex-col items-start">
+                    <span className="text-[13px]">
+                      {loadingSave
+                        ? "Saving..."
+                        : isAuthenticated
+                        ? "Backup to File"
+                        : "Save My Work"}
+                    </span>
+                    <span className={`text-[11px] leading-tight ${isAnonymous ? "text-amber-700" : "text-ink/60"}`}>
+                      {isAnonymous ? "Your only local save" : "Download YAML file"}
+                    </span>
+                  </span>
+                </button>
+
+                <button
+                  role="menuitem"
+                  onClick={() => runOption(onImportYAML)}
+                  disabled={loadingLoad}
+                  className={`${optionRowBase} text-ink hover:bg-black/5`}
+                >
+                  <MdFileUpload className="text-base text-ink/60 shrink-0" aria-hidden="true" />
+                  <span className="flex flex-col items-start">
+                    <span className="text-[13px]">
+                      {loadingLoad
+                        ? "Loading..."
+                        : isAuthenticated
+                        ? "Import from File"
+                        : "Load My Work"}
+                    </span>
+                    <span className="text-[11px] leading-tight text-ink/60">Upload YAML file</span>
+                  </span>
+                </button>
+
+                {/* Semantic red is a status colour, not a brand colour: this one
+                    discards the user's work. */}
+                <button
+                  role="menuitem"
+                  onClick={() => runOption(handleStartFresh)}
+                  className={`${optionRowBase} text-ink hover:bg-red-50 hover:text-red-800`}
+                >
+                  <MdRefresh className="text-base text-ink/60 shrink-0" aria-hidden="true" />
+                  <span className="flex flex-col items-start">
+                    <span className="text-[13px]">Start Fresh</span>
+                    <span className="text-[11px] leading-tight text-ink/60">Clear and start over</span>
+                  </span>
+                </button>
+
+                <button
+                  role="menuitem"
+                  onClick={() => runOption(onHelp)}
+                  className={`${optionRowBase} text-ink hover:bg-black/5`}
+                >
+                  <MdHelpOutline className="text-base text-ink/60 shrink-0" aria-hidden="true" />
+                  <span className="flex flex-col items-start">
+                    <span className="text-[13px]">Help &amp; Tips</span>
+                    <span className="text-[11px] leading-tight text-ink/60">Guided tour</span>
+                  </span>
+                </button>
+
+                <Link
+                  role="menuitem"
+                  to="/contact"
+                  onClick={() => setShowMoreOptions(false)}
+                  className={`${optionRowBase} text-ink hover:bg-black/5`}
+                >
+                  <MdSupport className="text-base text-ink/60 shrink-0" aria-hidden="true" />
+                  <span className="flex flex-col items-start">
+                    <span className="text-[13px]">Contact Support</span>
+                    <span className="text-[11px] leading-tight text-ink/60">Ask a question</span>
+                  </span>
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Sponsored — outbound partner links, kept out of the Sections list ── */}
+      {showAffiliates && (
+        <div className={`shrink-0 border-t border-gray-200/60 bg-chalk ${isCollapsed ? "py-2 px-1.5" : "px-2 py-2"}`}>
+          {!isCollapsed && (
+            <h3 className="mb-2 px-1 font-mono text-[10px] uppercase tracking-[0.15em] text-ink/60">
+              Sponsored
+            </h3>
+          )}
+
+          {/* ATS Health Check — outbound affiliate link */}
           {affiliateConfig.resumeReview.enabled && affiliateConfig.resumeReview.url && (
             isCollapsed ? (
               <a
                 href={affiliateConfig.resumeReview.url}
                 target="_blank"
-                rel="noopener noreferrer nofollow"
-                className="w-full flex flex-col items-center gap-1.5 py-2.5 px-1.5 mt-2 rounded-lg hover:bg-accent/[0.06] transition-all text-accent group"
-                title="Check ATS Compatibility"
+                rel="noopener noreferrer nofollow sponsored"
+                className="w-full flex flex-col items-center gap-1.5 py-2 px-1 rounded-lg hover:bg-black/5 transition-colors duration-150 text-ink/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
+                title="Sponsored: ATS compatibility check (opens in a new tab)"
               >
-                <div className="w-7 h-7 flex items-center justify-center rounded-full bg-accent/10 transition-colors">
-                  <ShieldCheck className="w-3.5 h-3.5 text-accent" />
+                <div className="w-7 h-7 flex items-center justify-center rounded-lg bg-white border border-gray-200">
+                  <ShieldCheck className="w-3.5 h-3.5" aria-hidden="true" />
                 </div>
-                <span className="text-[11px] font-medium text-center leading-tight text-accent">
-                  ATS
-                </span>
+                <span className="text-[10px] font-medium text-center leading-tight">ATS</span>
               </a>
             ) : (
               <a
                 href={affiliateConfig.resumeReview.url}
                 target="_blank"
-                rel="noopener noreferrer nofollow"
-                className="block mt-3 mx-1 bg-chalk-dark border border-black/[0.06] rounded-xl p-3 hover:bg-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group"
+                rel="noopener noreferrer nofollow sponsored"
+                className="w-full min-h-11 flex items-center gap-2.5 rounded-lg px-2 transition-colors duration-150 hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
               >
-                <div className="flex items-center gap-2.5">
-                  <div className="relative flex-shrink-0">
-                    <div className="w-8 h-8 flex items-center justify-center rounded-full bg-accent/10 shadow-sm">
-                      <ShieldCheck className="w-4 h-4 text-accent" />
-                    </div>
-                    <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent"></span>
-                    </span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-ink group-hover:text-accent transition-colors">
-                      ATS Compatibility
-                    </p>
-                    <p className="text-xs text-stone-warm leading-tight mt-0.5">
-                      Will your resume pass the filter?
-                    </p>
-                  </div>
-                  <ChevronRight className="w-4 h-4 text-mist group-hover:text-accent group-hover:translate-x-0.5 transition-all flex-shrink-0" />
-                </div>
+                <ShieldCheck className="w-4 h-4 shrink-0 text-ink/60" aria-hidden="true" />
+                <span className="flex-1 min-w-0 flex flex-col items-start">
+                  <span className="text-[13px] text-ink leading-tight">ATS Compatibility</span>
+                  <span className="text-[11px] text-ink/60 leading-tight truncate w-full">
+                    Will your resume pass the filter?
+                  </span>
+                </span>
+                <ExternalLink className="w-3.5 h-3.5 text-ink/60 shrink-0" aria-hidden="true" />
+                <span className="sr-only">Sponsored link, opens in a new tab</span>
               </a>
             )
           )}
 
-          {/* Find Matching Jobs Card */}
+          {/* Find Matching Jobs — partner-powered job search */}
           {affiliateConfig.jobSearch.enabled && (
             isCollapsed ? (
               <Link
@@ -481,21 +716,13 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                     } catch { /* ignore */ }
                   }
                 }}
-                className="w-full flex flex-col items-center gap-1.5 py-2.5 px-1.5 mt-2 rounded-lg hover:bg-accent/[0.06] transition-all text-accent group"
-                title="Job Matches"
+                className="w-full flex flex-col items-center gap-1.5 py-2 px-1 mt-1 rounded-lg hover:bg-black/5 transition-colors duration-150 text-ink/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
+                title="Sponsored: job matches"
               >
-                <div className="relative">
-                  <div className="w-7 h-7 flex items-center justify-center rounded-lg bg-accent/10 transition-colors">
-                    <JobSparkleIcon className="w-3.5 h-3.5 text-accent" />
-                  </div>
-                  <span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
-                  </span>
+                <div className="w-7 h-7 flex items-center justify-center rounded-lg bg-white border border-gray-200">
+                  <JobSparkleIcon className="w-3.5 h-3.5" />
                 </div>
-                <span className="text-[11px] font-medium text-center leading-tight text-accent">
-                  Jobs
-                </span>
+                <span className="text-[10px] font-medium text-center leading-tight">Jobs</span>
               </Link>
             ) : (
               <Link
@@ -515,277 +742,38 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                     } catch { /* ignore */ }
                   }
                 }}
-                className="block mt-2 mx-1 bg-chalk-dark border border-black/[0.06] rounded-xl p-3 hover:bg-white hover:shadow-lg hover:border-accent/20 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group"
+                className="w-full min-h-11 flex items-center gap-2.5 rounded-lg px-2 transition-colors duration-150 hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
               >
-                <div className="flex items-center gap-2.5">
-                  <div className="relative flex-shrink-0">
-                    <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-accent/10 shadow-sm">
-                      <JobSparkleIcon className="w-4 h-4 text-accent" />
-                    </div>
-                    <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent"></span>
-                    </span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-ink group-hover:text-accent transition-colors">
-                      Job Matches
-                    </p>
-                    <p className="text-xs text-stone-warm leading-tight mt-0.5">
-                      Matched to your resume skills
-                    </p>
-                  </div>
-                  <ChevronRight className="w-4 h-4 text-mist group-hover:text-accent group-hover:translate-x-0.5 transition-all flex-shrink-0" />
-                </div>
+                <JobSparkleIcon className="w-4 h-4 shrink-0 text-ink/60" />
+                <span className="flex-1 min-w-0 flex flex-col items-start">
+                  <span className="text-[13px] text-ink leading-tight">Job Matches</span>
+                  <span className="text-[11px] text-ink/60 leading-tight truncate w-full">
+                    Matched to your resume skills
+                  </span>
+                </span>
+                <ChevronRight className="w-3.5 h-3.5 text-ink/60 shrink-0" aria-hidden="true" />
               </Link>
             )
           )}
         </div>
-
-      {/* Actions Section */}
-      <div className="border-t border-gray-200/60 bg-white">
-        <div className={`${isCollapsed ? "py-3 px-2" : "p-4"}`}>
-          {!isCollapsed && (
-            <h3 className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-3 px-1">
-              Actions
-            </h3>
-          )}
-
-          {/* Primary Action: Preview PDF */}
-          {onPreviewResume && (
-            <button
-              id="tour-preview-button"
-              onClick={onPreviewResume}
-              disabled={isPreviewLoading}
-              className={`w-full min-h-11 flex items-center justify-center bg-accent text-ink font-semibold rounded-lg shadow-sm hover:shadow-md hover:bg-accent/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
-                isCollapsed
-                  ? "flex-col gap-1 py-2.5 px-1 mb-2"
-                  : "flex-row gap-2 px-4 py-2.5 mb-2.5"
-              }`}
-            >
-              {/* Staleness indicator badge */}
-              {previewIsStale && !isPreviewLoading && (
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-amber-500 rounded-full border-2 border-white animate-pulse"></span>
-              )}
-              {isPreviewLoading ? (
-                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-              ) : (
-                <MdVisibility className={isCollapsed ? "text-lg" : "text-base"} />
-              )}
-              <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
-                {isPreviewLoading
-                  ? isCollapsed
-                    ? "..."
-                    : "Loading..."
-                  : isCollapsed
-                  ? "Preview"
-                  : previewIsStale
-                  ? "Refresh Preview"
-                  : "Preview PDF"}
-              </span>
-            </button>
-          )}
-
-          {/* Primary Action: Download Resume */}
-          <button
-            id="tour-download-button"
-            onClick={onDownloadResume}
-            disabled={isGenerating}
-            className={`w-full min-h-11 flex items-center justify-center bg-emerald-600 text-white font-semibold rounded-lg shadow-sm hover:bg-emerald-700 hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 ${
-              isCollapsed
-                ? "flex-col gap-1 py-2.5 px-1"
-                : "flex-row gap-2 px-4 py-2.5 mb-2.5"
-            }`}
-          >
-            <MdFileDownload className={isCollapsed ? "text-lg" : "text-base"} />
-            <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
-              {isGenerating
-                ? isCollapsed
-                  ? "..."
-                  : "Generating..."
-                : isCollapsed
-                ? "PDF"
-                : "Download Resume"}
-            </span>
-          </button>
-
-          {/* Secondary Action: Add Section */}
-          <button
-            onClick={onAddSection}
-            className={`w-full min-h-11 flex items-center justify-center bg-accent text-ink font-medium rounded-lg shadow-sm hover:shadow-md hover:bg-accent/90 transition-all active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
-              isCollapsed
-                ? "flex-col gap-1 py-2 px-1 mt-2"
-                : "flex-row gap-2 px-4 py-2 mb-3"
-            }`}
-          >
-            <MdAdd className={isCollapsed ? "text-base" : "text-base"} />
-            <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
-              {isCollapsed ? "Add" : "Add Section"}
-            </span>
-          </button>
-
-          {/* Utility Actions */}
-          <div className={`${isCollapsed ? "space-y-0.5 mt-2" : "space-y-0.5"}`}>
-            {/* Backup to File */}
-            <button
-              id="tour-backup-button"
-              onClick={onExportYAML}
-              disabled={loadingSave}
-              className={`w-full min-h-11 flex items-center transition-all rounded-md disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
-                isCollapsed
-                  ? "flex-col gap-1 py-2 px-1 hover:bg-accent/[0.06]"
-                  : "flex-row gap-3 px-3 py-2 hover:bg-accent/[0.06] text-gray-700 hover:text-ink/80"
-              }`}
-            >
-              <MdFileDownload
-                className={`text-accent ${isCollapsed ? "text-base" : "text-base"}`}
-              />
-              <div className={`flex flex-col ${isCollapsed ? "items-center" : "items-start flex-1"}`}>
-                <span
-                  className={`${
-                    isCollapsed
-                      ? "text-[10px] text-gray-600 leading-tight font-medium"
-                      : "text-[13px]"
-                  }`}
-                >
-                  {loadingSave
-                    ? isCollapsed
-                      ? "..."
-                      : "Saving..."
-                    : isCollapsed
-                    ? (isAuthenticated ? "Backup" : "Save")
-                    : (isAuthenticated ? "Backup to File" : "Save My Work")}
-                </span>
-                {isAnonymous && !isCollapsed && (
-                  <span className="text-xs text-amber-600 leading-tight">
-                    Your only local save
-                  </span>
-                )}
-              </div>
-            </button>
-
-            {/* Import from File (authenticated) / Load My Work (anonymous) */}
-            <button
-              onClick={onImportYAML}
-              disabled={loadingLoad}
-              className={`w-full min-h-11 flex items-center transition-all rounded-md disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
-                isCollapsed
-                  ? "flex-col gap-1 py-2 px-1 hover:bg-green-50/80"
-                  : "flex-row gap-3 px-3 py-2 hover:bg-green-50/80 text-green-800 hover:text-green-700"
-              }`}
-            >
-              <MdFileUpload
-                className={`text-green-600 ${isCollapsed ? "text-base" : "text-base"}`}
-              />
-              <span
-                className={`${
-                  isCollapsed
-                    ? "text-[10px] text-gray-600 leading-tight font-medium"
-                    : "text-[13px]"
-                }`}
-              >
-                {loadingLoad
-                  ? isCollapsed
-                    ? "..."
-                    : "Loading..."
-                  : isCollapsed
-                  ? "Load"
-                  : (isAuthenticated ? "Import from File" : "Load My Work")}
-              </span>
-            </button>
-
-            {/* Start Fresh - KEEP LABEL AS-IS (not renamed) */}
-            <button
-              onClick={handleStartFresh}
-              className={`w-full min-h-11 flex items-center transition-all rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
-                isCollapsed
-                  ? "flex-col gap-1 py-2 px-1 hover:bg-orange-50/80"
-                  : "flex-row gap-3 px-3 py-2 hover:bg-orange-50/80 text-orange-800 hover:text-orange-700"
-              }`}
-            >
-              <MdRefresh
-                className={`text-orange-600 ${isCollapsed ? "text-base" : "text-base"}`}
-              />
-              <span
-                className={`${
-                  isCollapsed
-                    ? "text-[10px] text-gray-600 leading-tight font-medium"
-                    : "text-[13px]"
-                }`}
-              >
-                {isCollapsed ? "Clear" : "Start Fresh"}
-              </span>
-            </button>
-
-            {/* Help */}
-            <button
-              onClick={onHelp}
-              className={`w-full min-h-11 flex items-center transition-all rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
-                isCollapsed
-                  ? "flex-col gap-1 py-2 px-1 hover:bg-accent/[0.06]"
-                  : "flex-row gap-3 px-3 py-2 hover:bg-accent/[0.06] text-gray-700 hover:text-ink/80"
-              }`}
-            >
-              <MdHelpOutline
-                className={`text-accent ${isCollapsed ? "text-base" : "text-base"}`}
-              />
-              <span
-                className={`${
-                  isCollapsed
-                    ? "text-[10px] text-gray-600 leading-tight font-medium"
-                    : "text-[13px]"
-                }`}
-              >
-                {isCollapsed ? "Help" : "Help & Tips"}
-              </span>
-            </button>
-          </div>
-
-          {/* Support Section - Separate from other actions */}
-          <div className={`border-t border-gray-200/60 ${isCollapsed ? "pt-2 px-2" : "pt-3 px-4"}`}>
-            <Link
-              to="/contact"
-              className={`w-full min-h-11 flex items-center transition-all rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
-                isCollapsed
-                  ? "flex-col gap-1 py-2 px-1 hover:bg-teal-50/80"
-                  : "flex-row gap-3 px-3 py-2 hover:bg-teal-50/80 text-teal-800 hover:text-teal-700"
-              }`}
-            >
-              <MdSupport
-                className={`text-teal-600 ${isCollapsed ? "text-base" : "text-base"}`}
-              />
-              <span
-                className={`${
-                  isCollapsed
-                    ? "text-[10px] text-gray-600 leading-tight font-medium"
-                    : "text-[13px]"
-                }`}
-              >
-                {isCollapsed ? "Support" : "Contact Support"}
-              </span>
-            </Link>
-          </div>
-        </div>
-      </div>
+      )}
 
       {/* Keyboard shortcut hint */}
       {!isCollapsed && (
-        <div className="px-4 py-2.5 bg-gray-100/50 border-t border-gray-200/40">
-          <p className="text-[10px] text-gray-500 text-center">
+        <div className="shrink-0 px-4 py-2.5 bg-chalk border-t border-gray-200/40">
+          <p className="text-[10px] text-ink/60 text-center">
             Press{" "}
-            <kbd className="px-1.5 py-0.5 bg-white rounded text-[9px] font-mono border border-gray-300 shadow-sm">
+            <kbd className="px-1.5 py-0.5 bg-white rounded text-[9px] font-mono border border-gray-300">
               Ctrl
             </kbd>{" "}
             +{" "}
-            <kbd className="px-1.5 py-0.5 bg-white rounded text-[9px] font-mono border border-gray-300 shadow-sm">
+            <kbd className="px-1.5 py-0.5 bg-white rounded text-[9px] font-mono border border-gray-300">
               \
             </kbd>{" "}
             to toggle
           </p>
         </div>
       )}
-
-      </div>
     </nav>
   );
 };

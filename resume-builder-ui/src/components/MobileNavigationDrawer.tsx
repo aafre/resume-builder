@@ -1,16 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
+// lucide, not react-icons/md: this drawer sat beside IconManager's outline
+// icons with Material's filled ones, so one surface carried two stroke
+// weights. Brand marks (FcGoogle/FaLinkedin in AuthModal) stay polychrome.
 import {
-  MdClose,
-  MdDragIndicator,
-  MdAdd,
-  MdMoreVert,
-  MdFileDownload,
-  MdFileUpload,
-  MdRefresh,
-  MdHelpOutline,
-  MdSupport
-} from "react-icons/md";
+  X,
+  Plus,
+  MoreVertical,
+  Download,
+  Upload,
+  RotateCcw,
+  HelpCircle,
+  LifeBuoy,
+} from "lucide-react";
 import { Link } from "react-router-dom";
+import useFocusTrap from "../hooks/useFocusTrap";
+import useScrollLock from "../hooks/useScrollLock";
 
 interface Section {
   name: string;
@@ -32,27 +36,19 @@ interface MobileNavigationDrawerProps {
   loadingLoad?: boolean;
 }
 
-const FOCUSABLE_SELECTOR = [
-  "a[href]",
-  "button:not([disabled])",
-  "textarea:not([disabled])",
-  "input:not([disabled])",
-  "select:not([disabled])",
-  "[tabindex]:not([tabindex='-1'])",
-].join(",");
-
-const getFocusableElements = (container: HTMLElement | null) => {
-  if (!container) return [];
-
-  return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
-    (element) => !element.hasAttribute("disabled") && !element.hidden
-  );
-};
-
 /**
- * Mobile navigation drawer - slides in from left
- * Shows all resume sections for quick navigation
- * Touch-optimized with 48px minimum touch targets
+ * Mobile navigation drawer — slides in from the left.
+ *
+ * This is the mobile counterpart of `SectionNavigator`, and it deliberately
+ * borrows that rail's vocabulary rather than inventing its own: the same row
+ * shape for sections, the same ghost "Add Section" affordance, the same single
+ * "More Options" disclosure holding everything else. If the same action looked
+ * like two different controls on two breakpoints, one of them would be wrong.
+ *
+ * Note what is NOT here: a filled accent control. Download is the conversion
+ * action and on mobile it lives in the action bar, not behind a drawer the user
+ * has to open. Backing a full-width slab in Signal Green here spent the
+ * system's one accent on navigation chrome.
  */
 const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
   isOpen,
@@ -70,75 +66,31 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
 }) => {
   const [showAdvancedMenu, setShowAdvancedMenu] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
-  const previousFocusRef = useRef<HTMLElement | null>(null);
   const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
-  useEffect(() => {
-    onCloseRef.current = onClose;
-  }, [onClose]);
+  useFocusTrap(isOpen, drawerRef, onClose);
 
+  // aria-modal="true" is a promise that the rest of the page is inert. Measured
+  // at 390x844 with the drawer open, the page still scrolled behind it
+  // (scrollY 600 -> 1400), so the promise was not being kept.
+  useScrollLock(isOpen);
+
+  // The drawer is `lg:hidden`, so widening past the breakpoint hides it without
+  // closing it — leaving the focus trap swallowing Tab and the scroll lock held
+  // against a panel nobody can see. Close on the breakpoint, not on CSS.
   useEffect(() => {
     if (!isOpen) return;
-
-    previousFocusRef.current = document.activeElement instanceof HTMLElement
-      ? document.activeElement
-      : null;
-
-    const focusableElements = getFocusableElements(drawerRef.current);
-    (focusableElements[0] ?? drawerRef.current)?.focus();
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onCloseRef.current();
-        return;
-      }
-
-      if (event.key !== "Tab") return;
-
-      const currentFocusableElements = getFocusableElements(drawerRef.current);
-
-      if (currentFocusableElements.length === 0) {
-        event.preventDefault();
-        drawerRef.current?.focus();
-        return;
-      }
-
-      const firstElement = currentFocusableElements[0];
-      const lastElement = currentFocusableElements[currentFocusableElements.length - 1];
-      const activeElement = document.activeElement;
-
-      // Drawer container itself is focused (tabIndex={-1}, e.g. after a tap on a
-      // non-interactive area) — wrap explicitly so Shift+Tab can't escape the trap
-      if (activeElement === drawerRef.current) {
-        event.preventDefault();
-        (event.shiftKey ? lastElement : firstElement).focus();
-        return;
-      }
-
-      if (!drawerRef.current?.contains(activeElement)) {
-        event.preventDefault();
-        firstElement.focus();
-        return;
-      }
-
-      if (event.shiftKey && activeElement === firstElement) {
-        event.preventDefault();
-        lastElement.focus();
-        return;
-      }
-
-      if (!event.shiftKey && activeElement === lastElement) {
-        event.preventDefault();
-        firstElement.focus();
-      }
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    if (desktop.matches) {
+      onCloseRef.current();
+      return;
+    }
+    const handleChange = (event: MediaQueryListEvent) => {
+      if (event.matches) onCloseRef.current();
     };
-
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      previousFocusRef.current?.focus();
-    };
+    desktop.addEventListener("change", handleChange);
+    return () => desktop.removeEventListener("change", handleChange);
   }, [isOpen]);
 
   const touchStartX = useRef<number>(0);
@@ -170,11 +122,25 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
     onClose();
   };
 
+  const rowBase =
+    "w-full min-h-11 flex items-center gap-3 px-3 py-2.5 text-left rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset";
+
+  const rowState = (isActive: boolean) =>
+    isActive
+      ? "bg-accent/[0.06] ring-1 ring-accent/20 text-ink font-medium"
+      : "text-ink/80 hover:bg-black/5 hover:text-ink";
+
+  const chipState = (isActive: boolean) =>
+    isActive ? "bg-accent/10 text-accent-text" : "bg-chalk-dark text-ink/60";
+
+  const optionRow =
+    "w-full min-h-11 flex flex-row items-center gap-3 px-3 py-2 text-left rounded-lg transition-colors duration-150 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset";
+
   return (
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9998] lg:hidden transition-opacity duration-200"
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9998] lg:hidden"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -182,8 +148,9 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
       {/* Drawer — max-w-[75vw] ensures it never fills the screen on phones < 375px */}
       <div
         ref={drawerRef}
-        className="fixed top-0 left-0 bottom-0 w-[280px] max-w-[75vw] bg-white z-[9999] lg:hidden shadow-lg
+        className="fixed top-0 left-0 bottom-0 w-[280px] max-w-[75vw] bg-white z-[9999] lg:hidden shadow-xl
           animate-slide-in-left flex flex-col"
+        style={{ animationTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)" }}
         role="dialog"
         aria-modal="true"
         aria-label="Section navigation"
@@ -191,181 +158,189 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-accent">
-          <h2 className="text-lg font-bold text-white flex items-center gap-2">
-            <MdDragIndicator className="text-white/80" aria-hidden="true" />
+        {/* Header.
+            The 6-dot drag grip that used to sit beside this title promised a
+            draggable sheet. This is a left slide-over with no drag gesture at
+            all, so the affordance was writing a cheque the component could not
+            cash. Removed rather than faked. */}
+        <div className="shrink-0 flex items-center justify-between gap-2 px-3 py-3 border-b border-gray-200/60 bg-chalk">
+          <h2 className="px-1 text-[11px] font-semibold uppercase tracking-wider text-ink/60">
             Sections
           </h2>
           <button
             onClick={onClose}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-accent"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center p-2 text-ink/60 hover:text-ink hover:bg-white rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
             aria-label="Close navigation"
           >
-            <MdClose className="text-2xl" />
+            <X size={18} aria-hidden="true" />
           </button>
         </div>
 
-        {/* Section List */}
-        <nav className="flex-1 overflow-y-auto p-2">
-          {/* Contact Info - Always first */}
+        {/* Section list — Contact Information is item 1, not an unnumbered "i"
+            sitting above a 1-6 list. It is a section of the document like any
+            other; numbering it apart made one list read as two. */}
+        <nav className="flex-1 min-h-0 overflow-y-auto overflow-x-clip p-3">
           <button
             onClick={() => handleSectionClick(-1)}
-            className={`w-full text-left px-4 py-3 rounded-lg transition-all min-h-[48px] flex items-center gap-3
-              ${
-                activeSectionIndex === -1
-                  ? "bg-accent/[0.06] ring-1 ring-accent/20 text-ink font-semibold"
-                  : "hover:bg-gray-100 active:bg-gray-200 text-gray-700"
-              }`}
+            className={`${rowBase} ${rowState(activeSectionIndex === -1)}`}
           >
-            <span className="w-6 h-6 rounded-full bg-accent/10 text-accent flex items-center justify-center text-xs font-bold">
-              i
+            <span
+              className={`w-6 h-6 shrink-0 rounded-lg flex items-center justify-center text-xs font-semibold ${chipState(
+                activeSectionIndex === -1
+              )}`}
+              aria-hidden="true"
+            >
+              1
             </span>
-            <span className="flex-1">Contact Information</span>
+            <span className="flex-1 text-[13px]">Contact Information</span>
           </button>
 
-          {/* Dynamic Sections */}
           {sections.map((section, index) => (
             <button
               key={index}
               onClick={() => handleSectionClick(index)}
-              className={`w-full text-left px-4 py-3 rounded-lg transition-all min-h-[48px] flex items-center gap-3 mt-1
-                ${
-                  activeSectionIndex === index
-                    ? "bg-accent/[0.06] ring-1 ring-accent/20 text-ink font-semibold"
-                    : "hover:bg-gray-100 active:bg-gray-200 text-gray-700"
-                }`}
+              title={section.name}
+              aria-label={section.name}
+              className={`${rowBase} mt-0.5 ${rowState(activeSectionIndex === index)}`}
             >
-              <span className="w-6 h-6 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center text-xs font-bold">
-                {index + 1}
+              <span
+                className={`w-6 h-6 shrink-0 rounded-lg flex items-center justify-center text-xs font-semibold ${chipState(
+                  activeSectionIndex === index
+                )}`}
+                aria-hidden="true"
+              >
+                {index + 2}
               </span>
-              <span className="flex-1 truncate">{section.name}</span>
+              <span className="flex-1 text-[13px] truncate">{section.name}</span>
             </button>
           ))}
         </nav>
 
-        {/* Footer Actions */}
-        <div className="p-3 border-t border-gray-200 bg-gray-50 space-y-2">
-          {/* Add Section Button */}
+        {/* Actions — the same tiers the rail uses: the ghost Add affordance,
+            then one disclosure holding everything else. */}
+        <div className="shrink-0 p-3 border-t border-gray-200/60 bg-white safe-area-inset-bottom">
           <button
             onClick={() => handleAction(onAddSection)}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-accent text-ink rounded-lg font-medium shadow-sm hover:shadow-md active:scale-[0.98] transition-all min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+            title="Add a new section"
+            className="btn-ghost-add"
           >
-            <MdAdd className="text-xl" />
-            <span>Add Section</span>
+            <Plus size={16} aria-hidden="true" />
+            <span className="text-[13px]">Add Section</span>
           </button>
 
-          {/* Advanced Menu Button */}
-          <div className="relative">
+          <div className="relative mt-2">
             <button
               onClick={() => setShowAdvancedMenu(!showAdvancedMenu)}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 active:bg-gray-100 transition-all min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+              aria-expanded={showAdvancedMenu}
+              aria-haspopup="menu"
+              className="w-full min-h-11 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-[13px] font-medium text-ink/80 transition-colors duration-150 hover:bg-black/5 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
             >
-              <MdMoreVert className="text-xl" />
+              <MoreVertical size={16} aria-hidden="true" />
               <span>More Options</span>
             </button>
 
-            {/* Advanced Menu Dropdown */}
+            {/* Every row here is neutral chrome. They used to render in four
+                unrelated hues — accent, stone, orange, accent — with nothing
+                semantic behind the difference. The one exception stays
+                semantic: Start Fresh discards the user's work, so it turns red
+                on hover. */}
             {showAdvancedMenu && (
-              <div className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
-                {/* Save My Work */}
+              <div
+                role="menu"
+                className="absolute bottom-full left-0 right-0 z-10 mb-2 rounded-xl border border-gray-200 bg-white p-1 shadow-xl"
+              >
                 <button
+                  role="menuitem"
                   onClick={() => handleAction(onExportYAML)}
                   disabled={loadingSave}
-                  className="w-full min-h-11 text-left px-4 py-3 hover:bg-accent/[0.06] active:bg-accent/10 transition-colors flex items-center gap-3 border-b border-gray-100 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset"
+                  className={`${optionRow} text-ink hover:bg-black/5`}
                 >
                   {loadingSave ? (
-                    <span className="h-2 w-8 overflow-hidden rounded-full bg-accent/20">
-                      <span className="block h-full w-1/2 animate-pulse rounded-full bg-accent" />
+                    <span className="h-2 w-10 shrink-0 overflow-clip rounded-full bg-ink/15">
+                      <span className="block h-full w-1/2 animate-pulse rounded-full bg-ink/60" />
                     </span>
                   ) : (
-                    <MdFileDownload className="text-accent text-xl" />
+                    <Download size={16} className="text-ink/60 shrink-0" aria-hidden="true" />
                   )}
-                  <div className="flex-1">
-                    <div className="font-medium text-gray-900">
-                      {loadingSave ? "Preparing..." : "Save My Work"}
-                    </div>
-                    <div className="text-xs text-gray-500">Download YAML file</div>
-                  </div>
+                  <span className="flex flex-col items-start">
+                    <span className="text-[13px]">
+                      {loadingSave ? "Saving..." : "Save My Work"}
+                    </span>
+                    <span className="text-[11px] leading-tight text-ink/60">
+                      Download YAML file
+                    </span>
+                  </span>
                 </button>
 
-                {/* Load My Work */}
                 <button
+                  role="menuitem"
                   onClick={() => handleAction(onImportYAML)}
                   disabled={loadingLoad}
-                  className="w-full min-h-11 text-left px-4 py-3 hover:bg-green-50 active:bg-green-100 transition-colors flex items-center gap-3 border-b border-gray-100 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset"
+                  className={`${optionRow} text-ink hover:bg-black/5`}
                 >
                   {loadingLoad ? (
-                    <span className="h-2 w-8 overflow-hidden rounded-full bg-green-100">
-                      <span className="block h-full w-1/2 animate-pulse rounded-full bg-green-600" />
+                    <span className="h-2 w-10 shrink-0 overflow-clip rounded-full bg-ink/15">
+                      <span className="block h-full w-1/2 animate-pulse rounded-full bg-ink/60" />
                     </span>
                   ) : (
-                    <MdFileUpload className="text-green-600 text-xl" />
+                    <Upload size={16} className="text-ink/60 shrink-0" aria-hidden="true" />
                   )}
-                  <div className="flex-1">
-                    <div className="font-medium text-gray-900">
+                  <span className="flex flex-col items-start">
+                    <span className="text-[13px]">
                       {loadingLoad ? "Loading..." : "Load My Work"}
-                    </div>
-                    <div className="text-xs text-gray-500">Upload YAML file</div>
-                  </div>
+                    </span>
+                    <span className="text-[11px] leading-tight text-ink/60">
+                      Upload YAML file
+                    </span>
+                  </span>
                 </button>
 
-                {/* Start Fresh */}
                 <button
+                  role="menuitem"
                   onClick={() => handleAction(onStartFresh)}
-                  className="w-full min-h-11 text-left px-4 py-3 hover:bg-orange-50 active:bg-orange-100 transition-colors flex items-center gap-3 border-b border-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset"
+                  className={`${optionRow} text-ink hover:bg-red-50 hover:text-red-800`}
                 >
-                  <MdRefresh className="text-orange-600 text-xl" />
-                  <div className="flex-1">
-                    <div className="font-medium text-gray-900">Start Fresh</div>
-                    <div className="text-xs text-gray-500">Clear template</div>
-                  </div>
+                  <RotateCcw size={16} className="text-ink/60 shrink-0" aria-hidden="true" />
+                  <span className="flex flex-col items-start">
+                    <span className="text-[13px]">Start Fresh</span>
+                    <span className="text-[11px] leading-tight text-ink/60">
+                      Clear and start over
+                    </span>
+                  </span>
                 </button>
 
-                {/* Help */}
                 <button
+                  role="menuitem"
                   onClick={() => handleAction(onHelp)}
-                  className="w-full min-h-11 text-left px-4 py-3 hover:bg-accent/[0.06] active:bg-accent/10 transition-colors flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset"
+                  className={`${optionRow} text-ink hover:bg-black/5`}
                 >
-                  <MdHelpOutline className="text-accent text-xl" />
-                  <div className="flex-1">
-                    <div className="font-medium text-gray-900">Help</div>
-                    <div className="text-xs text-gray-500">Usage guide</div>
-                  </div>
+                  <HelpCircle size={16} className="text-ink/60 shrink-0" aria-hidden="true" />
+                  <span className="flex flex-col items-start">
+                    <span className="text-[13px]">Help &amp; Tips</span>
+                    <span className="text-[11px] leading-tight text-ink/60">Usage guide</span>
+                  </span>
                 </button>
+
+                {/* Contact Support lives inside the disclosure, as it does on
+                    the rail. As a standalone full-width button it read as a peer
+                    of Add Section, which it is not. */}
+                <Link
+                  role="menuitem"
+                  to="/contact"
+                  onClick={onClose}
+                  className={`${optionRow} text-ink hover:bg-black/5`}
+                >
+                  <LifeBuoy size={16} className="text-ink/60 shrink-0" aria-hidden="true" />
+                  <span className="flex flex-col items-start">
+                    <span className="text-[13px]">Contact Support</span>
+                    <span className="text-[11px] leading-tight text-ink/60">Ask a question</span>
+                  </span>
+                </Link>
               </div>
             )}
           </div>
-
-          {/* Support Link - Separate Section */}
-          <div className="mt-2 pt-2 border-t border-gray-200">
-            <Link
-              to="/contact"
-              onClick={onClose}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-teal-500 to-cyan-600 text-white rounded-lg font-medium shadow-md hover:shadow-lg active:scale-95 transition-all min-h-[48px]"
-            >
-              <MdSupport className="text-xl" />
-              <span>Contact Support</span>
-            </Link>
-          </div>
         </div>
       </div>
-
-      {/* Animations */}
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes slide-in-left {
-          from {
-            transform: translateX(-100%);
-          }
-          to {
-            transform: translateX(0);
-          }
-        }
-
-        .animate-slide-in-left {
-          animation: slide-in-left 0.3s ease-out;
-        }
-      `}} />
     </>
   );
 };

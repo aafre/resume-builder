@@ -125,7 +125,7 @@ export default function JobExamplesHub() {
               className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                 selectedCategory === 'all'
                   ? 'bg-accent text-ink'
-                  : 'bg-chalk-dark text-stone-warm hover:bg-white hover:shadow-sm'
+                  : 'bg-chalk-dark text-ink/60 hover:bg-white hover:shadow-sm'
               }`}
             >
               All Examples ({totalExamples})
@@ -137,7 +137,7 @@ export default function JobExamplesHub() {
                 className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                   selectedCategory === category.id
                     ? 'bg-accent text-ink'
-                    : 'bg-chalk-dark text-stone-warm hover:bg-white hover:shadow-sm'
+                    : 'bg-chalk-dark text-ink/60 hover:bg-white hover:shadow-sm'
                 }`}
               >
                 {category.icon} {category.title.split(' & ')[0]} ({jobsByCategory[category.id].length})
@@ -163,7 +163,7 @@ export default function JobExamplesHub() {
                     <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight">
                       {category.title} Resumes
                     </h2>
-                    <p className="text-stone-warm font-extralight">{category.description}</p>
+                    <p className="text-ink/60 font-extralight">{category.description}</p>
                   </div>
                 </div>
 
@@ -176,14 +176,14 @@ export default function JobExamplesHub() {
                       className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-sm hover:shadow-premium hover:-translate-y-1 transition-all duration-300 group"
                     >
                       <div className="flex items-start justify-between">
-                        <h3 className="font-bold text-ink group-hover:text-accent transition-colors">
+                        <h3 className="font-bold text-ink group-hover:text-accent-text transition-colors">
                           {job.title}
                         </h3>
-                        <span className="text-accent opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="text-accent-text opacity-0 group-hover:opacity-100 transition-opacity">
                           &rarr;
                         </span>
                       </div>
-                      <p className="text-sm text-stone-warm mt-2 line-clamp-2">
+                      <p className="text-sm text-ink/60 mt-2 line-clamp-2">
                         {job.metaDescription}
                       </p>
                       <div className="mt-3 flex items-center gap-2">
@@ -216,20 +216,20 @@ export default function JobExamplesHub() {
         <section className="my-16 cv-auto cv-h-200">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-white rounded-2xl p-6 text-center card-gradient-border shadow-premium">
-              <p className="text-3xl font-extrabold text-accent">{totalExamples}+</p>
-              <p className="text-stone-warm">Resume Examples</p>
+              <p className="text-3xl font-extrabold text-accent-text">{totalExamples}+</p>
+              <p className="text-ink/60">Resume Examples</p>
             </div>
             <div className="bg-white rounded-2xl p-6 text-center card-gradient-border shadow-premium">
-              <p className="text-3xl font-extrabold text-accent">{JOB_CATEGORIES.length}</p>
-              <p className="text-stone-warm">Industries Covered</p>
+              <p className="text-3xl font-extrabold text-accent-text">{JOB_CATEGORIES.length}</p>
+              <p className="text-ink/60">Industries Covered</p>
             </div>
             <div className="bg-white rounded-2xl p-6 text-center card-gradient-border shadow-premium">
-              <p className="text-3xl font-extrabold text-accent">100%</p>
-              <p className="text-stone-warm">Free to Use</p>
+              <p className="text-3xl font-extrabold text-accent-text">100%</p>
+              <p className="text-ink/60">Free to Use</p>
             </div>
             <div className="bg-white rounded-2xl p-6 text-center card-gradient-border shadow-premium">
-              <p className="text-3xl font-extrabold text-accent">ATS</p>
-              <p className="text-stone-warm">Optimized</p>
+              <p className="text-3xl font-extrabold text-accent-text">ATS</p>
+              <p className="text-ink/60">Optimized</p>
             </div>
           </div>
         </section>

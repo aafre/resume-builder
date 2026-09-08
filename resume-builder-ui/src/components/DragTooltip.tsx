@@ -26,7 +26,7 @@ const DragTooltip: React.FC<DragTooltipProps> = ({
     <span
       className="
         absolute -top-8 left-1/2 -translate-x-1/2 z-50
-        px-2 py-1 text-xs text-white bg-slate-800 rounded
+        px-2 py-1 text-xs text-white bg-ink-light rounded
         opacity-0 group-hover/handle:opacity-100 touch:hidden
         transition-opacity duration-200 delay-700
         pointer-events-none whitespace-nowrap

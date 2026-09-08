@@ -15,8 +15,8 @@ export interface ActionIconProps extends React.ButtonHTMLAttributes<HTMLButtonEl
 }
 
 const variantStyles: Record<ActionIconVariant, string> = {
-  neutral: 'text-gray-500 hover:text-gray-700 hover:bg-gray-100',
-  danger: 'text-gray-400 hover:text-red-600 hover:bg-red-50',
+  neutral: 'text-ink/60 hover:text-ink hover:bg-chalk-dark',
+  danger: 'text-ink/60 hover:text-red-600 hover:bg-red-50',
 };
 
 const sizeStyles: Record<ActionIconSize, string> = {
@@ -58,7 +58,7 @@ export const ActionIcon: React.FC<ActionIconProps> = ({
       disabled={disabled}
       className={`
         inline-flex items-center justify-center rounded-md transition-colors duration-150
-        focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-1
+        focus:outline-none focus:ring-2 focus:ring-accent-text focus:ring-offset-1
         disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent
         ${variantStyles[variant]}
         ${sizeStyles[size]}

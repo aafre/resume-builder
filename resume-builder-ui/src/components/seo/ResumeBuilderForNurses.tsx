@@ -48,7 +48,7 @@ export default function ResumeBuilderForNurses() {
             ].map((tip, i) => (
               <div key={i} className="bg-white rounded-2xl p-6 shadow-sm border border-black/[0.06] border-l-4 border-l-accent">
                 <h3 className="font-display text-lg font-bold text-ink mb-2">{tip.title}</h3>
-                <p className="text-stone-warm font-extralight leading-relaxed">{tip.desc}</p>
+                <p className="text-ink/60 font-extralight leading-relaxed">{tip.desc}</p>
               </div>
             ))}
           </div>
@@ -64,7 +64,7 @@ export default function ResumeBuilderForNurses() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4 text-center">
             Common Nursing Resume Mistakes That Cost You Interviews
           </h2>
-          <p className="text-lg md:text-xl font-extralight text-stone-warm leading-relaxed text-center mb-10 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl font-extralight text-ink/60 leading-relaxed text-center mb-10 max-w-3xl mx-auto">
             Nurse hiring managers scan resumes for specific clinical details. These mistakes make
             your application blend in with hundreds of others — or get filtered out entirely.
           </p>
@@ -96,15 +96,15 @@ export default function ResumeBuilderForNurses() {
                   <span className="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">✗</span>
                   <div>
                     <h3 className="font-display text-lg font-bold text-ink mb-1">{item.mistake}</h3>
-                    <p className="text-stone-warm font-extralight leading-relaxed">{item.fix}</p>
+                    <p className="text-ink/60 font-extralight leading-relaxed">{item.fix}</p>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-          <p className="text-lg text-stone-warm font-extralight leading-relaxed mt-8 text-center">
+          <p className="text-lg text-ink/60 font-extralight leading-relaxed mt-8 text-center">
             Want to check that your resume includes the right clinical keywords? Try our{' '}
-            <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">resume keyword scanner</Link>{' '}
+            <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">resume keyword scanner</Link>{' '}
             to compare your resume against any nursing job description.
           </p>
         </div>
@@ -116,11 +116,11 @@ export default function ResumeBuilderForNurses() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6">
             Nursing Resume Resources
           </h2>
-          <p className="text-lg text-stone-warm font-extralight mb-6 leading-relaxed">
+          <p className="text-lg text-ink/60 font-extralight mb-6 leading-relaxed">
             Explore our guides on{' '}
-            <Link to="/blog/how-to-list-skills" className="text-accent hover:underline font-medium">listing skills effectively</Link>{' '}
+            <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline font-medium">listing skills effectively</Link>{' '}
             and{' '}
-            <Link to="/blog/resume-keywords-guide" className="text-accent hover:underline font-medium">using resume keywords</Link>{' '}
+            <Link to="/blog/resume-keywords-guide" className="text-accent-text hover:underline font-medium">using resume keywords</Link>{' '}
             to strengthen your nursing application:
           </p>
           <div className="grid md:grid-cols-2 gap-4">
@@ -172,7 +172,7 @@ export default function ResumeBuilderForNurses() {
             ].map((item, i) => (
               <div key={i} className="bg-white rounded-2xl p-6 shadow-sm border border-black/[0.06]">
                 <h3 className="font-display text-lg font-bold text-ink mb-2">{item.q}</h3>
-                <p className="text-stone-warm font-extralight leading-relaxed">{item.a}</p>
+                <p className="text-ink/60 font-extralight leading-relaxed">{item.a}</p>
               </div>
             ))}
 

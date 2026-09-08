@@ -2,7 +2,7 @@ const PrivacyPolicy = () => {
   return (
     <div className="container mx-auto my-10 px-4 sm:px-6 md:px-8">
       <h1 className="text-3xl font-bold text-center mb-6">Privacy Policy</h1>
-      <p className="text-center text-gray-500 mb-6">
+      <p className="text-center text-ink/60 mb-6">
         Last Updated: 4 August 2026
       </p>
       <div className="bg-white p-6 rounded-lg shadow-lg">
@@ -56,7 +56,7 @@ const PrivacyPolicy = () => {
           of information received from Google APIs will adhere to the{" "}
           <a
             href="https://developers.google.com/terms/api-services-user-data-policy"
-            className="text-accent underline"
+            className="text-accent-text underline"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -119,14 +119,14 @@ const PrivacyPolicy = () => {
           If you have questions about this policy, please email us at{" "}
           <a
             href="mailto:support@easyfreeresume.com"
-            className="text-accent underline"
+            className="text-accent-text underline"
           >
             support@easyfreeresume.com
           </a>{" "}
           or reach out via Github by creating an issue{" "}
           <a
             href="https://github.com/aafre/resume-builder/issues"
-            className="text-accent underline"
+            className="text-accent-text underline"
           >
             here
           </a>

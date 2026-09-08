@@ -32,7 +32,7 @@ export default function ActualFreeResumeBuilder() {
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           What "actual free" means: no paywall, no watermark, no trials
         </h2>
-        <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-12">
+        <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-4xl mx-auto text-center leading-relaxed mb-12">
           Unlike other resume builders that advertise as "free" but lock features behind paywalls,
           EasyFreeResume is completely free forever. No trial periods, no credit card required,
           no watermarks on your downloads. Every feature is accessible to everyone, always.
@@ -66,7 +66,7 @@ export default function ActualFreeResumeBuilder() {
                 <td className="px-4 py-4 font-medium text-ink">
                   PDF Download
                 </td>
-                <td className="px-4 py-4 text-center text-accent font-bold">
+                <td className="px-4 py-4 text-center text-accent-text font-bold">
                   ✓ Free
                 </td>
                 <td className="px-4 py-4 text-center text-red-600">
@@ -77,7 +77,7 @@ export default function ActualFreeResumeBuilder() {
                 <td className="px-4 py-4 font-medium text-ink">
                   DOCX Download
                 </td>
-                <td className="px-4 py-4 text-center text-accent font-bold">
+                <td className="px-4 py-4 text-center text-accent-text font-bold">
                   ✓ Free
                 </td>
                 <td className="px-4 py-4 text-center text-red-600">
@@ -88,7 +88,7 @@ export default function ActualFreeResumeBuilder() {
                 <td className="px-4 py-4 font-medium text-ink">
                   No Watermark
                 </td>
-                <td className="px-4 py-4 text-center text-accent font-bold">
+                <td className="px-4 py-4 text-center text-accent-text font-bold">
                   ✓ Always
                 </td>
                 <td className="px-4 py-4 text-center text-red-600">
@@ -99,7 +99,7 @@ export default function ActualFreeResumeBuilder() {
                 <td className="px-4 py-4 font-medium text-ink">
                   All Templates
                 </td>
-                <td className="px-4 py-4 text-center text-accent font-bold">
+                <td className="px-4 py-4 text-center text-accent-text font-bold">
                   ✓ Access all
                 </td>
                 <td className="px-4 py-4 text-center text-red-600">
@@ -110,7 +110,7 @@ export default function ActualFreeResumeBuilder() {
                 <td className="px-4 py-4 font-medium text-ink">
                   No Account Required
                 </td>
-                <td className="px-4 py-4 text-center text-accent font-bold">
+                <td className="px-4 py-4 text-center text-accent-text font-bold">
                   ✓ Optional
                 </td>
                 <td className="px-4 py-4 text-center text-red-600">
@@ -121,7 +121,7 @@ export default function ActualFreeResumeBuilder() {
                 <td className="px-4 py-4 font-medium text-ink">
                   Unlimited Downloads
                 </td>
-                <td className="px-4 py-4 text-center text-accent font-bold">
+                <td className="px-4 py-4 text-center text-accent-text font-bold">
                   ✓ Yes
                 </td>
                 <td className="px-4 py-4 text-center text-red-600">
@@ -130,7 +130,7 @@ export default function ActualFreeResumeBuilder() {
               </tr>
             </tbody>
           </table>
-          <p className="text-sm text-mist mt-4 text-center">
+          <p className="text-sm text-ink/60 mt-4 text-center">
             Comparison based on publicly available pricing from popular resume builders (Jan 2026)
           </p>
         </div>

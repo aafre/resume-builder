@@ -37,13 +37,13 @@ export default function AboutUs() {
       <div className="min-h-screen bg-chalk">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
           <nav className="mb-8" aria-label="breadcrumb">
-            <ol className="flex items-center space-x-2 text-sm text-stone-warm">
+            <ol className="flex items-center space-x-2 text-sm text-ink/60">
               <li>
-                <Link to="/" className="hover:text-accent transition-colors">
+                <Link to="/" className="hover:text-accent-text transition-colors">
                   Home
                 </Link>
               </li>
-              <li className="text-mist">/</li>
+              <li className="text-ink/60">/</li>
               <li className="text-ink font-medium">About Us</li>
             </ol>
           </nav>
@@ -52,7 +52,7 @@ export default function AboutUs() {
             <h1 className="font-display text-4xl md:text-5xl font-extrabold tracking-tight text-ink mb-6">
               About EasyFreeResume
             </h1>
-            <p className="text-lg md:text-xl font-extralight text-stone-warm leading-relaxed max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl font-extralight text-ink/60 leading-relaxed max-w-3xl mx-auto">
               We believe building a professional resume should be simple,
               stress-free, and accessible to everyone - no matter where you’re
               from or what stage you’re at in your career.
@@ -65,34 +65,34 @@ export default function AboutUs() {
                 Why We Built This
               </h2>
               <div className="prose prose-lg prose-slate max-w-none">
-                <p className="text-lg leading-relaxed text-stone-warm mb-6">
+                <p className="text-lg leading-relaxed text-ink/60 mb-6">
                   EasyFreeResume started with a simple goal - take the headache
                   out of making resumes. Every time we had to update ours, we'd
                   waste hours adjusting layouts, fixing formatting, or
                   re-downloading templates that looked outdated or broke things
                   when exported.
                 </p>
-                <p className="text-lg leading-relaxed text-stone-warm mb-6">
+                <p className="text-lg leading-relaxed text-ink/60 mb-6">
                   Too many resume tools put essential features behind
                   subscriptions, had confusing editors, or made it difficult to
                   recreate past work. It felt wrong that something as
                   fundamental as presenting yourself professionally had become
                   expensive or overly complicated.
                 </p>
-                <p className="text-lg leading-relaxed text-stone-warm mb-6">
+                <p className="text-lg leading-relaxed text-ink/60 mb-6">
                   So we built something better - a clean, fast, fully free
                   resume builder that works out of the box and stays out of your
                   way. Just pick a template, fill in your details, and download.
                   That's it.
                 </p>
-                <p className="text-lg leading-relaxed text-stone-warm">
+                <p className="text-lg leading-relaxed text-ink/60">
                   It’s open-source too. If there’s a feature or new template you
                   want, you can raise a request directly on our{" "}
                   <a
                     href="https://github.com/aafre/resume-builder"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-accent underline hover:text-ink"
+                    className="text-accent-text underline hover:text-ink"
                   >
                     GitHub repository
                   </a>
@@ -129,11 +129,11 @@ export default function AboutUs() {
             {/* Our Values */}
             <section className="grid md:grid-cols-2 gap-8">
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-premium p-8 border border-black/[0.06]">
-                <div className="text-accent text-3xl mb-4">🎯</div>
+                <div className="text-accent-text text-3xl mb-4">🎯</div>
                 <h3 className="font-display text-xl font-bold text-ink mb-4">
                   Accessibility First
                 </h3>
-                <p className="text-stone-warm leading-relaxed">
+                <p className="text-ink/60 leading-relaxed">
                   Professional tools shouldn't be luxury items. We're committed
                   to keeping our platform completely free and accessible to
                   everyone, everywhere.
@@ -141,11 +141,11 @@ export default function AboutUs() {
               </div>
 
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-premium p-8 border border-black/[0.06]">
-                <div className="text-accent text-3xl mb-4">🔒</div>
+                <div className="text-accent-text text-3xl mb-4">🔒</div>
                 <h3 className="font-display text-xl font-bold text-ink mb-4">
                   Privacy Protected
                 </h3>
-                <p className="text-stone-warm leading-relaxed">
+                <p className="text-ink/60 leading-relaxed">
                   Your career data belongs to you. Use guest mode for complete privacy
                   (no data stored), or create a free account to securely save up to 5 resumes.
                   We never sell or share your information. You're always in complete control.
@@ -153,11 +153,11 @@ export default function AboutUs() {
               </div>
 
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-premium p-8 border border-black/[0.06]">
-                <div className="text-accent text-3xl mb-4">⚡</div>
+                <div className="text-accent-text text-3xl mb-4">⚡</div>
                 <h3 className="font-display text-xl font-bold text-ink mb-4">
                   Simplicity & Power
                 </h3>
-                <p className="text-stone-warm leading-relaxed">
+                <p className="text-ink/60 leading-relaxed">
                   We believe powerful tools can be simple to use. Our interface
                   prioritizes ease of use without sacrificing the professional
                   quality you need.
@@ -169,7 +169,7 @@ export default function AboutUs() {
                 <h3 className="font-display text-xl font-bold text-ink mb-4">
                   Continuous Growth
                 </h3>
-                <p className="text-stone-warm leading-relaxed">
+                <p className="text-ink/60 leading-relaxed">
                   We're constantly improving our platform based on user feedback
                   and evolving job market needs. Your success drives our
                   innovation.
@@ -191,7 +191,7 @@ export default function AboutUs() {
                   <h3 className="font-display text-lg font-bold text-ink mb-3">
                     Truly Free
                   </h3>
-                  <p className="text-stone-warm">
+                  <p className="text-ink/60">
                     No hidden fees, premium tiers, or subscription traps.
                     Everything you need is completely free, forever.
                   </p>
@@ -204,7 +204,7 @@ export default function AboutUs() {
                   <h3 className="font-display text-lg font-bold text-ink mb-3">
                     ATS-Optimized
                   </h3>
-                  <p className="text-stone-warm">
+                  <p className="text-ink/60">
                     Our templates are designed to pass Applicant Tracking
                     Systems, ensuring your resume reaches human recruiters.
                   </p>
@@ -217,7 +217,7 @@ export default function AboutUs() {
                   <h3 className="font-display text-lg font-bold text-ink mb-3">
                     Education-Focused
                   </h3>
-                  <p className="text-stone-warm">
+                  <p className="text-ink/60">
                     Beyond tools, we provide comprehensive guides, tips, and
                     resources to help you succeed in your job search.
                   </p>
@@ -233,22 +233,22 @@ export default function AboutUs() {
 
               <div className="grid md:grid-cols-3 gap-8 text-center">
                 <div>
-                  <div className="text-3xl font-bold text-accent mb-2">
+                  <div className="text-3xl font-bold text-accent-text mb-2">
                     95%
                   </div>
-                  <p className="text-stone-warm">User Satisfaction</p>
+                  <p className="text-ink/60">User Satisfaction</p>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-accent mb-2">
+                  <div className="text-3xl font-bold text-accent-text mb-2">
                     $0
                   </div>
-                  <p className="text-stone-warm">Cost to Users</p>
+                  <p className="text-ink/60">Cost to Users</p>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-accent mb-2">
+                  <div className="text-3xl font-bold text-accent-text mb-2">
                     24/7
                   </div>
-                  <p className="text-stone-warm">Available Access</p>
+                  <p className="text-ink/60">Available Access</p>
                 </div>
               </div>
             </section>
@@ -260,7 +260,7 @@ export default function AboutUs() {
               </h2>
 
               <div className="text-center max-w-3xl mx-auto">
-                <p className="text-lg leading-relaxed text-stone-warm mb-6">
+                <p className="text-lg leading-relaxed text-ink/60 mb-6">
                   Our team combines expertise in career development, user
                   experience design, and technology to create tools that truly
                   serve job seekers. We've worked in recruitment, career
@@ -268,7 +268,7 @@ export default function AboutUs() {
                   what both candidates and employers need.
                 </p>
 
-                <p className="text-lg leading-relaxed text-stone-warm mb-8">
+                <p className="text-lg leading-relaxed text-ink/60 mb-8">
                   Every feature we build is tested with real job seekers and
                   validated against current hiring practices. We're not just
                   building software-we're building bridges to career success.
@@ -315,7 +315,7 @@ export default function AboutUs() {
                   </Link>
                   <Link
                     to="/blog"
-                    className="inline-block border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-accent transition-all duration-300"
+                    className="inline-block border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-accent-text transition-all duration-300"
                   >
                     Read Career Tips
                   </Link>

@@ -55,7 +55,7 @@ export default function FreeATSResumeCheck() {
     >
       <div className="space-y-8">
         {/* Answer-first intro (<= 50 words) */}
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Check your resume four ways: scan its keywords against the job description,
           run a plain-text paste test, match keywords manually, and audit its structure.
           There is no universal ATS score; each method catches a different failure mode.
@@ -76,7 +76,7 @@ export default function FreeATSResumeCheck() {
         <h2 id="meaning" className="text-3xl font-bold text-ink mt-12 mb-6">
           What &quot;Passing the ATS&quot; Actually Means
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           An applicant tracking system does not make one universal pass-or-fail
           decision. It first parses your document into fields such as contact
           details, work history, education, and skills. Recruiters can then search,
@@ -84,13 +84,13 @@ export default function FreeATSResumeCheck() {
           employers configure different systems and workflows, so a score from one
           checker cannot predict every employer&apos;s result.
         </p>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           In practice, a resume usually loses visibility for one of two reasons. The
           parser cannot recover important text from the layout, or the resume does
           not contain the terms a recruiter searches for. The four checks below
           test those problems separately. For a closer look at what parsers can and
           cannot read, see our guide to{" "}
-          <Link to="/blog/ats-formatting-rules" className="text-accent hover:underline font-medium">
+          <Link to="/blog/ats-formatting-rules" className="text-accent-text hover:underline font-medium">
             ATS formatting rules
           </Link>.
         </p>
@@ -98,17 +98,17 @@ export default function FreeATSResumeCheck() {
         <h2 id="keyword-scan" className="text-3xl font-bold text-ink mt-12 mb-6">
           Method 1: Run a Free Keyword Scan Against the Job Description
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Start with the job description because keyword relevance is specific to
           each application. EasyFreeResume&apos;s own{" "}
-          <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">
+          <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">
             free resume keyword scanner
           </Link>{" "}
           compares your resume with the posting. It is free for unlimited scans,
           requires no account, and runs entirely in your browser, so the text you
           paste is not uploaded.
         </p>
-        <ol className="list-decimal pl-6 space-y-3 text-lg leading-relaxed text-stone-warm">
+        <ol className="list-decimal pl-6 space-y-3 text-lg leading-relaxed text-ink/60">
           <li>
             Paste the text of your resume into the resume field. Use the version
             you plan to submit, not a longer master document.
@@ -129,14 +129,14 @@ export default function FreeATSResumeCheck() {
             a recruiter useful context. Never copy requirements you cannot support.
           </li>
         </ol>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Re-scan after editing. A useful result is not the highest possible
           percentage; it is a resume that clearly uses the employer&apos;s language
           while remaining accurate. A truthful exact term such as a tool name,
           certification, or method can help both a text search and the person who
           reads the resume later.
         </p>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Review missing terms in context before changing anything. A posting may
           mention a tool as one option among several, repeat the company&apos;s own
           product name, or include duties that belong to another team. Those words
@@ -149,13 +149,13 @@ export default function FreeATSResumeCheck() {
         <h2 id="plain-text-test" className="text-3xl font-bold text-ink mt-12 mb-6">
           Method 2: Use the Plain-Text Paste Test
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           This 60-second test exposes structural problems that a keyword comparison
           cannot see. Open your finished resume, select all its content, copy it,
           and paste it into a plain-text editor such as Notepad or TextEdit in plain
           text mode. Then read the result from top to bottom.
         </p>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Check whether your name and contact details appear first, section headings
           remain attached to the right content, job titles stay with the correct
           employers and dates, and bullets read in their intended order. Text that
@@ -177,14 +177,14 @@ export default function FreeATSResumeCheck() {
         <h2 id="manual-match" className="text-3xl font-bold text-ink mt-12 mb-6">
           Method 3: Match Job-Description Keywords Manually
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           A manual check is useful when you want to understand why a term matters,
           or when a posting is short enough to review line by line. Highlight the
           must-have skills, tools, certifications, methods, and domain terms in the
           job description. Separate required qualifications from optional ones, and
           ignore generic language that does not describe the work.
         </p>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Search your resume for each must-have term. Confirm that the exact wording
           appears when it is truthful, rather than relying only on a synonym. For
           example, &quot;project management&quot; and &quot;managed projects&quot; communicate similar
@@ -192,7 +192,7 @@ export default function FreeATSResumeCheck() {
           Exact-phrase matching is a common ATS search behavior, not a rule used by
           every system.
         </p>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Place terms where they prove something. A software name can sit in Skills,
           but a work-history bullet showing how you used it is stronger. Spell out
           an acronym once when the posting uses both versions, such as &quot;project
@@ -204,7 +204,7 @@ export default function FreeATSResumeCheck() {
         <h2 id="structural-audit" className="text-3xl font-bold text-ink mt-12 mb-6">
           Method 4: Audit Your Resume Structure
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Finish with a visual and technical audit. This catches risky choices
           before you submit the file and gives you a short checklist to reuse for
           later applications.
@@ -231,18 +231,18 @@ export default function FreeATSResumeCheck() {
             </ul>
           </div>
         </div>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           If rebuilding the layout would take too long, browse our{" "}
-          <Link to="/ats-resume-templates" className="text-accent hover:underline font-medium">
+          <Link to="/ats-resume-templates" className="text-accent-text hover:underline font-medium">
             ATS resume templates hub
           </Link>{" "}
           to compare options, or jump straight into our{" "}
-          <Link to="/templates/ats-friendly" className="text-accent hover:underline font-medium">
+          <Link to="/templates/ats-friendly" className="text-accent-text hover:underline font-medium">
             ATS-friendly resume templates
           </Link>. These templates provide a simple structure, but you should still run the
           plain-text and keyword checks on your finished content.
         </p>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Follow the application&apos;s file instructions first. If it requests a DOCX,
           submit a DOCX. If PDF is accepted, export a text-based PDF rather than
           scanning or photographing the page. Reopen the exported file instead of
@@ -255,14 +255,14 @@ export default function FreeATSResumeCheck() {
         <h2 id="paid-checkers" className="text-3xl font-bold text-ink mt-12 mb-6">
           What About Paid ATS Checkers?
         </h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Paid tools can bundle keyword comparison with writing suggestions,
           formatting feedback, or application tracking. Some people value those
           extra workflows. However, many products described as free cap scans,
           require an account, or reserve full results for a paid plan. Check the
           current terms before spending time entering your resume.
         </p>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           You do not need a paid checker to cover the two basic risks. A browser-based
           keyword comparison shows whether your truthful qualifications use the
           posting&apos;s language, while the plain-text test shows whether the structure
@@ -278,21 +278,21 @@ export default function FreeATSResumeCheck() {
           {FAQS.map((faq) => (
             <div key={faq.question} className="bg-chalk-dark border border-black/[0.06] rounded-lg p-5">
               <h3 className="font-bold text-ink mb-2">{faq.question}</h3>
-              <p className="text-stone-warm">{faq.answer}</p>
+              <p className="text-ink/60">{faq.answer}</p>
             </div>
           ))}
         </div>
 
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">Check Both Failure Modes</h2>
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           A useful ATS check combines keyword relevance with readable structure.
           Run the plain-text test once after layout changes, then compare the resume
           with the job description for every application. Ignore any promise of a
           universal passing score and focus on accurate evidence a recruiter can find.
         </p>
-        <p className="text-lg leading-relaxed text-stone-warm mt-4">
+        <p className="text-lg leading-relaxed text-ink/60 mt-4">
           Start now with our{" "}
-          <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">
+          <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">
             free, unlimited resume keyword scanner
           </Link>; it needs no account and keeps your resume in your browser.
         </p>

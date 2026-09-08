@@ -85,20 +85,20 @@ export default function ResumeKeywordsHub() {
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-6">
               What Are Resume Keywords?
             </h2>
-            <p className="text-lg text-stone-warm font-extralight mb-4 leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight mb-4 leading-relaxed">
               Resume keywords are specific words and phrases that hiring managers and Applicant
               Tracking Systems (ATS) use to identify qualified candidates. They include hard skills
               (like &ldquo;Python&rdquo; or &ldquo;SQL&rdquo;), soft skills (like &ldquo;cross-functional collaboration&rdquo;),
               job titles, certifications, industry tools, and action verbs that describe your
               accomplishments.
             </p>
-            <p className="text-lg text-stone-warm font-extralight mb-4 leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight mb-4 leading-relaxed">
               Over 98% of Fortune 500 companies use ATS software to filter resumes before a
               human recruiter ever sees them. These systems scan your resume for keywords that
               match the job description and rank candidates accordingly. A resume without the
               right keywords will be filtered out regardless of qualifications.
             </p>
-            <p className="text-lg text-stone-warm font-extralight mb-4 leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight mb-4 leading-relaxed">
               Keywords generally fall into five categories. <strong className="font-semibold text-ink">Hard skills</strong> are
               teachable abilities such as programming languages, accounting methods, or design
               software. <strong className="font-semibold text-ink">Soft skills</strong> are interpersonal qualities like leadership,
@@ -110,7 +110,7 @@ export default function ResumeKeywordsHub() {
               optimized &mdash; and signal to both ATS and recruiters that you have hands-on
               experience.
             </p>
-            <p className="text-lg text-stone-warm font-extralight mb-4 leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight mb-4 leading-relaxed">
               The most common mistake job seekers make is writing a single resume and sending it
               to every opening. Each job posting uses slightly different language, and ATS software
               matches your resume against that exact language. If a posting asks for &ldquo;project
@@ -118,14 +118,14 @@ export default function ResumeKeywordsHub() {
               systems will not count that as a match. That is why tailoring your keywords to each
               application matters so much.
             </p>
-            <p className="text-lg text-stone-warm font-extralight mb-4 leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight mb-4 leading-relaxed">
               Our approach is simple: start with a master keyword list for your industry and
               role, then customize for every application. The guides below cover 17+ industries
               and 50+ roles, each with curated keyword lists, technical tools, certifications,
               and real before-and-after bullet examples showing how to weave keywords into your
               resume naturally without keyword stuffing.
             </p>
-            <p className="text-lg text-stone-warm font-extralight mb-6 leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight mb-6 leading-relaxed">
               Whether you are a software engineer looking for the right technical stack keywords,
               a marketing manager who needs to match demand-generation terminology, or a customer
               service professional listing CRM tools and satisfaction metrics, the right keywords
@@ -137,7 +137,7 @@ export default function ResumeKeywordsHub() {
             {/* Table of contents */}
             <div className="bg-chalk rounded-lg p-6 border border-black/[0.06]">
               <h3 className="font-bold text-ink mb-3">On this page</h3>
-              <ul className="space-y-2 text-accent">
+              <ul className="space-y-2 text-accent-text">
                 <li><a href="#popular-keywords" className="hover:underline">Most Popular Keywords Across All Industries</a></li>
                 <li><a href="#quick-reference" className="hover:underline">Quick-Reference Lists by Job Title</a></li>
                 <li><a href="#technology" className="hover:underline">Technology &amp; Engineering Keywords</a></li>
@@ -156,19 +156,19 @@ export default function ResumeKeywordsHub() {
             <h2 className="text-2xl font-extrabold text-ink tracking-tight mb-4">
               Why Resume Keywords Matter in 2026
             </h2>
-            <p className="text-lg text-stone-warm font-extralight mb-4 leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight mb-4 leading-relaxed">
               ATS technology has become more sophisticated but also more widespread. In 2026,
               even mid-size companies and startups use automated screening. The systems compare
               your resume against the job posting and assign a match score. Resumes below the
               threshold are never reviewed by a human.
             </p>
-            <p className="text-lg text-stone-warm font-extralight mb-4 leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight mb-4 leading-relaxed">
               This means keyword optimization is no longer optional &mdash; it is a prerequisite
               for getting interviews. The good news is that using the right keywords also makes
               your resume more compelling to human readers, because it demonstrates you speak
               the language of your industry.
             </p>
-            <p className="text-lg text-stone-warm font-extralight leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight leading-relaxed">
               The most effective approach is to start with a strong base resume, then tailor
               the keywords for each application by mirroring the language from the specific job
               posting. Our industry guides below give you that strong foundation.
@@ -185,7 +185,7 @@ export default function ResumeKeywordsHub() {
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-6 mt-2">
               Most Popular Keywords Across All Industries
             </h2>
-            <p className="text-lg text-stone-warm font-extralight mb-6 leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight mb-6 leading-relaxed">
               Regardless of your field, certain keywords appear in job postings across every
               industry. Adding these universal terms to your resume increases ATS match rates
               for almost any role.
@@ -242,7 +242,7 @@ export default function ResumeKeywordsHub() {
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-4">
               Quick-Reference: Top 10 Keywords by Job Title
             </h2>
-            <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+            <p className="text-lg text-ink/60 font-extralight mb-8 leading-relaxed">
               Need keywords fast? Here are the top 10 most impactful resume keywords for
               the five most popular job categories. Click the role name to view the full
               keyword guide.
@@ -252,7 +252,7 @@ export default function ResumeKeywordsHub() {
               {/* Software Engineer */}
               <div className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-sm">
                 <h3 className="text-xl font-bold text-ink mb-3">
-                  <Link to="/resume-keywords/software-engineer" className="text-accent hover:underline">
+                  <Link to="/resume-keywords/software-engineer" className="text-accent-text hover:underline">
                     Software Engineer
                   </Link>
                 </h3>
@@ -266,7 +266,7 @@ export default function ResumeKeywordsHub() {
               {/* Product Manager */}
               <div className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-sm">
                 <h3 className="text-xl font-bold text-ink mb-3">
-                  <Link to="/resume-keywords/product-manager" className="text-accent hover:underline">
+                  <Link to="/resume-keywords/product-manager" className="text-accent-text hover:underline">
                     Product Manager
                   </Link>
                 </h3>
@@ -280,7 +280,7 @@ export default function ResumeKeywordsHub() {
               {/* Data Analyst */}
               <div className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-sm">
                 <h3 className="text-xl font-bold text-ink mb-3">
-                  <Link to="/resume-keywords/data-analyst" className="text-accent hover:underline">
+                  <Link to="/resume-keywords/data-analyst" className="text-accent-text hover:underline">
                     Data Analyst
                   </Link>
                 </h3>
@@ -294,7 +294,7 @@ export default function ResumeKeywordsHub() {
               {/* Customer Service */}
               <div className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-sm">
                 <h3 className="text-xl font-bold text-ink mb-3">
-                  <Link to="/resume-keywords/customer-service" className="text-accent hover:underline">
+                  <Link to="/resume-keywords/customer-service" className="text-accent-text hover:underline">
                     Customer Service
                   </Link>
                 </h3>
@@ -308,7 +308,7 @@ export default function ResumeKeywordsHub() {
               {/* Marketing Manager */}
               <div className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-sm">
                 <h3 className="text-xl font-bold text-ink mb-3">
-                  <Link to="/resume-keywords/marketing-manager" className="text-accent hover:underline">
+                  <Link to="/resume-keywords/marketing-manager" className="text-accent-text hover:underline">
                     Marketing Manager
                   </Link>
                 </h3>
@@ -343,12 +343,12 @@ export default function ResumeKeywordsHub() {
                 <h3 className="text-2xl font-bold text-ink mb-2">
                   Customer Service Resume Keywords
                 </h3>
-                <p className="text-stone-warm">
+                <p className="text-ink/60">
                   100+ keywords including CRM software (Salesforce, Zendesk), soft skills, CSAT/NPS metrics,
                   and before/after resume examples for 5 different customer service roles.
                 </p>
               </div>
-              <div className="text-accent font-semibold whitespace-nowrap text-lg">
+              <div className="text-accent-text font-semibold whitespace-nowrap text-lg">
                 View Guide →
               </div>
             </div>
@@ -414,11 +414,11 @@ export default function ResumeKeywordsHub() {
           <div className="grid md:grid-cols-2 gap-4">
             <Link to="/examples" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Resume Examples by Job Title</h3>
-              <p className="text-stone-warm text-sm">See how these keywords look in a full resume</p>
+              <p className="text-ink/60 text-sm">See how these keywords look in a full resume</p>
             </Link>
             <Link to="/blog/best-free-resume-builders-2026" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Best Free Resume Builders 2026</h3>
-              <p className="text-stone-warm text-sm">Honest comparison of 9 free tools</p>
+              <p className="text-ink/60 text-sm">Honest comparison of 9 free tools</p>
             </Link>
           </div>
         </div>

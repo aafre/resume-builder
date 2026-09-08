@@ -94,7 +94,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
           <button
             type="button"
             onClick={onToggleCollapse}
-            className="p-2 text-gray-600 hover:text-accent hover:bg-accent/[0.06] rounded-lg transition-colors flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-ink/60 transition-colors duration-200 hover:bg-accent/[0.06] hover:text-accent-text flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             aria-label={isCollapsed ? "Expand section" : "Collapse section"}
             title={isCollapsed ? "Expand section" : "Collapse section"}
           >
@@ -112,7 +112,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
           onStartEdit={isLegacyMode ? legacyOnTitleEdit : undefined}
           onCancel={isLegacyMode ? legacyOnTitleCancel : undefined}
           as="h2"
-          textClassName="text-xl font-semibold text-gray-900"
+          textClassName="font-display text-xl font-bold text-ink"
           placeholder="Section title..."
         />
       </div>
@@ -122,7 +122,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
           <button
             type="button"
             onClick={onDelete}
-            className="flex items-center gap-1.5 text-gray-500 border border-gray-300 px-3 py-1.5 rounded-lg text-sm font-medium hover:text-red-600 hover:border-red-300 hover:bg-red-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1"
+            className="btn-destructive-ghost"
             title="Remove Section"
 
 

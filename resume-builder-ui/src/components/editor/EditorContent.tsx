@@ -129,6 +129,8 @@ export interface EditorContentEditorActionsProps {
  * Props for preview state
  */
 export interface EditorContentPreviewProps {
+  /** Last generated preview PDF, used to calibrate the live length estimate. */
+  previewUrl: string | null;
   isGenerating: boolean;
   isStale: boolean;
 }
@@ -266,10 +268,18 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         navigation.isSidebarCollapsed ? 'lg:mr-[88px]' : 'lg:mr-[296px]'
       }`}
     >
+      {/* Page heading — the only h1 on the editor route. Names the document
+          being edited so orientation doesn't start at "Contact Information". */}
+      <h1 className="font-display text-xl md:text-2xl font-extrabold tracking-tight text-ink mb-4">
+        {contactInfo?.name?.trim()
+          ? `${contactInfo.name.trim()}'s Resume`
+          : "Untitled Resume"}
+      </h1>
+
       {/* Imported Resume Review Banner */}
       {modals.showAIWarning && (
-        <div className="mb-4 p-4 rounded-lg border border-slate-200 bg-accent/[0.06] flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-accent" />
+        <div className="mb-4 p-4 rounded-lg border border-gray-200 bg-accent/[0.06] flex items-start gap-3">
+          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-accent-text" />
           <div className="flex-1">
             <h3 className="font-semibold text-sm text-ink">
               Imported Resume - Please Review
@@ -280,7 +290,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
           </div>
           <button
             onClick={modals.closeAIWarning}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-gray-400 hover:text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-ink/60 hover:text-ink hover:bg-black/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
             aria-label="Close review banner"
           >
             <X className="w-4 h-4" />
@@ -358,7 +368,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
           {dragDrop.activeId ? (
             dragDrop.activeLevel === 'section' && dragDrop.draggedSection ? (
               // Section drag preview - lifted appearance with scale and rotation
-              <div className={`bg-white rounded-lg shadow-lg border border-slate-200 px-6 py-4 max-w-md cursor-grabbing ${liftedPreviewClasses}`}>
+              <div className={`bg-white rounded-lg shadow-lg border border-gray-200 px-6 py-4 max-w-md cursor-grabbing ${liftedPreviewClasses}`}>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
                     <div className="flex flex-col gap-0.5">
@@ -368,10 +378,10 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                     </div>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800 truncate">
+                    <h3 className="font-semibold text-ink truncate">
                       {dragDrop.draggedSection.name}
                     </h3>
-                    <p className="text-sm text-gray-500 capitalize">
+                    <p className="text-sm text-ink/60 capitalize">
                       {dragDrop.draggedSection.type?.replace(/-/g, ' ') || 'Section'}
                     </p>
                   </div>
@@ -379,69 +389,69 @@ export const EditorContent: React.FC<EditorContentProps> = ({
               </div>
             ) : dragDrop.activeLevel === 'item' && dragDrop.draggedItemInfo ? (
               // Item drag preview with actual content - lifted appearance
-              <div className={`bg-white backdrop-blur-sm rounded-lg shadow-2xl border-2 border-accent/70 px-4 py-3 max-w-sm cursor-grabbing ${liftedPreviewClasses}`}>
+              <div className={`bg-white rounded-lg shadow-2xl border-2 border-accent/70 px-4 py-3 max-w-sm cursor-grabbing ${liftedPreviewClasses}`}>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
                     {dragDrop.draggedItemInfo.type === 'experience' ? (
-                      <svg className="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 text-accent-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
                     ) : dragDrop.draggedItemInfo.type === 'education' ? (
-                      <svg className="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 text-accent-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path d="M12 14l9-5-9-5-9 5 9 5z" />
                         <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
                       </svg>
                     ) : dragDrop.draggedItemInfo.type === 'certification' ? (
-                      <svg className="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 text-accent-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                       </svg>
                     ) : (
-                      <svg className="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 text-accent-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                       </svg>
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h4 className="font-semibold text-gray-800 text-sm truncate">
+                    <h4 className="font-semibold text-ink text-sm truncate">
                       {dragDrop.draggedItemInfo.label || 'Untitled'}
                     </h4>
                     {dragDrop.draggedItemInfo.sublabel && (
-                      <p className="text-xs text-gray-500 truncate">{dragDrop.draggedItemInfo.sublabel}</p>
+                      <p className="text-xs text-ink/60 truncate">{dragDrop.draggedItemInfo.sublabel}</p>
                     )}
                   </div>
                 </div>
               </div>
             ) : dragDrop.activeLevel === 'item' ? (
               // Fallback item preview - lifted appearance
-              <div className={`bg-white backdrop-blur-sm rounded-lg shadow-2xl border-2 border-accent/70 px-4 py-3 max-w-sm cursor-grabbing ${liftedPreviewClasses}`}>
+              <div className={`bg-white rounded-lg shadow-2xl border-2 border-accent/70 px-4 py-3 max-w-sm cursor-grabbing ${liftedPreviewClasses}`}>
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-md bg-accent/10 flex items-center justify-center">
-                    <svg className="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-accent-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                   </div>
-                  <span className="text-sm text-gray-700 font-medium">Moving item</span>
+                  <span className="text-sm text-ink font-medium">Moving item</span>
                 </div>
               </div>
             ) : dragDrop.activeLevel === 'subitem' && dragDrop.draggedItemInfo ? (
               // Subitem drag preview with actual content - lifted appearance
-              <div className={`bg-white backdrop-blur-sm rounded-md shadow-xl border-2 border-accent/70 px-3 py-2.5 max-w-md cursor-grabbing ${liftedPreviewClasses}`}>
+              <div className={`bg-white rounded-md shadow-xl border-2 border-accent/70 px-3 py-2.5 max-w-md cursor-grabbing ${liftedPreviewClasses}`}>
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 rounded bg-accent/10 flex items-center justify-center flex-shrink-0">
                     <div className="w-1.5 h-1.5 rounded-full bg-accent" />
                   </div>
-                  <span className="text-sm text-gray-700 truncate">{dragDrop.draggedItemInfo.label}</span>
+                  <span className="text-sm text-ink truncate">{dragDrop.draggedItemInfo.label}</span>
                 </div>
               </div>
             ) : dragDrop.activeLevel === 'subitem' ? (
               // Fallback subitem preview - lifted appearance
-              <div className={`bg-white rounded-md shadow-lg border border-slate-200 px-3 py-2 max-w-xs cursor-grabbing ${liftedPreviewClasses}`}>
+              <div className={`bg-white rounded-md shadow-lg border border-gray-200 px-3 py-2 max-w-xs cursor-grabbing ${liftedPreviewClasses}`}>
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 rounded bg-accent/10 flex items-center justify-center">
                     <div className="w-1.5 h-1.5 rounded-full bg-accent" />
                   </div>
-                  <span className="text-sm text-gray-700 font-medium">Moving bullet point</span>
+                  <span className="text-sm text-ink font-medium">Moving bullet point</span>
                 </div>
               </div>
             ) : null
@@ -497,6 +507,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         isOpeningPreview={editorActions.isOpeningPreview}
         isGeneratingPreview={preview.isGenerating}
         previewIsStale={preview.isStale}
+        previewUrl={preview.previewUrl}
         loadingSave={fileOperations.loadingSave}
         loadingLoad={fileOperations.loadingLoad}
         onCollapseChange={navigation.setIsSidebarCollapsed}

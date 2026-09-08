@@ -19,7 +19,7 @@ export default function ResumeKeywordsByIndustry() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Every industry has its own vocabulary. Using the wrong keywords — or generic terms instead of industry-specific ones — means your resume won't match what ATS systems and recruiters are scanning for. This guide organizes the most important resume keywords by industry so you can jump straight to your field.
         </p>
 
@@ -28,18 +28,18 @@ export default function ResumeKeywordsByIndustry() {
           <h2 className="font-bold text-ink mb-4 text-lg">Jump to Your Industry</h2>
           <div className="grid sm:grid-cols-2 gap-x-8 gap-y-2 text-ink/80">
             <div className="space-y-2">
-              <p><a href="#technology" className="text-accent hover:underline">Technology / Software Engineering</a></p>
-              <p><a href="#healthcare" className="text-accent hover:underline">Healthcare / Nursing</a></p>
-              <p><a href="#finance" className="text-accent hover:underline">Finance / Banking / Accounting</a></p>
-              <p><a href="#marketing" className="text-accent hover:underline">Marketing / Digital Marketing</a></p>
-              <p><a href="#sales" className="text-accent hover:underline">Sales / Business Development</a></p>
+              <p><a href="#technology" className="text-accent-text hover:underline">Technology / Software Engineering</a></p>
+              <p><a href="#healthcare" className="text-accent-text hover:underline">Healthcare / Nursing</a></p>
+              <p><a href="#finance" className="text-accent-text hover:underline">Finance / Banking / Accounting</a></p>
+              <p><a href="#marketing" className="text-accent-text hover:underline">Marketing / Digital Marketing</a></p>
+              <p><a href="#sales" className="text-accent-text hover:underline">Sales / Business Development</a></p>
             </div>
             <div className="space-y-2">
-              <p><a href="#education" className="text-accent hover:underline">Education / Teaching</a></p>
-              <p><a href="#manufacturing" className="text-accent hover:underline">Manufacturing / Engineering</a></p>
-              <p><a href="#customer-service" className="text-accent hover:underline">Customer Service / Retail</a></p>
-              <p><a href="#hr" className="text-accent hover:underline">Human Resources</a></p>
-              <p><a href="#project-management" className="text-accent hover:underline">Project Management</a></p>
+              <p><a href="#education" className="text-accent-text hover:underline">Education / Teaching</a></p>
+              <p><a href="#manufacturing" className="text-accent-text hover:underline">Manufacturing / Engineering</a></p>
+              <p><a href="#customer-service" className="text-accent-text hover:underline">Customer Service / Retail</a></p>
+              <p><a href="#hr" className="text-accent-text hover:underline">Human Resources</a></p>
+              <p><a href="#project-management" className="text-accent-text hover:underline">Project Management</a></p>
             </div>
           </div>
         </nav>
@@ -50,7 +50,7 @@ export default function ResumeKeywordsByIndustry() {
             <li>Find your industry section below</li>
             <li>Compare the keywords against the specific job posting you're targeting</li>
             <li>Include matching keywords naturally in your experience bullets and skills section</li>
-            <li>Use our <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">free ATS keyword scanner</Link> to verify your match rate</li>
+            <li>Use our <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">free ATS keyword scanner</Link> to verify your match rate</li>
           </ol>
         </div>
 
@@ -59,7 +59,7 @@ export default function ResumeKeywordsByIndustry() {
           Technology / Software Engineering
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Tech resumes live and die by specific tool and language names. Generic terms like "programming" won't match — you need exact platform names.
         </p>
 
@@ -92,8 +92,8 @@ export default function ResumeKeywordsByIndustry() {
           </div>
         </div>
 
-        <p className="text-sm text-stone-warm mt-3">
-          For a deep dive, see our <Link to="/blog/software-engineer-resume-keywords" className="text-accent hover:underline">75+ software engineer resume keywords guide</Link>.
+        <p className="text-sm text-ink/60 mt-3">
+          For a deep dive, see our <Link to="/blog/software-engineer-resume-keywords" className="text-accent-text hover:underline">75+ software engineer resume keywords guide</Link>.
         </p>
 
         {/* Healthcare */}
@@ -101,7 +101,7 @@ export default function ResumeKeywordsByIndustry() {
           Healthcare / Nursing
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Healthcare resumes require precise clinical terminology and certification names. Abbreviations matter — include both the abbreviation and the full term.
         </p>
 
@@ -139,7 +139,7 @@ export default function ResumeKeywordsByIndustry() {
           Finance / Banking / Accounting
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Finance roles demand precision in both technical skills and regulatory knowledge. Certifications carry significant weight.
         </p>
 
@@ -177,7 +177,7 @@ export default function ResumeKeywordsByIndustry() {
           Marketing / Digital Marketing
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Marketing is one of the fastest-evolving fields. Keywords shift with platform changes and new tools. Here's what's relevant in 2026.
         </p>
 
@@ -346,8 +346,8 @@ export default function ResumeKeywordsByIndustry() {
           </div>
         </div>
 
-        <p className="text-sm text-stone-warm mt-3">
-          For a comprehensive breakdown, see our <Link to="/blog/customer-service-resume-keywords-guide" className="text-accent hover:underline">customer service resume keywords guide</Link>.
+        <p className="text-sm text-ink/60 mt-3">
+          For a comprehensive breakdown, see our <Link to="/blog/customer-service-resume-keywords-guide" className="text-accent-text hover:underline">customer service resume keywords guide</Link>.
         </p>
 
         {/* HR */}
@@ -423,12 +423,12 @@ export default function ResumeKeywordsByIndustry() {
           Universal Keywords (Every Industry)
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Regardless of your industry, these keywords appear in almost every job description. Include the ones relevant to your experience:
         </p>
 
         <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-6">
-          <div className="grid md:grid-cols-3 gap-6 text-stone-warm">
+          <div className="grid md:grid-cols-3 gap-6 text-ink/60">
             <div>
               <h4 className="font-bold text-ink mb-3">Leadership:</h4>
               <ul className="list-disc pl-5 text-sm space-y-1">
@@ -481,7 +481,7 @@ export default function ResumeKeywordsByIndustry() {
               </div>
               <div>
                 <h3 className="font-bold text-ink mb-1">{step.title}</h3>
-                <p className="text-stone-warm">{step.desc}</p>
+                <p className="text-ink/60">{step.desc}</p>
               </div>
             </div>
           ))}
@@ -496,7 +496,7 @@ export default function ResumeKeywordsByIndustry() {
           </p>
           <Link
             to="/resume-keyword-scanner"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Open Keyword Scanner
           </Link>
@@ -506,29 +506,29 @@ export default function ResumeKeywordsByIndustry() {
           Related Resources
         </h2>
 
-        <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
+        <ul className="list-disc list-inside space-y-2 text-lg text-ink/60">
           <li>
-            <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">
+            <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">
               How to Use Resume Keywords to Beat the ATS
             </Link>
           </li>
           <li>
-            <Link to="/blog/software-engineer-resume-keywords" className="text-accent hover:underline">
+            <Link to="/blog/software-engineer-resume-keywords" className="text-accent-text hover:underline">
               75+ Software Engineer Resume Keywords
             </Link>
           </li>
           <li>
-            <Link to="/blog/customer-service-resume-keywords-guide" className="text-accent hover:underline">
+            <Link to="/blog/customer-service-resume-keywords-guide" className="text-accent-text hover:underline">
               Customer Service Resume Keywords Guide
             </Link>
           </li>
           <li>
-            <Link to="/resume-keyword-scanner" className="text-accent hover:underline">
+            <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">
               Free ATS Keyword Scanner
             </Link>
           </li>
           <li>
-            <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+            <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
               How to List Skills on a Resume
             </Link>
           </li>

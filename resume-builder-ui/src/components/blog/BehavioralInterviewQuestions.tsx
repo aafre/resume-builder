@@ -46,7 +46,7 @@ export default function BehavioralInterviewQuestions() {
       faqs={FAQS}
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Behavioral interview questions are designed to reveal how you've
           handled real situations in the past, giving employers concrete insight
           into how you'll perform on the job. Updated for 2026, this guide
@@ -54,7 +54,7 @@ export default function BehavioralInterviewQuestions() {
           15+ questions by category, and gives you a practice framework so you
           walk into every interview ready. If you're also preparing your
           resume, our{" "}
-          <Link to="/blog/job-interview-guide" className="text-accent hover:underline">
+          <Link to="/blog/job-interview-guide" className="text-accent-text hover:underline">
             comprehensive interview guide
           </Link>{" "}
           covers the full preparation process from application to offer.
@@ -66,19 +66,19 @@ export default function BehavioralInterviewQuestions() {
             Table of Contents
           </h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#what-are-behavioral-questions" className="text-accent hover:underline">What Are Behavioral Interview Questions?</a></li>
-            <li><a href="#star-method" className="text-accent hover:underline">The STAR Method (with Full Example)</a></li>
-            <li><a href="#leadership" className="text-accent hover:underline">Leadership & Management Questions</a></li>
-            <li><a href="#problem-solving" className="text-accent hover:underline">Problem-Solving & Critical Thinking</a></li>
-            <li><a href="#teamwork" className="text-accent hover:underline">Teamwork & Collaboration</a></li>
-            <li><a href="#pressure" className="text-accent hover:underline">Handling Pressure & Challenges</a></li>
-            <li><a href="#communication" className="text-accent hover:underline">Communication & Influence</a></li>
-            <li><a href="#conflict" className="text-accent hover:underline">Conflict Resolution Questions</a></li>
-            <li><a href="#virtual-interviews" className="text-accent hover:underline">Tips for Virtual & Video Interviews</a></li>
-            <li><a href="#how-to-practice" className="text-accent hover:underline">How to Practice Behavioral Answers</a></li>
-            <li><a href="#pro-tips" className="text-accent hover:underline">Pro Tips for STAR Responses</a></li>
-            <li><a href="#faq" className="text-accent hover:underline">FAQ</a></li>
-            <li><a href="#related-guides" className="text-accent hover:underline">Related Guides</a></li>
+            <li><a href="#what-are-behavioral-questions" className="text-accent-text hover:underline">What Are Behavioral Interview Questions?</a></li>
+            <li><a href="#star-method" className="text-accent-text hover:underline">The STAR Method (with Full Example)</a></li>
+            <li><a href="#leadership" className="text-accent-text hover:underline">Leadership & Management Questions</a></li>
+            <li><a href="#problem-solving" className="text-accent-text hover:underline">Problem-Solving & Critical Thinking</a></li>
+            <li><a href="#teamwork" className="text-accent-text hover:underline">Teamwork & Collaboration</a></li>
+            <li><a href="#pressure" className="text-accent-text hover:underline">Handling Pressure & Challenges</a></li>
+            <li><a href="#communication" className="text-accent-text hover:underline">Communication & Influence</a></li>
+            <li><a href="#conflict" className="text-accent-text hover:underline">Conflict Resolution Questions</a></li>
+            <li><a href="#virtual-interviews" className="text-accent-text hover:underline">Tips for Virtual & Video Interviews</a></li>
+            <li><a href="#how-to-practice" className="text-accent-text hover:underline">How to Practice Behavioral Answers</a></li>
+            <li><a href="#pro-tips" className="text-accent-text hover:underline">Pro Tips for STAR Responses</a></li>
+            <li><a href="#faq" className="text-accent-text hover:underline">FAQ</a></li>
+            <li><a href="#related-guides" className="text-accent-text hover:underline">Related Guides</a></li>
           </ol>
         </nav>
 
@@ -87,7 +87,7 @@ export default function BehavioralInterviewQuestions() {
           What Are Behavioral Interview Questions?
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Behavioral questions typically start with phrases like "Tell me about
           a time when..." or "Give me an example of..." They're based on the
           premise that past behavior is the best predictor of future
@@ -96,7 +96,7 @@ export default function BehavioralInterviewQuestions() {
           <em>actually did</em>.
         </p>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           According to a 2025 SHRM survey, over 80% of Fortune 500 companies
           use behavioral interviewing as their primary screening method. You
           can expect anywhere from 3 to 8 behavioral questions in a typical
@@ -105,11 +105,11 @@ export default function BehavioralInterviewQuestions() {
           dominate the entire session.
         </p>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           The key to answering well is preparation. Before your interview,
           review the job description and identify which competencies the role
           requires. Our{" "}
-          <Link to="/resume-keywords" className="text-accent hover:underline">
+          <Link to="/resume-keywords" className="text-accent-text hover:underline">
             resume keywords tool
           </Link>{" "}
           can help you pinpoint the exact skills and phrases that matter most
@@ -122,7 +122,7 @@ export default function BehavioralInterviewQuestions() {
           The STAR Method: A Complete Breakdown
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           The STAR method is the gold standard framework for structuring
           behavioral interview answers. Each letter stands for a component of
           your story:
@@ -162,7 +162,7 @@ export default function BehavioralInterviewQuestions() {
 
         <div className="space-y-4 my-6">
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-5">
-            <p className="text-sm font-bold text-accent uppercase tracking-wide mb-2">Situation</p>
+            <p className="text-sm font-bold text-accent-text uppercase tracking-wide mb-2">Situation</p>
             <p className="text-ink/80">
               "At my previous company, a mid-size SaaS startup, our customer
               onboarding process was taking an average of 14 days from signup
@@ -172,7 +172,7 @@ export default function BehavioralInterviewQuestions() {
             </p>
           </div>
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-5">
-            <p className="text-sm font-bold text-accent uppercase tracking-wide mb-2">Task</p>
+            <p className="text-sm font-bold text-accent-text uppercase tracking-wide mb-2">Task</p>
             <p className="text-ink/80">
               "As the customer success lead, I was asked to reduce onboarding
               time and cut 30-day churn by at least 5 percentage points before
@@ -180,7 +180,7 @@ export default function BehavioralInterviewQuestions() {
             </p>
           </div>
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-5">
-            <p className="text-sm font-bold text-accent uppercase tracking-wide mb-2">Action</p>
+            <p className="text-sm font-bold text-accent-text uppercase tracking-wide mb-2">Action</p>
             <p className="text-ink/80">
               "I mapped the entire onboarding journey and found three
               bottlenecks: manual data import, a confusing permission setup
@@ -193,7 +193,7 @@ export default function BehavioralInterviewQuestions() {
             </p>
           </div>
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-5">
-            <p className="text-sm font-bold text-accent uppercase tracking-wide mb-2">Result</p>
+            <p className="text-sm font-bold text-accent-text uppercase tracking-wide mb-2">Result</p>
             <p className="text-ink/80">
               "Onboarding time dropped from 14 days to 5 days. Thirty-day
               churn fell from 22% to 11%, beating the target by 6 points.
@@ -204,12 +204,12 @@ export default function BehavioralInterviewQuestions() {
           </div>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Notice how the answer is specific, quantified, and focused on
           personal actions. This is exactly the kind of story that makes
           interviewers take notes. You can use the same approach when writing
           accomplishment bullets on your resume — see our{" "}
-          <Link to="/blog/how-to-write-a-resume-guide" className="text-accent hover:underline">
+          <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
             complete resume writing guide
           </Link>{" "}
           for more on translating STAR stories into resume bullets.
@@ -220,12 +220,12 @@ export default function BehavioralInterviewQuestions() {
           Leadership & Management Questions
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           These questions assess your ability to guide teams, make decisions,
           and drive results. If you're targeting a management role, expect 2-3
           of these. For examples of how to present leadership experience on
           paper, check our{" "}
-          <Link to="/examples/project-manager" className="text-accent hover:underline">
+          <Link to="/examples/project-manager" className="text-accent-text hover:underline">
             project manager resume example
           </Link>{" "}
           for strong leadership bullet points.
@@ -274,7 +274,7 @@ export default function BehavioralInterviewQuestions() {
           Problem-Solving & Critical Thinking
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           These questions test your analytical mindset and resourcefulness.
           Interviewers want to see structured thinking, not just lucky outcomes.
         </p>
@@ -321,7 +321,7 @@ export default function BehavioralInterviewQuestions() {
           Teamwork & Collaboration
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Nearly every role involves working with others. These questions
           reveal your interpersonal skills and adaptability.
         </p>
@@ -369,7 +369,7 @@ export default function BehavioralInterviewQuestions() {
           Handling Pressure & Challenges
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Employers need to know you can perform when stakes are high. These
           are some of the hardest behavioral questions because they ask about
           failure and stress — topics most candidates stumble on.
@@ -418,7 +418,7 @@ export default function BehavioralInterviewQuestions() {
           Communication & Influence
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           These questions evaluate how effectively you convey ideas, persuade
           stakeholders, and navigate difficult conversations.
         </p>
@@ -466,7 +466,7 @@ export default function BehavioralInterviewQuestions() {
           Conflict Resolution Questions
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Conflict questions are among the most commonly asked across all
           industries. They reveal your maturity, emotional intelligence, and
           ability to maintain productive relationships even under tension.
@@ -477,7 +477,7 @@ export default function BehavioralInterviewQuestions() {
             <h4 className="font-bold text-ink mb-2">
               16. "Tell me about a time you disagreed with your manager."
             </h4>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               <strong>Focus on:</strong> How you raised your concern
               respectfully, the evidence you presented, and whether the outcome
               was a compromise, a change of course, or graceful acceptance of
@@ -490,7 +490,7 @@ export default function BehavioralInterviewQuestions() {
               17. "Describe a situation where two teams you worked with had
               conflicting priorities."
             </h4>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               <strong>Focus on:</strong> How you facilitated alignment — did you
               propose a shared metric, escalate with data, or find a creative
               solution that addressed both teams' needs?
@@ -502,7 +502,7 @@ export default function BehavioralInterviewQuestions() {
               18. "Give an example of when you received critical feedback and
               how you responded."
             </h4>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               <strong>Focus on:</strong> Your openness to feedback, the specific
               changes you made, and how those changes improved your performance
               or a relationship.
@@ -515,7 +515,7 @@ export default function BehavioralInterviewQuestions() {
           Tips for Virtual & Video Behavioral Interviews
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           With remote and hybrid work now standard in 2026, many behavioral
           interviews happen over Zoom, Teams, or Google Meet. The STAR method
           works the same way, but the delivery needs adjusting.
@@ -524,7 +524,7 @@ export default function BehavioralInterviewQuestions() {
         <div className="grid md:grid-cols-2 gap-6 my-6">
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">Camera & Audio Setup</h4>
-            <ul className="list-disc pl-5 space-y-2 text-stone-warm">
+            <ul className="list-disc pl-5 space-y-2 text-ink/60">
               <li>Position your camera at eye level and look into the lens (not the screen) when answering</li>
               <li>Use a headset or external mic to avoid echo and background noise</li>
               <li>Test your setup 30 minutes before the interview, not 30 seconds</li>
@@ -532,7 +532,7 @@ export default function BehavioralInterviewQuestions() {
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">Delivery Adjustments</h4>
-            <ul className="list-disc pl-5 space-y-2 text-stone-warm">
+            <ul className="list-disc pl-5 space-y-2 text-ink/60">
               <li>Pause slightly longer between STAR sections — video lag can make you sound like you're rushing</li>
               <li>Use brief hand gestures to stay engaging on camera</li>
               <li>Keep a bullet-point cheat sheet just below your camera (never read full answers)</li>
@@ -540,7 +540,7 @@ export default function BehavioralInterviewQuestions() {
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">Environment</h4>
-            <ul className="list-disc pl-5 space-y-2 text-stone-warm">
+            <ul className="list-disc pl-5 space-y-2 text-ink/60">
               <li>Use a clean, well-lit background — a plain wall or bookshelf works best</li>
               <li>Close all other apps to prevent notification sounds and slowdowns</li>
               <li>Have a glass of water nearby (it's normal to sip between answers)</li>
@@ -548,7 +548,7 @@ export default function BehavioralInterviewQuestions() {
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">One-Way Video Interviews</h4>
-            <ul className="list-disc pl-5 space-y-2 text-stone-warm">
+            <ul className="list-disc pl-5 space-y-2 text-ink/60">
               <li>Record a practice run first — you'll catch filler words and pacing issues</li>
               <li>Look directly at the camera since there's no face to focus on</li>
               <li>Use the full allotted time — short answers signal lack of depth</li>
@@ -561,7 +561,7 @@ export default function BehavioralInterviewQuestions() {
           How to Practice Behavioral Answers
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Reading about the STAR method is step one. Actually practicing it
           out loud is what separates prepared candidates from everyone else.
           Here's a structured approach:
@@ -572,13 +572,13 @@ export default function BehavioralInterviewQuestions() {
             <div className="w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">1</div>
             <div>
               <h4 className="font-bold text-ink mb-1">Build a Story Bank (5-8 Stories)</h4>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Write out 5-8 detailed stories from your career that cover
                 different competencies: leadership, conflict, failure,
                 collaboration, and innovation. Each story should be versatile
                 enough to answer 2-3 different questions. If you're early in
                 your career, our{" "}
-                <Link to="/blog/resume-no-experience" className="text-accent hover:underline">
+                <Link to="/blog/resume-no-experience" className="text-accent-text hover:underline">
                   guide for candidates without experience
                 </Link>{" "}
                 shows how to draw from academic projects, volunteer work, and
@@ -590,7 +590,7 @@ export default function BehavioralInterviewQuestions() {
             <div className="w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">2</div>
             <div>
               <h4 className="font-bold text-ink mb-1">Write STAR Outlines, Not Scripts</h4>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 For each story, jot down 2-3 bullet points per STAR section.
                 A script sounds rehearsed; bullet points keep you natural while
                 ensuring you hit every component. Aim for answers that run
@@ -602,7 +602,7 @@ export default function BehavioralInterviewQuestions() {
             <div className="w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">3</div>
             <div>
               <h4 className="font-bold text-ink mb-1">Practice with a Timer</h4>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Set a 90-second timer and answer a random question from the
                 list above. If you go over two minutes, trim the Situation
                 section first — that's where most people over-explain. Record
@@ -615,10 +615,10 @@ export default function BehavioralInterviewQuestions() {
             <div className="w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">4</div>
             <div>
               <h4 className="font-bold text-ink mb-1">Use AI for Mock Interviews</h4>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 AI tools can simulate an interviewer and give you feedback on
                 your answers. Try using{" "}
-                <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">
+                <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">
                   Claude AI prompts
                 </Link>{" "}
                 to generate follow-up questions based on your STAR stories.
@@ -631,7 +631,7 @@ export default function BehavioralInterviewQuestions() {
             <div className="w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">5</div>
             <div>
               <h4 className="font-bold text-ink mb-1">Do a Full Mock Session</h4>
-              <p className="text-stone-warm">
+              <p className="text-ink/60">
                 Ask a friend or mentor to pick 5 questions at random and
                 interview you for 30 minutes. The goal is to practice
                 transitioning between stories and handling curveball follow-ups
@@ -645,7 +645,7 @@ export default function BehavioralInterviewQuestions() {
           <h3 className="text-2xl font-bold text-ink mb-4">
             Practice Makes Perfect
           </h3>
-          <p className="text-lg text-stone-warm max-w-2xl mx-auto mb-6">
+          <p className="text-lg text-ink/60 max-w-2xl mx-auto mb-6">
             Don't just memorize these questions — practice your STAR responses
             out loud. Try using <strong>PrepAI</strong> for realistic mock
             interviews that help you refine your answers and build confidence.
@@ -666,7 +666,7 @@ export default function BehavioralInterviewQuestions() {
         </h2>
 
         <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-6">
-          <ul className="list-disc pl-6 space-y-3 text-stone-warm">
+          <ul className="list-disc pl-6 space-y-3 text-ink/60">
             <li>
               <strong>Keep it concise:</strong> Aim for 60-90 seconds per
               answer. Two minutes is the absolute maximum before interviewers
@@ -690,7 +690,7 @@ export default function BehavioralInterviewQuestions() {
             <li>
               <strong>Match stories to the job description:</strong> Review the
               required competencies and map each one to a story. Use our{" "}
-              <Link to="/templates/ats-friendly" className="text-accent hover:underline">
+              <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">
                 ATS-friendly templates
               </Link>{" "}
               to structure your resume around the same competencies you'll
@@ -719,7 +719,7 @@ export default function BehavioralInterviewQuestions() {
             <h3 className="text-xl font-bold text-ink mb-3">
               What is the STAR method for interviews?
             </h3>
-            <p className="text-lg leading-relaxed text-stone-warm">
+            <p className="text-lg leading-relaxed text-ink/60">
               The STAR method is a structured framework for answering
               behavioral interview questions. STAR stands for Situation, Task,
               Action, and Result. You describe a specific past experience by
@@ -734,7 +734,7 @@ export default function BehavioralInterviewQuestions() {
             <h3 className="text-xl font-bold text-ink mb-3">
               How many behavioral questions should I prepare for?
             </h3>
-            <p className="text-lg leading-relaxed text-stone-warm">
+            <p className="text-lg leading-relaxed text-ink/60">
               Prepare 5-8 detailed STAR stories that cover different
               competencies (leadership, teamwork, problem-solving, conflict,
               failure, communication). Most interviews include 3-8 behavioral
@@ -748,7 +748,7 @@ export default function BehavioralInterviewQuestions() {
             <h3 className="text-xl font-bold text-ink mb-3">
               What are the hardest behavioral interview questions?
             </h3>
-            <p className="text-lg leading-relaxed text-stone-warm">
+            <p className="text-lg leading-relaxed text-ink/60">
               The hardest questions are the ones that ask about negative
               experiences: "Tell me about a time you failed," "Describe a
               conflict with your manager," and "Give an example of when you
@@ -764,7 +764,7 @@ export default function BehavioralInterviewQuestions() {
             <h3 className="text-xl font-bold text-ink mb-3">
               How to answer "Tell me about a time you failed"?
             </h3>
-            <p className="text-lg leading-relaxed text-stone-warm">
+            <p className="text-lg leading-relaxed text-ink/60">
               Choose a real professional failure — not "I work too hard" or a
               disguised success. Briefly describe the situation and what went
               wrong (2-3 sentences). Take clear ownership without blaming
@@ -780,7 +780,7 @@ export default function BehavioralInterviewQuestions() {
             <h3 className="text-xl font-bold text-ink mb-3">
               How long should behavioral interview answers be?
             </h3>
-            <p className="text-lg leading-relaxed text-stone-warm">
+            <p className="text-lg leading-relaxed text-ink/60">
               Aim for 60-90 seconds per answer, which translates to roughly
               150-250 words when spoken. Two minutes is the absolute ceiling —
               longer answers lose the interviewer's attention and suggest you
@@ -794,7 +794,7 @@ export default function BehavioralInterviewQuestions() {
             <h3 className="text-xl font-bold text-ink mb-3">
               Should I use the same examples for multiple questions?
             </h3>
-            <p className="text-lg leading-relaxed text-stone-warm">
+            <p className="text-lg leading-relaxed text-ink/60">
               It's fine to draw from the same overall experience, but
               emphasize different aspects for each question. For example, one
               project launch could answer a teamwork question (focusing on
@@ -810,7 +810,7 @@ export default function BehavioralInterviewQuestions() {
             <h3 className="text-xl font-bold text-ink mb-3">
               Do behavioral questions differ by industry?
             </h3>
-            <p className="text-lg leading-relaxed text-stone-warm">
+            <p className="text-lg leading-relaxed text-ink/60">
               The core questions (leadership, teamwork, conflict, failure) are
               universal. However, industries add their own flavor. Tech
               companies often ask about ambiguity and fast-paced change.
@@ -835,7 +835,7 @@ export default function BehavioralInterviewQuestions() {
             className="block bg-chalk-dark rounded-xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
           >
             <h4 className="font-bold text-ink mb-2">Complete Job Interview Guide</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               End-to-end preparation: research, common questions, follow-up
               emails, and salary negotiation.
             </p>
@@ -846,7 +846,7 @@ export default function BehavioralInterviewQuestions() {
             className="block bg-chalk-dark rounded-xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
           >
             <h4 className="font-bold text-ink mb-2">Resume with No Experience</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               How to build strong STAR stories from internships, academic
               projects, and volunteer work.
             </p>
@@ -857,7 +857,7 @@ export default function BehavioralInterviewQuestions() {
             className="block bg-chalk-dark rounded-xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
           >
             <h4 className="font-bold text-ink mb-2">How to Write a Resume (2026)</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Step-by-step guide to writing accomplishment-driven resume
               bullets that mirror your interview stories.
             </p>
@@ -868,14 +868,14 @@ export default function BehavioralInterviewQuestions() {
             className="block bg-chalk-dark rounded-xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
           >
             <h4 className="font-bold text-ink mb-2">Claude AI Resume Prompts</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Use AI to draft STAR stories, generate follow-up questions, and
               stress-test your behavioral answers.
             </p>
           </Link>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-8">
+        <p className="text-lg leading-relaxed text-ink/60 mt-8">
           Behavioral interview questions are your opportunity to showcase real
           experience and demonstrate your potential with concrete evidence. By
           building a story bank, practicing the STAR structure, and tailoring
@@ -891,7 +891,7 @@ export default function BehavioralInterviewQuestions() {
           {FAQS.map((faq, i) => (
             <div key={i} className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
               <h3 className="font-bold text-ink mb-2">{faq.question}</h3>
-              <p className="text-stone-warm leading-relaxed">{faq.answer}</p>
+              <p className="text-ink/60 leading-relaxed">{faq.answer}</p>
             </div>
           ))}
         </div>

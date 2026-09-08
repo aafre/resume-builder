@@ -18,7 +18,7 @@ export default function IntroducingPrepAI() {
       ctaType="interview"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           You've perfected your resume, researched the company, and prepared
           your STAR stories. But there's one crucial step missing: realistic
           interview practice with personalized feedback based on your actual CV
@@ -31,7 +31,7 @@ export default function IntroducingPrepAI() {
           The Problem with Traditional Interview Prep
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Most job seekers prepare for interviews by reading articles,
           memorizing answers, and maybe practicing in front of a mirror. While
           these methods have their place, they fall short in several critical
@@ -67,7 +67,7 @@ export default function IntroducingPrepAI() {
           Enter PrepAI: Your Personal Interview Coach
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           PrepAI bridges the gap between basic preparation and expensive
           coaching by providing personalized interview questions and real-time
           AI feedback based on your actual CV and job description. Think of it
@@ -86,7 +86,7 @@ export default function IntroducingPrepAI() {
             href="https://prepai.co.uk/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Your Free Mock Interview
           </a>
@@ -96,7 +96,7 @@ export default function IntroducingPrepAI() {
           Your AI-Powered Success Loop
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-8">
+        <p className="text-lg leading-relaxed text-ink/60 mb-8">
           PrepAI transforms your interview skills through a proven 4-step
           feedback system that builds lasting confidence:
         </p>
@@ -118,7 +118,7 @@ export default function IntroducingPrepAI() {
             <h3 className="text-xl font-bold text-green-800 mb-3">
               2. Get Smart Feedback
             </h3>
-            <p className="text-accent">
+            <p className="text-accent-text">
               Receive instant, actionable analysis on your answer's clarity,
               structure, and impact. Our AI coach, trained on thousands of
               successful interviews, provides specific insights on how to
@@ -159,7 +159,7 @@ export default function IntroducingPrepAI() {
             <h4 className="font-bold text-ink mb-2">
               🎯 Tailored to Your Profile
             </h4>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Questions and scenarios based on your actual resume and the
               specific job you're applying for. No generic practice - everything
               is personalized to your background.
@@ -170,7 +170,7 @@ export default function IntroducingPrepAI() {
             <h4 className="font-bold text-ink mb-2">
               🎤 Voice-Enabled Practice
             </h4>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Practice with voice-enabled mock interviews that adapt to your
               responses and skill level, just like real interviews.
             </p>
@@ -180,7 +180,7 @@ export default function IntroducingPrepAI() {
             <h4 className="font-bold text-ink mb-2">
               📊 Detailed Analytics
             </h4>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Track your improvement with detailed analytics on communication,
               content, and confidence levels across multiple practice sessions.
             </p>
@@ -190,7 +190,7 @@ export default function IntroducingPrepAI() {
             <h4 className="font-bold text-ink mb-2">
               ⏰ Practice on Your Schedule
             </h4>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               PrepAI is available 24/7, so you can prepare whenever works best
               for you. No scheduling, no waiting - just instant practice.
             </p>
@@ -200,7 +200,7 @@ export default function IntroducingPrepAI() {
             <h4 className="font-bold text-ink mb-2">
               💡 Instant Feedback
             </h4>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Get immediate, actionable feedback on your answers with specific
               tips you can use to improve your storytelling and presentation.
             </p>
@@ -208,7 +208,7 @@ export default function IntroducingPrepAI() {
 
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h4 className="font-bold text-ink mb-2">🔒 Privacy First</h4>
-            <p className="text-stone-warm">
+            <p className="text-ink/60">
               Your resume and practice data are encrypted and never shared.
               Practice with complete confidence in your privacy.
             </p>
@@ -219,7 +219,7 @@ export default function IntroducingPrepAI() {
           Perfect Complement to Your Resume Building
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Your journey from job search to job offer has two critical components:
           a standout resume and interview skills that wow employers. While tools
           like EasyFreeResume help you create ATS-friendly resumes that get you
@@ -253,20 +253,20 @@ export default function IntroducingPrepAI() {
           Getting Started with PrepAI
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Ready to transform your interview preparation? Getting started with
           PrepAI is simple:
         </p>
 
         <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-6">
-          <ol className="list-decimal pl-6 space-y-3 text-stone-warm">
+          <ol className="list-decimal pl-6 space-y-3 text-ink/60">
             <li>
               <strong>Visit PrepAI:</strong> Head to{" "}
               <a
                 href="https://prepai.co.uk/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-accent hover:text-ink underline"
+                className="text-accent-text hover:text-ink underline"
               >
                 prepai.co.uk
               </a>{" "}
@@ -295,7 +295,7 @@ export default function IntroducingPrepAI() {
           <h3 className="text-2xl font-bold text-ink mb-4">
             Don't Just Prepare, PrepAI
           </h3>
-          <p className="text-lg text-stone-warm max-w-2xl mx-auto mb-6">
+          <p className="text-lg text-ink/60 max-w-2xl mx-auto mb-6">
             Join thousands of job seekers who have transformed their interview
             skills and landed their dream jobs with PrepAI's intelligent
             coaching.
@@ -310,7 +310,7 @@ export default function IntroducingPrepAI() {
           </a>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-8">
+        <p className="text-lg leading-relaxed text-ink/60 mt-8">
           The 2026 job market remains competitive, but with the right tools and
           preparation, you can stand out from the crowd. Combine a
           professionally crafted resume with the confidence that comes from
