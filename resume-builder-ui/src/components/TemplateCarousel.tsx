@@ -1,12 +1,15 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
+import { flushSync } from "react-dom";
 import { useNavigate } from "react-router-dom";
+import { withViewTransition } from "../lib/viewTransition";
 import { fetchTemplates } from "../services/templates";
 import { apiClient } from "../lib/api-client";
-import { ArrowRightIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
+import { ArrowRightIcon, MagnifyingGlassPlusIcon } from "@heroicons/react/24/solid";
 import { useAuth } from "../contexts/AuthContext";
 import toast from "react-hot-toast";
 import yaml from "js-yaml";
 import TemplateStartModal from "./TemplateStartModal";
+import TemplateLightbox from "./TemplateLightbox";
 import ResumeRecoveryModal from "./ResumeRecoveryModal";
 import AuthModal from "./AuthModal";
 import { InFeedAd, AD_CONFIG } from "./ads";
@@ -38,9 +41,14 @@ interface TemplateCarouselProps {
 
 const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }) => {
   const [templates, setTemplates] = useState<Template[]>([]);
-  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
-    null
-  );
+  /** Index of the template open in the full-screen reader, or null. */
+  const [previewIndex, setPreviewIndex] = useState<number | null>(null);
+  /**
+   * Index of the card image currently carrying `view-transition-name:
+   * template-sheet`. Exactly one element in the document may hold that name, so
+   * it moves in lockstep with the reader opening and closing.
+   */
+  const [morphIndex, setMorphIndex] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showStartModal, setShowStartModal] = useState(false);
@@ -62,7 +70,6 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
         setLoading(true);
         const data = await fetchTemplates();
         setTemplates(data);
-        setSelectedTemplate(data[0] || null); // Select the first template by default
       } catch (err) {
         setError("Failed to load templates. Please try again later.");
         console.error("Error fetching templates:", err);
@@ -74,14 +81,32 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
     loadTemplates();
   }, []);
 
-  // Handle template selection
-  const handleSelectTemplate = (template: Template) => {
-    setSelectedTemplate(template);
+  // Open the full-screen reader, morphing the card image into the sheet.
+  // The name has to be on the card *before* the transition starts, because
+  // that is the state the browser snapshots as "old".
+  const openPreview = (index: number) => {
+    flushSync(() => setMorphIndex(index));
+    withViewTransition(() => {
+      setMorphIndex(null);
+      setPreviewIndex(index);
+    });
+  };
+
+  // Morph back to whichever card is on show, then release the name.
+  const closePreview = () => {
+    const returningTo = previewIndex;
+    withViewTransition(() => {
+      setPreviewIndex(null);
+      setMorphIndex(returningTo);
+    }).then(() => setMorphIndex(null));
   };
 
   // Show modal when user clicks "Use Template"
   const handleUseTemplate = async (templateId: string) => {
     trackTemplateSelected({ template_id: templateId });
+    // Set early so the card that was clicked can show its own busy state
+    // while we look up existing resumes.
+    setSelectedTemplateForModal(templateId);
     if (!session) {
       toast.error("Please sign in to create a resume");
       return;
@@ -355,100 +380,65 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
       <div className="container mx-auto max-w-6xl px-4 pb-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {templates.map((template, index) => {
-            const isSelected = selectedTemplate?.id === template.id;
+            const busy =
+              (creating || checkingExistingResume) &&
+              selectedTemplateForModal === template.id;
             return (
               <React.Fragment key={template.id}>
-                <div
-                  className={`group cursor-pointer transition-all duration-300 ${
-                    isSelected ? "scale-[1.02]" : "hover:scale-[1.02]"
-                  }`}
-                  onClick={() => handleSelectTemplate(template)}
-                >
-                  <div
-                    className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 ${
-                      isSelected
-                        ? "border-accent ring-4 ring-accent/20"
-                        : "border-gray-200/80 hover:border-accent/30"
-                    }`}
+                <div className="group flex flex-col bg-white rounded-3xl border border-ink/10 shadow-[0_1px_2px_rgba(12,12,12,0.04),0_16px_40px_-20px_rgba(12,12,12,0.25)] hover:shadow-[0_1px_2px_rgba(12,12,12,0.04),0_28px_60px_-24px_rgba(12,12,12,0.32)] transition-shadow duration-300 overflow-clip">
+                  {/* The preview opens the full-screen reader */}
+                  <button
+                    type="button"
+                    onClick={() => openPreview(index)}
+                    aria-label={`Read the ${template.name} template at full size`}
+                    className="relative block w-full bg-chalk-dark cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset"
                   >
-                    {/* Template Preview - Larger Image */}
-                    <div className="relative overflow-hidden bg-chalk-dark">
-                      <img
-                        src={template.image_url}
-                        alt={template.name}
-                        className="w-full h-96 sm:h-[500px] object-contain p-4 group-hover:scale-105 transition-transform duration-500"
-                        width="400"
-                        height="500"
-                        /* Optimization: Eager load first 2 templates (LCP), lazy load the rest */
-                        loading={index < 2 ? "eager" : "lazy"}
-                        decoding="async"
-                      />
-                      {isSelected && (
-                        <div className="absolute top-6 right-6 bg-accent text-ink p-3 rounded-full shadow-xl">
-                          <CheckCircleIcon className="w-7 h-7" />
-                        </div>
+                    <img
+                      src={template.image_url}
+                      alt={template.name}
+                      className="w-full h-96 sm:h-[500px] object-contain p-4 group-hover:scale-[1.02] transition-transform duration-500"
+                      width="400"
+                      height="500"
+                      /* Optimization: Eager load first 2 templates (LCP), lazy load the rest */
+                      loading={index < 2 ? "eager" : "lazy"}
+                      decoding="async"
+                      style={{
+                        viewTransitionName:
+                          morphIndex === index ? "template-sheet" : undefined,
+                      }}
+                    />
+                    <span className="absolute bottom-5 left-1/2 -translate-x-1/2 inline-flex items-center gap-2 rounded-full bg-ink/90 text-white px-4 py-2 font-mono text-xs tracking-[0.15em] uppercase whitespace-nowrap opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0 transition-all duration-300">
+                      <MagnifyingGlassPlusIcon className="w-4 h-4" />
+                      Read full size
+                    </span>
+                  </button>
+
+                  {/* Template Info - Compact but informative */}
+                  <div className="flex flex-col flex-1 p-6 lg:p-8">
+                    <h3 className="font-display text-2xl font-extrabold tracking-tight text-ink mb-2">
+                      {template.name}
+                    </h3>
+                    <p className="font-extralight text-ink/60 leading-relaxed flex-1">
+                      {template.description}
+                    </p>
+
+                    <button
+                      className="mt-6 w-full inline-flex items-center justify-center bg-accent text-ink py-4 px-6 rounded-xl font-semibold transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0"
+                      onClick={() => handleUseTemplate(template.id)}
+                      disabled={busy}
+                    >
+                      {busy ? (
+                        <>
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-ink mr-2"></div>
+                          {checkingExistingResume ? "Checking..." : "Creating..."}
+                        </>
+                      ) : (
+                        <>
+                          Start with this template
+                          <ArrowRightIcon className="w-5 h-5 ml-2" />
+                        </>
                       )}
-
-                      {/* Overlay with quick info on hover */}
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 flex items-end">
-                        <div className="w-full p-6 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <p className="text-white text-sm font-medium">
-                            Click to preview details
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Template Info - Compact but informative */}
-                    <div className="p-6 lg:p-8">
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex-1">
-                          <h3 className="font-display text-2xl font-bold text-ink mb-2 group-hover:text-accent-text transition-colors">
-                            {template.name}
-                          </h3>
-                          <p className="text-ink/60 leading-relaxed">
-                            {template.description}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Action Buttons */}
-                      <div className="flex gap-3">
-                        {isSelected ? (
-                          <>
-                            <button
-                              className="flex-1 inline-flex items-center justify-center bg-accent text-ink py-4 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleUseTemplate(template.id);
-                              }}
-                              disabled={creating || checkingExistingResume}
-                            >
-                              {checkingExistingResume ? (
-                                <>
-                                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                                  Checking...
-                                </>
-                              ) : creating ? (
-                                <>
-                                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                                  Creating...
-                                </>
-                              ) : (
-                                <>
-                                  Start Building Resume
-                                  <ArrowRightIcon className="w-5 h-5 ml-2" />
-                                </>
-                              )}
-                            </button>
-                          </>
-                        ) : (
-                          <button className="btn-primary w-full py-4 px-6">
-                            <span className="relative z-10">Select This Template</span>
-                          </button>
-                        )}
-                      </div>
-                    </div>
+                    </button>
                   </div>
                 </div>
                 {/* Insert in-feed ad after every 6 templates, starting after position 5 (0-indexed) */}
@@ -478,6 +468,22 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
           </div>
         )}
       </div>
+
+      {/* Full-screen template reader */}
+      <TemplateLightbox
+        templates={templates}
+        activeIndex={previewIndex}
+        onIndexChange={setPreviewIndex}
+        onClose={closePreview}
+        onStart={(templateId) => {
+          // Hand off to the start flow's own modal — two overlays cannot both
+          // hold the focus trap and the scroll lock.
+          setPreviewIndex(null);
+          setMorphIndex(null);
+          handleUseTemplate(templateId);
+        }}
+        busy={creating || checkingExistingResume}
+      />
 
       {/* Template Start Modal */}
       <TemplateStartModal
