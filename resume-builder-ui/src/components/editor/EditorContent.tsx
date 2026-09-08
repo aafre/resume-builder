@@ -265,7 +265,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
 
   return (
     <div
-      className={`mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-[calc(var(--mobile-action-bar-height)+1rem)] lg:pb-[1rem] max-w-4xl lg:max-w-none transition-all duration-300 ${
+      className={`mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-[calc(var(--mobile-action-bar-height)+1rem)] lg:pb-[1rem] max-w-4xl lg:max-w-5xl transition-all duration-300 ${
         navigation.isSidebarCollapsed ? 'lg:mr-[88px]' : 'lg:mr-[296px]'
       }`}
     >

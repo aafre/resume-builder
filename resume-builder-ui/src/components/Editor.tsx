@@ -48,11 +48,11 @@ const EditorSkeleton = () => (
     <span className="sr-only">Loading your resume…</span>
     <div
       aria-hidden="true"
-      className="mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8 max-w-4xl lg:max-w-none lg:mr-[296px]"
+      className="mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8 max-w-4xl lg:max-w-5xl lg:mr-[296px]"
     >
       <div className="h-8 w-64 rounded-lg bg-chalk-dark animate-pulse mb-4"></div>
 
-      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-4">
+      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-edit-section">
         <div className="h-5 w-44 rounded-md bg-chalk-dark animate-pulse mb-4"></div>
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="h-11 rounded-lg bg-chalk-dark animate-pulse"></div>
@@ -62,17 +62,17 @@ const EditorSkeleton = () => (
         </div>
       </div>
 
-      <div className="h-12 rounded-xl border border-gray-200 bg-white mb-4"></div>
+      <div className="h-12 rounded-xl border border-gray-200 bg-white mb-edit-section"></div>
 
-      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-4">
+      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-edit-section">
         <div className="h-5 w-40 rounded-md bg-chalk-dark animate-pulse mb-4"></div>
         <div className="h-24 rounded-lg bg-chalk-dark animate-pulse"></div>
       </div>
-      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-4">
+      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-edit-section">
         <div className="h-5 w-32 rounded-md bg-chalk-dark animate-pulse mb-4"></div>
         <div className="h-40 rounded-lg bg-chalk-dark animate-pulse"></div>
       </div>
-      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-4">
+      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-edit-section">
         <div className="h-5 w-36 rounded-md bg-chalk-dark animate-pulse mb-4"></div>
         <div className="h-24 rounded-lg bg-chalk-dark animate-pulse"></div>
       </div>
