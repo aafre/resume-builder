@@ -107,7 +107,13 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
   }, [index, onUpdate]);
 
   return (
-    <div className="bg-chalk-dark p-3 sm:p-6 mb-3 sm:mb-6 rounded-xl border border-gray-200 shadow-sm">
+    // Tonal, not bordered: this card already sits inside .section-card, which is
+    // white with a border and a shadow. Repeating both here made one bullet sit
+    // inside three nested bordered boxes, each with its own resting shadow --
+    // against Flat-At-Rest, and against DESIGN.md's "where a resting surface
+    // needs to separate from its ground, it does so tonally, not with a shadow".
+    // Chalk Dark on white is the whole separation this needs.
+    <div className="bg-chalk-dark p-4 sm:p-6 mb-edit-group rounded-xl">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-medium">Experience #{index + 1}</h3>
         <button
@@ -120,7 +126,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
         </button>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-edit-group">
         {supportsIcons && iconRegistry && (
           <div className="mb-4">
             <IconManager

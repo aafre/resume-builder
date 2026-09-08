@@ -45,7 +45,8 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
 }) => {
   return (
     <SortableItem id={id}>
-      <div className="bg-chalk-dark p-6 mb-6 rounded-xl border border-gray-200 shadow-sm">
+      {/* Tonal separation only — see the note in ExperienceItem. */}
+      <div className="bg-chalk-dark p-4 sm:p-6 mb-edit-group rounded-xl">
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-semibold">Entry {index + 1}</h3>
           <button
@@ -57,7 +58,7 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
             <MdDelete className="text-xl" />
           </button>
         </div>
-        <div className="mt-4">
+        <div className="mt-edit-group">
           {supportsIcons && iconRegistry && (
             <div className="mb-4">
               <IconManager

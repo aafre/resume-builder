@@ -132,11 +132,15 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
             No social links added yet.
           </p>
         ) : (
-          <div className="space-y-4 mb-4">
+          <div className="space-y-edit-group mb-edit-group">
             {socialLinks.map((link, index) => (
+              // Chalk Dark, not Chalk: this row sits on the white section card,
+              // and Chalk (#fafaf8) against white is not a visible ground — the
+              // border was doing all the separating. Tonal separation instead,
+              // and no hover lift: a static form row is not going anywhere.
               <div
                 key={index}
-                className="bg-chalk rounded-xl p-4 border border-gray-200 shadow-sm transition-shadow duration-200 hover:shadow-md"
+                className="bg-chalk-dark rounded-xl p-4"
               >
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {/* Platform Dropdown */}
