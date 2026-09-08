@@ -176,7 +176,7 @@ implementations. Other pages are still being migrated to match.
 
 - **Tokens, verbatim from `tailwind.config.js`** (the config is authoritative, not this
   file): `ink` `#0c0c0c`, `ink-light` `#1a1a1a`, `chalk` `#fafaf8`, `chalk-dark`
-  `#f0efe9`, `accent` `#00d47e`, `accent-text` `#007a48`. **There is no `mist` token
+  `#f6f6f5`, `accent` `#00d47e`, `accent-text` `#007a48`. **There is no `mist` token
   and no `stone-warm`/`stone-warm-inverse` token** — muted/secondary text is opacity of
   an existing token (`text-ink/60`, `text-white/60`), not a standalone grey. The prior
   `stone-warm` pair (`#6b6761`/`#a8a4a0`) carried a taupe cast that clashed with the
@@ -185,7 +185,7 @@ implementations. Other pages are still being migrated to match.
 
 - **Muted text is surface-polarity-paired, and each value is only AA-valid against the
   polarity it was measured on. Never use one on the other's ground.** `text-ink/60` is
-  for light grounds (Chalk / white / Chalk Dark: 5.09 / 5.16 / 4.93);
+  for light grounds (Chalk / white / Chalk Dark: 5.09 / 5.16 / 5.01);
   `text-white/60` is for dark grounds (Ink / Ink Light / white-5%-over-Ink-Light:
   7.28 / 6.93 / 6.43). Swapping them fails AA in both directions.
 
