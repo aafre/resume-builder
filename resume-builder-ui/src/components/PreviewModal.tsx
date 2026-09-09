@@ -90,6 +90,17 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
   const showStale = isStale && !isGenerating;
   const pdfVisible = Boolean(previewUrl) && loadingState === 'loaded';
 
+  // Once a print has been seen, a regenerate shows the previous one dimmed
+  // under the scan rather than blanking the paper — the sheet keeps saying
+  // what the resume looks like while the next version builds.
+  const [hasPrinted, setHasPrinted] = useState(false);
+  useEffect(() => {
+    if (pdfVisible) setHasPrinted(true);
+  }, [pdfVisible]);
+  useEffect(() => {
+    if (!isOpen) setHasPrinted(false);
+  }, [isOpen]);
+
   const iconButton =
     "grid place-items-center w-11 h-11 rounded-full bg-white/10 text-white " +
     "hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 " +
@@ -143,8 +154,12 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
       <div className="flex-1 min-h-0 grid place-items-center px-4 sm:px-6 py-5">
         <div
           data-testid="preview-sheet"
+          /* ponytail: Letter (8.5x11), the page size wkhtmltopdf emits here —
+             resume_generator.py passes no explicit page-size, so this tracks
+             the toolchain default. If the generator ever pins A4, change this
+             to aspect-[210/297] or the sheet will crop the page. */
           style={{ viewTransitionName: 'resume-sheet' }}
-          className="relative overflow-clip rounded-lg bg-white shadow-2xl w-full max-h-full aspect-[210/297] sm:w-auto sm:h-full sm:max-w-full"
+          className="relative overflow-clip rounded-lg bg-white shadow-2xl w-full max-h-full aspect-[85/110] sm:w-auto sm:h-full sm:max-w-full"
         >
           {/* Cached thumbnail — the paper is never blank while the PDF builds */}
           {posterUrl && !pdfVisible && (
@@ -168,7 +183,11 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
           {previewUrl && (
             <div
               className={`absolute inset-0 transition-opacity duration-500 ${
-                pdfVisible ? 'opacity-100' : 'opacity-0'
+                pdfVisible
+                  ? 'opacity-100'
+                  : hasPrinted && isGenerating
+                    ? 'opacity-40'
+                    : 'opacity-0'
               }`}
             >
               {isMobile ? (
@@ -193,7 +212,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
 
           {/* Generating — the paper is already here, so this only names the work */}
           {loadingState === 'loading' && (
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-white via-white/90 to-transparent p-6 pt-20 text-center">
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-white via-white/95 to-transparent p-6 pt-20 text-center">
               <p className="font-display font-medium text-ink">
                 Generating PDF preview...
               </p>
