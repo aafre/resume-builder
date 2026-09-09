@@ -1423,57 +1423,6 @@ div[data-google-query-id] {
    /blog — the reading instrument
    ------------------------------------------------------------------------- */
 
-/* ── Reading spine ──
-   A hairline under the sticky header that fills with the reader's progress
-   through the article body — not through the document, which continues into
-   the CTA, author bio and related-articles blocks long after the last
-   paragraph. `contain` is the range that means "element top at viewport top"
-   → "element bottom at viewport bottom", which is exactly reading progress for
-   anything taller than the scrollport.
-
-   Zero JS: no scroll listener, so no INP cost on a page people scroll for
-   minutes. Firefox has neither view-timeline nor timeline-scope; there the
-   @supports block never applies and the spine stays at scaleX(0) — invisible,
-   which is the correct fallback for a progress indicator that cannot track. */
-.article-shell {
-  timeline-scope: --article;
-}
-
-.article-body {
-  view-timeline-name: --article;
-  view-timeline-axis: block;
-}
-
-.reading-spine {
-  position: fixed;
-  top: var(--header-height-mobile);
-  left: 0;
-  right: 0;
-  height: 2px;
-  z-index: 40;
-  pointer-events: none;
-  transform: scaleX(0);
-  transform-origin: 0 50%;
-  background: linear-gradient(90deg, rgba(0, 212, 126, 0.45), #00d47e);
-}
-
-@media (min-width: 640px) {
-  .reading-spine { top: var(--header-height-desktop); }
-}
-
-@keyframes spine-fill {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}
-
-@supports (animation-timeline: view()) and (timeline-scope: --probe) {
-  .reading-spine {
-    animation: spine-fill linear both;
-    animation-timeline: --article;
-    animation-range: contain 0% contain 100%;
-  }
-}
-
 /* ── Article rail (table of contents) ──
    Gated at 1360px rather than a Tailwind breakpoint for a measured reason: the
    article container is max-w-4xl (896px) centred, so at xl (1280px) each gutter
@@ -1611,12 +1560,124 @@ div[data-google-query-id] {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* A progress indicator that snapped to 100% would be actively misleading,
-     and the global rule zeroes animation *duration*, which is how a
-     scroll-driven animation would land there. Remove it instead. */
-  .reading-spine { display: none !important; }
-
   .article-body h2::after { animation: none !important; }
 
   .article-rail-marker { transition: none !important; }
+}
+
+/* ── /blog index — the front page ── */
+
+/* Spotlight border. @property is what makes the conic angle animatable at
+   all — without registration the browser cannot interpolate it, so the
+   gradient would jump rather than sweep. First use in this codebase, hence
+   the @supports guard: where it is missing the card keeps the static
+   .card-gradient-border edge, which is the same idea holding still. */
+@property --spot-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes spot-sweep {
+  to { --spot-angle: 360deg; }
+}
+
+@supports (background: conic-gradient(from var(--spot-angle), red, blue)) {
+  .post-card {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .post-card::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    opacity: 0;
+    background: conic-gradient(
+      from var(--spot-angle),
+      transparent 0deg,
+      rgba(0, 212, 126, 0.55) 28deg,
+      rgba(0, 212, 126, 0.06) 70deg,
+      transparent 140deg,
+      transparent 360deg
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    transition: opacity 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+
+  .post-card:hover::before,
+  .post-card:focus-within::before {
+    opacity: 1;
+    animation: spot-sweep 4s linear infinite;
+  }
+}
+
+/* Cursor-reactive light on the featured slab. The glow is the same 7% accent
+   radial the dark CTA blocks use — it just stops being nailed to the centre.
+   Position only; no layout, no paint outside the card. */
+.featured-slab-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 600px;
+  height: 400px;
+  margin: -200px 0 0 -300px;
+  border-radius: 9999px;
+  background: rgba(0, 212, 126, 0.07);
+  filter: blur(64px);
+  pointer-events: none;
+  transform: translate3d(var(--glow-x, 50%), var(--glow-y, 50%), 0);
+  transition: opacity 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Category rail */
+.category-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding: 0 0.875rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(12, 12, 12, 0.08);
+  background: transparent;
+  color: rgba(12, 12, 12, 0.6);
+  font-size: 0.8125rem;
+  white-space: nowrap;
+  transition: color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.category-chip:hover {
+  color: #0c0c0c;
+  border-color: rgba(12, 12, 12, 0.18);
+}
+
+.category-chip[aria-pressed="true"] {
+  background: #0c0c0c;
+  border-color: #0c0c0c;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.category-chip:focus-visible {
+  outline: 2px solid #007a48;
+  outline-offset: 2px;
+}
+
+/* The cards morph between filter states rather than snapping. Firefox and
+   reduced motion cut instead — withViewTransition() no-ops in both. */
+::view-transition-group(*.post-card-vt) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .post-card::before { animation: none !important; }
+  .featured-slab-glow { transform: translate3d(50%, 50%, 0) !important; }
 }

@@ -122,9 +122,6 @@ export default function BlogLayout({
         </Helmet>
       )}
       <article className="bg-chalk article-shell">
-      {/* Reading progress. Scroll-driven in CSS — no listener, so no INP cost
-          on a page people scroll for minutes. */}
-      <div className="reading-spine" aria-hidden="true" />
       <div className="container relative mx-auto px-4 py-8 max-w-4xl">
         {showBreadcrumbs && (
           <nav className="mb-6" aria-label="breadcrumb">
