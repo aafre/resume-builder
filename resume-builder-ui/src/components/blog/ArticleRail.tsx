@@ -52,32 +52,39 @@ export default function ArticleRail({
     setHeadings(found.length >= MIN_HEADINGS ? found : []);
   }, [bodyRef]);
 
-  // Scroll-spy. Same bail-outs as useScrollReveal: no observer in jsdom or
-  // during prerender. Reduced motion keeps the spy — it is information, not
-  // motion — but the CSS drops the marker's slide.
+  // Scroll-spy. The active entry is the last heading to have crossed the line
+  // just under the sticky header — a position test, not a "is it inside a
+  // band" test. A band narrow enough to name one heading is usually empty,
+  // which left nothing active for most of the page.
+  //
+  // The observer's top margin is that same line, so it fires exactly when a
+  // heading crosses it and nowhere else. Same bail-out as useScrollReveal:
+  // no observer in jsdom or during prerender.
   useEffect(() => {
     if (headings.length === 0) return;
     if (typeof IntersectionObserver === 'undefined') return;
 
-    const visible = new Map<string, boolean>();
+    const LINE = 140; // sticky header + a little breathing room
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => visible.set(e.target.id, e.isIntersecting));
-        // The topmost heading currently in the band is the one being read.
-        const current = headings.find((h) => visible.get(h.id));
-        if (current) setActiveId(current.id);
-      },
-      // A band across the upper third: a heading counts as current from the
-      // moment it clears the sticky header until the next one arrives.
-      { rootMargin: '-20% 0px -70% 0px' },
-    );
+    const pick = () => {
+      let current = headings[0].id;
+      for (const h of headings) {
+        const el = document.getElementById(h.id);
+        if (el && el.getBoundingClientRect().top <= LINE) current = h.id;
+      }
+      setActiveId(current);
+    };
+
+    const observer = new IntersectionObserver(pick, {
+      rootMargin: `-${LINE}px 0px 0px 0px`,
+    });
 
     headings.forEach((h) => {
       const el = document.getElementById(h.id);
       if (el) observer.observe(el);
     });
 
+    pick(); // seed, so the rail is never blank on load
     return () => observer.disconnect();
   }, [headings]);
 

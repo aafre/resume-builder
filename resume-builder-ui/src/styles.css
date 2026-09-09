@@ -1246,38 +1246,6 @@ div[data-google-query-id] {
     0 8px 24px -12px rgba(12, 12, 12, 0.14);
 }
 
-/* Read progress. Sits on the header's own bottom edge, so it reads as the
-   border coming alive rather than as a separate widget. */
-.site-header-progress {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 2px;
-  background: linear-gradient(90deg, #00d47e 0%, #00d47e 72%, #34e79b 100%);
-  transform: scaleX(0);
-  transform-origin: 0 50%;
-  opacity: 0;
-  transition: opacity 320ms cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: none;
-}
-
-.site-header[data-scrolled="true"] .site-header-progress {
-  opacity: 1;
-}
-
-@supports (animation-timeline: scroll()) {
-  .site-header-progress {
-    animation: site-header-progress linear both;
-    animation-timeline: scroll(root block);
-  }
-}
-
-@keyframes site-header-progress {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}
-
 /* ── The rail ──
    One ink pill for the whole nav, positioned from measured link geometry and
    moved by `useNavPill`. It is `aria-hidden` decoration; the authoritative
@@ -1401,14 +1369,6 @@ div[data-google-query-id] {
   .nav-badge-pop,
   .nav-auth-in {
     animation: none !important;
-  }
-
-  /* A scroll-driven bar with its timeline removed would freeze at whatever
-     the fill left behind. Drop it entirely; the resolved border still marks
-     the edge. */
-  .site-header-progress {
-    animation: none !important;
-    display: none !important;
   }
 
   /* The global rule zeroes transition *duration*, not delay. Left alone, the

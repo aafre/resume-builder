@@ -22,9 +22,6 @@ export default function Header() {
   const { data: resumeCount = 0 } = useResumeCount();
 
   const isEditorPage = location.pathname.startsWith("/editor");
-  // Read progress is a marketing/content affordance. On a workbench there is
-  // no document to be partway through, so it would be measuring nothing.
-  const isAppSurface = isEditorPage || location.pathname === "/my-resumes";
   const editorContext = useOptionalEditorContext();
   const navLinks = getNavLinks(isAuthenticated);
 
@@ -87,10 +84,6 @@ export default function Header() {
       className="site-header border-b border-transparent sticky top-0 z-50"
       data-scrolled={scrolled}
     >
-      {/* Read progress. CSS scroll-timeline only — see styles.css. */}
-      {!isAppSurface && (
-        <span className="site-header-progress" aria-hidden="true" />
-      )}
       <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-header-mobile sm:h-header-desktop transition-all duration-200">
           {/* Logo and Home Navigation */}
