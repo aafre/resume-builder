@@ -1100,3 +1100,63 @@ div[data-google-query-id] {
      text already says what is happening. */
   .phase-rail { display: none !important; }
 }
+
+/* ── The print — /editor + /my-resumes PDF preview ──────────────────────────
+   The resume card's thumbnail and the preview modal's sheet share
+   `view-transition-name: resume-sheet`, so the browser morphs the small crop
+   into the full page and back. Exactly one element holds that name at a time
+   (MyResumes moves it). The two snapshots have different aspect ratios, so
+   height:100% + object-fit keeps both filling the morph box instead of
+   squashing mid-flight — same handling as the template sheet above.
+   Firefox has no View Transitions and cuts; withViewTransition() also skips
+   the transition outright under reduced motion. */
+::view-transition-old(resume-sheet),
+::view-transition-new(resume-sheet) {
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  animation-duration: 380ms;
+  animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+::view-transition-group(resume-sheet) {
+  animation-duration: 380ms;
+  animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* A print head passing down the sheet while the server renders. Deliberately
+   indeterminate: we cannot see inside the render, so nothing here implies a
+   percentage. Transform-only, so it stays on the compositor — the 360% end
+   stop is the band's own height (28% of the sheet) scaled to clear the bottom
+   edge, since a translateY percentage resolves against the moving element. */
+@keyframes sheet-scan {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(360%); }
+}
+.sheet-scan {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+}
+.sheet-scan::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 28%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 212, 126, 0) 0%,
+    rgba(0, 212, 126, 0.08) 55%,
+    rgba(0, 212, 126, 0.26) 92%,
+    rgba(0, 212, 126, 0.42) 100%
+  );
+  animation: sheet-scan 1.9s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* A frozen scan line reads as a stalled render. Drop it; the sheet's own
+     caption already says what is happening. */
+  .sheet-scan { display: none !important; }
+}

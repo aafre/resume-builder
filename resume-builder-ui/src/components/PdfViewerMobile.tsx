@@ -128,7 +128,9 @@ export const PdfViewerMobile: React.FC<PdfViewerMobileProps> = ({
   }, [pdfUrl, onLoad, onError]);
 
   return (
-    <div className="w-full h-full overflow-y-auto bg-chalk-dark p-4">
+    /* Transparent: this renders onto the preview modal's paper sheet, which
+       owns the ground and the page edge. */
+    <div className="w-full h-full overflow-y-auto">
       <div ref={containerRef} className="flex flex-col items-center">
         {pages.map((page, index) => (
           <img
@@ -136,7 +138,7 @@ export const PdfViewerMobile: React.FC<PdfViewerMobileProps> = ({
             src={page.src}
             width={page.width}
             height={page.height}
-            className="mb-4 shadow-lg w-full"
+            className="w-full border-b border-ink/[0.06] last:border-b-0"
             alt={`Page ${index + 1}`}
             loading="lazy"
           />
@@ -144,7 +146,7 @@ export const PdfViewerMobile: React.FC<PdfViewerMobileProps> = ({
         {loadingPage > 0 && (
           <div className="text-center py-4">
             <div className="animate-spin rounded-full h-8 w-8 border-2 border-accent border-t-transparent mx-auto mb-2"></div>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-ink/60">
               Loading PDF...
             </p>
           </div>
