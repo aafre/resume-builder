@@ -514,7 +514,6 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         isOpeningPreview={editorActions.isOpeningPreview}
         isGeneratingPreview={preview.isGenerating}
         previewIsStale={preview.isStale}
-        previewUrl={preview.previewUrl}
         loadingSave={fileOperations.loadingSave}
         loadingLoad={fileOperations.loadingLoad}
         onCollapseChange={navigation.setIsSidebarCollapsed}
