@@ -101,7 +101,7 @@ export default function ATSFormattingRules() {
           skills field, so a keyword search for that exact skill never returns
           your name.
         </p>
-        <div className="rounded-lg border border-red-200/70 bg-red-50/80 p-6 my-6">
+        <div className="rounded-lg callout callout-dont/70 callout-dont/80 p-6 my-6">
           <h3 className="font-bold text-ink mb-2">The invisible rejection</h3>
           <p className="text-ink/60">
             This is the failure mode that costs qualified people interviews. Your
@@ -208,9 +208,9 @@ export default function ATSFormattingRules() {
           cost you anything a recruiter values — a clean, readable resume looks
           professional to humans too.
         </p>
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h3 className="font-bold text-green-800 mb-3">The ATS-safe formatting checklist</h3>
-          <ul className="list-disc pl-6 space-y-3 text-green-700">
+        <div className="callout callout-do rounded-xl p-6 my-6">
+          <h3 className="font-bold tone-do mb-3">The ATS-safe formatting checklist</h3>
+          <ul className="list-disc pl-6 space-y-3 tone-do">
             <li>
               <strong>Use a single column.</strong> One vertical flow of content,
               read top to bottom. No sidebars.
@@ -267,9 +267,9 @@ export default function ATSFormattingRules() {
           Do / Don't at a Glance
         </h2>
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h3 className="font-bold text-green-800 mb-3">Do</h3>
-            <ul className="list-disc pl-6 space-y-2 text-green-700">
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="font-bold tone-do mb-3">Do</h3>
+            <ul className="list-disc pl-6 space-y-2 tone-do">
               <li>Single column, top-to-bottom</li>
               <li>Standard headings (Experience, Education, Skills)</li>
               <li>Contact details in the body text</li>
@@ -279,9 +279,9 @@ export default function ATSFormattingRules() {
               <li>One consistent date format</li>
             </ul>
           </div>
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h3 className="font-bold text-red-800 mb-3">Don't</h3>
-            <ul className="list-disc pl-6 space-y-2 text-red-700">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h3 className="font-bold tone-dont mb-3">Don't</h3>
+            <ul className="list-disc pl-6 space-y-2 tone-dont">
               <li>Two or three columns / sidebars</li>
               <li>Creative headings ("My Journey")</li>
               <li>Contact info in the header or footer</li>
@@ -348,9 +348,9 @@ export default function ATSFormattingRules() {
           selects like an image, it's not — and you need to re-export it.
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-green-800 mb-2">Test it in two minutes</h3>
-          <p className="text-green-700">
+        <div className="callout callout-do rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-do mb-2">Test it in two minutes</h3>
+          <p className="tone-do">
             Paste your resume into a plain-text editor. If it reads in a clean,
             logical order with nothing scrambled, a parser will too. Then run it
             through our free{" "}

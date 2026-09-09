@@ -32,8 +32,8 @@ export default function ChatGPTResumePrompts() {
         </p>
 
         {/* Quick Answer Box */}
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-green-800 mb-3">
+        <div className="callout callout-do rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-do mb-3">
             🎯 Top 3 ChatGPT Resume Prompts (Quick Start)
           </h3>
           <ol className="list-decimal list-inside space-y-3 text-accent-text">
@@ -369,11 +369,11 @@ export default function ChatGPTResumePrompts() {
         </div>
 
         {/* Important Warnings */}
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-red-800 mb-3">
+        <div className="callout callout-dont rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-dont mb-3">
             ⚠️ Important: Always Review AI-Generated Content
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-red-700">
+          <ul className="list-disc list-inside space-y-2 tone-dont">
             <li><strong>Fact-check everything:</strong> ChatGPT may hallucinate details. Never include claims you can't back up.</li>
             <li><strong>Personalize the output:</strong> Generic AI text is obvious to recruiters. Add your unique voice.</li>
             <li><strong>Don't over-promise:</strong> Inflated claims will backfire in interviews.</li>

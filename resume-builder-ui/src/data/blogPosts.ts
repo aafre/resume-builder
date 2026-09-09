@@ -57,7 +57,6 @@ export const blogPosts: BlogPost[] = [
     publishDate: "2026-01-21",
     readTime: "18 min",
     category: "AI & Tools",
-    featured: true,
   },
   {
     slug: "gemini-resume-prompts",

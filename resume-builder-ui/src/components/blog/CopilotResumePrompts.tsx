@@ -58,9 +58,9 @@ export default function CopilotResumePrompts() {
           </ul>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-          <h3 className="text-xl font-bold text-yellow-800 mb-3">Where to Use Copilot</h3>
-          <p className="text-yellow-800">
+        <div className="callout callout-note rounded-xl p-6">
+          <h3 className="text-xl font-bold tone-note mb-3">Where to Use Copilot</h3>
+          <p className="tone-note">
             <strong>Copilot in Bing/Edge (Free):</strong> Best for most resume writing tasks. Access at copilot.microsoft.com or in the Edge sidebar. Uses GPT-4 Turbo with web search.
             <br /><br />
             <strong>Copilot in Microsoft 365 (Pro, $20/mo):</strong> Works directly inside Word. Useful if you write your resume in Word and want inline AI assistance.
@@ -417,33 +417,33 @@ export default function CopilotResumePrompts() {
             <tbody className="divide-y divide-black/[0.06]">
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Free tier</td>
-                <td className="px-4 py-4 text-center text-green-600">Generous (GPT-4 class)</td>
-                <td className="px-4 py-4 text-center text-yellow-600">Limited</td>
-                <td className="px-4 py-4 text-center text-yellow-600">Limited</td>
+                <td className="px-4 py-4 text-center tone-do">Generous (GPT-4 class)</td>
+                <td className="px-4 py-4 text-center tone-note">Limited</td>
+                <td className="px-4 py-4 text-center tone-note">Limited</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Web search</td>
-                <td className="px-4 py-4 text-center text-green-600">Built-in (Bing)</td>
-                <td className="px-4 py-4 text-center text-green-600">Available (Browse)</td>
-                <td className="px-4 py-4 text-center text-yellow-600">Limited</td>
+                <td className="px-4 py-4 text-center tone-do">Built-in (Bing)</td>
+                <td className="px-4 py-4 text-center tone-do">Available (Browse)</td>
+                <td className="px-4 py-4 text-center tone-note">Limited</td>
               </tr>
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Writing quality</td>
-                <td className="px-4 py-4 text-center text-green-600">Good</td>
-                <td className="px-4 py-4 text-center text-green-600">Strong</td>
-                <td className="px-4 py-4 text-center text-green-600">Best</td>
+                <td className="px-4 py-4 text-center tone-do">Good</td>
+                <td className="px-4 py-4 text-center tone-do">Strong</td>
+                <td className="px-4 py-4 text-center tone-do">Best</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Office integration</td>
-                <td className="px-4 py-4 text-center text-green-600">Native (Word, Excel)</td>
+                <td className="px-4 py-4 text-center tone-do">Native (Word, Excel)</td>
                 <td className="px-4 py-4 text-center text-ink/60">None</td>
                 <td className="px-4 py-4 text-center text-ink/60">None</td>
               </tr>
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Instruction following</td>
-                <td className="px-4 py-4 text-center text-green-600">Good</td>
-                <td className="px-4 py-4 text-center text-green-600">Good</td>
-                <td className="px-4 py-4 text-center text-green-600">Best</td>
+                <td className="px-4 py-4 text-center tone-do">Good</td>
+                <td className="px-4 py-4 text-center tone-do">Good</td>
+                <td className="px-4 py-4 text-center tone-do">Best</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Best for</td>

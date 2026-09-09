@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import SEOHead from './SEOHead';
@@ -7,6 +7,7 @@ import { blogPosts } from '../data/blogPosts';
 import AuthorBio from './blog/AuthorBio';
 import RelatedArticles from './blog/RelatedArticles';
 import RevealSection from './shared/RevealSection';
+import ArticleRail from './blog/ArticleRail';
 import { generateFAQPageSchema, generateHowToSchema } from '../utils/schemaGenerators';
 import type { HowToStep } from '../types/seo';
 
@@ -54,6 +55,8 @@ export default function BlogLayout({
 }: BlogLayoutProps) {
   // Use hardcoded BASE_URL (not window.location.origin) so prerendered HTML
   // gets production canonical URLs instead of http://localhost:4173
+  const bodyRef = useRef<HTMLDivElement>(null);
+
   const currentUrl = typeof window !== 'undefined'
     ? 'https://easyfreeresume.com' + (window.location.pathname.replace(/\/+$/, '') || '/')
     : '';
@@ -118,8 +121,8 @@ export default function BlogLayout({
           </script>
         </Helmet>
       )}
-      <article className="bg-chalk">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <article className="bg-chalk article-shell">
+      <div className="container relative mx-auto px-4 py-8 max-w-4xl">
         {showBreadcrumbs && (
           <nav className="mb-6" aria-label="breadcrumb">
             <ol className="flex items-center space-x-2 text-sm text-ink/60">
@@ -146,7 +149,7 @@ export default function BlogLayout({
             {description}
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 text-sm text-ink/60 mb-6">
+          <div className="article-masthead flex flex-wrap items-center gap-4 text-sm text-ink/60 mb-6">
             <time dateTime={publishDate} className="flex items-center gap-1">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
@@ -188,7 +191,12 @@ export default function BlogLayout({
           </div>
         </header>
 
-        <div className="prose prose-lg max-w-none">
+        {/* Built from the article's own h2 elements at mount — see ArticleRail.
+            Left gutter, >=1360px, absolutely positioned: no post file changed
+            and the article column cannot shift. */}
+        <ArticleRail bodyRef={bodyRef} />
+
+        <div ref={bodyRef} className="prose prose-lg max-w-none article-body">
           <div className="bg-chalk-dark rounded-2xl p-4 sm:p-6 md:p-12 border border-black/[0.04]">
             {children}
           </div>

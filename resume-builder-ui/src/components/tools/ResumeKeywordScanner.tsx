@@ -298,7 +298,9 @@ function KeywordBadge({
   const body = (
     <>
       <span className="text-xs opacity-70">{BADGE_ICONS[variant]}</span>
-      {kw.keyword}
+      <span className={evidence ? 'underline decoration-dotted decoration-current/40 underline-offset-2' : undefined}>
+        {kw.keyword}
+      </span>
       {variant !== 'missing' && kw.similarity > 0 && (
         <span className="text-[11px] opacity-50 tabular-nums">{Math.round(kw.similarity * 100)}%</span>
       )}
@@ -376,6 +378,19 @@ function KeywordSection({
 
   return (
     <div className="space-y-4">
+      {evidence && (
+        <p className="flex items-center gap-1.5 text-xs text-ink/60">
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+          </svg>
+          <span>
+            Pick any keyword to mark it in your resume
+            <span className="hidden lg:inline">, on the right</span>
+            <span className="lg:hidden">, below</span>.
+          </span>
+        </p>
+      )}
+
       <div className="flex flex-wrap gap-2">
         {keywords.map((kw, i) => (
           <KeywordBadge key={kw.keyword} kw={kw} variant={variant} index={i} evidence={evidence} />
@@ -530,11 +545,22 @@ export default function ResumeKeywordScanner() {
       }
     : undefined;
 
-  // A fresh scan invalidates whatever was pinned against the old one.
+  // Open the pane on the first keyword of whichever lane is showing. A panel
+  // that arrives already marked up teaches the interaction; one that arrives
+  // empty asking to be hovered does not.
   useEffect(() => {
-    setPinnedEvidence(null);
     setHoveredEvidence(null);
-  }, [result]);
+    if (!showEvidence || !result) {
+      setPinnedEvidence(null);
+      return;
+    }
+    const first = result[activeTab][0];
+    setPinnedEvidence(
+      first
+        ? { keyword: first.keyword, variant: activeTab, context: first.bestMatchContext }
+        : null,
+    );
+  }, [result, activeTab, showEvidence]);
 
   const canScan = resumeText.trim().length > 0 && jobDescription.trim().length > 0;
   const showLoading = isMatching && !result;

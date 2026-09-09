@@ -11,7 +11,7 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
       {Array.from({ length: max }, (_, i) => (
         <span
           key={i}
-          className={`text-xl ${i < rating ? "text-yellow-400" : "text-gray-300"}`}
+          className={`text-xl ${i < rating ? "text-accent-text" : "text-ink/20"}`}
         >
           ★
         </span>
@@ -25,7 +25,7 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
 
 function WinnerBadge() {
   return (
-    <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-800">
+    <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-bold callout callout-do tone-do">
       WINNER
     </span>
   );
@@ -62,8 +62,8 @@ export default function IndeedVsEasyFreeResume() {
       >
         <div className="space-y-8">
           {/* Quick Verdict Box */}
-          <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-2xl p-6 my-8 shadow-lg">
-            <h3 className="font-bold text-green-800 text-xl mb-4">
+          <div className="callout callout-do rounded-2xl p-6 my-8 shadow-lg">
+            <h3 className="font-bold tone-do text-xl mb-4">
               ⚡ Quick Verdict
             </h3>
             <div className="grid md:grid-cols-2 gap-6">
@@ -76,11 +76,11 @@ export default function IndeedVsEasyFreeResume() {
               <div className="text-center p-4 bg-white rounded-xl shadow-sm">
                 <p className="font-bold text-ink/60 text-lg mb-2">Indeed</p>
                 <StarRating rating={3} />
-                <p className="text-2xl font-bold text-yellow-600 mt-2">Limited</p>
+                <p className="text-2xl font-bold tone-note mt-2">Limited</p>
                 <p className="text-sm text-ink/60">Basic builder, Indeed-only focus</p>
               </div>
             </div>
-            <p className="text-green-800 mt-4 text-center font-medium">
+            <p className="tone-do mt-4 text-center font-medium">
               Winner: EasyFreeResume — More templates, better privacy, ATS-optimized PDFs
             </p>
           </div>
@@ -160,12 +160,12 @@ export default function IndeedVsEasyFreeResume() {
                     <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-ink/60 text-white">Tie</span>
                   </td>
                 </tr>
-                <tr className="bg-green-50">
+                <tr className="callout callout-do">
                   <td className="px-6 py-4 font-medium text-ink">Template Variety</td>
                   <td className="px-6 py-4 text-center text-accent-text font-bold">✅ Multiple ATS templates</td>
-                  <td className="px-6 py-4 text-center text-red-600">❌ Single format</td>
+                  <td className="px-6 py-4 text-center tone-dont">❌ Single format</td>
                   <td className="px-6 py-4 text-center">
-                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
+                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">EasyFreeResume</span>
                   </td>
                 </tr>
                 <tr>
@@ -173,55 +173,55 @@ export default function IndeedVsEasyFreeResume() {
                   <td className="px-6 py-4 text-center text-accent-text">✅ All templates ATS-ready</td>
                   <td className="px-6 py-4 text-center text-accent-text">✅ Basic ATS compatibility</td>
                   <td className="px-6 py-4 text-center">
-                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
+                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">EasyFreeResume</span>
                   </td>
                 </tr>
-                <tr className="bg-green-50">
+                <tr className="callout callout-do">
                   <td className="px-6 py-4 font-medium text-ink">Account Required</td>
                   <td className="px-6 py-4 text-center text-accent-text">✅ No</td>
-                  <td className="px-6 py-4 text-center text-red-600">❌ Yes (Indeed account)</td>
+                  <td className="px-6 py-4 text-center tone-dont">❌ Yes (Indeed account)</td>
                   <td className="px-6 py-4 text-center">
-                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
+                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">EasyFreeResume</span>
                   </td>
                 </tr>
                 <tr>
                   <td className="px-6 py-4 font-medium text-ink">Privacy</td>
                   <td className="px-6 py-4 text-center text-accent-text">✅ Local storage</td>
-                  <td className="px-6 py-4 text-center text-red-600">❌ Indeed stores data</td>
+                  <td className="px-6 py-4 text-center tone-dont">❌ Indeed stores data</td>
                   <td className="px-6 py-4 text-center">
-                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
+                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">EasyFreeResume</span>
                   </td>
                 </tr>
-                <tr className="bg-green-50">
+                <tr className="callout callout-do">
                   <td className="px-6 py-4 font-medium text-ink">PDF Download</td>
                   <td className="px-6 py-4 text-center text-accent-text">✅ Instant, no watermarks</td>
-                  <td className="px-6 py-4 text-center text-yellow-600">⚠️ Available but basic</td>
+                  <td className="px-6 py-4 text-center tone-note">⚠️ Available but basic</td>
                   <td className="px-6 py-4 text-center">
-                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
+                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">EasyFreeResume</span>
                   </td>
                 </tr>
                 <tr>
                   <td className="px-6 py-4 font-medium text-ink">Customization</td>
                   <td className="px-6 py-4 text-center text-accent-text">✅ Full control</td>
-                  <td className="px-6 py-4 text-center text-red-600">❌ Minimal</td>
+                  <td className="px-6 py-4 text-center tone-dont">❌ Minimal</td>
                   <td className="px-6 py-4 text-center">
-                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
+                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">EasyFreeResume</span>
                   </td>
                 </tr>
-                <tr className="bg-green-50">
+                <tr className="callout callout-do">
                   <td className="px-6 py-4 font-medium text-ink">AI Features</td>
                   <td className="px-6 py-4 text-center text-accent-text">✅ ChatGPT, Claude, Gemini</td>
-                  <td className="px-6 py-4 text-center text-yellow-600">⚠️ Basic suggestions</td>
+                  <td className="px-6 py-4 text-center tone-note">⚠️ Basic suggestions</td>
                   <td className="px-6 py-4 text-center">
-                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
+                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">EasyFreeResume</span>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
 
-          <div className="bg-green-100 border border-green-300 rounded-xl p-4 text-center">
-            <p className="font-bold text-green-800">
+          <div className="callout callout-do rounded-xl p-4 text-center">
+            <p className="font-bold tone-do">
               Score: EasyFreeResume 7 — Indeed 0 — Ties 1
               <WinnerBadge />
             </p>
@@ -248,8 +248,8 @@ export default function IndeedVsEasyFreeResume() {
                 <li>✓ Don't care about design options</li>
               </ul>
             </div>
-            <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-              <h3 className="text-lg font-bold text-green-800 mb-4">
+            <div className="callout callout-do rounded-xl p-6">
+              <h3 className="text-lg font-bold tone-do mb-4">
                 Use EasyFreeResume When:
                 <WinnerBadge />
               </h3>
@@ -294,7 +294,7 @@ export default function IndeedVsEasyFreeResume() {
             </div>
           </div>
 
-          <div className="my-12 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
+          <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
             <h3 className="text-2xl md:text-3xl font-bold mb-4">
               Build a Better Resume Than Indeed Offers
             </h3>
@@ -316,7 +316,7 @@ export default function IndeedVsEasyFreeResume() {
         <div className="h-16 md:hidden" aria-hidden="true" />
 
         {/* Sticky CTA Banner */}
-        <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 px-4 shadow-lg z-50 md:hidden">
+        <div className="fixed bottom-0 left-0 right-0 bg-ink text-white py-3 px-4 shadow-lg z-50 md:hidden">
           <div className="flex items-center justify-between max-w-4xl mx-auto">
             <div>
               <p className="font-bold text-sm">Better Than Indeed</p>

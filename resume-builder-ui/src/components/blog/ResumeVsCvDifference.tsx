@@ -31,11 +31,11 @@ export default function ResumeVsCvDifference() {
           your job search success.
         </p>
 
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-          <h3 className="text-lg font-bold text-red-800 mb-2">
+        <div className="callout callout-dont rounded-xl p-6">
+          <h3 className="text-lg font-bold tone-dont mb-2">
             🚨 Don't Mix Them Up!
           </h3>
-          <p className="text-red-700">
+          <p className="tone-dont">
             Submitting the wrong document can make you look unprepared or
             unprofessional. Always check the application requirements carefully
             to determine if a resume or CV is requested.
@@ -116,8 +116,8 @@ export default function ResumeVsCvDifference() {
           to another.
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-green-800 mb-3">
+        <div className="callout callout-do rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-do mb-3">
             Key Characteristics of a CV:
           </h4>
           <ul className="list-disc pl-6 space-y-2 text-accent-text">

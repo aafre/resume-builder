@@ -11,7 +11,7 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
       {Array.from({ length: max }, (_, i) => (
         <span
           key={i}
-          className={`text-xl ${i < rating ? "text-yellow-400" : "text-gray-300"}`}
+          className={`text-xl ${i < rating ? "text-accent-text" : "text-ink/20"}`}
         >
           ★
         </span>
@@ -25,7 +25,7 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
 
 function WinnerBadge() {
   return (
-    <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-800">
+    <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-bold callout callout-do tone-do">
       WINNER
     </span>
   );
@@ -63,8 +63,8 @@ export default function CanvaVsEasyFreeResume() {
     >
       <div className="space-y-8">
         {/* Quick Verdict Box */}
-        <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-2xl p-6 my-8 shadow-lg">
-          <h3 className="font-bold text-green-800 text-xl mb-4">
+        <div className="callout callout-do rounded-2xl p-6 my-8 shadow-lg">
+          <h3 className="font-bold tone-do text-xl mb-4">
             ⚡ Quick Verdict
           </h3>
           <div className="grid md:grid-cols-2 gap-6">
@@ -77,11 +77,11 @@ export default function CanvaVsEasyFreeResume() {
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
               <p className="font-bold text-ink/60 text-lg mb-2">Canva</p>
               <StarRating rating={3} />
-              <p className="text-2xl font-bold text-red-600 mt-2">ATS Problems</p>
+              <p className="text-2xl font-bold tone-dont mt-2">ATS Problems</p>
               <p className="text-sm text-ink/60">Designed for visuals, not ATS</p>
             </div>
           </div>
-          <p className="text-green-800 mt-4 text-center font-medium">
+          <p className="tone-do mt-4 text-center font-medium">
             Winner: EasyFreeResume — For actual job applications, ATS compatibility matters
           </p>
         </div>
@@ -92,11 +92,11 @@ export default function CanvaVsEasyFreeResume() {
           Canva's beautiful templates often fail.
         </p>
 
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-red-800 mb-3">
+        <div className="callout callout-dont rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-dont mb-3">
             ⚠️ The Canva Resume Problem
           </h3>
-          <p className="text-red-700">
+          <p className="tone-dont">
             Over 75% of companies use ATS software to filter resumes before a human sees them.
             Canva templates—with their graphics, columns, and creative layouts—often get
             mangled or rejected by these systems, meaning your application never reaches a recruiter.
@@ -156,12 +156,12 @@ export default function CanvaVsEasyFreeResume() {
               </tr>
             </thead>
             <tbody className="divide-y divide-black/[0.06]">
-              <tr className="bg-green-50">
+              <tr className="callout callout-do">
                 <td className="px-6 py-4 font-medium text-ink">ATS Compatibility</td>
                 <td className="px-6 py-4 text-center text-accent-text font-bold">✅ 100% optimized</td>
-                <td className="px-6 py-4 text-center text-red-600">❌ Often fails</td>
+                <td className="px-6 py-4 text-center tone-dont">❌ Often fails</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">EasyFreeResume</span>
                 </td>
               </tr>
               <tr>
@@ -172,28 +172,28 @@ export default function CanvaVsEasyFreeResume() {
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-ink/60 text-white">Tie</span>
                 </td>
               </tr>
-              <tr className="bg-green-50">
+              <tr className="callout callout-do">
                 <td className="px-6 py-4 font-medium text-ink">Resume-Specific</td>
                 <td className="px-6 py-4 text-center text-accent-text">✅ Built for resumes</td>
-                <td className="px-6 py-4 text-center text-yellow-600">⚠️ General design tool</td>
+                <td className="px-6 py-4 text-center tone-note">⚠️ General design tool</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">EasyFreeResume</span>
                 </td>
               </tr>
               <tr>
                 <td className="px-6 py-4 font-medium text-ink">Account Required</td>
                 <td className="px-6 py-4 text-center text-accent-text">✅ No</td>
-                <td className="px-6 py-4 text-center text-red-600">❌ Yes</td>
+                <td className="px-6 py-4 text-center tone-dont">❌ Yes</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">EasyFreeResume</span>
                 </td>
               </tr>
-              <tr className="bg-green-50">
+              <tr className="callout callout-do">
                 <td className="px-6 py-4 font-medium text-ink">Privacy</td>
                 <td className="px-6 py-4 text-center text-accent-text">✅ Local storage</td>
-                <td className="px-6 py-4 text-center text-red-600">❌ Cloud storage</td>
+                <td className="px-6 py-4 text-center tone-dont">❌ Cloud storage</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">EasyFreeResume</span>
                 </td>
               </tr>
               <tr>
@@ -204,20 +204,20 @@ export default function CanvaVsEasyFreeResume() {
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-ink">Canva</span>
                 </td>
               </tr>
-              <tr className="bg-green-50">
+              <tr className="callout callout-do">
                 <td className="px-6 py-4 font-medium text-ink">Learning Curve</td>
                 <td className="px-6 py-4 text-center text-accent-text">✅ Simple, focused</td>
-                <td className="px-6 py-4 text-center text-yellow-600">⚠️ More complex</td>
+                <td className="px-6 py-4 text-center tone-note">⚠️ More complex</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">EasyFreeResume</span>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <div className="bg-green-100 border border-green-300 rounded-xl p-4 text-center">
-          <p className="font-bold text-green-800">
+        <div className="callout callout-do rounded-xl p-4 text-center">
+          <p className="font-bold tone-do">
             Score: EasyFreeResume 5 — Canva 1 — Ties 1
             <WinnerBadge />
           </p>
@@ -240,8 +240,8 @@ export default function CanvaVsEasyFreeResume() {
               <li>✓ Networking events and job fairs</li>
             </ul>
           </div>
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-green-800 mb-4">
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="text-lg font-bold tone-do mb-4">
               Use EasyFreeResume When:
               <WinnerBadge />
             </h3>
@@ -292,17 +292,17 @@ export default function CanvaVsEasyFreeResume() {
           </ol>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-yellow-800 mb-3">
+        <div className="callout callout-note rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-note mb-3">
             💡 Pro Tip: Have Both Versions
           </h3>
-          <p className="text-yellow-700">
+          <p className="tone-note">
             Keep your Canva version for in-person networking and your EasyFreeResume version
             for online applications. This gives you the best of both worlds.
           </p>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
+        <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Get Past the ATS, Get Interviews
           </h3>
@@ -349,7 +349,7 @@ export default function CanvaVsEasyFreeResume() {
       <div className="h-16 md:hidden" aria-hidden="true" />
 
       {/* Sticky CTA Banner */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 px-4 shadow-lg z-50 md:hidden">
+      <div className="fixed bottom-0 left-0 right-0 bg-ink text-white py-3 px-4 shadow-lg z-50 md:hidden">
         <div className="flex items-center justify-between max-w-4xl mx-auto">
           <div>
             <p className="font-bold text-sm">ATS-Friendly Templates</p>

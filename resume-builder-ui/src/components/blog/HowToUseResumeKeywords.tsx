@@ -34,9 +34,9 @@ export default function HowToUseResumeKeywords() {
           pile by a robot.
         </p>
 
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-red-800 mb-3">🚨 The Hard Truth</h3>
-          <p className="text-red-700">
+        <div className="callout callout-dont rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-dont mb-3">🚨 The Hard Truth</h3>
+          <p className="tone-dont">
             According to recent studies, over 75% of resumes never make it past
             the ATS screening. This means your perfectly crafted resume might
             never be seen by human eyes simply because it lacks the right keywords.
@@ -101,8 +101,8 @@ export default function HowToUseResumeKeywords() {
           "Responsibilities" sections.
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-green-800 mb-3">🔍 Look for:</h4>
+        <div className="callout callout-do rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-do mb-3">🔍 Look for:</h4>
           <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>
               <strong>Hard Skills:</strong> Specific software (e.g., Salesforce,
@@ -145,9 +145,9 @@ export default function HowToUseResumeKeywords() {
           keywords.
         </p>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-yellow-800 mb-3">💡 Pro Tip:</h4>
-          <p className="text-yellow-700">
+        <div className="callout callout-note rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-note mb-3">💡 Pro Tip:</h4>
+          <p className="tone-note">
             Don't just look at one job posting. Analyze 3-5 similar positions to
             identify common keywords across the industry. This gives you a more
             comprehensive keyword strategy.
@@ -214,8 +214,8 @@ export default function HowToUseResumeKeywords() {
             </div>
           </div>
 
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-800 mb-3">
+          <div className="callout callout-do rounded-xl p-6">
+            <h4 className="font-bold tone-do mb-3">
               💼 Work Experience Section
             </h4>
             <p className="text-accent-text mb-3">
@@ -223,14 +223,14 @@ export default function HowToUseResumeKeywords() {
               just list a keyword; use it to describe an accomplishment.
             </p>
             <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-red-100 border-l-4 border-red-500 p-3 rounded">
-                <p className="font-medium text-red-800 mb-1">❌ Instead of:</p>
-                <p className="text-red-700 text-sm">
+              <div className="callout callout-dont p-3 rounded">
+                <p className="font-medium tone-dont mb-1">❌ Instead of:</p>
+                <p className="tone-dont text-sm">
                   "Responsible for social media."
                 </p>
               </div>
-              <div className="bg-green-100 border-l-4 border-green-500 p-3 rounded">
-                <p className="font-medium text-green-800 mb-1">✅ Write:</p>
+              <div className="callout callout-do p-3 rounded">
+                <p className="font-medium tone-do mb-1">✅ Write:</p>
                 <p className="text-accent-text text-sm">
                   "Managed a comprehensive{" "}
                   <strong>social media marketing</strong> strategy across three
@@ -346,11 +346,11 @@ export default function HowToUseResumeKeywords() {
           exact phrase as well as variations.
         </p>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-yellow-800 mb-3">
+        <div className="callout callout-note rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-note mb-3">
             📝 Keyword Variation Strategy:
           </h4>
-          <ul className="list-disc pl-6 space-y-1 text-yellow-700">
+          <ul className="list-disc pl-6 space-y-1 tone-note">
             <li>Use both abbreviations and full terms (SEO & Search Engine Optimization)</li>
             <li>Include plural and singular versions (skill/skills)</li>
             <li>Use both technical and common names (JavaScript & JS)</li>
@@ -368,9 +368,9 @@ export default function HowToUseResumeKeywords() {
           variations.
         </p>
 
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-red-800 mb-3">⚠️ Avoid Keyword Stuffing</h4>
-          <p className="text-red-700">
+        <div className="callout callout-dont rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-dont mb-3">⚠️ Avoid Keyword Stuffing</h4>
+          <p className="tone-dont">
             Don't repeat the same keyword excessively or include keywords that
             don't relate to your actual experience. Modern ATS systems can
             detect this and will penalize your resume.
@@ -386,8 +386,8 @@ export default function HowToUseResumeKeywords() {
           performance. Follow these formatting rules:
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-green-800 mb-3">
+        <div className="callout callout-do rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-do mb-3">
             ✅ ATS-Friendly Formatting:
           </h4>
           <ul className="list-disc pl-6 space-y-2 text-accent-text">
@@ -443,7 +443,7 @@ export default function HowToUseResumeKeywords() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-red-50 border-l-4 border-red-500 p-6">
+          <div className="callout callout-dont p-6">
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Using only acronyms or only full terms
             </h4>
@@ -456,7 +456,7 @@ export default function HowToUseResumeKeywords() {
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 p-6">
+          <div className="callout callout-dont p-6">
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Including irrelevant keywords
             </h4>
@@ -470,7 +470,7 @@ export default function HowToUseResumeKeywords() {
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 p-6">
+          <div className="callout callout-dont p-6">
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Forgetting location-specific keywords
             </h4>
@@ -504,8 +504,8 @@ export default function HowToUseResumeKeywords() {
             </p>
           </div>
 
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-800 mb-3">⏰ Recency</h4>
+          <div className="callout callout-do rounded-xl p-6">
+            <h4 className="font-bold tone-do mb-3">⏰ Recency</h4>
             <p className="text-accent-text text-sm">
               More recent experience often scores higher. Emphasize your current
               and recent roles, especially for key skills.
@@ -520,9 +520,9 @@ export default function HowToUseResumeKeywords() {
             </p>
           </div>
 
-          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-            <h4 className="font-bold text-yellow-800 mb-3">📏 Length</h4>
-            <p className="text-yellow-700 text-sm">
+          <div className="callout callout-note rounded-xl p-6">
+            <h4 className="font-bold tone-note mb-3">📏 Length</h4>
+            <p className="tone-note text-sm">
               Extremely short or extremely long resumes may score poorly. Aim
               for 1-2 pages with substantial, relevant content.
             </p>
@@ -584,7 +584,7 @@ export default function HowToUseResumeKeywords() {
             <p className="text-ink/60 text-sm italic">
               "Managed digital marketing campaigns and analyzed results."
             </p>
-            <p className="text-red-600 text-xs mt-1">Keywords matched: 0/10</p>
+            <p className="tone-dont text-xs mt-1">Keywords matched: 0/10</p>
           </div>
 
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
@@ -750,8 +750,8 @@ export default function HowToUseResumeKeywords() {
           abilities.
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 mt-8">
-          <h4 className="font-bold text-green-800 mb-3">🚀 Your Next Steps:</h4>
+        <div className="callout callout-do rounded-xl p-6 mt-8">
+          <h4 className="font-bold tone-do mb-3">🚀 Your Next Steps:</h4>
           <ol className="list-decimal pl-6 space-y-2 text-accent-text">
             <li>Choose 2-3 target job postings in your field</li>
             <li>Extract and categorize keywords from each posting</li>

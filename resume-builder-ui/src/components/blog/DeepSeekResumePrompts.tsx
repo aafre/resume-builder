@@ -60,15 +60,15 @@ export default function DeepSeekResumePrompts() {
           </ul>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-          <h3 className="text-xl font-bold text-yellow-800 mb-3">Which Model to Use</h3>
-          <p className="text-yellow-800">
+        <div className="callout callout-note rounded-xl p-6">
+          <h3 className="text-xl font-bold tone-note mb-3">Which Model to Use</h3>
+          <p className="tone-note">
             <strong>DeepSeek-V3:</strong> Best for general resume writing, bullet generation, and summaries. Fast and reliable.
             <br /><br />
             <strong>DeepSeek-R1 (Reasoning):</strong> Best for job description analysis, keyword extraction, and tailoring your resume to specific roles. Slower but more thorough.
             <br /><br />
             Use V3 for writing tasks and R1 for analysis tasks. Both are available at{' '}
-            <a href="https://chat.deepseek.com" className="text-yellow-900 underline" rel="noopener noreferrer" target="_blank">chat.deepseek.com</a>.
+            <a href="https://chat.deepseek.com" className="tone-note underline" rel="noopener noreferrer" target="_blank">chat.deepseek.com</a>.
           </p>
         </div>
 
@@ -414,33 +414,33 @@ export default function DeepSeekResumePrompts() {
             <tbody className="divide-y divide-black/[0.06]">
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Free tier</td>
-                <td className="px-4 py-4 text-center text-green-600">Generous</td>
-                <td className="px-4 py-4 text-center text-yellow-600">Limited</td>
-                <td className="px-4 py-4 text-center text-yellow-600">Limited</td>
+                <td className="px-4 py-4 text-center tone-do">Generous</td>
+                <td className="px-4 py-4 text-center tone-note">Limited</td>
+                <td className="px-4 py-4 text-center tone-note">Limited</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Reasoning/analysis</td>
-                <td className="px-4 py-4 text-center text-green-600">Excellent (R1)</td>
-                <td className="px-4 py-4 text-center text-green-600">Excellent</td>
-                <td className="px-4 py-4 text-center text-green-600">Good (o1)</td>
+                <td className="px-4 py-4 text-center tone-do">Excellent (R1)</td>
+                <td className="px-4 py-4 text-center tone-do">Excellent</td>
+                <td className="px-4 py-4 text-center tone-do">Good (o1)</td>
               </tr>
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Writing quality</td>
-                <td className="px-4 py-4 text-center text-green-600">Strong</td>
-                <td className="px-4 py-4 text-center text-green-600">Best</td>
-                <td className="px-4 py-4 text-center text-green-600">Strong</td>
+                <td className="px-4 py-4 text-center tone-do">Strong</td>
+                <td className="px-4 py-4 text-center tone-do">Best</td>
+                <td className="px-4 py-4 text-center tone-do">Strong</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Instruction following</td>
-                <td className="px-4 py-4 text-center text-green-600">Strong</td>
-                <td className="px-4 py-4 text-center text-green-600">Best</td>
-                <td className="px-4 py-4 text-center text-green-600">Good</td>
+                <td className="px-4 py-4 text-center tone-do">Strong</td>
+                <td className="px-4 py-4 text-center tone-do">Best</td>
+                <td className="px-4 py-4 text-center tone-do">Good</td>
               </tr>
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">JD keyword extraction</td>
-                <td className="px-4 py-4 text-center text-green-600">Excellent</td>
-                <td className="px-4 py-4 text-center text-green-600">Excellent</td>
-                <td className="px-4 py-4 text-center text-green-600">Good</td>
+                <td className="px-4 py-4 text-center tone-do">Excellent</td>
+                <td className="px-4 py-4 text-center tone-do">Excellent</td>
+                <td className="px-4 py-4 text-center tone-do">Good</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Best for</td>

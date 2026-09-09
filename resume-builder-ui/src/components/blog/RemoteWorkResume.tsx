@@ -47,8 +47,8 @@ export default function RemoteWorkResume() {
           and reliable in a remote setting.
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-green-800 mb-3">
+        <div className="callout callout-do rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-do mb-3">
             ✅ What Remote Employers Want to See:
           </h4>
           <ul className="list-disc pl-6 space-y-2 text-accent-text">
@@ -262,7 +262,7 @@ export default function RemoteWorkResume() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-red-50 border-l-4 border-red-500 p-6">
+          <div className="callout callout-dont p-6">
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Not mentioning remote experience explicitly
             </h4>
@@ -272,7 +272,7 @@ export default function RemoteWorkResume() {
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 p-6">
+          <div className="callout callout-dont p-6">
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Overloading with jargon
             </h4>
@@ -282,7 +282,7 @@ export default function RemoteWorkResume() {
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 p-6">
+          <div className="callout callout-dont p-6">
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Listing skills without proof
             </h4>
@@ -337,9 +337,9 @@ export default function RemoteWorkResume() {
           make your resume rise to the top-no matter where you're applying from.
         </p>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mt-8">
-          <h4 className="font-bold text-yellow-800 mb-3">💡 Pro Tip</h4>
-          <p className="text-yellow-700">
+        <div className="callout callout-note rounded-xl p-6 mt-8">
+          <h4 className="font-bold tone-note mb-3">💡 Pro Tip</h4>
+          <p className="tone-note">
             Consider creating a separate "Remote Work Portfolio" section on your
             LinkedIn or personal website showcasing successful remote projects,
             testimonials from distributed teammates, and examples of your remote

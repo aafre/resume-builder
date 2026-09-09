@@ -166,14 +166,15 @@ const LoadingSpinner = () => (
 const BlogLoadingSkeleton = () => (
   <div className="max-w-4xl mx-auto px-4 py-8 min-h-screen">
     <div className="animate-pulse">
-      <div className="h-8 bg-gray-200 rounded-md mb-4"></div>
-      <div className="h-4 bg-gray-200 rounded-md mb-2"></div>
-      <div className="h-4 bg-gray-200 rounded-md mb-2 w-3/4"></div>
-      <div className="h-4 bg-gray-200 rounded-md mb-8 w-1/2"></div>
+      {/* Mirrors the article header: title, dek, then body lines. */}
+      <div className="h-8 bg-ink/[0.07] rounded-md mb-4"></div>
+      <div className="h-4 bg-ink/[0.07] rounded-md mb-2"></div>
+      <div className="h-4 bg-ink/[0.07] rounded-md mb-2 w-3/4"></div>
+      <div className="h-4 bg-ink/[0.07] rounded-md mb-8 w-1/2"></div>
       <div className="space-y-3">
-        <div className="h-4 bg-gray-200 rounded-md"></div>
-        <div className="h-4 bg-gray-200 rounded-md"></div>
-        <div className="h-4 bg-gray-200 rounded-md w-5/6"></div>
+        <div className="h-4 bg-ink/[0.07] rounded-md"></div>
+        <div className="h-4 bg-ink/[0.07] rounded-md"></div>
+        <div className="h-4 bg-ink/[0.07] rounded-md w-5/6"></div>
       </div>
     </div>
   </div>

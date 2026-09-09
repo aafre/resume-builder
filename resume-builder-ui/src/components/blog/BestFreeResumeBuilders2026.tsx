@@ -94,73 +94,73 @@ export default function BestFreeResumeBuilders2026() {
             <tbody className="divide-y divide-black/[0.06]">
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">EasyFreeResume</td>
-                <td className="px-4 py-4 text-center text-green-600 font-bold">Yes</td>
-                <td className="px-4 py-4 text-center text-green-600">No</td>
-                <td className="px-4 py-4 text-center text-green-600">Yes</td>
+                <td className="px-4 py-4 text-center tone-do font-bold">Yes</td>
+                <td className="px-4 py-4 text-center tone-do">No</td>
+                <td className="px-4 py-4 text-center tone-do">Yes</td>
                 <td className="px-4 py-4 text-center text-ink/60">3</td>
-                <td className="px-4 py-4 text-center text-green-600 font-medium">Free</td>
+                <td className="px-4 py-4 text-center tone-do font-medium">Free</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Canva</td>
-                <td className="px-4 py-4 text-center text-green-600 font-bold">Yes</td>
-                <td className="px-4 py-4 text-center text-red-500">Yes</td>
-                <td className="px-4 py-4 text-center text-yellow-600">Partial</td>
+                <td className="px-4 py-4 text-center tone-do font-bold">Yes</td>
+                <td className="px-4 py-4 text-center tone-dont">Yes</td>
+                <td className="px-4 py-4 text-center tone-note">Partial</td>
                 <td className="px-4 py-4 text-center text-ink/60">1,000+</td>
                 <td className="px-4 py-4 text-center text-ink/60">$13/mo (Pro)</td>
               </tr>
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Google Docs</td>
-                <td className="px-4 py-4 text-center text-green-600 font-bold">Yes</td>
-                <td className="px-4 py-4 text-center text-red-500">Yes (Google)</td>
-                <td className="px-4 py-4 text-center text-green-600">Yes</td>
+                <td className="px-4 py-4 text-center tone-do font-bold">Yes</td>
+                <td className="px-4 py-4 text-center tone-dont">Yes (Google)</td>
+                <td className="px-4 py-4 text-center tone-do">Yes</td>
                 <td className="px-4 py-4 text-center text-ink/60">5</td>
-                <td className="px-4 py-4 text-center text-green-600 font-medium">Free</td>
+                <td className="px-4 py-4 text-center tone-do font-medium">Free</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">FlowCV</td>
-                <td className="px-4 py-4 text-center text-green-600 font-bold">Yes</td>
-                <td className="px-4 py-4 text-center text-red-500">Yes</td>
-                <td className="px-4 py-4 text-center text-green-600">Yes</td>
+                <td className="px-4 py-4 text-center tone-do font-bold">Yes</td>
+                <td className="px-4 py-4 text-center tone-dont">Yes</td>
+                <td className="px-4 py-4 text-center tone-do">Yes</td>
                 <td className="px-4 py-4 text-center text-ink/60">20+</td>
                 <td className="px-4 py-4 text-center text-ink/60">$19/mo (Pro)</td>
               </tr>
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Novoresume</td>
-                <td className="px-4 py-4 text-center text-yellow-600">1 free</td>
-                <td className="px-4 py-4 text-center text-red-500">Yes</td>
-                <td className="px-4 py-4 text-center text-green-600">Yes</td>
+                <td className="px-4 py-4 text-center tone-note">1 free</td>
+                <td className="px-4 py-4 text-center tone-dont">Yes</td>
+                <td className="px-4 py-4 text-center tone-do">Yes</td>
                 <td className="px-4 py-4 text-center text-ink/60">8</td>
                 <td className="px-4 py-4 text-center text-ink/60">$20/mo</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Resume.io</td>
-                <td className="px-4 py-4 text-center text-red-500">No</td>
-                <td className="px-4 py-4 text-center text-red-500">Yes</td>
-                <td className="px-4 py-4 text-center text-green-600">Yes</td>
+                <td className="px-4 py-4 text-center tone-dont">No</td>
+                <td className="px-4 py-4 text-center tone-dont">Yes</td>
+                <td className="px-4 py-4 text-center tone-do">Yes</td>
                 <td className="px-4 py-4 text-center text-ink/60">25+</td>
                 <td className="px-4 py-4 text-center text-ink/60">$2.95/wk</td>
               </tr>
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Zety</td>
-                <td className="px-4 py-4 text-center text-red-500">No</td>
-                <td className="px-4 py-4 text-center text-red-500">Yes</td>
-                <td className="px-4 py-4 text-center text-green-600">Yes</td>
+                <td className="px-4 py-4 text-center tone-dont">No</td>
+                <td className="px-4 py-4 text-center tone-dont">Yes</td>
+                <td className="px-4 py-4 text-center tone-do">Yes</td>
                 <td className="px-4 py-4 text-center text-ink/60">18</td>
                 <td className="px-4 py-4 text-center text-ink/60">$2.70&ndash;$24.70</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Resume Genius</td>
-                <td className="px-4 py-4 text-center text-red-500">No</td>
-                <td className="px-4 py-4 text-center text-red-500">Yes</td>
-                <td className="px-4 py-4 text-center text-green-600">Yes</td>
+                <td className="px-4 py-4 text-center tone-dont">No</td>
+                <td className="px-4 py-4 text-center tone-dont">Yes</td>
+                <td className="px-4 py-4 text-center tone-do">Yes</td>
                 <td className="px-4 py-4 text-center text-ink/60">30+</td>
                 <td className="px-4 py-4 text-center text-ink/60">$7.95/mo</td>
               </tr>
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Microsoft Word</td>
-                <td className="px-4 py-4 text-center text-yellow-600">If you own it</td>
-                <td className="px-4 py-4 text-center text-red-500">Yes (Microsoft)</td>
-                <td className="px-4 py-4 text-center text-green-600">Yes</td>
+                <td className="px-4 py-4 text-center tone-note">If you own it</td>
+                <td className="px-4 py-4 text-center tone-dont">Yes (Microsoft)</td>
+                <td className="px-4 py-4 text-center tone-do">Yes</td>
                 <td className="px-4 py-4 text-center text-ink/60">40+</td>
                 <td className="px-4 py-4 text-center text-ink/60">$7/mo (365)</td>
               </tr>
@@ -187,18 +187,18 @@ export default function BestFreeResumeBuilders2026() {
             The trade-off is clear: fewer design options, but zero risk of a surprise charge.
           </p>
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-              <h4 className="font-bold text-green-800 mb-2">Strengths</h4>
-              <ul className="space-y-1 text-green-800 text-sm">
+            <div className="callout callout-do rounded-xl p-4">
+              <h4 className="font-bold tone-do mb-2">Strengths</h4>
+              <ul className="space-y-1 tone-do text-sm">
                 <li>&#x2713; 100% free, no sign-up required</li>
                 <li>&#x2713; No watermarks or branding on PDF</li>
                 <li>&#x2713; ATS-optimized output</li>
                 <li>&#x2713; Fast &mdash; build a resume in under 10 minutes</li>
               </ul>
             </div>
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-              <h4 className="font-bold text-red-800 mb-2">Limitations</h4>
-              <ul className="space-y-1 text-red-800 text-sm">
+            <div className="callout callout-dont rounded-xl p-4">
+              <h4 className="font-bold tone-dont mb-2">Limitations</h4>
+              <ul className="space-y-1 tone-dont text-sm">
                 <li>&#x2717; Only 3 templates</li>
                 <li>&#x2717; No built-in AI writing assistant (yet)</li>
                 <li>&#x2717; No cover letter builder</li>
@@ -221,18 +221,18 @@ export default function BestFreeResumeBuilders2026() {
             a Canva resume may get filtered out before a human sees it.
           </p>
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-              <h4 className="font-bold text-green-800 mb-2">Strengths</h4>
-              <ul className="space-y-1 text-green-800 text-sm">
+            <div className="callout callout-do rounded-xl p-4">
+              <h4 className="font-bold tone-do mb-2">Strengths</h4>
+              <ul className="space-y-1 tone-do text-sm">
                 <li>&#x2713; Massive template library</li>
                 <li>&#x2713; Free PDF export (no watermark)</li>
                 <li>&#x2713; Drag-and-drop editor</li>
                 <li>&#x2713; Good for creative industries</li>
               </ul>
             </div>
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-              <h4 className="font-bold text-red-800 mb-2">Limitations</h4>
-              <ul className="space-y-1 text-red-800 text-sm">
+            <div className="callout callout-dont rounded-xl p-4">
+              <h4 className="font-bold tone-dont mb-2">Limitations</h4>
+              <ul className="space-y-1 tone-dont text-sm">
                 <li>&#x2717; Many templates are not ATS-friendly</li>
                 <li>&#x2717; Requires Google/email sign-up</li>
                 <li>&#x2717; Premium templates locked behind $13/mo paywall</li>
@@ -256,18 +256,18 @@ export default function BestFreeResumeBuilders2026() {
             You&rsquo;re essentially writing in a word processor, not a resume tool.
           </p>
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-              <h4 className="font-bold text-green-800 mb-2">Strengths</h4>
-              <ul className="space-y-1 text-green-800 text-sm">
+            <div className="callout callout-do rounded-xl p-4">
+              <h4 className="font-bold tone-do mb-2">Strengths</h4>
+              <ul className="space-y-1 tone-do text-sm">
                 <li>&#x2713; Completely free</li>
                 <li>&#x2713; ATS-compatible output</li>
                 <li>&#x2713; Easy collaboration and sharing</li>
                 <li>&#x2713; Auto-saves to cloud</li>
               </ul>
             </div>
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-              <h4 className="font-bold text-red-800 mb-2">Limitations</h4>
-              <ul className="space-y-1 text-red-800 text-sm">
+            <div className="callout callout-dont rounded-xl p-4">
+              <h4 className="font-bold tone-dont mb-2">Limitations</h4>
+              <ul className="space-y-1 tone-dont text-sm">
                 <li>&#x2717; Only 5 basic templates</li>
                 <li>&#x2717; No resume-specific features</li>
                 <li>&#x2717; Requires Google account</li>
@@ -292,18 +292,18 @@ export default function BestFreeResumeBuilders2026() {
             because the free tier doesn&rsquo;t feel crippled.
           </p>
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-              <h4 className="font-bold text-green-800 mb-2">Strengths</h4>
-              <ul className="space-y-1 text-green-800 text-sm">
+            <div className="callout callout-do rounded-xl p-4">
+              <h4 className="font-bold tone-do mb-2">Strengths</h4>
+              <ul className="space-y-1 tone-do text-sm">
                 <li>&#x2713; Generous free tier with PDF export</li>
                 <li>&#x2713; Clean, modern templates</li>
                 <li>&#x2713; ATS-compatible</li>
                 <li>&#x2713; Cover letter builder included</li>
               </ul>
             </div>
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-              <h4 className="font-bold text-red-800 mb-2">Limitations</h4>
-              <ul className="space-y-1 text-red-800 text-sm">
+            <div className="callout callout-dont rounded-xl p-4">
+              <h4 className="font-bold tone-dont mb-2">Limitations</h4>
+              <ul className="space-y-1 tone-dont text-sm">
                 <li>&#x2717; Account required</li>
                 <li>&#x2717; Custom fonts/colors require Pro</li>
                 <li>&#x2717; Some templates are Pro-only</li>
@@ -327,17 +327,17 @@ export default function BestFreeResumeBuilders2026() {
             line at the bottom, which some employers may notice.
           </p>
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-              <h4 className="font-bold text-green-800 mb-2">Strengths</h4>
-              <ul className="space-y-1 text-green-800 text-sm">
+            <div className="callout callout-do rounded-xl p-4">
+              <h4 className="font-bold tone-do mb-2">Strengths</h4>
+              <ul className="space-y-1 tone-do text-sm">
                 <li>&#x2713; Pre-written content suggestions</li>
                 <li>&#x2713; Step-by-step guidance</li>
                 <li>&#x2713; Clean design</li>
               </ul>
             </div>
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-              <h4 className="font-bold text-red-800 mb-2">Limitations</h4>
-              <ul className="space-y-1 text-red-800 text-sm">
+            <div className="callout callout-dont rounded-xl p-4">
+              <h4 className="font-bold tone-dont mb-2">Limitations</h4>
+              <ul className="space-y-1 tone-dont text-sm">
                 <li>&#x2717; Only 1 free resume</li>
                 <li>&#x2717; Branding on free version</li>
                 <li>&#x2717; Premium features at $20/mo</li>
@@ -364,17 +364,17 @@ export default function BestFreeResumeBuilders2026() {
             </Link>.
           </p>
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-              <h4 className="font-bold text-green-800 mb-2">Strengths</h4>
-              <ul className="space-y-1 text-green-800 text-sm">
+            <div className="callout callout-do rounded-xl p-4">
+              <h4 className="font-bold tone-do mb-2">Strengths</h4>
+              <ul className="space-y-1 tone-do text-sm">
                 <li>&#x2713; Beautiful templates</li>
                 <li>&#x2713; ATS-optimized</li>
                 <li>&#x2713; AI writing suggestions</li>
               </ul>
             </div>
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-              <h4 className="font-bold text-red-800 mb-2">Limitations</h4>
-              <ul className="space-y-1 text-red-800 text-sm">
+            <div className="callout callout-dont rounded-xl p-4">
+              <h4 className="font-bold tone-dont mb-2">Limitations</h4>
+              <ul className="space-y-1 tone-dont text-sm">
                 <li>&#x2717; PDF download requires paid subscription</li>
                 <li>&#x2717; Auto-renewing trial ($2.95/week)</li>
                 <li>&#x2717; Cancellation process is confusing</li>
@@ -402,17 +402,17 @@ export default function BestFreeResumeBuilders2026() {
             for details.
           </p>
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-              <h4 className="font-bold text-green-800 mb-2">Strengths</h4>
-              <ul className="space-y-1 text-green-800 text-sm">
+            <div className="callout callout-do rounded-xl p-4">
+              <h4 className="font-bold tone-do mb-2">Strengths</h4>
+              <ul className="space-y-1 tone-do text-sm">
                 <li>&#x2713; Excellent AI content suggestions</li>
                 <li>&#x2713; Professional templates</li>
                 <li>&#x2713; ATS-compatible</li>
               </ul>
             </div>
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-              <h4 className="font-bold text-red-800 mb-2">Limitations</h4>
-              <ul className="space-y-1 text-red-800 text-sm">
+            <div className="callout callout-dont rounded-xl p-4">
+              <h4 className="font-bold tone-dont mb-2">Limitations</h4>
+              <ul className="space-y-1 tone-dont text-sm">
                 <li>&#x2717; Download requires payment ($2.70&ndash;$24.70)</li>
                 <li>&#x2717; Misleading &ldquo;free&rdquo; marketing</li>
                 <li>&#x2717; Auto-renewing subscription</li>
@@ -439,17 +439,17 @@ export default function BestFreeResumeBuilders2026() {
             for the full breakdown.
           </p>
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-              <h4 className="font-bold text-green-800 mb-2">Strengths</h4>
-              <ul className="space-y-1 text-green-800 text-sm">
+            <div className="callout callout-do rounded-xl p-4">
+              <h4 className="font-bold tone-do mb-2">Strengths</h4>
+              <ul className="space-y-1 tone-do text-sm">
                 <li>&#x2713; Step-by-step wizard</li>
                 <li>&#x2713; Good pre-written content</li>
                 <li>&#x2713; ATS-friendly output</li>
               </ul>
             </div>
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-              <h4 className="font-bold text-red-800 mb-2">Limitations</h4>
-              <ul className="space-y-1 text-red-800 text-sm">
+            <div className="callout callout-dont rounded-xl p-4">
+              <h4 className="font-bold tone-dont mb-2">Limitations</h4>
+              <ul className="space-y-1 tone-dont text-sm">
                 <li>&#x2717; No free PDF export</li>
                 <li>&#x2717; Starts at $7.95/month</li>
                 <li>&#x2717; Limited free trial</li>
@@ -473,18 +473,18 @@ export default function BestFreeResumeBuilders2026() {
             if you already pay for it&rdquo; &mdash; not free in the way most people mean.
           </p>
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-              <h4 className="font-bold text-green-800 mb-2">Strengths</h4>
-              <ul className="space-y-1 text-green-800 text-sm">
+            <div className="callout callout-do rounded-xl p-4">
+              <h4 className="font-bold tone-do mb-2">Strengths</h4>
+              <ul className="space-y-1 tone-do text-sm">
                 <li>&#x2713; 40+ professional templates</li>
                 <li>&#x2713; Full formatting control</li>
                 <li>&#x2713; ATS-compatible .docx output</li>
                 <li>&#x2713; Industry standard format</li>
               </ul>
             </div>
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-              <h4 className="font-bold text-red-800 mb-2">Limitations</h4>
-              <ul className="space-y-1 text-red-800 text-sm">
+            <div className="callout callout-dont rounded-xl p-4">
+              <h4 className="font-bold tone-dont mb-2">Limitations</h4>
+              <ul className="space-y-1 tone-dont text-sm">
                 <li>&#x2717; Requires Office 365 subscription ($7/mo)</li>
                 <li>&#x2717; No resume-specific guidance</li>
                 <li>&#x2717; Easy to create poorly formatted resumes</li>
@@ -504,26 +504,26 @@ export default function BestFreeResumeBuilders2026() {
         </p>
 
         <div className="space-y-4">
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-green-800 mb-3">Actually Free (No Catch)</h3>
-            <p className="text-green-800">
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-do mb-3">Actually Free (No Catch)</h3>
+            <p className="tone-do">
               You can build and download a PDF resume without paying anything or entering credit card details.
               <strong> EasyFreeResume, Google Docs, </strong> and <strong>Canva</strong> fall in this category.
             </p>
           </div>
 
-          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-yellow-800 mb-3">Freemium (Free With Limits)</h3>
-            <p className="text-yellow-800">
+          <div className="callout callout-note rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-note mb-3">Freemium (Free With Limits)</h3>
+            <p className="tone-note">
               You get a usable free tier but hit limits on templates, number of resumes, or features.
               <strong> FlowCV</strong> and <strong>Novoresume</strong> are in this category. You can get a resume,
               but the premium features are tempting.
             </p>
           </div>
 
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-red-800 mb-3">Free to Build, Pay to Download</h3>
-            <p className="text-red-800">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-dont mb-3">Free to Build, Pay to Download</h3>
+            <p className="tone-dont">
               You can use the editor for free, but you hit a paywall when you try to download.
               <strong> Zety, Resume.io, </strong> and <strong>Resume Genius</strong> all do this.
               You invest 30+ minutes building your resume only to discover you need to pay at the end.

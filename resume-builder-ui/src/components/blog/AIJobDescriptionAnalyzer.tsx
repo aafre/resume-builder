@@ -199,8 +199,8 @@ export default function AIJobDescriptionAnalyzer() {
           </table>
         </div>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-green-800 mb-3">
+        <div className="callout callout-do rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-do mb-3">
             ✅ Best Practices
           </h3>
           <ul className="list-disc list-inside space-y-2 text-accent-text">

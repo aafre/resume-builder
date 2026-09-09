@@ -60,9 +60,9 @@ export default function HowToListSkills() {
           covers the full picture.
         </p>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-yellow-800 mb-3">⚡ Quick Impact Check</h3>
-          <p className="text-yellow-700">
+        <div className="callout callout-note rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-note mb-3">⚡ Quick Impact Check</h3>
+          <p className="tone-note">
             A well-crafted skills section can be the difference between your
             resume being filtered out by ATS or making it to a human recruiter.
             Studies show that over 75% of resumes are rejected by ATS before a
@@ -106,8 +106,8 @@ export default function HowToListSkills() {
             </div>
           </div>
 
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-green-800 mb-4">
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-do mb-4">
               🤝 Soft Skills (Interpersonal Skills)
             </h3>
             <div className="text-accent-text">
@@ -203,9 +203,9 @@ export default function HowToListSkills() {
           </strong>
         </p>
 
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-red-800 mb-4">🎯 Tailoring Process:</h3>
-          <ol className="list-decimal pl-6 space-y-3 text-red-700">
+        <div className="callout callout-dont rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-dont mb-4">🎯 Tailoring Process:</h3>
+          <ol className="list-decimal pl-6 space-y-3 tone-dont">
             <li>
               <strong>Read the job description carefully</strong> and identify
               the key skills the employer is looking for
@@ -259,8 +259,8 @@ export default function HowToListSkills() {
         </p>
 
         <div className="space-y-8">
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-green-800 mb-4">
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-do mb-4">
               Option 1: The Simple Bulleted List
             </h3>
             <div className="text-accent-text">
@@ -284,7 +284,7 @@ export default function HowToListSkills() {
                 </ul>
               </div>
               <div className="mt-3">
-                <p className="font-medium text-green-800">Best for:</p>
+                <p className="font-medium tone-do">Best for:</p>
                 <p className="text-sm">Most roles, especially when space is limited</p>
               </div>
             </div>
@@ -345,11 +345,11 @@ export default function HowToListSkills() {
             </div>
           </div>
 
-          <div className="bg-orange-50 border border-orange-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-orange-800 mb-4">
+          <div className="callout callout-note rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-note mb-4">
               Option 4: Combined Hard & Soft Skills
             </h3>
-            <div className="text-orange-700">
+            <div className="tone-note">
               <p className="mb-3">
                 Separates technical abilities from interpersonal skills for
                 clarity.
@@ -377,7 +377,7 @@ export default function HowToListSkills() {
                 </div>
               </div>
               <div className="mt-3">
-                <p className="font-medium text-orange-800">Best for:</p>
+                <p className="font-medium tone-note">Best for:</p>
                 <p className="text-sm">Management roles, client-facing positions</p>
               </div>
             </div>
@@ -447,8 +447,8 @@ export default function HowToListSkills() {
             </div>
           </div>
 
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-green-800 mb-4">
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-do mb-4">
               📊 Marketing & Sales
             </h3>
             <div className="grid md:grid-cols-3 gap-4 text-accent-text text-sm">
@@ -553,11 +553,11 @@ export default function HowToListSkills() {
             </div>
           </div>
 
-          <div className="bg-orange-50 border border-orange-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-orange-800 mb-4">
+          <div className="callout callout-note rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-note mb-4">
               💼 Business & Finance
             </h3>
-            <div className="grid md:grid-cols-3 gap-4 text-orange-700 text-sm">
+            <div className="grid md:grid-cols-3 gap-4 tone-note text-sm">
               <div>
                 <h4 className="font-medium mb-2">Financial Analysis:</h4>
                 <ul className="list-disc pl-5 space-y-1">
@@ -667,7 +667,7 @@ export default function HowToListSkills() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-red-50 border-l-4 border-red-500 p-6">
+          <div className="callout callout-dont p-6">
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Including outdated or irrelevant skills
             </h4>
@@ -681,7 +681,7 @@ export default function HowToListSkills() {
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 p-6">
+          <div className="callout callout-dont p-6">
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Being too vague or generic
             </h4>
@@ -695,7 +695,7 @@ export default function HowToListSkills() {
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 p-6">
+          <div className="callout callout-dont p-6">
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Lying about your skill level
             </h4>
@@ -709,7 +709,7 @@ export default function HowToListSkills() {
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 p-6">
+          <div className="callout callout-dont p-6">
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Making the skills section too long
             </h4>
@@ -749,8 +749,8 @@ export default function HowToListSkills() {
             </div>
           </div>
 
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-green-800 mb-3">
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="text-lg font-bold tone-do mb-3">
               2. Use Industry-Specific Terminology
             </h3>
             <p className="text-accent-text mb-3">
@@ -817,8 +817,8 @@ export default function HowToListSkills() {
           </ol>
         </div>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 mt-8">
-          <h4 className="font-bold text-green-800 mb-3">🚀 Remember</h4>
+        <div className="callout callout-do rounded-xl p-6 mt-8">
+          <h4 className="font-bold tone-do mb-3">🚀 Remember</h4>
           <p className="text-accent-text">
             Your skills section is prime real estate on your resume. Every word
             should be intentional and relevant to the role you're targeting. When

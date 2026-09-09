@@ -156,8 +156,8 @@ export default function HowToWriteResumeGuide() {
         </p>
 
         <div className="space-y-6">
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-green-800 mb-3">
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-do mb-3">
               Chronological Format (Recommended for Most)
             </h3>
             <p className="text-accent-text mb-3">
@@ -360,11 +360,11 @@ export default function HowToWriteResumeGuide() {
           your experience. The goal is to show impact, not just activity.
         </p>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
-          <h3 className="font-bold text-yellow-800 mb-3">
+        <div className="callout callout-note rounded-xl p-6 my-6">
+          <h3 className="font-bold tone-note mb-3">
             The CAR Method for Experience Bullets:
           </h3>
-          <ul className="list-disc pl-6 space-y-2 text-yellow-700">
+          <ul className="list-disc pl-6 space-y-2 tone-note">
             <li>
               <strong>Context:</strong> What was the situation or challenge?
             </li>
@@ -378,16 +378,16 @@ export default function HowToWriteResumeGuide() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h4 className="font-bold text-red-800 mb-2">Weak Example:</h4>
-            <p className="text-red-700 text-sm">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h4 className="font-bold tone-dont mb-2">Weak Example:</h4>
+            <p className="tone-dont text-sm">
               "Responsible for managing social media accounts and creating
               content for marketing campaigns."
             </p>
           </div>
 
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-800 mb-2">
+          <div className="callout callout-do rounded-xl p-6">
+            <h4 className="font-bold tone-do mb-2">
               Strong Example:
             </h4>
             <p className="text-accent-text text-sm">
@@ -428,8 +428,8 @@ export default function HowToWriteResumeGuide() {
             </ul>
           </div>
 
-          <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-            <h4 className="font-bold text-green-800 mb-2">Achievement</h4>
+          <div className="callout callout-do rounded-xl p-4">
+            <h4 className="font-bold tone-do mb-2">Achievement</h4>
             <ul className="list-disc pl-5 text-accent-text text-sm space-y-1">
               <li>Achieved</li>
               <li>Exceeded</li>
@@ -509,19 +509,19 @@ export default function HowToWriteResumeGuide() {
         </p>
 
         <div className="space-y-4">
-          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-            <h4 className="font-bold text-yellow-800 mb-2">
+          <div className="callout callout-note rounded-xl p-6">
+            <h4 className="font-bold tone-note mb-2">
               1. Analyze the Job Description
             </h4>
-            <p className="text-yellow-700">
+            <p className="tone-note">
               Identify key requirements, skills, and qualifications. Note the
               exact language they use — mirror it in your resume. If the job
               says "project management," don't write "managing projects."
             </p>
           </div>
 
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-800 mb-2">
+          <div className="callout callout-do rounded-xl p-6">
+            <h4 className="font-bold tone-do mb-2">
               2. Adjust Your Professional Summary
             </h4>
             <p className="text-accent-text">
@@ -644,11 +644,11 @@ export default function HowToWriteResumeGuide() {
           carelessness to hiring managers.
         </p>
 
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6 my-6">
-          <h3 className="font-bold text-red-800 mb-3">
+        <div className="callout callout-dont rounded-xl p-6 my-6">
+          <h3 className="font-bold tone-dont mb-3">
             Resume Review Checklist:
           </h3>
-          <ul className="list-disc pl-6 space-y-2 text-red-700">
+          <ul className="list-disc pl-6 space-y-2 tone-dont">
             <li>Proofread for spelling and grammar errors (read it aloud)</li>
             <li>Ensure consistent formatting — font sizes, bullet styles, date formats</li>
             <li>Verify all contact information is current and clickable</li>
@@ -656,7 +656,7 @@ export default function HowToWriteResumeGuide() {
             <li>Confirm the resume is 1-2 pages maximum</li>
             <li>Test ATS compatibility by copy-pasting into a plain text editor</li>
             <li>Have someone else review it for clarity and typos you missed</li>
-            <li>Save as PDF with your name in the filename (e.g., <code className="bg-red-100 px-1.5 py-0.5 rounded text-xs">Jane_Doe_Resume.pdf</code>)</li>
+            <li>Save as PDF with your name in the filename (e.g., <code className="callout callout-dont px-1.5 py-0.5 rounded text-xs">Jane_Doe_Resume.pdf</code>)</li>
           </ul>
         </div>
 
@@ -675,9 +675,9 @@ export default function HowToWriteResumeGuide() {
         </p>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h4 className="font-bold text-red-800 mb-3">Content Mistakes</h4>
-            <ul className="list-disc pl-6 space-y-1 text-red-700 text-sm">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h4 className="font-bold tone-dont mb-3">Content Mistakes</h4>
+            <ul className="list-disc pl-6 space-y-1 tone-dont text-sm">
               <li>Using generic, one-size-fits-all content</li>
               <li>Including irrelevant work experience</li>
               <li>Focusing on duties instead of achievements</li>
@@ -687,9 +687,9 @@ export default function HowToWriteResumeGuide() {
             </ul>
           </div>
 
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h4 className="font-bold text-red-800 mb-3">Formatting Mistakes</h4>
-            <ul className="list-disc pl-6 space-y-1 text-red-700 text-sm">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h4 className="font-bold tone-dont mb-3">Formatting Mistakes</h4>
+            <ul className="list-disc pl-6 space-y-1 tone-dont text-sm">
               <li>Using unprofessional or decorative fonts</li>
               <li>Making the resume too long (3+ pages)</li>
               <li>Inconsistent formatting and spacing</li>
@@ -733,11 +733,11 @@ export default function HowToWriteResumeGuide() {
             </ul>
           </div>
 
-          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-            <h4 className="font-bold text-yellow-800 mb-2">
+          <div className="callout callout-note rounded-xl p-6">
+            <h4 className="font-bold tone-note mb-2">
               Important: Always Edit AI Output
             </h4>
-            <p className="text-yellow-700">
+            <p className="tone-note">
               Never paste AI-generated text directly onto your resume without
               editing. Verify all facts, remove generic phrases, and make sure
               the language sounds like you. Hiring managers can spot unedited
@@ -813,8 +813,8 @@ export default function HowToWriteResumeGuide() {
           opportunity.
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-green-800 mb-3">
+        <div className="callout callout-do rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-do mb-3">
             Action Items for This Week:
           </h3>
           <ol className="list-decimal pl-6 space-y-2 text-accent-text">

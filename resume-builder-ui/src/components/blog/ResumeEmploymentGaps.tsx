@@ -62,9 +62,9 @@ export default function ResumeEmploymentGaps() {
           </ul>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mt-4">
-          <h3 className="text-xl font-bold text-yellow-800 mb-3">When Gaps Need Addressing</h3>
-          <ul className="space-y-2 text-yellow-700">
+        <div className="callout callout-note rounded-xl p-6 mt-4">
+          <h3 className="text-xl font-bold tone-note mb-3">When Gaps Need Addressing</h3>
+          <ul className="space-y-2 tone-note">
             <li><strong>Longer than 1 year</strong> without any explanation on the resume</li>
             <li><strong>Multiple gaps</strong> that create a pattern of short tenures</li>
             <li><strong>Very recent gap</strong> (last 6-12 months) with no current activity</li>
@@ -89,9 +89,9 @@ export default function ResumeEmploymentGaps() {
               Layoffs carry zero stigma in 2026. Mass layoffs at major tech companies, startups,
               and traditional industries have made this completely normal.
             </p>
-            <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-              <p className="font-medium text-green-800 mb-1">Example framing:</p>
-              <p className="text-green-700 text-sm italic">
+            <div className="callout callout-do p-4 rounded-r-lg">
+              <p className="font-medium tone-do mb-1">Example framing:</p>
+              <p className="tone-do text-sm italic">
                 &ldquo;Position eliminated during company-wide restructuring. Used transition period
                 to earn [CERTIFICATION] and complete [PROJECT/COURSE].&rdquo;
               </p>
@@ -108,9 +108,9 @@ export default function ResumeEmploymentGaps() {
               Caregiving is a legitimate reason that most hiring managers respect. Keep it brief
               and pivot quickly to your readiness to return.
             </p>
-            <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-              <p className="font-medium text-green-800 mb-1">Example framing:</p>
-              <p className="text-green-700 text-sm italic">
+            <div className="callout callout-do p-4 rounded-r-lg">
+              <p className="font-medium tone-do mb-1">Example framing:</p>
+              <p className="tone-do text-sm italic">
                 &ldquo;Career pause for family caregiving. During this time, maintained industry
                 knowledge through [SPECIFIC ACTIVITY: online courses, professional association
                 membership, freelance projects].&rdquo;
@@ -128,9 +128,9 @@ export default function ResumeEmploymentGaps() {
               You are under no obligation to disclose medical details. A brief, forward-looking
               statement is all you need.
             </p>
-            <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-              <p className="font-medium text-green-800 mb-1">Example framing:</p>
-              <p className="text-green-700 text-sm italic">
+            <div className="callout callout-do p-4 rounded-r-lg">
+              <p className="font-medium tone-do mb-1">Example framing:</p>
+              <p className="tone-do text-sm italic">
                 &ldquo;Personal leave, now fully resolved. Eager to apply [SKILL] experience to
                 [TARGET ROLE] opportunities.&rdquo;
               </p>
@@ -148,9 +148,9 @@ export default function ResumeEmploymentGaps() {
               Intentional time off for travel or personal development is increasingly respected,
               especially if you can connect it to professional growth.
             </p>
-            <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-              <p className="font-medium text-green-800 mb-1">Example framing:</p>
-              <p className="text-green-700 text-sm italic">
+            <div className="callout callout-do p-4 rounded-r-lg">
+              <p className="font-medium tone-do mb-1">Example framing:</p>
+              <p className="tone-do text-sm italic">
                 &ldquo;Professional sabbatical: completed language immersion program in [COUNTRY],
                 volunteered with [ORGANIZATION], developed [SKILL/PROJECT].&rdquo;
               </p>
@@ -163,9 +163,9 @@ export default function ResumeEmploymentGaps() {
               If your gap was spent preparing for a new career, that is not a gap &mdash; it is an
               investment. Frame it as intentional upskilling.
             </p>
-            <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-              <p className="font-medium text-green-800 mb-1">Example framing:</p>
-              <p className="text-green-700 text-sm italic">
+            <div className="callout callout-do p-4 rounded-r-lg">
+              <p className="font-medium tone-do mb-1">Example framing:</p>
+              <p className="tone-do text-sm italic">
                 &ldquo;Career transition period: completed [CERTIFICATION/DEGREE], built portfolio
                 of [X] projects, and contributed to [OPEN SOURCE/VOLUNTEER WORK] in [NEW FIELD].&rdquo;
               </p>
@@ -184,9 +184,9 @@ export default function ResumeEmploymentGaps() {
               Running a business or freelancing is not a gap &mdash; it is experience. List it as a
               role on your resume with achievements and metrics.
             </p>
-            <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-              <p className="font-medium text-green-800 mb-1">Example framing:</p>
-              <p className="text-green-700 text-sm italic">
+            <div className="callout callout-do p-4 rounded-r-lg">
+              <p className="font-medium tone-do mb-1">Example framing:</p>
+              <p className="tone-do text-sm italic">
                 &ldquo;Freelance [TITLE] (2024-2025): Delivered [X] projects for clients including
                 [NOTABLE CLIENT/INDUSTRY]. Managed all business operations, client relationships,
                 and project delivery.&rdquo;
@@ -352,9 +352,9 @@ export default function ResumeEmploymentGaps() {
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-red-800 mb-4">Do Not</h3>
-            <ul className="space-y-2 text-red-700">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-dont mb-4">Do Not</h3>
+            <ul className="space-y-2 tone-dont">
               <li>&#x2717; Lie about dates or fabricate employment</li>
               <li>&#x2717; Over-explain with a paragraph of justification</li>
               <li>&#x2717; Use apologetic language (&ldquo;Unfortunately...&rdquo;)</li>
@@ -363,9 +363,9 @@ export default function ResumeEmploymentGaps() {
               <li>&#x2717; Leave the gap completely unaddressed if it is longer than a year</li>
             </ul>
           </div>
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-green-800 mb-4">Do</h3>
-            <ul className="space-y-2 text-green-700">
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-do mb-4">Do</h3>
+            <ul className="space-y-2 tone-do">
               <li>&#x2713; Be honest but brief (one line is usually enough)</li>
               <li>&#x2713; Focus on what you did during the gap</li>
               <li>&#x2713; Use neutral, professional language</li>

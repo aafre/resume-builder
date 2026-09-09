@@ -100,17 +100,17 @@ export default function CareerChangeResumeGuide() {
               <tr>
                 <td className="px-6 py-4 font-medium text-ink">Chronological</td>
                 <td className="px-6 py-4 text-ink/60">Same-field promotions. NOT for career changers.</td>
-                <td className="px-6 py-4 text-red-600 text-sm">Highlights irrelevant experience</td>
+                <td className="px-6 py-4 tone-dont text-sm">Highlights irrelevant experience</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-6 py-4 font-medium text-ink">Functional</td>
                 <td className="px-6 py-4 text-ink/60">Grouping skills over job titles. Hides timeline gaps.</td>
-                <td className="px-6 py-4 text-yellow-600 text-sm">Some recruiters dislike it; can look evasive</td>
+                <td className="px-6 py-4 tone-note text-sm">Some recruiters dislike it; can look evasive</td>
               </tr>
               <tr>
                 <td className="px-6 py-4 font-medium text-accent-text font-bold">Hybrid (Recommended)</td>
                 <td className="px-6 py-4 text-ink/60">Career changers. Leads with skills, follows with timeline.</td>
-                <td className="px-6 py-4 text-green-600 text-sm">Low risk &mdash; ATS-friendly and recruiter-approved</td>
+                <td className="px-6 py-4 tone-do text-sm">Low risk &mdash; ATS-friendly and recruiter-approved</td>
               </tr>
             </tbody>
           </table>
@@ -143,41 +143,41 @@ export default function CareerChangeResumeGuide() {
         </p>
 
         <div className="space-y-6">
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-red-800 mb-3">Bad: Apologetic Summary</h3>
-            <p className="text-red-700 italic">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-dont mb-3">Bad: Apologetic Summary</h3>
+            <p className="tone-dont italic">
               &ldquo;Experienced teacher looking to transition into UX design. While I lack direct UX
               experience, I am eager to learn and bring strong communication skills.&rdquo;
             </p>
-            <p className="text-red-600 text-sm mt-2">
+            <p className="tone-dont text-sm mt-2">
               Problem: Leads with what you lack. &ldquo;Eager to learn&rdquo; signals junior. No concrete value.
             </p>
           </div>
 
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-green-800 mb-3">Good: Confident Summary</h3>
-            <p className="text-green-700 italic">
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-do mb-3">Good: Confident Summary</h3>
+            <p className="tone-do italic">
               &ldquo;UX designer with a background in education, bringing 6 years of experience
               designing learning experiences for diverse audiences of 150+ students. Google UX
               certified with a portfolio of three end-to-end case studies. Applies research-backed
               instructional design principles to create intuitive digital products.&rdquo;
             </p>
-            <p className="text-green-600 text-sm mt-2">
+            <p className="tone-do text-sm mt-2">
               Why it works: Leads with the new identity. Reframes teaching as design experience. Specific credentials.
             </p>
           </div>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mt-6">
-          <h3 className="text-xl font-bold text-yellow-800 mb-3">The Career Change Summary Formula</h3>
-          <p className="text-yellow-700">
+        <div className="callout callout-note rounded-xl p-6 mt-6">
+          <h3 className="text-xl font-bold tone-note mb-3">The Career Change Summary Formula</h3>
+          <p className="tone-note">
             <strong>Sentence 1:</strong> New identity + unique angle from your background<br />
             <strong>Sentence 2:</strong> Key transferable skills + strongest credential or achievement<br />
             <strong>Sentence 3:</strong> How your background specifically benefits the new role
           </p>
-          <p className="text-yellow-700 mt-3 text-sm">
+          <p className="tone-note mt-3 text-sm">
             Need AI help writing yours? Try our{' '}
-            <Link to="/blog/claude-resume-prompts" className="text-yellow-900 underline">Claude resume prompts</Link>
+            <Link to="/blog/claude-resume-prompts" className="tone-note underline">Claude resume prompts</Link>
             {' '}&mdash; prompt #16 is specifically designed for career change summaries.
           </p>
         </div>
@@ -287,17 +287,17 @@ export default function CareerChangeResumeGuide() {
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-4">Example: Teacher &rarr; UX Designer</h3>
             <div className="space-y-4">
-              <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded-r-lg">
-                <p className="font-medium text-red-800 mb-1">Before (teaching-focused):</p>
-                <ul className="text-red-700 text-sm space-y-1">
+              <div className="callout callout-dont p-4 rounded-r-lg">
+                <p className="font-medium tone-dont mb-1">Before (teaching-focused):</p>
+                <ul className="tone-dont text-sm space-y-1">
                   <li>&bull; Taught AP English to 150 students across 5 class periods</li>
                   <li>&bull; Created lesson plans aligned with state standards</li>
                   <li>&bull; Graded essays and provided written feedback</li>
                 </ul>
               </div>
-              <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-                <p className="font-medium text-green-800 mb-1">After (reframed for UX):</p>
-                <ul className="text-green-700 text-sm space-y-1">
+              <div className="callout callout-do p-4 rounded-r-lg">
+                <p className="font-medium tone-do mb-1">After (reframed for UX):</p>
+                <ul className="tone-do text-sm space-y-1">
                   <li>&bull; Designed and iterated learning experiences for 150+ users with diverse needs, improving engagement scores by 23%</li>
                   <li>&bull; Conducted user research through daily observation and feedback sessions to identify pain points in the learning process</li>
                   <li>&bull; Created accessible content following universal design principles, meeting WCAG-equivalent accessibility standards</li>
@@ -309,17 +309,17 @@ export default function CareerChangeResumeGuide() {
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-4">Example: Sales Rep &rarr; Product Manager</h3>
             <div className="space-y-4">
-              <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded-r-lg">
-                <p className="font-medium text-red-800 mb-1">Before (sales-focused):</p>
-                <ul className="text-red-700 text-sm space-y-1">
+              <div className="callout callout-dont p-4 rounded-r-lg">
+                <p className="font-medium tone-dont mb-1">Before (sales-focused):</p>
+                <ul className="tone-dont text-sm space-y-1">
                   <li>&bull; Exceeded quarterly sales quota by 15% for 6 consecutive quarters</li>
                   <li>&bull; Managed a portfolio of 45 enterprise accounts</li>
                   <li>&bull; Conducted product demos for prospective clients</li>
                 </ul>
               </div>
-              <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-                <p className="font-medium text-green-800 mb-1">After (reframed for product):</p>
-                <ul className="text-green-700 text-sm space-y-1">
+              <div className="callout callout-do p-4 rounded-r-lg">
+                <p className="font-medium tone-do mb-1">After (reframed for product):</p>
+                <ul className="tone-do text-sm space-y-1">
                   <li>&bull; Identified unmet customer needs across 45 enterprise accounts, feeding product roadmap insights that drove 15% revenue growth</li>
                   <li>&bull; Translated complex technical features into user-facing value propositions, improving demo conversion by 22%</li>
                   <li>&bull; Collaborated with engineering and marketing teams to prioritize feature requests based on customer impact data</li>
@@ -422,7 +422,7 @@ export default function CareerChangeResumeGuide() {
             },
           ].map((item, i) => (
             <div key={i} className="bg-chalk-dark rounded-xl p-5">
-              <h3 className="font-bold text-red-700 mb-2">{item.mistake}</h3>
+              <h3 className="font-bold tone-dont mb-2">{item.mistake}</h3>
               <p className="text-ink/60">{item.fix}</p>
             </div>
           ))}

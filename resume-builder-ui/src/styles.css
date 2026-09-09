@@ -1246,38 +1246,6 @@ div[data-google-query-id] {
     0 8px 24px -12px rgba(12, 12, 12, 0.14);
 }
 
-/* Read progress. Sits on the header's own bottom edge, so it reads as the
-   border coming alive rather than as a separate widget. */
-.site-header-progress {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 2px;
-  background: linear-gradient(90deg, #00d47e 0%, #00d47e 72%, #34e79b 100%);
-  transform: scaleX(0);
-  transform-origin: 0 50%;
-  opacity: 0;
-  transition: opacity 320ms cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: none;
-}
-
-.site-header[data-scrolled="true"] .site-header-progress {
-  opacity: 1;
-}
-
-@supports (animation-timeline: scroll()) {
-  .site-header-progress {
-    animation: site-header-progress linear both;
-    animation-timeline: scroll(root block);
-  }
-}
-
-@keyframes site-header-progress {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}
-
 /* ── The rail ──
    One ink pill for the whole nav, positioned from measured link geometry and
    moved by `useNavPill`. It is `aria-hidden` decoration; the authoritative
@@ -1403,14 +1371,6 @@ div[data-google-query-id] {
     animation: none !important;
   }
 
-  /* A scroll-driven bar with its timeline removed would freeze at whatever
-     the fill left behind. Drop it entirely; the resolved border still marks
-     the edge. */
-  .site-header-progress {
-    animation: none !important;
-    display: none !important;
-  }
-
   /* The global rule zeroes transition *duration*, not delay. Left alone, the
      outgoing nav label stays white for 110ms after the pill has snapped away
      and the link reads as missing. */
@@ -1418,3 +1378,312 @@ div[data-google-query-id] {
     transition-delay: 0ms !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   /blog — the reading instrument
+   ------------------------------------------------------------------------- */
+
+/* ── Article rail (table of contents) ──
+   Gated at 1360px rather than a Tailwind breakpoint for a measured reason: the
+   article container is max-w-4xl (896px) centred, so at xl (1280px) each gutter
+   is 192px and a 176px rail plus its gap does not fit. At 1360px the gutter is
+   232px and it does. Below that the rail does not render at all — mobile and
+   tablet keep the layout they had, and the spine is the only reading
+   affordance there.
+
+   Absolutely positioned, so it is out of flow: it cannot shift the article
+   column (no CLS) and the column stays optically centred rather than being
+   pushed right to make room for a grid track. */
+.article-rail { display: none; }
+
+@media (min-width: 1360px) {
+  .article-rail {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 11rem;
+    transform: translateX(calc(-100% - 2.5rem));
+  }
+}
+
+.article-rail-inner {
+  position: sticky;
+  top: calc(var(--header-height-desktop) + 2rem);
+}
+
+.article-rail-list {
+  position: relative;
+  border-left: 1px solid rgba(12, 12, 12, 0.08);
+}
+
+/* The active marker is one element that slides, not a class swap per entry —
+   so the eye tracks a single object moving down the rail rather than a light
+   turning off in one place and on in another. */
+.article-rail-marker {
+  position: absolute;
+  left: -1px;
+  top: 0;
+  width: 1px;
+  background: #00d47e;
+  transform: translateY(var(--rail-y, 0px));
+  height: var(--rail-h, 0px);
+  transition: transform 380ms cubic-bezier(0.2, 0, 0, 1),
+              height 380ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.article-rail-link {
+  display: block;
+  padding: 0.4rem 0 0.4rem 0.875rem;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: rgba(12, 12, 12, 0.6);
+  transition: color 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.article-rail-link:hover { color: #0c0c0c; }
+
+.article-rail-link[aria-current="true"] {
+  color: #0c0c0c;
+  font-weight: 500;
+}
+
+.article-rail-link:focus-visible {
+  outline: 2px solid #007a48;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Article body typography ──
+   These are element rules rather than prose config because the post bodies set
+   every class explicitly (`text-3xl font-bold text-ink mt-12 mb-6`), which
+   means @tailwindcss/typography's output is almost entirely overridden and
+   changing its config here would do nothing. */
+
+/* Measure. 68ch lands around 544px, so this only ever bites full-width
+   paragraphs — a <p> inside a half-width grid cell is already narrower than
+   the cap and is left alone. */
+.article-body p {
+  max-width: 68ch;
+}
+
+/* The lead. Only matches when the body actually opens on a paragraph. */
+.article-body > div > p:first-child {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  letter-spacing: -0.011em;
+  color: rgba(12, 12, 12, 0.75);
+  max-width: 62ch;
+}
+
+/* Section rules. The default is the *drawn* state, so a browser without
+   view-timeline support gets a finished rule rather than a missing one; the
+   @supports block only adds the draw. Same convention as `.steps-rule`. */
+.article-body h2 {
+  position: relative;
+  scroll-margin-top: calc(var(--header-height-desktop) + 1.5rem);
+}
+
+.article-body h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.75rem;
+  height: 1px;
+  transform: scaleX(1);
+  transform-origin: 0 50%;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 212, 126, 0.55),
+    rgba(12, 12, 12, 0.09) 38%,
+    transparent
+  );
+}
+
+@supports (animation-timeline: view()) {
+  .article-body h2::after {
+    animation: steps-rule-draw linear both;
+    animation-timeline: view();
+    animation-range: entry 40% cover 18%;
+  }
+}
+
+/* Browser surfaces the design system should own rather than inherit. */
+.article-shell ::selection {
+  background-color: rgba(0, 212, 126, 0.25);
+  color: #0c0c0c;
+}
+
+.article-masthead {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .article-body h2::after { animation: none !important; }
+
+  .article-rail-marker { transition: none !important; }
+}
+
+/* ── /blog index — the front page ── */
+
+/* Spotlight border. @property is what makes the conic angle animatable at
+   all — without registration the browser cannot interpolate it, so the
+   gradient would jump rather than sweep. First use in this codebase, hence
+   the @supports guard: where it is missing the card keeps the static
+   .card-gradient-border edge, which is the same idea holding still. */
+@property --spot-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes spot-sweep {
+  to { --spot-angle: 360deg; }
+}
+
+@supports (background: conic-gradient(from var(--spot-angle), red, blue)) {
+  .post-card {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .post-card::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    opacity: 0;
+    background: conic-gradient(
+      from var(--spot-angle),
+      transparent 0deg,
+      rgba(0, 212, 126, 0.55) 28deg,
+      rgba(0, 212, 126, 0.06) 70deg,
+      transparent 140deg,
+      transparent 360deg
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    transition: opacity 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+
+  .post-card:hover::before,
+  .post-card:focus-within::before {
+    opacity: 1;
+    animation: spot-sweep 4s linear infinite;
+  }
+}
+
+/* Cursor-reactive light on the featured slab. The glow is the same 7% accent
+   radial the dark CTA blocks use — it just stops being nailed to the centre.
+   Position only; no layout, no paint outside the card. */
+.featured-slab-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 600px;
+  height: 400px;
+  margin: -200px 0 0 -300px;
+  border-radius: 9999px;
+  background: rgba(0, 212, 126, 0.07);
+  filter: blur(64px);
+  pointer-events: none;
+  transform: translate3d(var(--glow-x, 50%), var(--glow-y, 50%), 0);
+  transition: opacity 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Category rail */
+.category-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding: 0 0.875rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(12, 12, 12, 0.08);
+  background: transparent;
+  color: rgba(12, 12, 12, 0.6);
+  font-size: 0.8125rem;
+  white-space: nowrap;
+  transition: color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.category-chip:hover {
+  color: #0c0c0c;
+  border-color: rgba(12, 12, 12, 0.18);
+}
+
+.category-chip[aria-pressed="true"] {
+  background: #0c0c0c;
+  border-color: #0c0c0c;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.category-chip:focus-visible {
+  outline: 2px solid #007a48;
+  outline-offset: 2px;
+}
+
+/* The cards morph between filter states rather than snapping. Firefox and
+   reduced motion cut instead — withViewTransition() no-ops in both. */
+::view-transition-group(*.post-card-vt) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .post-card::before { animation: none !important; }
+  .featured-slab-glow { transform: translate3d(50%, 50%, 0) !important; }
+}
+
+/* ── Callouts ──
+   The blog bodies carried ~1,500 green/red/yellow utilities in hand-rolled
+   do/don't and caution boxes — the last surface still painted in a palette the
+   design system does not own. The tone is real information and worth keeping,
+   so it moves here where it can be reviewed in one place instead of being
+   respelled in 48 files.
+
+   Two rules shape the result. Signal Green is capped at 10% of a surface, so a
+   green *wash* behind 139 boxes was never available — tone is carried by a 1px
+   spine and the heading, over the same Chalk Dark every other panel uses. And
+   every value below is measured on Chalk Dark (#f6f6f5), the strictest light
+   ground in the system: 5.18:1, 6.02:1 and 6.54:1 respectively, all clear of
+   AA. The negative and caution hues match the reds already used by
+   .btn-destructive-ghost — this is the system's existing vocabulary, damped. */
+.callout {
+  --callout-tone: rgba(12, 12, 12, 0.2);
+  --callout-title: #0c0c0c;
+  background-color: #f6f6f5;
+  border: 1px solid rgba(12, 12, 12, 0.06);
+  border-left: 1px solid var(--callout-tone);
+}
+
+.callout-do    { --callout-tone: #007a48; --callout-title: #007a48; }
+.callout-dont  { --callout-tone: #b42318; --callout-title: #b42318; }
+.callout-note  { --callout-tone: #92400e; --callout-title: #92400e; }
+
+/* The headings inside a callout are author copy; only their colour changes. */
+.callout :is(h2, h3, h4) {
+  color: var(--callout-title);
+}
+
+.callout :is(p, li, span, div) {
+  color: rgba(12, 12, 12, 0.75);
+}
+
+/* Links keep the system's link colour rather than inheriting the tone. */
+.callout a {
+  color: #007a48;
+}
+
+/* Standalone tone marks — verdict cells in comparison tables, inline ticks and
+   crosses — where there is no box, only a coloured word or glyph. */
+.tone-do   { color: #007a48; }
+.tone-dont { color: #b42318; }
+.tone-note { color: #92400e; }

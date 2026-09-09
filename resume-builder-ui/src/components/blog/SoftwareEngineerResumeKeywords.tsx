@@ -40,8 +40,8 @@ export default function SoftwareEngineerResumeKeywords() {
           be honest about your proficiency level (e.g., Expert, Proficient).
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h3 className="font-bold text-green-800 mb-4">
+        <div className="callout callout-do rounded-xl p-6 my-6">
+          <h3 className="font-bold tone-do mb-4">
             💻 High-Demand Programming Languages (2026):
           </h3>
           <div className="grid md:grid-cols-3 gap-6">
@@ -80,9 +80,9 @@ export default function SoftwareEngineerResumeKeywords() {
           </div>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-yellow-800 mb-3">💡 Pro Tip:</h4>
-          <p className="text-yellow-700">
+        <div className="callout callout-note rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-note mb-3">💡 Pro Tip:</h4>
+          <p className="tone-note">
             Don't just list programming languages. Show proficiency levels and
             years of experience. For example: "Python (Expert, 5+ years)" or
             "JavaScript (Advanced, 3 years)".
@@ -242,11 +242,11 @@ export default function SoftwareEngineerResumeKeywords() {
         </p>
 
         <div className="space-y-6">
-          <div className="bg-orange-50 border border-orange-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-orange-800 mb-4">
+          <div className="callout callout-note rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-note mb-4">
               Development Methodologies
             </h3>
-            <div className="grid md:grid-cols-2 gap-4 text-orange-700">
+            <div className="grid md:grid-cols-2 gap-4 tone-note">
               <div>
                 <h4 className="font-medium mb-2">Project Management:</h4>
                 <ul className="list-disc pl-5 text-sm space-y-1">
@@ -272,11 +272,11 @@ export default function SoftwareEngineerResumeKeywords() {
             </div>
           </div>
 
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-red-800 mb-4">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-dont mb-4">
               Development Tools & Platforms
             </h3>
-            <div className="grid md:grid-cols-3 gap-4 text-red-700">
+            <div className="grid md:grid-cols-3 gap-4 tone-dont">
               <div>
                 <h4 className="font-medium mb-2">Version Control:</h4>
                 <ul className="list-disc pl-5 text-sm space-y-1">
@@ -355,8 +355,8 @@ export default function SoftwareEngineerResumeKeywords() {
           Testing and Quality Assurance
         </h2>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h3 className="font-bold text-green-800 mb-4">Testing Keywords:</h3>
+        <div className="callout callout-do rounded-xl p-6 my-6">
+          <h3 className="font-bold tone-do mb-4">Testing Keywords:</h3>
           <div className="grid md:grid-cols-2 gap-4 text-accent-text">
             <div>
               <h4 className="font-medium mb-2">Testing Types:</h4>
@@ -433,9 +433,9 @@ export default function SoftwareEngineerResumeKeywords() {
           </div>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-yellow-800 mb-3">2026 Trend Alert</h4>
-          <p className="text-yellow-700">
+        <div className="callout callout-note rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-note mb-3">2026 Trend Alert</h4>
+          <p className="tone-note">
             Job postings mentioning "LLM," "RAG," or "prompt engineering" have increased 300%+ since 2024. If you've built anything with AI APIs, chatbots, or automated workflows, include those keywords — even if it wasn't your primary responsibility.
           </p>
         </div>
@@ -502,22 +502,22 @@ export default function SoftwareEngineerResumeKeywords() {
             </div>
           </div>
 
-          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-yellow-800 mb-3">
+          <div className="callout callout-note rounded-xl p-6">
+            <h3 className="text-lg font-bold tone-note mb-3">
               2. Integrate Keywords into Your Experience
             </h3>
-            <p className="text-yellow-700 mb-3">
+            <p className="tone-note mb-3">
               Don't just list keywords. Show how you used them to achieve
               results. This approach works for both ATS systems and human
               recruiters.
             </p>
             <div className="space-y-3">
-              <div className="bg-red-100 border-l-4 border-red-500 p-3 rounded">
-                <p className="font-medium text-red-800 mb-1">❌ Instead of:</p>
-                <p className="text-red-700 text-sm">"Skills: React, Node.js, AWS"</p>
+              <div className="callout callout-dont p-3 rounded">
+                <p className="font-medium tone-dont mb-1">❌ Instead of:</p>
+                <p className="tone-dont text-sm">"Skills: React, Node.js, AWS"</p>
               </div>
-              <div className="bg-green-100 border-l-4 border-green-500 p-3 rounded">
-                <p className="font-medium text-green-800 mb-1">✅ Write:</p>
+              <div className="callout callout-do p-3 rounded">
+                <p className="font-medium tone-do mb-1">✅ Write:</p>
                 <p className="text-accent-text text-sm">
                   "Developed a full-stack e-commerce application using <strong>React</strong> and <strong>Node.js</strong>, deployed on <strong>AWS EC2</strong> with <strong>PostgreSQL</strong> database, serving 10,000+ daily active users."
                 </p>
@@ -567,8 +567,8 @@ export default function SoftwareEngineerResumeKeywords() {
             </ul>
           </div>
 
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-green-800 mb-3">
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="text-lg font-bold tone-do mb-3">
               🏢 Enterprise/Corporate Focus
             </h3>
             <p className="text-accent-text mb-3">Emphasize:</p>
@@ -605,7 +605,7 @@ export default function SoftwareEngineerResumeKeywords() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-red-50 border-l-4 border-red-500 p-6">
+          <div className="callout callout-dont p-6">
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Listing every technology you've ever touched
             </h4>
@@ -619,7 +619,7 @@ export default function SoftwareEngineerResumeKeywords() {
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 p-6">
+          <div className="callout callout-dont p-6">
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Using outdated technology keywords
             </h4>
@@ -633,7 +633,7 @@ export default function SoftwareEngineerResumeKeywords() {
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 p-6">
+          <div className="callout callout-dont p-6">
             <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Forgetting to include proficiency levels
             </h4>

@@ -75,7 +75,7 @@ export default function CoverLetterGuide() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           How to Structure Your Cover Letter
         </h2>
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
+        <div className="callout callout-do rounded-xl p-6 my-6">
           <ol className="list-decimal pl-6 space-y-2 text-accent-text">
             <li>
               <strong>Header:</strong> Include your contact info, date, and the
@@ -125,8 +125,8 @@ Sincerely,
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Common Cover Letter Mistakes to Avoid
         </h2>
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6 my-6">
-          <ul className="list-disc pl-6 space-y-2 text-red-700">
+        <div className="callout callout-dont rounded-xl p-6 my-6">
+          <ul className="list-disc pl-6 space-y-2 tone-dont">
             <li>Using the same generic letter for every job.</li>
             <li>Repeating your resume word-for-word.</li>
             <li>Sounding too formal, robotic, or impersonal.</li>

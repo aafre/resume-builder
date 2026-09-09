@@ -25,11 +25,11 @@ export default function ATSOptimization() {
           optimize for these systems is crucial for job search success.
         </p>
 
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-          <h3 className="text-lg font-bold text-red-800 mb-2">
+        <div className="callout callout-dont rounded-xl p-6">
+          <h3 className="text-lg font-bold tone-dont mb-2">
             🚨 Shocking Reality
           </h3>
-          <p className="text-red-700">
+          <p className="tone-dont">
             Over 98% of Fortune 500 companies use ATS software. Studies show
             that over 75% of qualified candidates are rejected by ATS before
             human review due to formatting and keyword issues.
@@ -125,8 +125,8 @@ export default function ATSOptimization() {
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           File Format Best Practices
         </h3>
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-green-800 mb-3">
+        <div className="callout callout-do rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-do mb-3">
             ✅ Recommended Formats:
           </h4>
           <ul className="list-disc pl-6 space-y-2 text-accent-text">
@@ -144,11 +144,11 @@ export default function ATSOptimization() {
           </ul>
         </div>
 
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-red-800 mb-3">
+        <div className="callout callout-dont rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-dont mb-3">
             ❌ Avoid These Formats:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-red-700">
+          <ul className="list-disc pl-6 space-y-2 tone-dont">
             <li>Images (JPEG, PNG) - Cannot be parsed</li>
             <li>Adobe InDesign files</li>
             <li>Pages files from Mac</li>
@@ -165,8 +165,8 @@ export default function ATSOptimization() {
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-800 mb-3">
+          <div className="callout callout-do rounded-xl p-6">
+            <h4 className="font-bold tone-do mb-3">
               ✅ ATS-Friendly Headers:
             </h4>
             <ul className="list-disc pl-6 space-y-1 text-accent-text">
@@ -180,11 +180,11 @@ export default function ATSOptimization() {
               <li>Projects</li>
             </ul>
           </div>
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h4 className="font-bold text-red-800 mb-3">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h4 className="font-bold tone-dont mb-3">
               ❌ Avoid Creative Headers:
             </h4>
-            <ul className="list-disc pl-6 space-y-1 text-red-700">
+            <ul className="list-disc pl-6 space-y-1 tone-dont">
               <li>My Journey</li>
               <li>What I've Done</li>
               <li>Academic Background</li>
@@ -327,11 +327,11 @@ export default function ATSOptimization() {
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           Strategic Keyword Placement
         </h3>
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-yellow-800 mb-3">
+        <div className="callout callout-note rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-note mb-3">
             📍 Where to Place Keywords:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-yellow-700">
+          <ul className="list-disc pl-6 space-y-2 tone-note">
             <li>
               <strong>Professional Summary:</strong> Include 3-5 key terms
               relevant to your target role
@@ -368,8 +368,8 @@ export default function ATSOptimization() {
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-800 mb-3">
+          <div className="callout callout-do rounded-xl p-6">
+            <h4 className="font-bold tone-do mb-3">
               ✅ ATS-Friendly Format:
             </h4>
             <div className="text-accent-text space-y-2 text-sm font-mono">
@@ -386,11 +386,11 @@ export default function ATSOptimization() {
               </p>
             </div>
           </div>
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h4 className="font-bold text-red-800 mb-3">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h4 className="font-bold tone-dont mb-3">
               ❌ Problematic Format:
             </h4>
-            <div className="text-red-700 space-y-2 text-sm">
+            <div className="tone-dont space-y-2 text-sm">
               <p>
                 • Complex headers/footers
                 <br />
@@ -440,8 +440,8 @@ export default function ATSOptimization() {
           human readers and automated systems.
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-green-800 mb-3">
+        <div className="callout callout-do rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-do mb-3">
             ✅ Effective Skills Section Structure:
           </h4>
           <div className="text-accent-text space-y-4">
@@ -509,7 +509,7 @@ export default function ATSOptimization() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-chalk-dark border-l-4 border-red-500 p-6">
+          <div className="bg-chalk-dark callout callout-dont p-6">
             <h4 className="font-bold text-ink mb-2">
               ❌ Myth: "White text keywords will boost my ranking"
             </h4>
@@ -519,7 +519,7 @@ export default function ATSOptimization() {
             </p>
           </div>
 
-          <div className="bg-chalk-dark border-l-4 border-red-500 p-6">
+          <div className="bg-chalk-dark callout callout-dont p-6">
             <h4 className="font-bold text-ink mb-2">
               ❌ Myth: "More keywords = better ranking"
             </h4>
@@ -529,7 +529,7 @@ export default function ATSOptimization() {
             </p>
           </div>
 
-          <div className="bg-chalk-dark border-l-4 border-green-500 p-6">
+          <div className="bg-chalk-dark callout callout-do p-6">
             <h4 className="font-bold text-ink mb-2">
               ✅ Truth: "ATS systems are getting smarter"
             </h4>
@@ -574,11 +574,11 @@ export default function ATSOptimization() {
           optimization will remain important.
         </p>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mt-8">
-          <h4 className="font-bold text-yellow-800 mb-3">
+        <div className="callout callout-note rounded-xl p-6 mt-8">
+          <h4 className="font-bold tone-note mb-3">
             🔮 What's Coming Next
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-yellow-700">
+          <ul className="list-disc pl-6 space-y-2 tone-note">
             <li>AI-powered semantic understanding of skills and experience</li>
             <li>Video resume parsing and analysis</li>
             <li>Integration with professional social media profiles</li>

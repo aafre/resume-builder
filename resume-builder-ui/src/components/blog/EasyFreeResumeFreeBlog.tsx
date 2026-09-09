@@ -25,15 +25,15 @@ export default function EasyFreeResumeFreeBlog() {
           it. It's a classic bait-and-switch that remains all too common.
         </p>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-yellow-800 mb-3">❓ The Question We Get Most</h3>
-          <p className="text-yellow-700 text-lg mb-2">
+        <div className="callout callout-note rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-note mb-3">❓ The Question We Get Most</h3>
+          <p className="tone-note text-lg mb-2">
             "Are you <em>actually</em> free?"
           </p>
           <p className="text-ink font-bold text-2xl">
             The answer is simple: <span className="text-accent-text">Yes. 100%. No catch.</span>
           </p>
-          <p className="text-yellow-700 mt-3">
+          <p className="tone-note mt-3">
             For a second opinion from job seekers, see{" "}
             <Link
               to="/best-free-resume-builder-reddit"
@@ -98,45 +98,45 @@ export default function EasyFreeResumeFreeBlog() {
           essential features.
         </p>
 
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-red-800 mb-4">
+        <div className="callout callout-dont rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-dont mb-4">
             🚨 Common "Free" Resume Builder Tricks:
           </h3>
-          <div className="space-y-4 text-red-700">
+          <div className="space-y-4 tone-dont">
             <div className="flex items-start space-x-3">
-              <span className="text-red-500 font-bold mt-1">×</span>
+              <span className="tone-dont font-bold mt-1">×</span>
               <div>
                 <p className="font-medium">PDF Download Paywalls</p>
-                <p className="text-sm text-red-600">
+                <p className="text-sm tone-dont">
                   You can create a resume for "free," but downloading it as a PDF
                   costs $14.95/month
                 </p>
               </div>
             </div>
             <div className="flex items-start space-x-3">
-              <span className="text-red-500 font-bold mt-1">×</span>
+              <span className="tone-dont font-bold mt-1">×</span>
               <div>
                 <p className="font-medium">Watermarked Downloads</p>
-                <p className="text-sm text-red-600">
+                <p className="text-sm tone-dont">
                   Free downloads come with ugly watermarks that make your resume
                   look unprofessional
                 </p>
               </div>
             </div>
             <div className="flex items-start space-x-3">
-              <span className="text-red-500 font-bold mt-1">×</span>
+              <span className="tone-dont font-bold mt-1">×</span>
               <div>
                 <p className="font-medium">"Premium" Templates</p>
-                <p className="text-sm text-red-600">
+                <p className="text-sm tone-dont">
                   The actually good-looking templates are locked behind a paywall
                 </p>
               </div>
             </div>
             <div className="flex items-start space-x-3">
-              <span className="text-red-500 font-bold mt-1">×</span>
+              <span className="tone-dont font-bold mt-1">×</span>
               <div>
                 <p className="font-medium">Limited Resume Count</p>
-                <p className="text-sm text-red-600">
+                <p className="text-sm tone-dont">
                   You can only create one resume, forcing you to pay for multiple
                   versions
                 </p>
@@ -145,8 +145,8 @@ export default function EasyFreeResumeFreeBlog() {
           </div>
         </div>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-green-800 mb-4">
+        <div className="callout callout-do rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-do mb-4">
             ✅ Our Philosophy is Different:
           </h3>
           <p className="text-accent-text text-lg font-medium mb-4">
@@ -154,7 +154,7 @@ export default function EasyFreeResumeFreeBlog() {
           </p>
           <div className="space-y-3 text-accent-text">
             <div className="flex items-start space-x-3">
-              <span className="text-green-500 font-bold mt-1">✓</span>
+              <span className="tone-do font-bold mt-1">✓</span>
               <div>
                 <p className="font-medium">Unlimited PDF Downloads</p>
                 <p className="text-sm">
@@ -164,7 +164,7 @@ export default function EasyFreeResumeFreeBlog() {
               </div>
             </div>
             <div className="flex items-start space-x-3">
-              <span className="text-green-500 font-bold mt-1">✓</span>
+              <span className="tone-do font-bold mt-1">✓</span>
               <div>
                 <p className="font-medium">All Templates Included</p>
                 <p className="text-sm">
@@ -173,7 +173,7 @@ export default function EasyFreeResumeFreeBlog() {
               </div>
             </div>
             <div className="flex items-start space-x-3">
-              <span className="text-green-500 font-bold mt-1">✓</span>
+              <span className="tone-do font-bold mt-1">✓</span>
               <div>
                 <p className="font-medium">Unlimited Resume Versions</p>
                 <p className="text-sm">
@@ -225,11 +225,11 @@ export default function EasyFreeResumeFreeBlog() {
             </div>
           </div>
 
-          <div className="bg-orange-50 border border-orange-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-orange-800 mb-4">
+          <div className="callout callout-note rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-note mb-4">
               2. 📢 Ethical Advertising Revenue
             </h3>
-            <div className="text-orange-700">
+            <div className="tone-note">
               <p className="mb-3">
                 We place a small number of carefully selected ads on the site:
               </p>
@@ -279,49 +279,49 @@ export default function EasyFreeResumeFreeBlog() {
             <h4 className="font-bold text-ink mb-3">🚫 What We DON'T Do</h4>
             <ul className="space-y-2 text-ink/80">
               <li className="flex items-start space-x-2">
-                <span className="text-red-500 font-bold">×</span>
+                <span className="tone-dont font-bold">×</span>
                 <span>Require credit card information</span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="text-red-500 font-bold">×</span>
+                <span className="tone-dont font-bold">×</span>
                 <span>Force you to create accounts</span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="text-red-500 font-bold">×</span>
+                <span className="tone-dont font-bold">×</span>
                 <span>Sell or share your personal data</span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="text-red-500 font-bold">×</span>
+                <span className="tone-dont font-bold">×</span>
                 <span>Send spam emails</span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="text-red-500 font-bold">×</span>
+                <span className="tone-dont font-bold">×</span>
                 <span>Limit your downloads or resume count</span>
               </li>
             </ul>
           </div>
 
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-800 mb-3">✅ What We DO Provide</h4>
+          <div className="callout callout-do rounded-xl p-6">
+            <h4 className="font-bold tone-do mb-3">✅ What We DO Provide</h4>
             <ul className="space-y-2 text-accent-text">
               <li className="flex items-start space-x-2">
-                <span className="text-green-500 font-bold">✓</span>
+                <span className="tone-do font-bold">✓</span>
                 <span>Complete privacy and data protection</span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="text-green-500 font-bold">✓</span>
+                <span className="tone-do font-bold">✓</span>
                 <span>Local storage (your data never leaves your device)</span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="text-green-500 font-bold">✓</span>
+                <span className="tone-do font-bold">✓</span>
                 <span>Unlimited access to all features</span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="text-green-500 font-bold">✓</span>
+                <span className="tone-do font-bold">✓</span>
                 <span>Regular updates and new templates</span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="text-green-500 font-bold">✓</span>
+                <span className="tone-do font-bold">✓</span>
                 <span>ATS-friendly, professional templates</span>
               </li>
             </ul>
@@ -371,8 +371,8 @@ export default function EasyFreeResumeFreeBlog() {
             </p>
           </div>
 
-          <div className="bg-green-50 border-l-4 border-green-500 p-6">
-            <h4 className="font-bold text-green-800 mb-2">🔧 Enhanced Features</h4>
+          <div className="callout callout-do p-6">
+            <h4 className="font-bold tone-do mb-2">🔧 Enhanced Features</h4>
             <p className="text-accent-text text-sm">
               Better customization options, improved ATS optimization, and more
               export formats - all free.
@@ -387,9 +387,9 @@ export default function EasyFreeResumeFreeBlog() {
             </p>
           </div>
 
-          <div className="bg-yellow-50 border-l-4 border-yellow-500 p-6">
-            <h4 className="font-bold text-yellow-800 mb-2">🌍 Global Accessibility</h4>
-            <p className="text-yellow-700 text-sm">
+          <div className="callout callout-note p-6">
+            <h4 className="font-bold tone-note mb-2">🌍 Global Accessibility</h4>
+            <p className="tone-note text-sm">
               Support for more languages and region-specific resume formats to
               serve job seekers worldwide.
             </p>
@@ -464,8 +464,8 @@ export default function EasyFreeResumeFreeBlog() {
           your credit card to do it.
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 mt-8">
-          <h4 className="font-bold text-green-800 mb-3">💚 Our Promise to You</h4>
+        <div className="callout callout-do rounded-xl p-6 mt-8">
+          <h4 className="font-bold tone-do mb-3">💚 Our Promise to You</h4>
           <p className="text-accent-text">
             EasyFreeResume will always be free. We will never introduce paywalls
             for basic functionality, and we will always be transparent about how

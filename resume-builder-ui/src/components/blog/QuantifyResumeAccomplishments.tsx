@@ -127,9 +127,9 @@ const QuantifyResumeAccomplishments = () => {
                 <td className="px-6 py-4 text-ink font-medium">Impact</td>
                 <td className="px-6 py-4 text-ink">increasing 90-day retention by 28% and saving $120K in annual support costs</td>
               </tr>
-              <tr className="bg-green-50">
+              <tr className="callout callout-do">
                 <td className="px-6 py-4 text-ink font-bold">Full Bullet</td>
-                <td className="px-6 py-4 text-green-800 font-medium">Redesigned customer onboarding workflow, reducing time-to-activation from 14 days to 3 days, increasing 90-day retention by 28% and saving $120K in annual support costs</td>
+                <td className="px-6 py-4 tone-do font-medium">Redesigned customer onboarding workflow, reducing time-to-activation from 14 days to 3 days, increasing 90-day retention by 28% and saving $120K in annual support costs</td>
               </tr>
             </tbody>
           </table>
@@ -178,29 +178,29 @@ const QuantifyResumeAccomplishments = () => {
 
         <div className="space-y-6">
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-            <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4 rounded">
-              <p className="text-red-800"><strong>Before:</strong> Responsible for sales in the northeast region</p>
+            <div className="callout callout-dont p-4 mb-4 rounded">
+              <p className="tone-dont"><strong>Before:</strong> Responsible for sales in the northeast region</p>
             </div>
-            <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-              <p className="text-green-800"><strong>After:</strong> Managed $2.3M territory across 5 northeast states, achieving 118% of annual quota and generating $340K above target</p>
-            </div>
-          </div>
-
-          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-            <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4 rounded">
-              <p className="text-red-800"><strong>Before:</strong> Improved customer relationships and retention</p>
-            </div>
-            <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-              <p className="text-green-800"><strong>After:</strong> Increased customer retention rate from 73% to 89% through strategic relationship management, resulting in $450K additional annual revenue</p>
+            <div className="callout callout-do p-4 rounded">
+              <p className="tone-do"><strong>After:</strong> Managed $2.3M territory across 5 northeast states, achieving 118% of annual quota and generating $340K above target</p>
             </div>
           </div>
 
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-            <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4 rounded">
-              <p className="text-red-800"><strong>Before:</strong> Successfully launched new product</p>
+            <div className="callout callout-dont p-4 mb-4 rounded">
+              <p className="tone-dont"><strong>Before:</strong> Improved customer relationships and retention</p>
             </div>
-            <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-              <p className="text-green-800"><strong>After:</strong> Led cross-functional team of 8 to launch product 3 weeks ahead of schedule, capturing 12% market share and generating $1.8M in first-year sales</p>
+            <div className="callout callout-do p-4 rounded">
+              <p className="tone-do"><strong>After:</strong> Increased customer retention rate from 73% to 89% through strategic relationship management, resulting in $450K additional annual revenue</p>
+            </div>
+          </div>
+
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <div className="callout callout-dont p-4 mb-4 rounded">
+              <p className="tone-dont"><strong>Before:</strong> Successfully launched new product</p>
+            </div>
+            <div className="callout callout-do p-4 rounded">
+              <p className="tone-do"><strong>After:</strong> Led cross-functional team of 8 to launch product 3 weeks ahead of schedule, capturing 12% market share and generating $1.8M in first-year sales</p>
             </div>
           </div>
         </div>
@@ -209,20 +209,20 @@ const QuantifyResumeAccomplishments = () => {
 
         <div className="space-y-6">
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-            <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4 rounded">
-              <p className="text-red-800"><strong>Before:</strong> Managed social media accounts and increased engagement</p>
+            <div className="callout callout-dont p-4 mb-4 rounded">
+              <p className="tone-dont"><strong>Before:</strong> Managed social media accounts and increased engagement</p>
             </div>
-            <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-              <p className="text-green-800"><strong>After:</strong> Grew Instagram following from 5K to 47K followers (840% increase) and boosted engagement rate to 4.2%, driving 230% increase in website traffic</p>
+            <div className="callout callout-do p-4 rounded">
+              <p className="tone-do"><strong>After:</strong> Grew Instagram following from 5K to 47K followers (840% increase) and boosted engagement rate to 4.2%, driving 230% increase in website traffic</p>
             </div>
           </div>
 
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-            <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4 rounded">
-              <p className="text-red-800"><strong>Before:</strong> Optimized website for better performance</p>
+            <div className="callout callout-dont p-4 mb-4 rounded">
+              <p className="tone-dont"><strong>Before:</strong> Optimized website for better performance</p>
             </div>
-            <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-              <p className="text-green-800"><strong>After:</strong> Reduced website load time by 43% and improved conversion rate from 2.1% to 3.8%, resulting in 65% increase in online sales ($280K additional revenue)</p>
+            <div className="callout callout-do p-4 rounded">
+              <p className="tone-do"><strong>After:</strong> Reduced website load time by 43% and improved conversion rate from 2.1% to 3.8%, resulting in 65% increase in online sales ($280K additional revenue)</p>
             </div>
           </div>
         </div>
@@ -231,20 +231,20 @@ const QuantifyResumeAccomplishments = () => {
 
         <div className="space-y-6">
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-            <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4 rounded">
-              <p className="text-red-800"><strong>Before:</strong> Streamlined operations and reduced costs</p>
+            <div className="callout callout-dont p-4 mb-4 rounded">
+              <p className="tone-dont"><strong>Before:</strong> Streamlined operations and reduced costs</p>
             </div>
-            <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-              <p className="text-green-800"><strong>After:</strong> Redesigned supply chain process, reducing operational costs by $180K annually (12% decrease) and cutting delivery time from 5 days to 3 days</p>
+            <div className="callout callout-do p-4 rounded">
+              <p className="tone-do"><strong>After:</strong> Redesigned supply chain process, reducing operational costs by $180K annually (12% decrease) and cutting delivery time from 5 days to 3 days</p>
             </div>
           </div>
 
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-            <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4 rounded">
-              <p className="text-red-800"><strong>Before:</strong> Improved quality control processes</p>
+            <div className="callout callout-dont p-4 mb-4 rounded">
+              <p className="tone-dont"><strong>Before:</strong> Improved quality control processes</p>
             </div>
-            <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-              <p className="text-green-800"><strong>After:</strong> Implemented quality assurance program that reduced defect rate from 3.2% to 0.8%, saving $95K annually in returns and warranty claims</p>
+            <div className="callout callout-do p-4 rounded">
+              <p className="tone-do"><strong>After:</strong> Implemented quality assurance program that reduced defect rate from 3.2% to 0.8%, saving $95K annually in returns and warranty claims</p>
             </div>
           </div>
         </div>
@@ -253,20 +253,20 @@ const QuantifyResumeAccomplishments = () => {
 
         <div className="space-y-6">
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-            <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4 rounded">
-              <p className="text-red-800"><strong>Before:</strong> Led team to complete important project on time</p>
+            <div className="callout callout-dont p-4 mb-4 rounded">
+              <p className="tone-dont"><strong>Before:</strong> Led team to complete important project on time</p>
             </div>
-            <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-              <p className="text-green-800"><strong>After:</strong> Directed 12-person cross-functional team to deliver $500K infrastructure project 2 weeks early and 8% under budget, with zero safety incidents</p>
+            <div className="callout callout-do p-4 rounded">
+              <p className="tone-do"><strong>After:</strong> Directed 12-person cross-functional team to deliver $500K infrastructure project 2 weeks early and 8% under budget, with zero safety incidents</p>
             </div>
           </div>
 
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-            <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4 rounded">
-              <p className="text-red-800"><strong>Before:</strong> Managed multiple projects simultaneously</p>
+            <div className="callout callout-dont p-4 mb-4 rounded">
+              <p className="tone-dont"><strong>Before:</strong> Managed multiple projects simultaneously</p>
             </div>
-            <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-              <p className="text-green-800"><strong>After:</strong> Coordinated 7 concurrent projects worth $1.2M total value, maintaining 96% on-time delivery rate and 100% client satisfaction score</p>
+            <div className="callout callout-do p-4 rounded">
+              <p className="tone-do"><strong>After:</strong> Coordinated 7 concurrent projects worth $1.2M total value, maintaining 96% on-time delivery rate and 100% client satisfaction score</p>
             </div>
           </div>
         </div>
@@ -275,20 +275,20 @@ const QuantifyResumeAccomplishments = () => {
 
         <div className="space-y-6">
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-            <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4 rounded">
-              <p className="text-red-800"><strong>Before:</strong> Provided excellent customer service and support</p>
+            <div className="callout callout-dont p-4 mb-4 rounded">
+              <p className="tone-dont"><strong>Before:</strong> Provided excellent customer service and support</p>
             </div>
-            <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-              <p className="text-green-800"><strong>After:</strong> Maintained 4.8/5.0 customer satisfaction rating while handling 45+ support tickets daily, reducing average response time from 4 hours to 45 minutes</p>
+            <div className="callout callout-do p-4 rounded">
+              <p className="tone-do"><strong>After:</strong> Maintained 4.8/5.0 customer satisfaction rating while handling 45+ support tickets daily, reducing average response time from 4 hours to 45 minutes</p>
             </div>
           </div>
 
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-            <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4 rounded">
-              <p className="text-red-800"><strong>Before:</strong> Trained new employees on company procedures</p>
+            <div className="callout callout-dont p-4 mb-4 rounded">
+              <p className="tone-dont"><strong>Before:</strong> Trained new employees on company procedures</p>
             </div>
-            <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-              <p className="text-green-800"><strong>After:</strong> Developed training program for 23 new hires, reducing onboarding time by 30% and increasing first-month productivity scores by 18%</p>
+            <div className="callout callout-do p-4 rounded">
+              <p className="tone-do"><strong>After:</strong> Developed training program for 23 new hires, reducing onboarding time by 30% and increasing first-month productivity scores by 18%</p>
             </div>
           </div>
         </div>
@@ -297,20 +297,20 @@ const QuantifyResumeAccomplishments = () => {
 
         <div className="space-y-6">
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-            <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4 rounded">
-              <p className="text-red-800"><strong>Before:</strong> Developed software solutions for the company</p>
+            <div className="callout callout-dont p-4 mb-4 rounded">
+              <p className="tone-dont"><strong>Before:</strong> Developed software solutions for the company</p>
             </div>
-            <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-              <p className="text-green-800"><strong>After:</strong> Built automated reporting system that eliminated 15 hours of weekly manual work, saving company $78K annually in labor costs</p>
+            <div className="callout callout-do p-4 rounded">
+              <p className="tone-do"><strong>After:</strong> Built automated reporting system that eliminated 15 hours of weekly manual work, saving company $78K annually in labor costs</p>
             </div>
           </div>
 
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-            <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4 rounded">
-              <p className="text-red-800"><strong>Before:</strong> Improved system security and performance</p>
+            <div className="callout callout-dont p-4 mb-4 rounded">
+              <p className="tone-dont"><strong>Before:</strong> Improved system security and performance</p>
             </div>
-            <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-              <p className="text-green-800"><strong>After:</strong> Implemented security upgrades that reduced system vulnerabilities by 89% and improved uptime from 97.2% to 99.8%, preventing estimated $200K in potential downtime costs</p>
+            <div className="callout callout-do p-4 rounded">
+              <p className="tone-do"><strong>After:</strong> Implemented security upgrades that reduced system vulnerabilities by 89% and improved uptime from 97.2% to 99.8%, preventing estimated $200K in potential downtime costs</p>
             </div>
           </div>
         </div>
@@ -319,20 +319,20 @@ const QuantifyResumeAccomplishments = () => {
 
         <div className="space-y-6">
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-            <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4 rounded">
-              <p className="text-red-800"><strong>Before:</strong> Analyzed financial data and created reports</p>
+            <div className="callout callout-dont p-4 mb-4 rounded">
+              <p className="tone-dont"><strong>Before:</strong> Analyzed financial data and created reports</p>
             </div>
-            <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-              <p className="text-green-800"><strong>After:</strong> Conducted financial analysis identifying $320K in cost-saving opportunities, leading to 7.5% improvement in quarterly profit margins</p>
+            <div className="callout callout-do p-4 rounded">
+              <p className="tone-do"><strong>After:</strong> Conducted financial analysis identifying $320K in cost-saving opportunities, leading to 7.5% improvement in quarterly profit margins</p>
             </div>
           </div>
 
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-            <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4 rounded">
-              <p className="text-red-800"><strong>Before:</strong> Managed budgets for various departments</p>
+            <div className="callout callout-dont p-4 mb-4 rounded">
+              <p className="tone-dont"><strong>Before:</strong> Managed budgets for various departments</p>
             </div>
-            <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-              <p className="text-green-800"><strong>After:</strong> Oversaw $2.1M annual budget across 4 departments, consistently finishing 3-5% under budget while maintaining 100% of operational objectives</p>
+            <div className="callout callout-do p-4 rounded">
+              <p className="tone-do"><strong>After:</strong> Oversaw $2.1M annual budget across 4 departments, consistently finishing 3-5% under budget while maintaining 100% of operational objectives</p>
             </div>
           </div>
         </div>
@@ -347,55 +347,55 @@ const QuantifyResumeAccomplishments = () => {
         <h3 className="text-xl font-bold text-ink mb-3">Technology</h3>
         <p className="text-lg leading-relaxed text-ink/60 mb-3">Key metrics: system uptime, deployment frequency, bug reduction rates, performance improvements, user base growth, sprint velocity</p>
         <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 mb-6">
-          <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-3 rounded">
-            <p className="text-green-800"><strong>Example:</strong> Refactored legacy authentication module, reducing average login time from 4.2s to 0.8s (81% improvement) and decreasing support tickets related to auth failures by 64%</p>
+          <div className="callout callout-do p-4 mb-3 rounded">
+            <p className="tone-do"><strong>Example:</strong> Refactored legacy authentication module, reducing average login time from 4.2s to 0.8s (81% improvement) and decreasing support tickets related to auth failures by 64%</p>
           </div>
-          <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-            <p className="text-green-800"><strong>Example:</strong> Led migration of 3 microservices to Kubernetes, achieving 99.95% uptime (up from 98.7%) and reducing infrastructure costs by $42K per quarter</p>
+          <div className="callout callout-do p-4 rounded">
+            <p className="tone-do"><strong>Example:</strong> Led migration of 3 microservices to Kubernetes, achieving 99.95% uptime (up from 98.7%) and reducing infrastructure costs by $42K per quarter</p>
           </div>
         </div>
 
         <h3 className="text-xl font-bold text-ink mb-3">Healthcare</h3>
         <p className="text-lg leading-relaxed text-ink/60 mb-3">Key metrics: patient satisfaction scores, treatment success rates, compliance percentages, cost per patient, wait time reductions, readmission rates</p>
         <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 mb-6">
-          <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-3 rounded">
-            <p className="text-green-800"><strong>Example:</strong> Redesigned patient intake process for 200-bed facility, reducing average wait time from 45 minutes to 12 minutes and improving HCAHPS satisfaction scores by 22 points</p>
+          <div className="callout callout-do p-4 mb-3 rounded">
+            <p className="tone-do"><strong>Example:</strong> Redesigned patient intake process for 200-bed facility, reducing average wait time from 45 minutes to 12 minutes and improving HCAHPS satisfaction scores by 22 points</p>
           </div>
-          <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-            <p className="text-green-800"><strong>Example:</strong> Implemented fall prevention protocol across 3 nursing units, decreasing patient falls by 58% and saving an estimated $180K in liability costs over 12 months</p>
+          <div className="callout callout-do p-4 rounded">
+            <p className="tone-do"><strong>Example:</strong> Implemented fall prevention protocol across 3 nursing units, decreasing patient falls by 58% and saving an estimated $180K in liability costs over 12 months</p>
           </div>
         </div>
 
         <h3 className="text-xl font-bold text-ink mb-3">Marketing</h3>
         <p className="text-lg leading-relaxed text-ink/60 mb-3">Key metrics: CAC (customer acquisition cost), ROAS, conversion rates, traffic growth, MQL/SQL volume, email open rates, brand awareness lifts</p>
         <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 mb-6">
-          <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-3 rounded">
-            <p className="text-green-800"><strong>Example:</strong> Launched and managed $1.2M annual paid search program across Google and Meta, achieving 4.3x ROAS and reducing cost per acquisition from $87 to $52 (40% decrease)</p>
+          <div className="callout callout-do p-4 mb-3 rounded">
+            <p className="tone-do"><strong>Example:</strong> Launched and managed $1.2M annual paid search program across Google and Meta, achieving 4.3x ROAS and reducing cost per acquisition from $87 to $52 (40% decrease)</p>
           </div>
-          <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-            <p className="text-green-800"><strong>Example:</strong> Built content marketing engine producing 12 articles/month, growing organic traffic from 8K to 95K monthly sessions in 10 months and generating 340 MQLs per quarter</p>
+          <div className="callout callout-do p-4 rounded">
+            <p className="tone-do"><strong>Example:</strong> Built content marketing engine producing 12 articles/month, growing organic traffic from 8K to 95K monthly sessions in 10 months and generating 340 MQLs per quarter</p>
           </div>
         </div>
 
         <h3 className="text-xl font-bold text-ink mb-3">Finance</h3>
         <p className="text-lg leading-relaxed text-ink/60 mb-3">Key metrics: portfolio performance, audit findings, processing accuracy, forecast precision, cost reduction, compliance rates</p>
         <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 mb-6">
-          <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-3 rounded">
-            <p className="text-green-800"><strong>Example:</strong> Automated monthly close process using Python scripts, reducing close timeline from 12 business days to 5 and eliminating 94% of manual reconciliation errors</p>
+          <div className="callout callout-do p-4 mb-3 rounded">
+            <p className="tone-do"><strong>Example:</strong> Automated monthly close process using Python scripts, reducing close timeline from 12 business days to 5 and eliminating 94% of manual reconciliation errors</p>
           </div>
-          <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-            <p className="text-green-800"><strong>Example:</strong> Managed $45M investment portfolio for 120+ clients, outperforming benchmark index by 2.8% annually over 3-year period</p>
+          <div className="callout callout-do p-4 rounded">
+            <p className="tone-do"><strong>Example:</strong> Managed $45M investment portfolio for 120+ clients, outperforming benchmark index by 2.8% annually over 3-year period</p>
           </div>
         </div>
 
         <h3 className="text-xl font-bold text-ink mb-3">Education</h3>
         <p className="text-lg leading-relaxed text-ink/60 mb-3">Key metrics: student performance, graduation rates, test score improvements, class sizes, curriculum adoption, grant funding secured</p>
         <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 mb-6">
-          <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-3 rounded">
-            <p className="text-green-800"><strong>Example:</strong> Designed and taught AP Computer Science curriculum for 4 sections (120 students), achieving 87% pass rate on AP exam vs. 65% national average</p>
+          <div className="callout callout-do p-4 mb-3 rounded">
+            <p className="tone-do"><strong>Example:</strong> Designed and taught AP Computer Science curriculum for 4 sections (120 students), achieving 87% pass rate on AP exam vs. 65% national average</p>
           </div>
-          <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-            <p className="text-green-800"><strong>Example:</strong> Wrote and secured $250K federal STEM grant, funding new robotics lab that served 300+ students annually and increased STEM enrollment by 35%</p>
+          <div className="callout callout-do p-4 rounded">
+            <p className="tone-do"><strong>Example:</strong> Wrote and secured $250K federal STEM grant, funding new robotics lab that served 300+ students annually and increased STEM enrollment by 35%</p>
           </div>
         </div>
 
@@ -424,8 +424,8 @@ const QuantifyResumeAccomplishments = () => {
           <li><strong>CRM/Dashboards:</strong> Customer counts, deal sizes, pipeline data you contributed to</li>
         </ul>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
-          <p className="text-yellow-800"><strong className="text-yellow-900">Using Estimates:</strong> Don't have exact numbers? It's better to use estimated ranges (e.g., "approximately 15-20% increase") than to avoid quantification entirely. Prefixes like "approximately," "over," and "nearly" signal honesty while still providing scale. Just be prepared to discuss your reasoning if asked in an interview.</p>
+        <div className="callout callout-note rounded-xl p-6 my-6">
+          <p className="tone-note"><strong className="tone-note">Using Estimates:</strong> Don't have exact numbers? It's better to use estimated ranges (e.g., "approximately 15-20% increase") than to avoid quantification entirely. Prefixes like "approximately," "over," and "nearly" signal honesty while still providing scale. Just be prepared to discuss your reasoning if asked in an interview.</p>
         </div>
 
         {/* NEW: Duties vs Accomplishments */}
@@ -445,20 +445,20 @@ const QuantifyResumeAccomplishments = () => {
             </thead>
             <tbody className="divide-y divide-black/[0.06]">
               <tr>
-                <td className="px-6 py-4 text-red-700">Responsible for managing client accounts</td>
-                <td className="px-6 py-4 text-green-700">Managed portfolio of 45 enterprise accounts totaling $8.2M ARR, achieving 97% renewal rate</td>
+                <td className="px-6 py-4 tone-dont">Responsible for managing client accounts</td>
+                <td className="px-6 py-4 tone-do">Managed portfolio of 45 enterprise accounts totaling $8.2M ARR, achieving 97% renewal rate</td>
               </tr>
               <tr>
-                <td className="px-6 py-4 text-red-700">Handled customer complaints</td>
-                <td className="px-6 py-4 text-green-700">Resolved 200+ escalated complaints per quarter with 94% first-contact resolution, earning "Top Performer" recognition 3 consecutive quarters</td>
+                <td className="px-6 py-4 tone-dont">Handled customer complaints</td>
+                <td className="px-6 py-4 tone-do">Resolved 200+ escalated complaints per quarter with 94% first-contact resolution, earning "Top Performer" recognition 3 consecutive quarters</td>
               </tr>
               <tr>
-                <td className="px-6 py-4 text-red-700">Participated in team meetings</td>
-                <td className="px-6 py-4 text-green-700">Proposed and led weekly cross-team sync that reduced duplicate work by 25%, saving 40+ engineer-hours per sprint</td>
+                <td className="px-6 py-4 tone-dont">Participated in team meetings</td>
+                <td className="px-6 py-4 tone-do">Proposed and led weekly cross-team sync that reduced duplicate work by 25%, saving 40+ engineer-hours per sprint</td>
               </tr>
               <tr>
-                <td className="px-6 py-4 text-red-700">Assisted with recruiting</td>
-                <td className="px-6 py-4 text-green-700">Screened 150+ candidates and conducted 60 interviews, contributing to a 30% reduction in time-to-hire for the engineering team</td>
+                <td className="px-6 py-4 tone-dont">Assisted with recruiting</td>
+                <td className="px-6 py-4 tone-do">Screened 150+ candidates and conducted 60 interviews, contributing to a 30% reduction in time-to-hire for the engineering team</td>
               </tr>
             </tbody>
           </table>
@@ -549,23 +549,23 @@ const QuantifyResumeAccomplishments = () => {
         <h2 id="common-mistakes" className="text-3xl font-bold text-ink mt-12 mb-6">Common Mistakes to Avoid</h2>
 
         <div className="space-y-4">
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+          <div className="callout callout-dont rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-2">Vague Percentages</h3>
             <p className="text-ink/60">"Significantly increased sales" — How much is significant? 5%? 50%? Without a number, the reader assumes the lower end. Always specify: "Increased sales by 23% ($140K) in Q3 2025."</p>
           </div>
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+          <div className="callout callout-dont rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-2">Missing Context</h3>
             <p className="text-ink/60">"Increased sales by 50%" — Over what time period? Starting from what baseline? A 50% increase from $1K is very different from a 50% increase from $1M. Add the time frame and baseline: "Increased quarterly sales by 50% (from $200K to $300K) within first 6 months."</p>
           </div>
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+          <div className="callout callout-dont rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-2">Over-Quantifying</h3>
             <p className="text-ink/60">Don't turn every bullet into a numbers dump. Focus on 2-3 key metrics per role that are directly relevant to the job you want. A resume with every bullet stuffed with numbers reads as inauthentic.</p>
           </div>
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+          <div className="callout callout-dont rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-2">Unverifiable Claims</h3>
             <p className="text-ink/60">Ensure you can back up your numbers if asked. You don't need to bring documentation to the interview, but you should be able to explain how you arrived at each figure.</p>
           </div>
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+          <div className="callout callout-dont rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-2">Wrong Metrics for the Role</h3>
             <p className="text-ink/60">Choose metrics that matter to the job you're applying for. If you're applying for a customer success role, highlighting code deployment frequency won't resonate — focus on retention rates, NPS scores, and expansion revenue instead.</p>
           </div>
@@ -641,8 +641,8 @@ const QuantifyResumeAccomplishments = () => {
           This is essentially the STAR method (Situation, Task, Action, Result), and your quantified resume bullets give you a ready-made script. If your bullet says "Reduced customer churn by 18% through proactive outreach program," you already have the result — now prepare the 60-second story behind it.
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <p className="text-green-800"><strong className="text-green-800">Practice Tip:</strong> Want to practice discussing your quantified accomplishments? Try <a href="https://prepai.in" target="_blank" rel="noopener noreferrer" className="text-accent-text hover:underline">PrepAI's interview coach</a> — it analyzes your resume and provides personalized practice questions based on your specific achievements, with real-time feedback to help you articulate your impact confidently.</p>
+        <div className="callout callout-do rounded-xl p-6 my-6">
+          <p className="tone-do"><strong className="tone-do">Practice Tip:</strong> Want to practice discussing your quantified accomplishments? Try <a href="https://prepai.in" target="_blank" rel="noopener noreferrer" className="text-accent-text hover:underline">PrepAI's interview coach</a> — it analyzes your resume and provides personalized practice questions based on your specific achievements, with real-time feedback to help you articulate your impact confidently.</p>
         </div>
 
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">Next Steps: Putting It All Together</h2>
