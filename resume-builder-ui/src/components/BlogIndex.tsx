@@ -222,7 +222,7 @@ export default function BlogIndex() {
                 {visiblePosts.map((post, index) => (
                   <React.Fragment key={post.slug}>
                     <article
-                      className="post-card bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
+                      className="post-card flex flex-col bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
                       style={
                         {
                           viewTransitionName: cardTransitionName(post.slug),
@@ -260,7 +260,7 @@ export default function BlogIndex() {
                         {post.description}
                       </p>
 
-                      <div className="flex items-center justify-between">
+                      <div className="mt-auto flex items-center justify-between">
                         <div className="flex items-center gap-3 text-xs text-ink/60 font-mono tabular-nums">
                           <time dateTime={post.publishDate}>
                             {new Date(post.publishDate).toLocaleDateString(

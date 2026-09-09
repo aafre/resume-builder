@@ -1662,7 +1662,6 @@ div[data-google-query-id] {
   background-color: #f6f6f5;
   border: 1px solid rgba(12, 12, 12, 0.06);
   border-left: 1px solid var(--callout-tone);
-  box-shadow: inset 2px 0 0 -1px var(--callout-tone);
 }
 
 .callout-do    { --callout-tone: #007a48; --callout-title: #007a48; }
