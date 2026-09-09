@@ -845,6 +845,53 @@ footer {
   50%      { opacity: 1; box-shadow: 0 0 0 4px rgba(0,212,126,0.15); }
 }
 
+/* ── Keyword scanner: evidence layer ── */
+/* Painted with the CSS Custom Highlight API, so only these four properties are
+   available — no borders, no radius. Depth comes from the wash + underline. */
+::highlight(ks-evidence-matched) {
+  background-color: rgba(0, 212, 126, 0.14);
+  color: #0c0c0c;
+}
+::highlight(ks-evidence-partial) {
+  background-color: rgba(245, 158, 11, 0.16);
+  color: #0c0c0c;
+}
+::highlight(ks-evidence-missing) {
+  background-color: rgba(239, 68, 68, 0.10);
+  color: #0c0c0c;
+  text-decoration: underline dotted #ef4444;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+::highlight(ks-term) {
+  background-color: rgba(0, 212, 126, 0.26);
+  color: #0c0c0c;
+  text-decoration: underline;
+  text-decoration-color: #00d47e;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+/* The resume document itself: browser chrome themed off the palette rather than
+   left at its defaults. */
+.ks-doc {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(12, 12, 12, 0.18) transparent;
+  overscroll-behavior: contain;
+  /* The document reads as a continuous page: text dissolves at the scroll
+     edges instead of being sliced by them. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 14px, #000 calc(100% - 20px), transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 14px, #000 calc(100% - 20px), transparent);
+}
+.ks-doc::-webkit-scrollbar { width: 6px; }
+.ks-doc::-webkit-scrollbar-track { background: transparent; }
+.ks-doc::-webkit-scrollbar-thumb {
+  background-color: rgba(12, 12, 12, 0.18);
+  border-radius: 3px;
+}
+.ks-doc::-webkit-scrollbar-thumb:hover { background-color: rgba(12, 12, 12, 0.3); }
+.ks-doc::selection { background-color: rgba(0, 212, 126, 0.25); color: #0c0c0c; }
+
 /* Hide scrollbar for tab overflow */
 .scrollbar-none::-webkit-scrollbar { display: none; }
 .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
@@ -1159,4 +1206,215 @@ div[data-google-query-id] {
   /* A frozen scan line reads as a stalled render. Drop it; the sheet's own
      caption already says what is happening. */
   .sheet-scan { display: none !important; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Header chrome — the top navigation panel and its states.
+
+   Two things are load-bearing here and must not be "simplified":
+
+   1. The header's box height never changes. A sticky header that shrinks on
+      scroll pushes every following block up, and a scroll-triggered shift is
+      NOT excluded from CLS the way a click-triggered one is. So the scrolled
+      state is a *material* change (glass, lift, hairline), not a size change.
+   2. The read-progress hairline is CSS-only via `animation-timeline: scroll()`.
+      Firefox has no support and correctly gets the plain border instead; there
+      is deliberately no JS fallback, because a scroll listener driving a paint
+      on every marketing page is a worse trade than a missing hairline.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.site-header {
+  /* Flat at rest: flush with the page, no glass, no lift. The border is
+     rendered transparent rather than removed so nothing reflows when it
+     resolves. */
+  background-color: rgba(255, 255, 255, 0.98);
+  border-bottom-color: transparent;
+  transition:
+    background-color 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    backdrop-filter 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.site-header[data-scrolled="true"] {
+  background-color: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  border-bottom-color: rgba(12, 12, 12, 0.07);
+  box-shadow:
+    0 1px 2px rgba(12, 12, 12, 0.03),
+    0 8px 24px -12px rgba(12, 12, 12, 0.14);
+}
+
+/* Read progress. Sits on the header's own bottom edge, so it reads as the
+   border coming alive rather than as a separate widget. */
+.site-header-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: linear-gradient(90deg, #00d47e 0%, #00d47e 72%, #34e79b 100%);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  opacity: 0;
+  transition: opacity 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.site-header[data-scrolled="true"] .site-header-progress {
+  opacity: 1;
+}
+
+@supports (animation-timeline: scroll()) {
+  .site-header-progress {
+    animation: site-header-progress linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+@keyframes site-header-progress {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ── The rail ──
+   One ink pill for the whole nav, positioned from measured link geometry and
+   moved by `useNavPill`. It is `aria-hidden` decoration; the authoritative
+   current-page signal is `aria-current` on the link itself. */
+.nav-rail-pill {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 40px;
+  margin-top: -20px;
+  border-radius: 8px;
+  background-color: #0c0c0c;
+  box-shadow: 0 1px 2px rgba(12, 12, 12, 0.16);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-rail-pill[data-visible="true"] {
+  opacity: 1;
+}
+
+/* The label crossing from ink to white is delayed so the swap happens under
+   the pill rather than on bare ground. The delay is tuned against the pill's
+   easing, which is heavily front-loaded: by ~110ms the pill has covered most
+   of the distance, so a longer delay leaves the outgoing label white on white
+   and the link reads as missing. Retune both together or neither.  */
+.nav-rail-link {
+  transition: color 160ms linear 110ms, background-color 200ms ease;
+}
+
+/* Hover has no pill to wait for, so it must not inherit the swap delay. */
+.nav-rail-link:hover,
+.nav-rail-link:focus-visible {
+  transition-delay: 0ms;
+}
+
+/* ── Count badge ──
+   Keyed on the count, so a change remounts the badge and replays this once.
+   Transform and opacity only, so the global reduced-motion rule collapses it. */
+@keyframes nav-badge-pop {
+  0%   { transform: scale(0.4); opacity: 0; }
+  62%  { transform: scale(1.14); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.nav-badge-pop {
+  animation: nav-badge-pop 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ── Auth resolve ──
+   The sign-in control and the user menu arrive after an async session check
+   into a min-width-reserved box. Fading them in stops the pop without moving
+   anything. */
+@keyframes nav-auth-in {
+  from { opacity: 0; transform: translateY(-3px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.nav-auth-in {
+  animation: nav-auth-in 260ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ── User menu panel ──
+   Mounts open and stays mounted for the length of its exit, so closing is a
+   movement rather than a disappearance. `@starting-style` supplies the
+   entrance without needing a mount-then-flip frame; browsers without it skip
+   straight to the resting state, which is the previous behaviour. The closed
+   panel is unmounted by UserMenu rather than hidden here, so it is out of the
+   tab order even before this stylesheet applies. */
+.menu-pop {
+  transform-origin: top right;
+  transition:
+    opacity 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 260ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.menu-pop[data-open="false"] {
+  opacity: 0;
+  transform: scale(0.96) translateY(-6px);
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+@starting-style {
+  .menu-pop[data-open="true"] {
+    opacity: 0;
+    transform: scale(0.94) translateY(-6px);
+    filter: blur(4px);
+  }
+}
+
+/* ── Drawer ──
+   The panel already slides in; the links follow it in sequence so the drawer
+   reads as one gesture instead of a block that appears. */
+@keyframes nav-drawer-item-in {
+  from { opacity: 0; transform: translateX(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.nav-drawer-item {
+  animation: nav-drawer-item-in 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(90ms + var(--i, 0) * 40ms);
+}
+
+@keyframes nav-drawer-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.nav-drawer-backdrop {
+  animation: nav-drawer-backdrop-in 220ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The global rule collapses durations, but these two carry a `both` fill
+     from a hidden first keyframe — at 0.01ms they would still flash. Remove
+     the animation so the resting state paints directly. */
+  .nav-drawer-item,
+  .nav-badge-pop,
+  .nav-auth-in {
+    animation: none !important;
+  }
+
+  /* A scroll-driven bar with its timeline removed would freeze at whatever
+     the fill left behind. Drop it entirely; the resolved border still marks
+     the edge. */
+  .site-header-progress {
+    animation: none !important;
+    display: none !important;
+  }
+
+  /* The global rule zeroes transition *duration*, not delay. Left alone, the
+     outgoing nav label stays white for 110ms after the pill has snapped away
+     and the link reads as missing. */
+  .nav-rail-link {
+    transition-delay: 0ms !important;
+  }
 }

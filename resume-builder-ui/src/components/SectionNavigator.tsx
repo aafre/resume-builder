@@ -31,8 +31,6 @@ import { affiliateConfig, hasAnyAffiliate } from "../config/affiliate";
 import { chromeHeight } from "../utils/chromeHeight";
 import { extractJobSearchParams } from "../utils/resumeDataExtractor";
 import type { ContactInfo, Section as ResumeSection } from "../types";
-import DocumentSpine from "./editor/DocumentSpine";
-import { useResumeLength } from "../hooks/editor/useResumeLength";
 import { PhaseLabel, WorkingRail } from "./shared/GenerationPhase";
 
 interface Section {
@@ -66,8 +64,6 @@ interface SectionNavigatorProps {
   isAuthenticated?: boolean;
   contactInfo?: ContactInfo | null;
   resumeSections?: ResumeSection[];
-  /** Last generated preview PDF; calibrates the length estimate against truth. */
-  previewUrl?: string | null;
 }
 
 const STORAGE_KEY = "resume-builder-sidebar-collapsed";
@@ -104,17 +100,10 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   isAuthenticated = false,
   contactInfo,
   resumeSections,
-  previewUrl,
 }) => {
   // Show loading on button when either opening (save/validate) or generating
   const isPreviewLoading = isOpeningPreview || isGeneratingPreview;
 
-  // Live page-length estimate, corrected against the real PDF whenever one exists.
-  const resumeLength = useResumeLength(
-    contactInfo ?? null,
-    resumeSections ?? [],
-    previewUrl
-  );
   const previewStale = Boolean(previewIsStale) && !isPreviewLoading;
   // Load initial state from localStorage
   const [isCollapsed, setIsCollapsed] = useState(() => {
@@ -442,14 +431,6 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
             </button>
           ))}
         </div>
-      </div>
-
-      {/* ── Length — the document the user is actually making ──
-          Sits directly above Actions because "does it still fit on one page?"
-          is the question that decides whether they hit Download or keep
-          editing. */}
-      <div className="shrink-0 border-t border-gray-200/60 bg-white">
-        <DocumentSpine estimate={resumeLength} isCollapsed={isCollapsed} />
       </div>
 
       {/* ── Actions — pinned below the scroll region so Download is always reachable ── */}

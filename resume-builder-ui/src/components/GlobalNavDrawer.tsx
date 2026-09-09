@@ -1,3 +1,4 @@
+import type React from "react";
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
@@ -76,7 +77,7 @@ export default function GlobalNavDrawer({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/50 z-[9998] lg:hidden"
+        className="nav-drawer-backdrop fixed inset-0 bg-black/50 z-[9998] lg:hidden"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -106,7 +107,7 @@ export default function GlobalNavDrawer({
         </div>
 
         <nav className="flex-1 overflow-y-auto p-2" aria-label="Site">
-          {links.map(({ path, label, countBadge }) => {
+          {links.map(({ path, label, countBadge }, index) => {
             const isCurrent = currentPath === path;
             return (
               <Link
@@ -114,7 +115,8 @@ export default function GlobalNavDrawer({
                 to={path}
                 onClick={onClose}
                 aria-current={isCurrent ? "page" : undefined}
-                className={`flex min-h-11 items-center justify-between gap-3 rounded-lg px-4 py-3 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset ${
+                style={{ "--i": index } as React.CSSProperties}
+                className={`nav-drawer-item flex min-h-11 items-center justify-between gap-3 rounded-lg px-4 py-3 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset ${
                   isCurrent
                     ? "bg-black/5 font-bold text-ink"
                     : "font-medium text-ink hover:bg-black/5 hover:text-ink"

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { FileText, Menu } from "lucide-react";
 import { useOptionalEditorContext } from "../contexts/EditorContext";
@@ -11,6 +11,7 @@ import AuthModal from "./AuthModal";
 import LogoMark from "./LogoMark";
 import GlobalNavDrawer from "./GlobalNavDrawer";
 import { getNavLinks } from "../config/navLinks";
+import useNavPill from "../hooks/useNavPill";
 
 export default function Header() {
   const location = useLocation();
@@ -21,8 +22,41 @@ export default function Header() {
   const { data: resumeCount = 0 } = useResumeCount();
 
   const isEditorPage = location.pathname.startsWith("/editor");
+  // Read progress is a marketing/content affordance. On a workbench there is
+  // no document to be partway through, so it would be measuring nothing.
+  const isAppSurface = isEditorPage || location.pathname === "/my-resumes";
   const editorContext = useOptionalEditorContext();
   const navLinks = getNavLinks(isAuthenticated);
+
+  // The pill follows whichever link matches the route; a page with no nav
+  // entry (blog, an example, the landing page) correctly has no pill.
+  const activePath = navLinks.some((link) => link.path === location.pathname)
+    ? location.pathname
+    : null;
+  const { navRef, pillRef } = useNavPill(activePath);
+
+  // Flat at rest, glass once the page has moved. The header's box height is
+  // deliberately unchanged by this — a sticky header that shrinks on scroll
+  // pushes the whole document up, and a scroll-triggered shift counts against
+  // CLS on a site that lives on search traffic.
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    let frame = 0;
+    const read = () => {
+      frame = 0;
+      setScrolled(window.scrollY > 8);
+    };
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(read);
+    };
+    read();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
 
   const getPageTitle = () => {
     switch (location.pathname) {
@@ -49,7 +83,14 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white/95 backdrop-blur-xl border-b border-gray-200/80 sticky top-0 z-50">
+    <header
+      className="site-header border-b border-transparent sticky top-0 z-50"
+      data-scrolled={scrolled}
+    >
+      {/* Read progress. CSS scroll-timeline only — see styles.css. */}
+      {!isAppSurface && (
+        <span className="site-header-progress" aria-hidden="true" />
+      )}
       <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-header-mobile sm:h-header-desktop transition-all duration-200">
           {/* Logo and Home Navigation */}
@@ -71,27 +112,41 @@ export default function Header() {
 
           {/* Product navigation — rendered for every visitor, not only signed-in
               ones. Only account-scoped destinations branch on auth. */}
-          <nav className="hidden lg:flex items-center gap-1" aria-label="Primary">
-            {navLinks.map(({ path, label, countBadge, id }) => (
-              <Link
-                key={path}
-                to={path}
-                id={id}
-                aria-current={location.pathname === path ? "page" : undefined}
-                className={`relative inline-flex min-h-11 items-center px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
-                  location.pathname === path
-                    ? 'bg-ink text-white shadow-sm'
-                    : 'text-gray-600 hover:bg-black/5 hover:text-ink'
-                }`}
-              >
-                {label}
-                {countBadge && resumeCount > 0 && (
-                  <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-accent rounded-full flex items-center justify-center ring-2 ring-white text-ink text-[10px] font-bold px-1">
-                    {resumeCount > 99 ? '99+' : resumeCount}
-                  </span>
-                )}
-              </Link>
-            ))}
+          <nav
+            ref={navRef}
+            className="relative hidden lg:flex items-center gap-1"
+            aria-label="Primary"
+          >
+            {/* Decoration only. `aria-current` on the link is what actually
+                announces the current page. */}
+            <span ref={pillRef} className="nav-rail-pill" aria-hidden="true" />
+            {navLinks.map(({ path, label, countBadge, id }) => {
+              const isCurrent = location.pathname === path;
+              return (
+                <Link
+                  key={path}
+                  to={path}
+                  id={id}
+                  data-nav-key={path}
+                  aria-current={isCurrent ? "page" : undefined}
+                  className={`nav-rail-link relative z-10 inline-flex min-h-11 items-center px-4 py-2 rounded-lg font-medium text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
+                    isCurrent
+                      ? 'text-white'
+                      : 'text-ink/60 hover:bg-black/5 hover:text-ink'
+                  }`}
+                >
+                  {label}
+                  {countBadge && resumeCount > 0 && (
+                    <span
+                      key={resumeCount}
+                      className="nav-badge-pop absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-accent rounded-full flex items-center justify-center ring-2 ring-white text-ink text-[10px] font-bold px-1"
+                    >
+                      {resumeCount > 99 ? '99+' : resumeCount}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* Right Side Content */}
@@ -109,7 +164,10 @@ export default function Header() {
                   <div className="relative">
                     <FileText className="w-6 h-6 text-ink" />
                     {resumeCount > 0 && (
-                      <div className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-accent rounded-full flex items-center justify-center ring-2 ring-white">
+                      <div
+                        key={resumeCount}
+                        className="nav-badge-pop absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-accent rounded-full flex items-center justify-center ring-2 ring-white"
+                      >
                         <span className="text-ink text-[10px] font-bold px-1">
                           {resumeCount > 99 ? '99+' : resumeCount}
                         </span>
@@ -143,7 +201,7 @@ export default function Header() {
             {/* Auth UI - User Menu or Sign In Button — fixed min-width prevents CLS on auth resolve */}
             <div className="flex items-center min-w-[50px] lg:min-w-[80px] min-h-[36px] lg:min-h-[40px]">
               {!authLoading && (
-                <>
+                <div className="nav-auth-in">
                   {isAuthenticated ? (
                     <UserMenu />
                   ) : (
@@ -155,7 +213,7 @@ export default function Header() {
                       <span>Sign In</span>
                     </button>
                   )}
-                </>
+                </div>
               )}
             </div>
 
@@ -197,7 +255,7 @@ export default function Header() {
                 {getPageTitle()}
               </p>
               {getPageSubtitle() && (
-                <p className="text-[11px] text-gray-600 font-medium">
+                <p className="text-[11px] text-ink/60 font-medium">
                   {getPageSubtitle()}
                 </p>
               )}
