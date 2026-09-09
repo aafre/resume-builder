@@ -19,6 +19,8 @@ import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
 import { useSemanticMatcher } from '../../hooks/useSemanticMatcher';
 import type { EnhancedKeywordResult, EnhancedScanResult } from '../../types/semanticMatcher';
+import ResumeEvidencePane, { supportsHighlights } from './ResumeEvidencePane';
+import type { ActiveEvidence } from './ResumeEvidencePane';
 
 // --- Sub-components ---
 
@@ -265,25 +267,80 @@ function LoadingSkeleton() {
   );
 }
 
-function KeywordBadge({ kw, variant, index }: { kw: EnhancedKeywordResult; variant: ResultTab; index: number }) {
-  const styles = {
-    matched: 'bg-accent/10 text-accent-text border-accent/20',
-    partial: 'bg-amber-50 text-amber-700 border-amber-200/60',
-    missing: 'bg-red-50 text-red-600 border-red-200/60',
-  };
-  const icons = { matched: '\u2713', partial: '\u2248', missing: '\u2717' };
+const BADGE_STYLES: Record<ResultTab, string> = {
+  matched: 'bg-accent/10 text-accent-text border-accent/20',
+  partial: 'bg-amber-50 text-amber-700 border-amber-200/60',
+  missing: 'bg-red-50 text-red-600 border-red-200/60',
+};
+const BADGE_ICONS: Record<ResultTab, string> = {
+  matched: '\u2713',
+  partial: '\u2248',
+  missing: '\u2717',
+};
 
-  return (
-    <span
-      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium border transition-all duration-300 opacity-0 animate-[fadeIn_0.3s_ease-out_forwards] ${styles[variant]}`}
-      style={{ animationDelay: `${index * 40}ms` }}
-    >
-      <span className="text-xs opacity-70">{icons[variant]}</span>
+interface EvidenceHandlers {
+  pinned: string | null;
+  onHover: (evidence: ActiveEvidence | null) => void;
+  onPin: (evidence: ActiveEvidence) => void;
+}
+
+function KeywordBadge({
+  kw,
+  variant,
+  index,
+  evidence,
+}: {
+  kw: EnhancedKeywordResult;
+  variant: ResultTab;
+  index: number;
+  evidence?: EvidenceHandlers;
+}) {
+  const body = (
+    <>
+      <span className="text-xs opacity-70">{BADGE_ICONS[variant]}</span>
       {kw.keyword}
       {variant !== 'missing' && kw.similarity > 0 && (
         <span className="text-[11px] opacity-50 tabular-nums">{Math.round(kw.similarity * 100)}%</span>
       )}
-    </span>
+    </>
+  );
+
+  const shared = `inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium border transition-all duration-300 opacity-0 animate-[fadeIn_0.3s_ease-out_forwards] ${BADGE_STYLES[variant]}`;
+  const delay = { animationDelay: `${index * 40}ms` };
+
+  // No evidence pane (unsupported browser, or no scan yet): stays a plain label.
+  if (!evidence) {
+    return (
+      <span className={shared} style={delay}>
+        {body}
+      </span>
+    );
+  }
+
+  const pinned = evidence.pinned === kw.keyword;
+  const target: ActiveEvidence = {
+    keyword: kw.keyword,
+    variant,
+    context: kw.bestMatchContext,
+  };
+
+  return (
+    <button
+      type="button"
+      aria-pressed={pinned}
+      title={`Show \u201C${kw.keyword}\u201D in your resume`}
+      onMouseEnter={() => evidence.onHover(target)}
+      onMouseLeave={() => evidence.onHover(null)}
+      onFocus={() => evidence.onHover(target)}
+      onBlur={() => evidence.onHover(null)}
+      onClick={() => evidence.onPin(target)}
+      className={`${shared} cursor-pointer hover:-translate-y-px hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
+        pinned ? 'ring-2 ring-accent-text ring-offset-1' : ''
+      }`}
+      style={delay}
+    >
+      {body}
+    </button>
   );
 }
 
@@ -301,10 +358,12 @@ function KeywordSection({
   keywords,
   variant,
   showContext,
+  evidence,
 }: {
   keywords: EnhancedKeywordResult[];
   variant: ResultTab;
   showContext?: boolean;
+  evidence?: EvidenceHandlers;
 }) {
   if (keywords.length === 0) {
     const messages: Record<ResultTab, string> = {
@@ -319,12 +378,12 @@ function KeywordSection({
     <div className="space-y-4">
       <div className="flex flex-wrap gap-2">
         {keywords.map((kw, i) => (
-          <KeywordBadge key={kw.keyword} kw={kw} variant={variant} index={i} />
+          <KeywordBadge key={kw.keyword} kw={kw} variant={variant} index={i} evidence={evidence} />
         ))}
       </div>
 
       {/* Context details for partial/missing */}
-      {showContext && (variant === 'partial' || variant === 'missing') && (
+      {showContext && !evidence && (variant === 'partial' || variant === 'missing') && (
         <div className="space-y-3 mt-4 pt-4 border-t border-black/[0.06]">
           {variant === 'partial' && (
             <p className="text-xs text-ink/60 mb-2">
@@ -338,7 +397,7 @@ function KeywordSection({
               }`}>
                 {kw.keyword}
               </span>
-              {kw.bestMatchContext ? (
+              {kw.bestMatchContext && !evidence ? (
                 <ContextCard kw={kw} />
               ) : kw.suggestedPlacement ? (
                 <span className="text-xs text-ink/60">
@@ -351,13 +410,13 @@ function KeywordSection({
       )}
 
       {/* Placement suggestions table for missing */}
-      {variant === 'missing' && keywords.some(kw => kw.suggestedPlacement) && keywords.length > 6 && (
+      {variant === 'missing' && keywords.some(kw => kw.suggestedPlacement) && (evidence || keywords.length > 6) && (
         <div className="border-t border-black/[0.06] pt-4 mt-4">
           <h3 className="font-display text-sm font-bold text-ink mb-3">
             Where to Add Missing Keywords
           </h3>
           <div className="space-y-2">
-            {keywords.filter(kw => kw.suggestedPlacement).slice(6, 14).map((kw) => (
+            {keywords.filter(kw => kw.suggestedPlacement).slice(evidence ? 0 : 6, 14).map((kw) => (
               <div key={kw.keyword} className="flex items-start gap-3 text-sm">
                 <span className="text-red-500 font-mono shrink-0 min-w-[80px]">{kw.keyword}</span>
                 <span className="text-ink/60">&rarr;</span>
@@ -454,6 +513,27 @@ export default function ResumeKeywordScanner() {
       else if (result.partialCount > 0) setActiveTab('partial');
       else setActiveTab('matched');
     }
+  }, [result]);
+
+  // Evidence layer: hover previews, click pins so it survives a mouse-out (and
+  // works on touch, where there is no hover at all).
+  const [hoveredEvidence, setHoveredEvidence] = useState<ActiveEvidence | null>(null);
+  const [pinnedEvidence, setPinnedEvidence] = useState<ActiveEvidence | null>(null);
+  const showEvidence = supportsHighlights && Boolean(result) && resumeText.trim().length > 0;
+  const activeEvidence = hoveredEvidence ?? pinnedEvidence;
+  const evidence: EvidenceHandlers | undefined = showEvidence
+    ? {
+        pinned: pinnedEvidence?.keyword ?? null,
+        onHover: setHoveredEvidence,
+        onPin: (target) =>
+          setPinnedEvidence((prev) => (prev?.keyword === target.keyword ? null : target)),
+      }
+    : undefined;
+
+  // A fresh scan invalidates whatever was pinned against the old one.
+  useEffect(() => {
+    setPinnedEvidence(null);
+    setHoveredEvidence(null);
   }, [result]);
 
   const canScan = resumeText.trim().length > 0 && jobDescription.trim().length > 0;
@@ -632,7 +712,14 @@ export default function ResumeKeywordScanner() {
               </div>
             </div>
 
-            {/* Three-Tab Keyword Section */}
+            {/* Keyword lanes, read against the resume itself */}
+            <div
+              className={
+                showEvidence
+                  ? 'grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:items-start'
+                  : ''
+              }
+            >
             <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-gray-200">
               <div className="flex gap-2 mb-6 overflow-x-auto pb-1 -mb-1 scrollbar-none">
                 {([
@@ -656,14 +743,32 @@ export default function ResumeKeywordScanner() {
               </div>
 
               {activeTab === 'missing' && (
-                <KeywordSection keywords={result.missing} variant="missing" showContext />
+                <KeywordSection
+                  keywords={result.missing}
+                  variant="missing"
+                  showContext
+                  evidence={evidence}
+                />
               )}
               {activeTab === 'partial' && (
-                <KeywordSection keywords={result.partial} variant="partial" showContext />
+                <KeywordSection
+                  keywords={result.partial}
+                  variant="partial"
+                  /* The pane already shows the matching sentence in place. */
+                  showContext={!showEvidence}
+                  evidence={evidence}
+                />
               )}
               {activeTab === 'matched' && (
-                <KeywordSection keywords={result.matched} variant="matched" />
+                <KeywordSection keywords={result.matched} variant="matched" evidence={evidence} />
               )}
+            </div>
+
+            {showEvidence && (
+              <div className="lg:sticky lg:top-24">
+                <ResumeEvidencePane resumeText={resumeText} active={activeEvidence} />
+              </div>
+            )}
             </div>
           </div>
         </RevealSection>
