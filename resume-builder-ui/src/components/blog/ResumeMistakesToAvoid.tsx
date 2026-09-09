@@ -16,9 +16,9 @@ export default function ResumeMistakesToAvoid() {
           Updated for 2026: Your resume is your first impression with potential employers. A single mistake can mean the difference between landing an interview and having your application dismissed. After reviewing thousands of resumes, we've identified the most critical errors that consistently hurt job seekers' chances.
         </p>
 
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-          <h3 className="text-lg font-bold text-red-800 mb-2">⚠️ Critical Stat</h3>
-          <p className="text-red-700">
+        <div className="callout callout-dont rounded-xl p-6">
+          <h3 className="text-lg font-bold tone-dont mb-2">⚠️ Critical Stat</h3>
+          <p className="tone-dont">
             Recruiters spend an average of just 6-8 seconds scanning a resume initially. These common mistakes can eliminate you in those crucial first moments.
           </p>
         </div>
@@ -41,8 +41,8 @@ export default function ResumeMistakesToAvoid() {
         <p className="text-lg leading-relaxed text-ink/60">
           Sending the same resume to every job posting is like using a master key that opens no doors. Modern hiring requires customization to match specific job requirements and company culture.
         </p>
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-green-800 mb-3">✅ Best Practice:</h4>
+        <div className="callout callout-do rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-do mb-3">✅ Best Practice:</h4>
           <p className="text-accent-text mb-3">
             Tailor your resume for each application by:
           </p>
@@ -59,14 +59,14 @@ export default function ResumeMistakesToAvoid() {
           Your professional summary is prime real estate – the first thing recruiters read. A weak summary like "Hard-working professional seeking opportunities" wastes this valuable space.
         </p>
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h4 className="font-bold text-red-800 mb-3">❌ Poor Example:</h4>
-            <p className="text-red-700 italic">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h4 className="font-bold tone-dont mb-3">❌ Poor Example:</h4>
+            <p className="tone-dont italic">
               "Hard-working professional with experience in marketing looking for new opportunities to grow my career."
             </p>
           </div>
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-800 mb-3">✅ Strong Example:</h4>
+          <div className="callout callout-do rounded-xl p-6">
+            <h4 className="font-bold tone-do mb-3">✅ Strong Example:</h4>
             <p className="text-accent-text italic">
               "Results-driven digital marketing specialist with 5+ years driving 200%+ ROI growth for B2B SaaS companies. Expert in SEO, PPC, and marketing automation with proven track record of increasing qualified leads by 150%."
             </p>
@@ -86,7 +86,7 @@ export default function ResumeMistakesToAvoid() {
           </p>
           <div className="space-y-3">
             <div>
-              <p className="text-red-700 font-medium">❌ Weak: "Responsible for managing social media accounts"</p>
+              <p className="tone-dont font-medium">❌ Weak: "Responsible for managing social media accounts"</p>
               <p className="text-accent-text font-medium">✅ Strong: "Managed 5 social media accounts, increasing engagement by 85% and driving 300+ monthly website visits"</p>
             </div>
           </div>
@@ -112,9 +112,9 @@ export default function ResumeMistakesToAvoid() {
           Your resume should focus on professional qualifications. Personal details like age, marital status, religious beliefs, or hobbies (unless job-relevant) take up valuable space and can introduce unconscious bias.
         </p>
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h4 className="font-bold text-red-800 mb-3">❌ Avoid Including:</h4>
-            <ul className="list-disc pl-6 space-y-1 text-red-700">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h4 className="font-bold tone-dont mb-3">❌ Avoid Including:</h4>
+            <ul className="list-disc pl-6 space-y-1 tone-dont">
               <li>Age or date of birth</li>
               <li>Marital status</li>
               <li>Physical description</li>
@@ -123,8 +123,8 @@ export default function ResumeMistakesToAvoid() {
               <li>Irrelevant hobbies</li>
             </ul>
           </div>
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-800 mb-3">✅ Do Include:</h4>
+          <div className="callout callout-do rounded-xl p-6">
+            <h4 className="font-bold tone-do mb-3">✅ Do Include:</h4>
             <ul className="list-disc pl-6 space-y-1 text-accent-text">
               <li>Professional email address</li>
               <li>LinkedIn profile URL</li>
@@ -140,9 +140,9 @@ export default function ResumeMistakesToAvoid() {
         <p className="text-lg leading-relaxed text-ink/60">
           Your email address is often the first thing recruiters see. Addresses like "partyboy123@email.com" or "sexykitten@email.com" immediately undermine your professionalism.
         </p>
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-yellow-800 mb-3">📧 Email Best Practices:</h4>
-          <ul className="list-disc pl-6 space-y-2 text-yellow-700">
+        <div className="callout callout-note rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-note mb-3">📧 Email Best Practices:</h4>
+          <ul className="list-disc pl-6 space-y-2 tone-note">
             <li>Use your first and last name when possible: john.smith@email.com</li>
             <li>If that's taken, add numbers: john.smith2024@email.com</li>
             <li>Stick to popular email providers (Gmail, Outlook, Yahoo)</li>
@@ -185,8 +185,8 @@ export default function ResumeMistakesToAvoid() {
         <p className="text-lg leading-relaxed text-ink/60">
           It sounds basic, but you'd be surprised how often great candidates are unreachable due to outdated contact information or missing LinkedIn profiles.
         </p>
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-green-800 mb-3">📞 Contact Info Checklist:</h4>
+        <div className="callout callout-do rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-do mb-3">📞 Contact Info Checklist:</h4>
           <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>Current phone number with professional voicemail</li>
             <li>Professional email address you check regularly</li>
@@ -216,9 +216,9 @@ export default function ResumeMistakesToAvoid() {
           Remember: even small improvements can have big impacts. A single typo fix or better formatting can be the difference between your resume being discarded or moving to the interview pile.
         </p>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mt-8">
-          <h4 className="font-bold text-yellow-800 mb-3">💡 Pro Tip</h4>
-          <p className="text-yellow-700">
+        <div className="callout callout-note rounded-xl p-6 mt-8">
+          <h4 className="font-bold tone-note mb-3">💡 Pro Tip</h4>
+          <p className="tone-note">
             Keep a master resume with all your experiences and achievements, then create tailored versions for specific applications. This approach saves time while ensuring relevance for each opportunity.
           </p>
         </div>

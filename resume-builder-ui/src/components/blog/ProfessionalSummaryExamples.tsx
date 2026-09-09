@@ -118,8 +118,8 @@ export default function ProfessionalSummaryExamples() {
           to anchor your claims in real results.
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-green-800 mb-3">
+        <div className="callout callout-do rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-do mb-3">
             Essential Elements of a Strong Summary:
           </h4>
           <ul className="list-disc pl-6 space-y-2 text-accent-text">
@@ -485,7 +485,7 @@ export default function ProfessionalSummaryExamples() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+          <div className="callout callout-dont rounded-xl p-6">
             <h4 className="font-bold text-ink mb-2">
               Mistake: Generic, one-size-fits-all summaries
             </h4>
@@ -500,7 +500,7 @@ export default function ProfessionalSummaryExamples() {
             </p>
           </div>
 
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+          <div className="callout callout-dont rounded-xl p-6">
             <h4 className="font-bold text-ink mb-2">
               Mistake: Focusing on what you want instead of what you offer
             </h4>
@@ -514,7 +514,7 @@ export default function ProfessionalSummaryExamples() {
             </p>
           </div>
 
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+          <div className="callout callout-dont rounded-xl p-6">
             <h4 className="font-bold text-ink mb-2">
               Mistake: Using vague buzzwords without context
             </h4>
@@ -534,7 +534,7 @@ export default function ProfessionalSummaryExamples() {
             </p>
           </div>
 
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+          <div className="callout callout-dont rounded-xl p-6">
             <h4 className="font-bold text-ink mb-2">
               Mistake: Writing in first person or using personal pronouns
             </h4>
@@ -587,8 +587,8 @@ export default function ProfessionalSummaryExamples() {
           every other case, a professional summary will serve you better.
         </p>
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-800 mb-3">
+          <div className="callout callout-do rounded-xl p-6">
+            <h4 className="font-bold tone-do mb-3">
               Professional Summary
             </h4>
             <ul className="list-disc pl-6 space-y-2 text-accent-text text-sm">
@@ -600,11 +600,11 @@ export default function ProfessionalSummaryExamples() {
               <li>More impactful and results-oriented</li>
             </ul>
           </div>
-          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-            <h4 className="font-bold text-yellow-800 mb-3">
+          <div className="callout callout-note rounded-xl p-6">
+            <h4 className="font-bold tone-note mb-3">
               Objective Statement
             </h4>
-            <ul className="list-disc pl-6 space-y-2 text-yellow-700 text-sm">
+            <ul className="list-disc pl-6 space-y-2 tone-note text-sm">
               <li>Focuses on what you want from employers</li>
               <li>Often generic and self-serving</li>
               <li>Less impactful in competitive markets</li>
@@ -759,9 +759,9 @@ export default function ProfessionalSummaryExamples() {
           recruiters in your field.
         </p>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mt-8">
-          <h4 className="font-bold text-yellow-800 mb-3">Pro Tip</h4>
-          <p className="text-yellow-700">
+        <div className="callout callout-note rounded-xl p-6 mt-8">
+          <h4 className="font-bold tone-note mb-3">Pro Tip</h4>
+          <p className="tone-note">
             Your professional summary should evolve throughout your career.
             Update it regularly to reflect new achievements, skills, and career
             goals. A fresh, current summary demonstrates active career

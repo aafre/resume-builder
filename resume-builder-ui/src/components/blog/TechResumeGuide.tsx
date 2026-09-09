@@ -90,8 +90,8 @@ export default function TechResumeGuide() {
           Beyond your name and contact details, this is where you showcase your
           digital footprint.
         </p>
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-green-800 mb-3">✅ What to Include:</h4>
+        <div className="callout callout-do rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-do mb-3">✅ What to Include:</h4>
           <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>
               <strong>Full Name & Phone Number</strong>
@@ -125,11 +125,11 @@ export default function TechResumeGuide() {
           A concise paragraph or bulleted list that acts as your elevator pitch.
           Tailor it for each application.
         </p>
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-yellow-800 mb-3">
+        <div className="callout callout-note rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-note mb-3">
             🔑 Tips for Tech Summaries:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-yellow-700">
+          <ul className="list-disc pl-6 space-y-2 tone-note">
             <li>
               Highlight your core technical strengths (e.g., "Full Stack
               Developer proficient in React, Node.js, and AWS").
@@ -211,8 +211,8 @@ export default function TechResumeGuide() {
           you used. Use the STAR method (Situation, Task, Action, Result) in
           your bullet points.
         </p>
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-green-800 mb-3">
+        <div className="callout callout-do rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-do mb-3">
             ✅ Example Bullet Points:
           </h4>
           <ul className="list-disc pl-6 space-y-2 text-accent-text">
@@ -242,11 +242,11 @@ export default function TechResumeGuide() {
           This section is GOLD for tech professionals, especially those early in
           their careers or looking to switch domains.
         </p>
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-red-800 mb-3">
+        <div className="callout callout-dont rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-dont mb-3">
             🚨 Don't Just List, Explain:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-red-700">
+          <ul className="list-disc pl-6 space-y-2 tone-dont">
             <li>
               <strong>Project Title:</strong> Clear and descriptive.
             </li>
@@ -347,11 +347,11 @@ export default function TechResumeGuide() {
           both will differ from a UX designer's. Always customize!
         </p>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mt-8">
-          <h4 className="font-bold text-yellow-800 mb-3">
+        <div className="callout callout-note rounded-xl p-6 mt-8">
+          <h4 className="font-bold tone-note mb-3">
             🎯 Customization Strategies:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-yellow-700">
+          <ul className="list-disc pl-6 space-y-2 tone-note">
             <li>
               <strong>Highlight Relevant Skills:</strong> If applying for a
               Python Developer role, make sure Python and related libraries are

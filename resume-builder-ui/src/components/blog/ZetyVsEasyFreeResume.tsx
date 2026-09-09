@@ -12,7 +12,7 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
       {Array.from({ length: max }, (_, i) => (
         <span
           key={i}
-          className={`text-xl ${i < rating ? "text-yellow-400" : "text-gray-300"}`}
+          className={`text-xl ${i < rating ? "text-accent-text" : "text-ink/20"}`}
         >
           ★
         </span>
@@ -27,7 +27,7 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
 // Winner badge component
 function WinnerBadge() {
   return (
-    <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-800">
+    <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-bold callout callout-do tone-do">
       WINNER
     </span>
   );
@@ -69,8 +69,8 @@ export default function ZetyVsEasyFreeResume() {
     >
       <div className="space-y-8">
         {/* Quick Verdict Box */}
-        <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-2xl p-6 my-8 shadow-lg">
-          <h3 className="font-bold text-green-800 text-xl mb-4">
+        <div className="callout callout-do rounded-2xl p-6 my-8 shadow-lg">
+          <h3 className="font-bold tone-do text-xl mb-4">
             ⚡ Quick Verdict
           </h3>
           <div className="grid md:grid-cols-2 gap-6">
@@ -83,11 +83,11 @@ export default function ZetyVsEasyFreeResume() {
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
               <p className="font-bold text-ink/60 text-lg mb-2">Zety</p>
               <StarRating rating={3} />
-              <p className="text-3xl font-bold text-red-600 mt-2">$71+</p>
+              <p className="text-3xl font-bold tone-dont mt-2">$71+</p>
               <p className="text-sm text-ink/60">Per year</p>
             </div>
           </div>
-          <p className="text-green-800 mt-4 text-center font-medium">
+          <p className="tone-do mt-4 text-center font-medium">
             Winner: EasyFreeResume — Same quality templates, zero cost, better privacy
           </p>
         </div>
@@ -144,16 +144,16 @@ export default function ZetyVsEasyFreeResume() {
               </tr>
             </thead>
             <tbody className="divide-y divide-black/[0.06]">
-              <tr className="bg-green-50">
+              <tr className="callout callout-do">
                 <td className="px-6 py-4 font-medium text-ink">Cost</td>
                 <td className="px-6 py-4 text-center text-accent-text font-bold">
                   100% Free
                 </td>
-                <td className="px-6 py-4 text-center text-red-600">
+                <td className="px-6 py-4 text-center tone-dont">
                   $5.95 - $23.95/month
                 </td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">
                     EasyFreeResume
                   </span>
                 </td>
@@ -165,25 +165,25 @@ export default function ZetyVsEasyFreeResume() {
                 <td className="px-6 py-4 text-center text-accent-text">
                   ✅ Unlimited, No Watermark
                 </td>
-                <td className="px-6 py-4 text-center text-red-600">
+                <td className="px-6 py-4 text-center tone-dont">
                   ❌ Requires paid plan
                 </td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">
                     EasyFreeResume
                   </span>
                 </td>
               </tr>
-              <tr className="bg-green-50">
+              <tr className="callout callout-do">
                 <td className="px-6 py-4 font-medium text-ink">
                   Sign-Up Required
                 </td>
                 <td className="px-6 py-4 text-center text-accent-text">✅ No</td>
-                <td className="px-6 py-4 text-center text-red-600">
+                <td className="px-6 py-4 text-center tone-dont">
                   ❌ Yes, mandatory
                 </td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">
                     EasyFreeResume
                   </span>
                 </td>
@@ -202,16 +202,16 @@ export default function ZetyVsEasyFreeResume() {
                   </span>
                 </td>
               </tr>
-              <tr className="bg-green-50">
+              <tr className="callout callout-do">
                 <td className="px-6 py-4 font-medium text-ink">Privacy</td>
                 <td className="px-6 py-4 text-center text-accent-text">
                   ✅ Local storage only
                 </td>
-                <td className="px-6 py-4 text-center text-red-600">
+                <td className="px-6 py-4 text-center tone-dont">
                   ❌ Data stored on servers
                 </td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">
                     EasyFreeResume
                   </span>
                 </td>
@@ -232,18 +232,18 @@ export default function ZetyVsEasyFreeResume() {
                   </span>
                 </td>
               </tr>
-              <tr className="bg-green-50">
+              <tr className="callout callout-do">
                 <td className="px-6 py-4 font-medium text-ink">
                   Multiple Resume Versions
                 </td>
                 <td className="px-6 py-4 text-center text-accent-text">
                   ✅ Unlimited
                 </td>
-                <td className="px-6 py-4 text-center text-yellow-600">
+                <td className="px-6 py-4 text-center tone-note">
                   ⚠️ Limited on free plan
                 </td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">
                     EasyFreeResume
                   </span>
                 </td>
@@ -252,8 +252,8 @@ export default function ZetyVsEasyFreeResume() {
           </table>
         </div>
 
-        <div className="bg-green-100 border border-green-300 rounded-xl p-4 text-center">
-          <p className="font-bold text-green-800">
+        <div className="callout callout-do rounded-xl p-4 text-center">
+          <p className="font-bold tone-do">
             Score: EasyFreeResume 5 — Zety 0 — Ties 2
             <WinnerBadge />
           </p>
@@ -341,11 +341,11 @@ export default function ZetyVsEasyFreeResume() {
             </div>
           </div>
 
-          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-yellow-800 mb-4">
+          <div className="callout callout-note rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-note mb-4">
               📊 Resume Score
             </h3>
-            <div className="text-yellow-700">
+            <div className="tone-note">
               <p className="mb-3">
                 <strong>Zety offers:</strong> A "score" to rate your resume's
                 strength with suggestions for improvement.
@@ -392,58 +392,58 @@ export default function ZetyVsEasyFreeResume() {
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-green-800 mb-4">
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="text-lg font-bold tone-do mb-4">
               🔒 EasyFreeResume Privacy
               <WinnerBadge />
             </h3>
             <ul className="space-y-3 text-accent-text">
               <li className="flex items-start space-x-2">
-                <span className="text-green-500 font-bold">✓</span>
+                <span className="tone-do font-bold">✓</span>
                 <span>Your resume data never leaves your computer</span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="text-green-500 font-bold">✓</span>
+                <span className="tone-do font-bold">✓</span>
                 <span>Saved in your browser's local storage</span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="text-green-500 font-bold">✓</span>
+                <span className="tone-do font-bold">✓</span>
                 <span>We have no access to your personal information</span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="text-green-500 font-bold">✓</span>
+                <span className="tone-do font-bold">✓</span>
                 <span>No account creation required</span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="text-green-500 font-bold">✓</span>
+                <span className="tone-do font-bold">✓</span>
                 <span>Complete control over your data</span>
               </li>
             </ul>
           </div>
 
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-red-800 mb-4">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h3 className="text-lg font-bold tone-dont mb-4">
               🚨 Zety Privacy Concerns
             </h3>
-            <ul className="space-y-3 text-red-700">
+            <ul className="space-y-3 tone-dont">
               <li className="flex items-start space-x-2">
-                <span className="text-red-500 font-bold">×</span>
+                <span className="tone-dont font-bold">×</span>
                 <span>Mandatory account creation</span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="text-red-500 font-bold">×</span>
+                <span className="tone-dont font-bold">×</span>
                 <span>All data stored on their servers</span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="text-red-500 font-bold">×</span>
+                <span className="tone-dont font-bold">×</span>
                 <span>Personal information collected and stored</span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="text-red-500 font-bold">×</span>
+                <span className="tone-dont font-bold">×</span>
                 <span>Subject to data breaches and privacy policies</span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="text-red-500 font-bold">×</span>
+                <span className="tone-dont font-bold">×</span>
                 <span>Limited control over your personal data</span>
               </li>
             </ul>
@@ -471,21 +471,21 @@ export default function ZetyVsEasyFreeResume() {
           subscription model.
         </p>
 
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-red-800 mb-4">
+        <div className="callout callout-dont rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-dont mb-4">
             💰 Zety Pricing 2026 Breakdown
           </h3>
-          <div className="space-y-4 text-red-700">
+          <div className="space-y-4 tone-dont">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-red-200">
+                  <tr className="border-b callout callout-dont">
                     <th className="text-left py-2 font-bold">Plan</th>
                     <th className="text-left py-2 font-bold">Price</th>
                     <th className="text-left py-2 font-bold">Annual Cost</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-red-100">
+                <tbody className="divide-y divide-ink/10">
                   <tr>
                     <td className="py-2">Monthly</td>
                     <td className="py-2">$23.95/month</td>
@@ -516,8 +516,8 @@ export default function ZetyVsEasyFreeResume() {
           </div>
         </div>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-green-800 mb-4">
+        <div className="callout callout-do rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-do mb-4">
             💚 EasyFreeResume Cost
             <WinnerBadge />
           </h3>
@@ -648,11 +648,11 @@ export default function ZetyVsEasyFreeResume() {
           After thorough testing and analysis, here's our honest assessment:
         </p>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-yellow-800 mb-4">
+        <div className="callout callout-note rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-note mb-4">
             🎯 Zety Might Be Worth It If:
           </h3>
-          <ul className="list-disc pl-6 space-y-2 text-yellow-700">
+          <ul className="list-disc pl-6 space-y-2 tone-note">
             <li>
               You're completely new to resume writing and need extensive
               hand-holding
@@ -665,8 +665,8 @@ export default function ZetyVsEasyFreeResume() {
           </ul>
         </div>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-green-800 mb-4">
+        <div className="callout callout-do rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-do mb-4">
             ✅ EasyFreeResume is Perfect If:
             <WinnerBadge />
           </h3>
@@ -736,7 +736,7 @@ export default function ZetyVsEasyFreeResume() {
           </div>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
+        <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Ready to Save $71+ Per Year?
           </h3>
@@ -911,7 +911,7 @@ export default function ZetyVsEasyFreeResume() {
       <div className="h-16 md:hidden" aria-hidden="true" />
 
       {/* Sticky CTA Banner */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 px-4 shadow-lg z-50 md:hidden">
+      <div className="fixed bottom-0 left-0 right-0 bg-ink text-white py-3 px-4 shadow-lg z-50 md:hidden">
         <div className="flex items-center justify-between max-w-4xl mx-auto">
           <div>
             <p className="font-bold text-sm">Switch to Free</p>

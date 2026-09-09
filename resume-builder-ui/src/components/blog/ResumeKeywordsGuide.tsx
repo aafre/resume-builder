@@ -96,11 +96,11 @@ export default function ResumeKeywordsGuide() {
         </div>
 
         {/* Free Tool Callout */}
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-green-800 mb-2">
+        <div className="callout callout-do rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-do mb-2">
             Free Tool: Resume Keyword Scanner
           </h4>
-          <p className="text-green-700 mb-3">
+          <p className="tone-do mb-3">
             Want to check if your resume has the right keywords before applying?
             Our{" "}
             <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">
@@ -127,11 +127,11 @@ export default function ResumeKeywordsGuide() {
           </Link>.
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-green-800 mb-3">
+        <div className="callout callout-do rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-do mb-3">
             Example keyword categories:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-green-700">
+          <ul className="list-disc pl-6 space-y-2 tone-do">
             <li>
               <strong>Job Titles:</strong>{" "}
               <em>Project Manager, Data Analyst, UX Designer</em>
@@ -155,8 +155,8 @@ export default function ResumeKeywordsGuide() {
           </ul>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
-          <p className="text-yellow-800">
+        <div className="callout callout-note rounded-xl p-6 my-6">
+          <p className="tone-note">
             <strong>Using the right keywords isn't about "stuffing."</strong>{" "}
             It's about mirroring the terms employers already value. Learn{" "}
             <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">
@@ -194,11 +194,11 @@ export default function ResumeKeywordsGuide() {
           </ol>
         </div>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-          <h4 className="font-bold text-green-800 mb-3">
+        <div className="callout callout-do rounded-xl p-6">
+          <h4 className="font-bold tone-do mb-3">
             Tools to speed up keyword research:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-green-700">
+          <ul className="list-disc pl-6 space-y-2 tone-do">
             <li>
               <strong>
                 <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">
@@ -843,8 +843,8 @@ export default function ResumeKeywordsGuide() {
           </table>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
-          <p className="text-yellow-800">
+        <div className="callout callout-note rounded-xl p-6 my-6">
+          <p className="tone-note">
             <strong>Rule of thumb:</strong> Your resume should be roughly 70%
             hard skill keywords and 30% soft skill keywords. Hard skills get
             you past the ATS; soft skills convince the hiring manager you're a

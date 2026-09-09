@@ -1681,3 +1681,50 @@ div[data-google-query-id] {
   .post-card::before { animation: none !important; }
   .featured-slab-glow { transform: translate3d(50%, 50%, 0) !important; }
 }
+
+/* ── Callouts ──
+   The blog bodies carried ~1,500 green/red/yellow utilities in hand-rolled
+   do/don't and caution boxes — the last surface still painted in a palette the
+   design system does not own. The tone is real information and worth keeping,
+   so it moves here where it can be reviewed in one place instead of being
+   respelled in 48 files.
+
+   Two rules shape the result. Signal Green is capped at 10% of a surface, so a
+   green *wash* behind 139 boxes was never available — tone is carried by a 1px
+   spine and the heading, over the same Chalk Dark every other panel uses. And
+   every value below is measured on Chalk Dark (#f6f6f5), the strictest light
+   ground in the system: 5.18:1, 6.02:1 and 6.54:1 respectively, all clear of
+   AA. The negative and caution hues match the reds already used by
+   .btn-destructive-ghost — this is the system's existing vocabulary, damped. */
+.callout {
+  --callout-tone: rgba(12, 12, 12, 0.2);
+  --callout-title: #0c0c0c;
+  background-color: #f6f6f5;
+  border: 1px solid rgba(12, 12, 12, 0.06);
+  border-left: 1px solid var(--callout-tone);
+  box-shadow: inset 2px 0 0 -1px var(--callout-tone);
+}
+
+.callout-do    { --callout-tone: #007a48; --callout-title: #007a48; }
+.callout-dont  { --callout-tone: #b42318; --callout-title: #b42318; }
+.callout-note  { --callout-tone: #92400e; --callout-title: #92400e; }
+
+/* The headings inside a callout are author copy; only their colour changes. */
+.callout :is(h2, h3, h4) {
+  color: var(--callout-title);
+}
+
+.callout :is(p, li, span, div) {
+  color: rgba(12, 12, 12, 0.75);
+}
+
+/* Links keep the system's link colour rather than inheriting the tone. */
+.callout a {
+  color: #007a48;
+}
+
+/* Standalone tone marks — verdict cells in comparison tables, inline ticks and
+   crosses — where there is no box, only a coloured word or glyph. */
+.tone-do   { color: #007a48; }
+.tone-dont { color: #b42318; }
+.tone-note { color: #92400e; }

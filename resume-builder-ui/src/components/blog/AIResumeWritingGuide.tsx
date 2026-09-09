@@ -55,8 +55,8 @@ export default function AIResumeWritingGuide() {
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-green-800 mb-4">
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="text-lg font-bold tone-do mb-4">
               ✅ AI Excels At
             </h3>
             <ul className="list-disc pl-5 space-y-2 text-accent-text">
@@ -69,11 +69,11 @@ export default function AIResumeWritingGuide() {
             </ul>
           </div>
 
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-red-800 mb-4">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h3 className="text-lg font-bold tone-dont mb-4">
               ❌ AI Struggles With
             </h3>
-            <ul className="list-disc pl-5 space-y-2 text-red-700">
+            <ul className="list-disc pl-5 space-y-2 tone-dont">
               <li>Knowing your actual accomplishments</li>
               <li>Understanding company culture nuances</li>
               <li>Maintaining your authentic voice</li>
@@ -105,7 +105,7 @@ export default function AIResumeWritingGuide() {
                 <td className="px-4 py-4 text-center text-accent-text">✓ Yes</td>
                 <td className="px-4 py-4 text-center text-accent-text">✓ Yes</td>
                 <td className="px-4 py-4 text-center text-accent-text">✓ Yes</td>
-                <td className="px-4 py-4 text-center text-yellow-600">Limited</td>
+                <td className="px-4 py-4 text-center tone-note">Limited</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Writing Quality</td>
@@ -301,41 +301,41 @@ export default function AIResumeWritingGuide() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h3 className="font-bold text-red-800 mb-3">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h3 className="font-bold tone-dont mb-3">
               ❌ Mistake 1: Using AI Output Without Editing
             </h3>
-            <p className="text-red-700">
+            <p className="tone-dont">
               Raw AI output often sounds generic and may include inaccuracies. Always review,
               edit, and personalize before submitting.
             </p>
           </div>
 
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h3 className="font-bold text-red-800 mb-3">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h3 className="font-bold tone-dont mb-3">
               ❌ Mistake 2: Over-Optimizing for Keywords
             </h3>
-            <p className="text-red-700">
+            <p className="tone-dont">
               Stuffing keywords makes your resume sound robotic. Keywords should appear naturally
               in context, not be forced in.
             </p>
           </div>
 
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h3 className="font-bold text-red-800 mb-3">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h3 className="font-bold tone-dont mb-3">
               ❌ Mistake 3: Making Up Achievements
             </h3>
-            <p className="text-red-700">
+            <p className="tone-dont">
               AI may suggest impressive metrics you didn't achieve. Embellished claims will
               collapse under interview scrutiny.
             </p>
           </div>
 
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h3 className="font-bold text-red-800 mb-3">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h3 className="font-bold tone-dont mb-3">
               ❌ Mistake 4: Using the Same Prompts for Every Job
             </h3>
-            <p className="text-red-700">
+            <p className="tone-dont">
               Each application should be tailored. Update your prompts and context for
               each job description.
             </p>
@@ -346,22 +346,22 @@ export default function AIResumeWritingGuide() {
           Privacy Considerations
         </h2>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-yellow-800 mb-3">
+        <div className="callout callout-note rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-note mb-3">
             ⚠️ Be Careful What You Share
           </h3>
-          <p className="text-yellow-700 mb-4">
+          <p className="tone-note mb-4">
             When using AI tools, consider:
           </p>
-          <ul className="list-disc list-inside space-y-2 text-yellow-700">
+          <ul className="list-disc list-inside space-y-2 tone-note">
             <li><strong>Personal Information:</strong> Don't share full addresses, phone numbers, or sensitive details unnecessarily</li>
             <li><strong>Company Data:</strong> Avoid sharing proprietary information from current or past employers</li>
             <li><strong>Training Data:</strong> Your conversations may be used to train AI models (check privacy policies)</li>
             <li><strong>Third-Party Tools:</strong> Be cautious with AI resume tools that store your data on their servers</li>
           </ul>
-          <p className="text-yellow-700 mt-4">
+          <p className="tone-note mt-4">
             For privacy-conscious users,{" "}
-            <Link to="/templates" className="text-yellow-800 underline font-medium">
+            <Link to="/templates" className="tone-note underline font-medium">
               EasyFreeResume
             </Link>{" "}
             keeps your data in your browser – we never store your personal information.

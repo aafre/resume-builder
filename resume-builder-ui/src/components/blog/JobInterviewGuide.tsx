@@ -95,7 +95,7 @@ export default function JobInterviewGuide() {
           compelling structure for your answers.
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
+        <div className="callout callout-do rounded-xl p-6 my-6">
           <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>
               <strong>S - Situation:</strong> Briefly describe the context.
@@ -120,8 +120,8 @@ export default function JobInterviewGuide() {
           </ul>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
-          <p className="text-yellow-800 font-medium">
+        <div className="callout callout-note rounded-xl p-6 my-6">
+          <p className="tone-note font-medium">
             <strong>Pro Tip:</strong> Prepare 5-7 strong STAR stories about your
             biggest accomplishments, challenges you've overcome, and times
             you've demonstrated key skills like leadership, teamwork, and
@@ -139,8 +139,8 @@ export default function JobInterviewGuide() {
           fit for you.
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-green-800 mb-2">Good Questions:</h4>
+        <div className="callout callout-do rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-do mb-2">Good Questions:</h4>
           <ul className="list-disc pl-6 space-y-1 text-accent-text">
             <li>
               "What does success look like in this role in the first 90 days?"
@@ -152,9 +152,9 @@ export default function JobInterviewGuide() {
           </ul>
         </div>
 
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-red-800 mb-2">Questions to Avoid:</h4>
-          <ul className="list-disc pl-6 space-y-1 text-red-700">
+        <div className="callout callout-dont rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-dont mb-2">Questions to Avoid:</h4>
+          <ul className="list-disc pl-6 space-y-1 tone-dont">
             <li>
               "What does your company do?" (You should already know this.)
             </li>
@@ -303,7 +303,7 @@ export default function JobInterviewGuide() {
           If the recruiter or hiring manager follows up by email:
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
+        <div className="callout callout-do rounded-xl p-6 my-6">
           <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>
               <strong>Reply promptly.</strong>
@@ -355,8 +355,8 @@ export default function JobInterviewGuide() {
           in parallel.
         </p>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-8">
-          <p className="text-yellow-800 font-medium">
+        <div className="callout callout-note rounded-xl p-6 my-8">
+          <p className="tone-note font-medium">
             <strong>💡 Reality Check:</strong> The best candidates don't put all
             their eggs in one basket. Continue interviewing elsewhere while you
             wait. This keeps you sharp and gives you options – which actually

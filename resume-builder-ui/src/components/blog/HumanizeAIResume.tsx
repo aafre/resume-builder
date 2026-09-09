@@ -123,7 +123,7 @@ export default function HumanizeAIResume() {
         </p>
 
         <div className="space-y-4">
-          <div className="rounded-lg border border-red-200/70 bg-red-50/80 p-6">
+          <div className="rounded-lg callout callout-dont/70 callout-dont/80 p-6">
             <h3 className="font-bold text-ink mb-2">Generic, round-number metrics with no context</h3>
             <p className="text-ink/60">
               "Increased efficiency by 30%." Thirty percent of what, measured how,
@@ -131,14 +131,14 @@ export default function HumanizeAIResume() {
               real data to anchor them.
             </p>
           </div>
-          <div className="rounded-lg border border-red-200/70 bg-red-50/80 p-6">
+          <div className="rounded-lg callout callout-dont/70 callout-dont/80 p-6">
             <h3 className="font-bold text-ink mb-2">Uniform sentence rhythm</h3>
             <p className="text-ink/60">
               Every bullet runs 12–15 words and follows the same shape. Real
               accomplishments come in different sizes, so real bullets should too.
             </p>
           </div>
-          <div className="rounded-lg border border-red-200/70 bg-red-50/80 p-6">
+          <div className="rounded-lg callout callout-dont/70 callout-dont/80 p-6">
             <h3 className="font-bold text-ink mb-2">Corporate filler</h3>
             <p className="text-ink/60">
               "Spearheaded," "leveraged synergies," "spearheaded cross-functional
@@ -146,7 +146,7 @@ export default function HumanizeAIResume() {
               but describe nothing.
             </p>
           </div>
-          <div className="rounded-lg border border-red-200/70 bg-red-50/80 p-6">
+          <div className="rounded-lg callout callout-dont/70 callout-dont/80 p-6">
             <h3 className="font-bold text-ink mb-2">Hallucinated specifics</h3>
             <p className="text-ink/60">
               AI will confidently invent a tool, a certification, or a metric you
@@ -154,7 +154,7 @@ export default function HumanizeAIResume() {
               collapse in an interview.
             </p>
           </div>
-          <div className="rounded-lg border border-red-200/70 bg-red-50/80 p-6">
+          <div className="rounded-lg callout callout-dont/70 callout-dont/80 p-6">
             <h3 className="font-bold text-ink mb-2">Em-dash overuse and identical bullet openers</h3>
             <p className="text-ink/60">
               A cascade of em dashes, and every bullet starting with the same verb
@@ -174,7 +174,7 @@ export default function HumanizeAIResume() {
 
         <div className="space-y-6">
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
-            <p className="font-mono text-xs tracking-[0.15em] text-red-500 uppercase mb-2">Before (AI)</p>
+            <p className="font-mono text-xs tracking-[0.15em] tone-dont uppercase mb-2">Before (AI)</p>
             <p className="text-ink mb-4">
               "Spearheaded cross-functional initiatives that increased team
               efficiency by 30% and drove impactful business outcomes."
@@ -188,7 +188,7 @@ export default function HumanizeAIResume() {
           </div>
 
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
-            <p className="font-mono text-xs tracking-[0.15em] text-red-500 uppercase mb-2">Before (AI)</p>
+            <p className="font-mono text-xs tracking-[0.15em] tone-dont uppercase mb-2">Before (AI)</p>
             <p className="text-ink mb-4">
               "Leveraged data-driven strategies to optimize marketing performance
               and enhance customer engagement."
@@ -202,7 +202,7 @@ export default function HumanizeAIResume() {
           </div>
 
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
-            <p className="font-mono text-xs tracking-[0.15em] text-red-500 uppercase mb-2">Before (AI)</p>
+            <p className="font-mono text-xs tracking-[0.15em] tone-dont uppercase mb-2">Before (AI)</p>
             <p className="text-ink mb-4">
               "Utilized strong communication skills to facilitate seamless
               collaboration and deliver exceptional results."
@@ -252,8 +252,8 @@ export default function HumanizeAIResume() {
           isn't. Here's the reality worth internalizing:
         </p>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
-          <p className="text-yellow-800">
+        <div className="callout callout-note rounded-xl p-6 my-6">
+          <p className="tone-note">
             <strong>ATS software does not run AI-content detectors.</strong> The
             real risk isn't being flagged as "AI-written" — it's that generic
             content loses to specific content in front of a human reviewer.

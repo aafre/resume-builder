@@ -61,14 +61,14 @@ export default function ResumeActionVerbs() {
             Compare these two descriptions of the same job:
           </p>
           <div className="space-y-3">
-            <div className="bg-red-100 border-l-4 border-red-500 p-3 rounded">
-              <p className="text-red-800 text-sm">
+            <div className="callout callout-dont p-3 rounded">
+              <p className="tone-dont text-sm">
                 <strong>Weak:</strong> "Was responsible for managing social
                 media accounts and helping with marketing campaigns."
               </p>
             </div>
-            <div className="bg-green-100 border-l-4 border-green-500 p-3 rounded">
-              <p className="text-green-800 text-sm">
+            <div className="callout callout-do p-3 rounded">
+              <p className="tone-do text-sm">
                 <strong>Strong:</strong> "Orchestrated comprehensive social
                 media strategy across 5 platforms, amplifying brand reach by
                 150% and generating 200+ qualified leads monthly."
@@ -93,9 +93,9 @@ export default function ResumeActionVerbs() {
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-800 mb-3">Benefits of Strong Action Verbs</h4>
-            <ul className="list-disc pl-6 space-y-2 text-green-700 text-sm">
+          <div className="callout callout-do rounded-xl p-6">
+            <h4 className="font-bold tone-do mb-3">Benefits of Strong Action Verbs</h4>
+            <ul className="list-disc pl-6 space-y-2 tone-do text-sm">
               <li>Show ownership and initiative</li>
               <li>Quantify your achievements</li>
               <li>Pass ATS keyword scanning</li>
@@ -105,9 +105,9 @@ export default function ResumeActionVerbs() {
             </ul>
           </div>
 
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h4 className="font-bold text-red-800 mb-3">Words to Avoid</h4>
-            <ul className="list-disc pl-6 space-y-2 text-red-700 text-sm">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h4 className="font-bold tone-dont mb-3">Words to Avoid</h4>
+            <ul className="list-disc pl-6 space-y-2 tone-dont text-sm">
               <li>"Responsible for" - Too passive</li>
               <li>"Helped with" - Unclear contribution</li>
               <li>"Worked on" - Vague involvement</li>
@@ -185,11 +185,11 @@ export default function ResumeActionVerbs() {
             </div>
           </div>
 
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-green-800 mb-2">
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-do mb-2">
               Achievement & Results
             </h3>
-            <p className="text-green-700 text-sm mb-4">
+            <p className="tone-do text-sm mb-4">
               Reach for these when describing measurable outcomes: revenue growth, cost savings, quota
               attainment, or efficiency gains. They pair naturally with numbers, so combine them
               with{" "}
@@ -198,7 +198,7 @@ export default function ResumeActionVerbs() {
               </Link>{" "}
               for maximum impact. Best for sales, operations, and any results-driven role.
             </p>
-            <div className="grid md:grid-cols-4 gap-4 text-green-700">
+            <div className="grid md:grid-cols-4 gap-4 tone-do">
               <div>
                 <ul className="list-disc pl-5 space-y-1 text-sm">
                   <li>Achieved</li>
@@ -295,16 +295,16 @@ export default function ResumeActionVerbs() {
             </div>
           </div>
 
-          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-yellow-800 mb-2">
+          <div className="callout callout-note rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-note mb-2">
               Business & Strategy
             </h3>
-            <p className="text-yellow-700 text-sm mb-4">
+            <p className="tone-note text-sm mb-4">
               Use these for roles that involve planning, forecasting, or stakeholder management.
               Strong choices for consultants, analysts, finance professionals, and anyone who influenced
               business decisions or managed budgets.
             </p>
-            <div className="grid md:grid-cols-4 gap-4 text-yellow-700">
+            <div className="grid md:grid-cols-4 gap-4 tone-note">
               <div>
                 <ul className="list-disc pl-5 space-y-1 text-sm">
                   <li>Strategized</li>
@@ -462,11 +462,11 @@ export default function ResumeActionVerbs() {
             </div>
           </div>
 
-          <div className="bg-orange-50 border border-orange-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-orange-800 mb-2">
+          <div className="callout callout-note rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-note mb-2">
               Technical & Operations
             </h3>
-            <p className="text-orange-700 text-sm mb-4">
+            <p className="tone-note text-sm mb-4">
               Use these for hands-on technical work: building systems, shipping code, managing infrastructure,
               or maintaining equipment. Essential for software engineers, DevOps, IT administrators, and
               operations managers. Pair them with an{" "}
@@ -475,7 +475,7 @@ export default function ResumeActionVerbs() {
               </Link>{" "}
               to ensure clean parsing.
             </p>
-            <div className="grid md:grid-cols-4 gap-4 text-orange-700">
+            <div className="grid md:grid-cols-4 gap-4 tone-note">
               <div>
                 <ul className="list-disc pl-5 space-y-1 text-sm">
                   <li>Implemented</li>
@@ -548,11 +548,11 @@ export default function ResumeActionVerbs() {
             </div>
           </div>
 
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-green-800 mb-3">
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="text-lg font-bold tone-do mb-3">
               2. Pair Verbs with Quantifiable Results
             </h3>
-            <p className="text-green-700 mb-3">
+            <p className="tone-do mb-3">
               Action verbs become powerful when combined with specific metrics.
               For a deep dive on adding numbers to your bullets, see our guide
               on{" "}
@@ -560,7 +560,7 @@ export default function ResumeActionVerbs() {
                 quantifying resume accomplishments
               </Link>.
             </p>
-            <div className="space-y-2 text-green-700">
+            <div className="space-y-2 tone-do">
               <div className="bg-white p-3 rounded text-sm">
                 <strong>Formula:</strong> Action Verb + Specific Task + Quantifiable Result
               </div>
@@ -570,11 +570,11 @@ export default function ResumeActionVerbs() {
             </div>
           </div>
 
-          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-yellow-800 mb-3">
+          <div className="callout callout-note rounded-xl p-6">
+            <h3 className="text-lg font-bold tone-note mb-3">
               3. Vary Your Verb Choices
             </h3>
-            <p className="text-yellow-700 mb-3">
+            <p className="tone-note mb-3">
               Avoid repetition by using synonyms and varied vocabulary. If you need help generating
               diverse phrasing, try using{" "}
               <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">
@@ -582,7 +582,7 @@ export default function ResumeActionVerbs() {
               </Link>{" "}
               to brainstorm alternatives.
             </p>
-            <div className="space-y-2 text-yellow-700">
+            <div className="space-y-2 tone-note">
               <div className="bg-white p-3 rounded text-sm">
                 <strong>Instead of:</strong> "Managed, Managed, Managed..."
               </div>
@@ -598,14 +598,14 @@ export default function ResumeActionVerbs() {
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-green-800 mb-3">
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="text-lg font-bold tone-do mb-3">
               Entry-Level Power Words
             </h3>
-            <p className="text-green-700 mb-3">
+            <p className="tone-do mb-3">
               Emphasize learning, contribution, and potential:
             </p>
-            <div className="text-green-700 text-sm space-y-1">
+            <div className="tone-do text-sm space-y-1">
               <p>Contributed to team success by...</p>
               <p>Supported operations through...</p>
               <p>Assisted in developing...</p>
@@ -659,16 +659,16 @@ export default function ResumeActionVerbs() {
               Marketing Professional Makeover
             </h4>
             <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-red-100 border-l-4 border-red-500 p-4 rounded">
-                <p className="font-medium text-red-800 mb-2">Before:</p>
-                <p className="text-red-700 text-sm">
+              <div className="callout callout-dont p-4 rounded">
+                <p className="font-medium tone-dont mb-2">Before:</p>
+                <p className="tone-dont text-sm">
                   "Was responsible for social media. Helped with marketing
                   campaigns. Worked on brand awareness initiatives."
                 </p>
               </div>
-              <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-                <p className="font-medium text-green-800 mb-2">After:</p>
-                <p className="text-green-700 text-sm">
+              <div className="callout callout-do p-4 rounded">
+                <p className="font-medium tone-do mb-2">After:</p>
+                <p className="tone-do text-sm">
                   "<strong>Orchestrated</strong> integrated social media strategy across 5
                   platforms. <strong>Spearheaded</strong> multi-channel marketing campaigns
                   that <strong>generated</strong> 300+ qualified leads monthly. <strong>Amplified</strong> brand
@@ -683,16 +683,16 @@ export default function ResumeActionVerbs() {
               Software Engineer Enhancement
             </h4>
             <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-red-100 border-l-4 border-red-500 p-4 rounded">
-                <p className="font-medium text-red-800 mb-2">Before:</p>
-                <p className="text-red-700 text-sm">
+              <div className="callout callout-dont p-4 rounded">
+                <p className="font-medium tone-dont mb-2">Before:</p>
+                <p className="tone-dont text-sm">
                   "Worked on web applications. Fixed bugs and did code reviews.
                   Helped improve system performance."
                 </p>
               </div>
-              <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-                <p className="font-medium text-green-800 mb-2">After:</p>
-                <p className="text-green-700 text-sm">
+              <div className="callout callout-do p-4 rounded">
+                <p className="font-medium tone-do mb-2">After:</p>
+                <p className="tone-do text-sm">
                   "<strong>Architected</strong> scalable web applications serving 50K+ users.
                   <strong>Debugged</strong> critical system issues, <strong>reducing</strong> downtime by 40%.
                   <strong>Streamlined</strong> code review processes and <strong>optimized</strong> system

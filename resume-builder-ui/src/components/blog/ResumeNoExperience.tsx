@@ -150,8 +150,8 @@ export default function ResumeNoExperience() {
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-800 mb-3">
+          <div className="callout callout-do rounded-xl p-6">
+            <h4 className="font-bold tone-do mb-3">
               ✅ ATS Best Practices
             </h4>
             <ul className="list-disc pl-6 space-y-1 text-accent-text text-sm">
@@ -168,9 +168,9 @@ export default function ResumeNoExperience() {
               <li>Dates & locations: consistent format</li>
             </ul>
           </div>
-          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-            <h4 className="font-bold text-yellow-800 mb-3">💡 Pro Tips</h4>
-            <ul className="list-disc pl-6 space-y-1 text-yellow-700 text-sm">
+          <div className="callout callout-note rounded-xl p-6">
+            <h4 className="font-bold tone-note mb-3">💡 Pro Tips</h4>
+            <ul className="list-disc pl-6 space-y-1 tone-note text-sm">
               <li>Use keywords naturally throughout sections</li>
               <li>Include both acronyms and full terms</li>
               <li>Match job posting's exact phrasing</li>
@@ -429,21 +429,21 @@ export default function ResumeNoExperience() {
             </p>
           </div>
 
-          <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-900 mb-2">
+          <div className="callout callout-do rounded-xl p-6">
+            <h4 className="font-bold tone-do mb-2">
               Customer Service / Retail Keywords
             </h4>
-            <p className="text-green-800 text-sm">
+            <p className="tone-do text-sm">
               POS, cash handling, returns, merchandising, inventory, upselling,
               complaints resolution, CRM, shift lead
             </p>
           </div>
 
-          <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-xl p-6">
-            <h4 className="font-bold text-orange-900 mb-2">
+          <div className="callout callout-note rounded-xl p-6">
+            <h4 className="font-bold tone-note mb-2">
               Admin / Ops Assistant Keywords
             </h4>
-            <p className="text-orange-800 text-sm">
+            <p className="tone-note text-sm">
               Google Workspace / Microsoft 365, scheduling, calendar management,
               data entry, documentation, spreadsheets, vendor coordination
             </p>
@@ -461,7 +461,7 @@ export default function ResumeNoExperience() {
         </div>
 
         {/* CTA before examples */}
-        <div className="my-10 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-2xl shadow-xl p-6 md:p-8 text-center">
+        <div className="my-10 bg-ink text-white rounded-2xl shadow-xl p-6 md:p-8 text-center">
           <h3 className="text-xl md:text-2xl font-bold mb-3">
             Ready to Build Your Resume?
           </h3>
@@ -761,7 +761,7 @@ export default function ResumeNoExperience() {
         </h2>
 
         <div className="space-y-4">
-          <div className="bg-red-50 border-l-4 border-red-500 p-4">
+          <div className="callout callout-dont p-4">
             <h4 className="font-bold text-ink mb-1">
               ❌ Apologizing for no experience
             </h4>
@@ -770,7 +770,7 @@ export default function ResumeNoExperience() {
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 p-4">
+          <div className="callout callout-dont p-4">
             <h4 className="font-bold text-ink mb-1">
               ❌ Generic objectives
             </h4>
@@ -779,14 +779,14 @@ export default function ResumeNoExperience() {
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 p-4">
+          <div className="callout callout-dont p-4">
             <h4 className="font-bold text-ink mb-1">❌ Wall of text</h4>
             <p className="text-accent-text text-sm">
               → Short bullets with numbers
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 p-4">
+          <div className="callout callout-dont p-4">
             <h4 className="font-bold text-ink mb-1">❌ Irrelevant info</h4>
             <p className="text-accent-text text-sm">
               → Prioritize relevant projects/skills to the job post

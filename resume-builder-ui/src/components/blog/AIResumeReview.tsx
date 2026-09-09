@@ -27,8 +27,8 @@ export default function AIResumeReview() {
         </p>
 
         {/* Quick Answer Box */}
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-green-800 mb-3">
+        <div className="callout callout-do rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-do mb-3">
             🎯 What AI Can Check in Your Resume
           </h3>
           <ul className="space-y-2 text-accent-text">
@@ -259,25 +259,25 @@ export default function AIResumeReview() {
           </table>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-yellow-800 mb-3">
+        <div className="callout callout-note rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-note mb-3">
             ⚠️ AI Review Limitations
           </h3>
-          <p className="text-yellow-700 mb-4">
+          <p className="tone-note mb-4">
             Remember that AI review has limits:
           </p>
-          <ul className="list-disc list-inside space-y-2 text-yellow-700">
+          <ul className="list-disc list-inside space-y-2 tone-note">
             <li>Can't verify your claims are truthful</li>
             <li>Doesn't know industry-specific expectations deeply</li>
             <li>May miss context-dependent issues</li>
             <li>Can give inconsistent advice across sessions</li>
           </ul>
-          <p className="text-yellow-700 mt-4">
+          <p className="tone-note mt-4">
             Use AI as one input, not the final word. A human review is still valuable.
           </p>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
+        <div className="my-12 bg-gradient-to-r to-teal-600 text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Ready to Create a Polished Resume?
           </h3>

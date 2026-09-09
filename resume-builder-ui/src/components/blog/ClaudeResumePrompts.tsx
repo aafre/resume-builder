@@ -101,9 +101,9 @@ export default function ClaudeResumePrompts() {
           </table>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-yellow-800 mb-2">Recommendation</h4>
-          <p className="text-yellow-700">
+        <div className="callout callout-note rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-note mb-2">Recommendation</h4>
+          <p className="tone-note">
             Start with <strong>Claude 3.5 Sonnet</strong> (free on claude.ai). It handles 90% of resume writing tasks perfectly. Only upgrade to Opus if you need help with complex career transitions or C-suite positioning.
           </p>
         </div>
@@ -525,13 +525,13 @@ export default function ClaudeResumePrompts() {
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-4">Example 1: Professional Summary (Prompt #1)</h3>
             <div className="space-y-4">
-              <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded-r-lg">
-                <p className="font-medium text-red-800 mb-1">Before (user's original):</p>
-                <p className="text-red-700 text-sm italic">"I am a marketing professional with 8 years experience. I have worked in digital marketing, content strategy, and brand management. I am looking for a senior marketing role."</p>
+              <div className="callout callout-dont p-4 rounded-r-lg">
+                <p className="font-medium tone-dont mb-1">Before (user's original):</p>
+                <p className="tone-dont text-sm italic">"I am a marketing professional with 8 years experience. I have worked in digital marketing, content strategy, and brand management. I am looking for a senior marketing role."</p>
               </div>
-              <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-                <p className="font-medium text-green-800 mb-1">After (Claude's output):</p>
-                <p className="text-green-700 text-sm italic">"Results-driven digital marketing strategist with 8 years of experience scaling content programs that drive measurable revenue growth. Proven track record in brand positioning, demand generation, and cross-channel campaign optimization for B2B SaaS companies. Combines analytical rigor with creative storytelling to build marketing engines that convert."</p>
+              <div className="callout callout-do p-4 rounded-r-lg">
+                <p className="font-medium tone-do mb-1">After (Claude's output):</p>
+                <p className="tone-do text-sm italic">"Results-driven digital marketing strategist with 8 years of experience scaling content programs that drive measurable revenue growth. Proven track record in brand positioning, demand generation, and cross-channel campaign optimization for B2B SaaS companies. Combines analytical rigor with creative storytelling to build marketing engines that convert."</p>
               </div>
             </div>
           </div>
@@ -539,13 +539,13 @@ export default function ClaudeResumePrompts() {
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-4">Example 2: Achievement Bullet (Prompt #3)</h3>
             <div className="space-y-4">
-              <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded-r-lg">
-                <p className="font-medium text-red-800 mb-1">Before:</p>
-                <p className="text-red-700 text-sm italic">"Responsible for managing the company's social media accounts and posting content regularly."</p>
+              <div className="callout callout-dont p-4 rounded-r-lg">
+                <p className="font-medium tone-dont mb-1">Before:</p>
+                <p className="tone-dont text-sm italic">"Responsible for managing the company's social media accounts and posting content regularly."</p>
               </div>
-              <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-                <p className="font-medium text-green-800 mb-1">After:</p>
-                <p className="text-green-700 text-sm italic">"Grew company social media following from 5K to 28K across three platforms by implementing a data-driven content calendar and engagement strategy."</p>
+              <div className="callout callout-do p-4 rounded-r-lg">
+                <p className="font-medium tone-do mb-1">After:</p>
+                <p className="tone-do text-sm italic">"Grew company social media following from 5K to 28K across three platforms by implementing a data-driven content calendar and engagement strategy."</p>
               </div>
               <p className="text-ink/60 text-sm">Note: Claude asked for the specific metrics before writing the improved version — it didn't invent the numbers.</p>
             </div>
@@ -554,13 +554,13 @@ export default function ClaudeResumePrompts() {
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-4">Example 3: Career Change Summary (Prompt #16)</h3>
             <div className="space-y-4">
-              <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded-r-lg">
-                <p className="font-medium text-red-800 mb-1">Before (teacher transitioning to UX):</p>
-                <p className="text-red-700 text-sm italic">"High school teacher looking to transition into UX design. Completed Google UX certificate. Passionate about creating user-friendly experiences."</p>
+              <div className="callout callout-dont p-4 rounded-r-lg">
+                <p className="font-medium tone-dont mb-1">Before (teacher transitioning to UX):</p>
+                <p className="tone-dont text-sm italic">"High school teacher looking to transition into UX design. Completed Google UX certificate. Passionate about creating user-friendly experiences."</p>
               </div>
-              <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-                <p className="font-medium text-green-800 mb-1">After:</p>
-                <p className="text-green-700 text-sm italic">"UX designer with a unique background in education, bringing 6 years of experience designing learning experiences for diverse audiences of 150+ students. Google UX certified with a portfolio of three end-to-end case studies. Applies research-backed instructional design principles to create intuitive digital products."</p>
+              <div className="callout callout-do p-4 rounded-r-lg">
+                <p className="font-medium tone-do mb-1">After:</p>
+                <p className="tone-do text-sm italic">"UX designer with a unique background in education, bringing 6 years of experience designing learning experiences for diverse audiences of 150+ students. Google UX certified with a portfolio of three end-to-end case studies. Applies research-backed instructional design principles to create intuitive digital products."</p>
               </div>
             </div>
           </div>

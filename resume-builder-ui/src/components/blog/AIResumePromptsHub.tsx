@@ -615,12 +615,12 @@ export default function AIResumePromptsHub() {
                       )}
                     </div>
                     <div className="grid gap-4">
-                      <div className="bg-red-50 rounded-xl p-4 border border-red-200">
-                        <span className="text-xs font-bold text-red-600 uppercase tracking-wide">Before</span>
+                      <div className="callout callout-dont rounded-xl p-4">
+                        <span className="text-xs font-bold tone-dont uppercase tracking-wide">Before</span>
                         <p className="mt-2 text-sm text-ink">{model.before}</p>
                       </div>
-                      <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-200">
-                        <span className="text-xs font-bold text-emerald-600 uppercase tracking-wide">After ({model.name})</span>
+                      <div className="callout callout-do rounded-xl p-4">
+                        <span className="text-xs font-bold tone-do uppercase tracking-wide">After ({model.name})</span>
                         <p className="mt-2 text-sm text-ink">{model.after}</p>
                       </div>
                     </div>

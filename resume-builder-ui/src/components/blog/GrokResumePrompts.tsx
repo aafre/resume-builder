@@ -32,11 +32,11 @@ export default function GrokResumePrompts() {
         </p>
 
         {/* Quick Answer Box */}
-        <div className="bg-orange-50 border border-orange-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-orange-800 mb-3">
+        <div className="callout callout-note rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-note mb-3">
             🎯 Grok's Strengths for Resume Writing
           </h3>
-          <ul className="space-y-2 text-orange-700">
+          <ul className="space-y-2 tone-note">
             <li>
               <strong>Speed:</strong> Fast responses for quick iterations
             </li>
@@ -207,9 +207,9 @@ export default function GrokResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-8">
-          <h4 className="font-bold text-yellow-800 mb-3">⚡ Speed Tip</h4>
-          <p className="text-yellow-700">
+        <div className="callout callout-note rounded-xl p-6 my-8">
+          <h4 className="font-bold tone-note mb-3">⚡ Speed Tip</h4>
+          <p className="tone-note">
             Grok's strength is rapid iteration. Use short prompts, get quick
             responses, and keep refining. It's great for brainstorming sessions
             where you want to explore multiple directions quickly.

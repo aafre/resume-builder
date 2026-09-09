@@ -82,8 +82,8 @@ export default function ResumeLengthGuide() {
         <h2 id="golden-rules" className="text-3xl font-bold text-ink mt-12 mb-6">The Golden Rules of Resume Length</h2>
 
         <div className="grid md:grid-cols-3 gap-6 my-8">
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-800 mb-3">Entry Level (0-3 Years)</h4>
+          <div className="callout callout-do rounded-xl p-6">
+            <h4 className="font-bold tone-do mb-3">Entry Level (0-3 Years)</h4>
             <div className="text-accent-text">
               <p className="font-bold text-2xl mb-2">1 Page</p>
               <p className="text-sm">Focus on education, internships, projects, and relevant skills. Quality over quantity.</p>
@@ -292,8 +292,8 @@ export default function ResumeLengthGuide() {
 
         <h2 id="when-multiple-pages" className="text-3xl font-bold text-ink mt-12 mb-6">When to Use Multiple Pages</h2>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-yellow-800 mb-3">Quality vs. Quantity Decision Matrix</h4>
+        <div className="callout callout-note rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-note mb-3">Quality vs. Quantity Decision Matrix</h4>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
               <p className="font-medium text-accent-text mb-2">Go to Page 2 When You Have:</p>
@@ -306,8 +306,8 @@ export default function ResumeLengthGuide() {
               </ul>
             </div>
             <div>
-              <p className="font-medium text-red-700 mb-2">Stay on 1 Page When You Have:</p>
-              <ul className="list-disc pl-6 space-y-1 text-red-700 text-sm">
+              <p className="font-medium tone-dont mb-2">Stay on 1 Page When You Have:</p>
+              <ul className="list-disc pl-6 space-y-1 tone-dont text-sm">
                 <li>Less than 5 years of experience</li>
                 <li>Limited relevant achievements to showcase</li>
                 <li>Applying to junior or entry-level positions</li>
@@ -329,8 +329,8 @@ export default function ResumeLengthGuide() {
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h4 className="font-bold text-red-800 mb-3">Bloated (Pushes to Page 2)</h4>
+          <div className="callout callout-dont rounded-xl p-6">
+            <h4 className="font-bold tone-dont mb-3">Bloated (Pushes to Page 2)</h4>
             <div className="text-sm text-ink/60 space-y-3 font-mono">
               <p className="font-bold text-ink">Marketing Manager | Acme Corp</p>
               <ul className="list-disc pl-4 space-y-1">
@@ -342,11 +342,11 @@ export default function ResumeLengthGuide() {
                 <li>Helped to organize and coordinate company events and trade shows</li>
               </ul>
             </div>
-            <p className="text-red-700 text-xs mt-3 font-bold">6 bullets, 80+ words. Vague duties, no results.</p>
+            <p className="tone-dont text-xs mt-3 font-bold">6 bullets, 80+ words. Vague duties, no results.</p>
           </div>
 
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-800 mb-3">Condensed (Fits on Page 1)</h4>
+          <div className="callout callout-do rounded-xl p-6">
+            <h4 className="font-bold tone-do mb-3">Condensed (Fits on Page 1)</h4>
             <div className="text-sm text-ink/60 space-y-3 font-mono">
               <p className="font-bold text-ink">Marketing Manager | Acme Corp</p>
               <ul className="list-disc pl-4 space-y-1">
@@ -355,7 +355,7 @@ export default function ResumeLengthGuide() {
                 <li>Designed lead-nurture sequence that increased MQL-to-SQL conversion from 8% to 19%</li>
               </ul>
             </div>
-            <p className="text-green-700 text-xs mt-3 font-bold">3 bullets, 45 words. Specific, quantified, impactful.</p>
+            <p className="tone-do text-xs mt-3 font-bold">3 bullets, 45 words. Specific, quantified, impactful.</p>
           </div>
         </div>
 
@@ -376,7 +376,7 @@ export default function ResumeLengthGuide() {
         <h2 id="common-mistakes" className="text-3xl font-bold text-ink mt-12 mb-6">Common Resume Length Mistakes</h2>
 
         <div className="space-y-6">
-          <div className="bg-red-50 border-l-4 border-red-500 rounded-xl p-6">
+          <div className="callout callout-dont rounded-xl p-6">
             <h4 className="font-bold text-ink mb-2">Mistake: Padding with irrelevant information</h4>
             <p className="text-ink/60 mb-2">
               <strong>Example:</strong> Including every job duty from 15 years ago or high school achievements for senior professionals.
@@ -386,7 +386,7 @@ export default function ResumeLengthGuide() {
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 rounded-xl p-6">
+          <div className="callout callout-dont rounded-xl p-6">
             <h4 className="font-bold text-ink mb-2">Mistake: Cramming everything onto one page</h4>
             <p className="text-ink/60 mb-2">
               <strong>Example:</strong> Using 8pt font and 0.3-inch margins to fit 15 years of experience on one page.
@@ -396,7 +396,7 @@ export default function ResumeLengthGuide() {
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 rounded-xl p-6">
+          <div className="callout callout-dont rounded-xl p-6">
             <h4 className="font-bold text-ink mb-2">Mistake: Ignoring ATS limitations</h4>
             <p className="text-ink/60 mb-2">
               <strong>Example:</strong> Creating a 4-page resume that gets truncated by applicant tracking systems.
@@ -412,7 +412,7 @@ export default function ResumeLengthGuide() {
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 rounded-xl p-6">
+          <div className="callout callout-dont rounded-xl p-6">
             <h4 className="font-bold text-ink mb-2">Mistake: Repeating the same responsibilities across jobs</h4>
             <p className="text-ink/60 mb-2">
               <strong>Example:</strong> Listing "Managed team of X people" and "Created reports for leadership" under every role.
@@ -562,9 +562,9 @@ export default function ResumeLengthGuide() {
           </table>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mt-8">
-          <h4 className="font-bold text-yellow-800 mb-3">Pro Tip</h4>
-          <p className="text-yellow-700">
+        <div className="callout callout-note rounded-xl p-6 mt-8">
+          <h4 className="font-bold tone-note mb-3">Pro Tip</h4>
+          <p className="tone-note">
             Create multiple versions of your resume: a concise one-page version for quick applications and a comprehensive two-page version for strategic opportunities. Tailor length to the specific role and company culture. Our{' '}
             <Link to="/free-resume-builder-no-sign-up" className="text-accent-text hover:underline">
               free resume builder

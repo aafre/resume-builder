@@ -92,7 +92,7 @@ export default function AIResumeBuilder() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Benefits of Using AI in Your Resume Strategy
         </h2>
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
+        <div className="callout callout-do rounded-xl p-6 my-6">
           <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>
               <strong>Efficiency & Speed:</strong> Drastically reduce the time
@@ -173,8 +173,8 @@ export default function AIResumeBuilder() {
           To truly make AI your secret weapon, don't just copy and paste. Here's
           how to use it smartly:
         </p>
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
-          <ol className="list-decimal pl-6 space-y-2 text-yellow-700">
+        <div className="callout callout-note rounded-xl p-6 my-6">
+          <ol className="list-decimal pl-6 space-y-2 tone-note">
             <li>
               <strong>Start with Your Core Content:</strong> Provide AI with
               your own raw experience and achievements first. This ensures
@@ -226,8 +226,8 @@ export default function AIResumeBuilder() {
         <p className="text-lg leading-relaxed text-ink/60">
           While powerful, AI resume builders come with ethical considerations:
         </p>
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6 my-6">
-          <ul className="list-disc pl-6 space-y-2 text-red-700">
+        <div className="callout callout-dont rounded-xl p-6 my-6">
+          <ul className="list-disc pl-6 space-y-2 tone-dont">
             <li>
               <strong>Authenticity:</strong> Never let AI fabricate experience
               or skills you don't possess. This can lead to issues in interviews

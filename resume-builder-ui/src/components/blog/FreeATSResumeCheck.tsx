@@ -210,9 +210,9 @@ export default function FreeATSResumeCheck() {
           later applications.
         </p>
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h3 className="font-bold text-green-800 mb-3">Do</h3>
-            <ul className="list-disc pl-5 space-y-2 text-green-800/90">
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="font-bold tone-do mb-3">Do</h3>
+            <ul className="list-disc pl-5 space-y-2 tone-do/90">
               <li>Use a single-column reading order.</li>
               <li>Use standard headings such as Experience, Education, and Skills.</li>
               <li>Keep names, dates, and skills as real selectable text.</li>
@@ -220,9 +220,9 @@ export default function FreeATSResumeCheck() {
               <li>Open the final PDF and confirm its text can be selected.</li>
             </ul>
           </div>
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h3 className="font-bold text-red-800 mb-3">Don&apos;t</h3>
-            <ul className="list-disc pl-5 space-y-2 text-red-800/90">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h3 className="font-bold tone-dont mb-3">Don&apos;t</h3>
+            <ul className="list-disc pl-5 space-y-2 tone-dont/90">
               <li>Split core content across sidebars or multiple columns.</li>
               <li>Put essential details inside tables, graphics, or icons.</li>
               <li>Store contact details only in a header or footer.</li>

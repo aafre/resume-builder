@@ -38,8 +38,8 @@ export default function IntroducingPrepAI() {
           areas:
         </p>
 
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6 my-6">
-          <ul className="list-disc pl-6 space-y-2 text-red-700">
+        <div className="callout callout-dont rounded-xl p-6 my-6">
+          <ul className="list-disc pl-6 space-y-2 tone-dont">
             <li>
               <strong>No real-time feedback:</strong> You can't identify speech
               patterns, filler words, or areas for improvement
@@ -114,8 +114,8 @@ export default function IntroducingPrepAI() {
             </p>
           </div>
 
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-green-800 mb-3">
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-do mb-3">
               2. Get Smart Feedback
             </h3>
             <p className="text-accent-text">
@@ -138,11 +138,11 @@ export default function IntroducingPrepAI() {
             </p>
           </div>
 
-          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-yellow-800 mb-3">
+          <div className="callout callout-note rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-note mb-3">
               4. Build Confidence
             </h3>
-            <p className="text-yellow-700">
+            <p className="tone-note">
               Practice the improved version until it becomes natural and
               confident for real interviews. Track your progress with detailed
               analytics on communication, content, and confidence levels.

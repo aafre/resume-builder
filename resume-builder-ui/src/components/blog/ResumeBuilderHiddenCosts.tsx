@@ -153,7 +153,7 @@ export default function ResumeBuilderHiddenCosts() {
                   Every 4 weeks (~13/yr)
                 </td>
                 <td className="px-4 py-4 text-ink/60">~$389/year</td>
-                <td className="px-4 py-4 text-red-700">Yes (typical)</td>
+                <td className="px-4 py-4 tone-dont">Yes (typical)</td>
                 <td className="px-4 py-4 text-ink/60">
                   Users report cancellation friction
                 </td>
@@ -168,7 +168,7 @@ export default function ResumeBuilderHiddenCosts() {
                   Every 4 weeks (~13/yr)
                 </td>
                 <td className="px-4 py-4 text-ink/60">~$337/year</td>
-                <td className="px-4 py-4 text-red-700">Yes (typical)</td>
+                <td className="px-4 py-4 tone-dont">Yes (typical)</td>
                 <td className="px-4 py-4 text-ink/60">
                   Cancel before trial ends
                 </td>
@@ -187,14 +187,14 @@ export default function ResumeBuilderHiddenCosts() {
                   Monthly or annual
                 </td>
                 <td className="px-4 py-4 text-ink/60">~$120/year (Pro)</td>
-                <td className="px-4 py-4 text-yellow-800">
+                <td className="px-4 py-4 tone-note">
                   Free tier limited, not watermarked
                 </td>
                 <td className="px-4 py-4 text-ink/60">
                   Standard subscription cancel
                 </td>
               </tr>
-              <tr className="bg-green-50">
+              <tr className="callout callout-do">
                 <td className="px-4 py-4 font-bold text-accent-text">
                   EasyFreeResume
                 </td>
@@ -266,14 +266,14 @@ export default function ResumeBuilderHiddenCosts() {
         </p>
 
         {/* "THE 13TH CHARGE" MATH CALLOUT */}
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-8">
-          <h3 className="text-xl font-bold text-yellow-800 mb-3">
+        <div className="callout callout-note rounded-xl p-6 my-8">
+          <h3 className="text-xl font-bold tone-note mb-3">
             The "13th charge" math
           </h3>
-          <p className="text-yellow-800 mb-3">
+          <p className="tone-note mb-3">
             A calendar year has about 52 weeks. Billing every 4 weeks means:
           </p>
-          <ul className="space-y-2 text-yellow-800">
+          <ul className="space-y-2 tone-note">
             <li className="flex gap-3 items-start">
               <span className="mt-1.5">&#x2022;</span>
               <span>52 &divide; 4 = 13 billing cycles per year (not 12)</span>
@@ -388,11 +388,11 @@ export default function ResumeBuilderHiddenCosts() {
           download.
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-8">
-          <h3 className="text-xl font-bold text-green-800 mb-4">
+        <div className="callout callout-do rounded-xl p-6 my-8">
+          <h3 className="text-xl font-bold tone-do mb-4">
             What "free" actually means here
           </h3>
-          <ul className="space-y-2 text-green-800">
+          <ul className="space-y-2 tone-do">
             <li>&#x2713; No free trial &mdash; nothing to convert into a charge</li>
             <li>&#x2713; No credit card required, ever</li>
             <li>&#x2713; No watermark on PDF or DOCX exports</li>
@@ -421,7 +421,7 @@ export default function ResumeBuilderHiddenCosts() {
         </p>
 
         {/* CTA */}
-        <div className="my-12 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
+        <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-4">
             Skip the trial. Skip the paywall.
           </h2>

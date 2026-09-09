@@ -208,9 +208,9 @@ export default function ReturnToWorkPrograms() {
           </ul>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mt-4">
-          <h3 className="text-xl font-bold text-yellow-800 mb-3">Who Qualifies?</h3>
-          <p className="text-yellow-700">
+        <div className="callout callout-note rounded-xl p-6 mt-4">
+          <h3 className="text-xl font-bold tone-note mb-3">Who Qualifies?</h3>
+          <p className="tone-note">
             Most programs require a <strong>minimum career break of 1-2 years</strong> and prior
             professional experience (typically 5+ years). Some are open to career changers from
             non-traditional backgrounds (like Microsoft LEAP). Each program has specific eligibility
@@ -238,7 +238,7 @@ export default function ReturnToWorkPrograms() {
                 </div>
                 <div className="flex gap-2">
                   {program.paid && (
-                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-800">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold callout callout-do tone-do">
                       PAID
                     </span>
                   )}
@@ -293,7 +293,7 @@ export default function ReturnToWorkPrograms() {
                   <td className="px-4 py-3 text-ink/60">{p.name}</td>
                   <td className="px-4 py-3 text-center text-ink/60">{p.duration}</td>
                   <td className="px-4 py-3 text-center text-ink/60">{p.minGap}</td>
-                  <td className="px-4 py-3 text-center text-green-600 font-medium">{p.paid ? 'Yes' : 'No'}</td>
+                  <td className="px-4 py-3 text-center tone-do font-medium">{p.paid ? 'Yes' : 'No'}</td>
                 </tr>
               ))}
             </tbody>

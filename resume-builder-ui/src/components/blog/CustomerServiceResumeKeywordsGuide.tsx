@@ -96,9 +96,9 @@ export default function CustomerServiceResumeKeywordsGuide() {
           </div>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-yellow-800 mb-2">ATS Tip</h4>
-          <p className="text-yellow-700">
+        <div className="callout callout-note rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-note mb-2">ATS Tip</h4>
+          <p className="tone-note">
             Always include both the abbreviation and the full term the first time you use it: "Customer Relationship Management (CRM)" and "Salesforce Service Cloud." Some ATS systems search for "CRM" while others search for "Customer Relationship Management."
           </p>
         </div>
@@ -157,9 +157,9 @@ export default function CustomerServiceResumeKeywordsGuide() {
           Hiring managers want to see that you understand — and can improve — the metrics that matter. Including these terms signals that you think about customer service as a measurable business function, not just "being nice on the phone."
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h3 className="font-bold text-green-800 mb-4">Key Metrics to Include:</h3>
-          <div className="grid md:grid-cols-2 gap-4 text-green-800">
+        <div className="callout callout-do rounded-xl p-6 my-6">
+          <h3 className="font-bold tone-do mb-4">Key Metrics to Include:</h3>
+          <div className="grid md:grid-cols-2 gap-4 tone-do">
             <ul className="list-disc pl-5 text-sm space-y-2">
               <li><strong>CSAT (Customer Satisfaction Score)</strong> — Overall satisfaction rating</li>
               <li><strong>NPS (Net Promoter Score)</strong> — Customer loyalty measure</li>
@@ -269,35 +269,35 @@ export default function CustomerServiceResumeKeywordsGuide() {
 
         <div className="space-y-6 mt-6">
           <div className="space-y-3">
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-              <p className="font-medium text-red-800 mb-1">Weak (keyword dumping):</p>
-              <p className="text-red-700 text-sm italic">"Skills: CRM, conflict resolution, active listening, problem solving, Zendesk, customer satisfaction, time management"</p>
+            <div className="callout callout-dont p-4 rounded-r-lg">
+              <p className="font-medium tone-dont mb-1">Weak (keyword dumping):</p>
+              <p className="tone-dont text-sm italic">"Skills: CRM, conflict resolution, active listening, problem solving, Zendesk, customer satisfaction, time management"</p>
             </div>
-            <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
-              <p className="font-medium text-green-800 mb-1">Strong (keywords in context):</p>
-              <p className="text-green-700 text-sm italic">"Resolved an average of 45 customer tickets daily through Zendesk, maintaining a 96% CSAT score by applying active listening and de-escalation techniques to reduce complaint escalation rate by 30%."</p>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-              <p className="font-medium text-red-800 mb-1">Weak:</p>
-              <p className="text-red-700 text-sm italic">"Handled customer calls and resolved issues."</p>
-            </div>
-            <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
-              <p className="font-medium text-green-800 mb-1">Strong:</p>
-              <p className="text-green-700 text-sm italic">"Managed 60+ inbound calls daily, achieving 88% first call resolution (FCR) rate and exceeding SLA targets by 15% through efficient troubleshooting and customer relationship management."</p>
+            <div className="callout callout-do p-4 rounded-r-lg">
+              <p className="font-medium tone-do mb-1">Strong (keywords in context):</p>
+              <p className="tone-do text-sm italic">"Resolved an average of 45 customer tickets daily through Zendesk, maintaining a 96% CSAT score by applying active listening and de-escalation techniques to reduce complaint escalation rate by 30%."</p>
             </div>
           </div>
 
           <div className="space-y-3">
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-              <p className="font-medium text-red-800 mb-1">Weak:</p>
-              <p className="text-red-700 text-sm italic">"Improved customer satisfaction."</p>
+            <div className="callout callout-dont p-4 rounded-r-lg">
+              <p className="font-medium tone-dont mb-1">Weak:</p>
+              <p className="tone-dont text-sm italic">"Handled customer calls and resolved issues."</p>
             </div>
-            <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
-              <p className="font-medium text-green-800 mb-1">Strong:</p>
-              <p className="text-green-700 text-sm italic">"Improved team NPS from 42 to 67 within 6 months by implementing a customer feedback loop, redesigning the onboarding workflow, and coaching 12 team members on empathy-driven communication."</p>
+            <div className="callout callout-do p-4 rounded-r-lg">
+              <p className="font-medium tone-do mb-1">Strong:</p>
+              <p className="tone-do text-sm italic">"Managed 60+ inbound calls daily, achieving 88% first call resolution (FCR) rate and exceeding SLA targets by 15% through efficient troubleshooting and customer relationship management."</p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <div className="callout callout-dont p-4 rounded-r-lg">
+              <p className="font-medium tone-dont mb-1">Weak:</p>
+              <p className="tone-dont text-sm italic">"Improved customer satisfaction."</p>
+            </div>
+            <div className="callout callout-do p-4 rounded-r-lg">
+              <p className="font-medium tone-do mb-1">Strong:</p>
+              <p className="tone-do text-sm italic">"Improved team NPS from 42 to 67 within 6 months by implementing a customer feedback loop, redesigning the onboarding workflow, and coaching 12 team members on empathy-driven communication."</p>
             </div>
           </div>
         </div>

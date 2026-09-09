@@ -280,35 +280,35 @@ export default function BehavioralInterviewQuestions() {
         </p>
 
         <div className="space-y-6">
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-800 mb-2">
+          <div className="callout callout-do rounded-xl p-6">
+            <h4 className="font-bold tone-do mb-2">
               4. "Tell me about a time when you solved a complex problem at
               work."
             </h4>
-            <p className="text-green-700">
+            <p className="tone-do">
               <strong>Focus on:</strong> Your analytical approach — how you
               broke the problem into parts, what data you gathered, and the
               creative solution you implemented.
             </p>
           </div>
 
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-800 mb-2">
+          <div className="callout callout-do rounded-xl p-6">
+            <h4 className="font-bold tone-do mb-2">
               5. "Describe a situation where you had to think outside the box."
             </h4>
-            <p className="text-green-700">
+            <p className="tone-do">
               <strong>Focus on:</strong> The constraints you faced (budget,
               time, resources), your creative thinking process, and the
               innovative solution you developed.
             </p>
           </div>
 
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-800 mb-2">
+          <div className="callout callout-do rounded-xl p-6">
+            <h4 className="font-bold tone-do mb-2">
               6. "Give me an example of when you had to learn something new
               quickly to solve a problem."
             </h4>
-            <p className="text-green-700">
+            <p className="tone-do">
               <strong>Focus on:</strong> Your learning strategy,
               resourcefulness, and how you successfully applied new knowledge
               under time pressure.
@@ -327,36 +327,36 @@ export default function BehavioralInterviewQuestions() {
         </p>
 
         <div className="space-y-6">
-          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-            <h4 className="font-bold text-yellow-800 mb-2">
+          <div className="callout callout-note rounded-xl p-6">
+            <h4 className="font-bold tone-note mb-2">
               7. "Tell me about a time when you had to work with a difficult
               colleague."
             </h4>
-            <p className="text-yellow-700">
+            <p className="tone-note">
               <strong>Focus on:</strong> Your professionalism, how you found
               common ground, and the successful collaboration that resulted.
               Never badmouth the other person.
             </p>
           </div>
 
-          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-            <h4 className="font-bold text-yellow-800 mb-2">
+          <div className="callout callout-note rounded-xl p-6">
+            <h4 className="font-bold tone-note mb-2">
               8. "Describe a time when you had to collaborate with someone whose
               working style was very different from yours."
             </h4>
-            <p className="text-yellow-700">
+            <p className="tone-note">
               <strong>Focus on:</strong> Your adaptability, communication
               skills, and how you leveraged different strengths for better
               results.
             </p>
           </div>
 
-          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-            <h4 className="font-bold text-yellow-800 mb-2">
+          <div className="callout callout-note rounded-xl p-6">
+            <h4 className="font-bold tone-note mb-2">
               9. "Give me an example of when you went above and beyond for a
               team project."
             </h4>
-            <p className="text-yellow-700">
+            <p className="tone-note">
               <strong>Focus on:</strong> Your initiative, the extra effort you
               made, and the positive impact on the team's success. Quantify
               the result if possible.
@@ -376,11 +376,11 @@ export default function BehavioralInterviewQuestions() {
         </p>
 
         <div className="space-y-6">
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h4 className="font-bold text-red-800 mb-2">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h4 className="font-bold tone-dont mb-2">
               10. "Tell me about a time when you failed at something."
             </h4>
-            <p className="text-red-700">
+            <p className="tone-dont">
               <strong>Focus on:</strong> What you learned from the failure, how
               you took responsibility (no blame-shifting), and the concrete
               changes you made going forward. Pick a real failure — not a
@@ -388,24 +388,24 @@ export default function BehavioralInterviewQuestions() {
             </p>
           </div>
 
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h4 className="font-bold text-red-800 mb-2">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h4 className="font-bold tone-dont mb-2">
               11. "Describe a time when you were under significant pressure and
               how you handled it."
             </h4>
-            <p className="text-red-700">
+            <p className="tone-dont">
               <strong>Focus on:</strong> Your stress management techniques
               (prioritization, delegation, timeboxing), and how you delivered
               successfully despite the pressure. Include the deadline or scope.
             </p>
           </div>
 
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h4 className="font-bold text-red-800 mb-2">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h4 className="font-bold tone-dont mb-2">
               12. "Give me an example of when you had to deal with an angry
               customer or client."
             </h4>
-            <p className="text-red-700">
+            <p className="tone-dont">
               <strong>Focus on:</strong> Your emotional intelligence,
               de-escalation techniques, and how you turned a negative situation
               into a positive outcome or long-term relationship.
