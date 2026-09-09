@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { flushSync } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { ResumeListItem } from '../types';
-import { ResumeCard } from '../components/ResumeCard';
+import { ResumeCard, getThumbnailUrl } from '../components/ResumeCard';
 import { GhostCard } from '../components/GhostCard';
 import { DeleteResumeModal } from '../components/DeleteResumeModal';
 import { DuplicateResumeModal } from '../components/DuplicateResumeModal';
@@ -15,9 +16,9 @@ import { useResumes } from '../hooks/useResumes';
 import { useAuth } from '../contexts/AuthContext';
 import { usePreview } from '../hooks/usePreview';
 import { InContentAd, AD_CONFIG } from '../components/ads';
-import RevealSection from '../components/shared/RevealSection';
 import { SectionEmptyState } from '../components/shared/SectionEmptyState';
 import { trackPdfDownloaded, trackPdfDownloadFailed } from '../lib/analytics';
+import { withViewTransition } from '../lib/viewTransition';
 
 export default function MyResumes() {
   const navigate = useNavigate();
@@ -37,6 +38,14 @@ export default function MyResumes() {
   const [previewResumeId, setPreviewResumeId] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [previewingId, setPreviewingId] = useState<string | null>(null);
+  /**
+   * Id of the card thumbnail currently carrying `view-transition-name:
+   * resume-sheet`. Exactly one element in the document may hold that name, so
+   * it moves in lockstep with the preview modal opening and closing — the card
+   * hands it to the modal's sheet on the way in, and takes it back on the way
+   * out.
+   */
+  const [morphId, setMorphId] = useState<string | null>(null);
   const downloadPromiseRef = useRef<Promise<void> | null>(null);
 
   // Preview hook - database mode for fetching pre-generated PDFs
@@ -269,10 +278,18 @@ export default function MyResumes() {
   const handlePreview = (id: string) => {
     if (!session) return;
 
+    // Name the thumbnail before the snapshot: startViewTransition captures the
+    // DOM as it stands when its callback returns, so the outgoing element has
+    // to already carry the name.
+    flushSync(() => setMorphId(id));
+
     // Set loading state and resume ID, open modal (effect will handle generation)
-    setPreviewingId(id);
-    setPreviewResumeId(id);
-    setShowPreviewModal(true);
+    withViewTransition(() => {
+      setMorphId(null);
+      setPreviewingId(id);
+      setPreviewResumeId(id);
+      setShowPreviewModal(true);
+    });
   };
 
   // Trigger preview generation when modal opens with a resume ID.
@@ -284,9 +301,14 @@ export default function MyResumes() {
     }
   }, [showPreviewModal, previewResumeId, checkAndRefreshIfStale]);
 
+  // Morph back into the card that opened the sheet, then release the name.
   const handleClosePreview = () => {
-    setShowPreviewModal(false);
-    setPreviewingId(null);
+    const returningTo = previewResumeId;
+    withViewTransition(() => {
+      setShowPreviewModal(false);
+      setPreviewingId(null);
+      setMorphId(returningTo);
+    }).then(() => setMorphId(null));
   };
 
   const handleRefreshPreview = async () => {
@@ -380,11 +402,7 @@ export default function MyResumes() {
             onAdd={handleCreateNew}
           />
         ) : (
-          <RevealSection
-            variant="fade-up"
-            stagger
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6"
-          >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
             {/* Ghost Card - Always first */}
             <GhostCard
               isAtLimit={resumes.length >= 5}
@@ -406,9 +424,10 @@ export default function MyResumes() {
                 onRename={handleRename}
                 isEditButtonLoading={editingId === resume.id}
                 isPreviewLoading={previewingId === resume.id && isGeneratingPreview}
+                isMorphing={morphId === resume.id}
               />
             ))}
-          </RevealSection>
+          </div>
         )}
 
         {/* In-content ad below resume grid */}
@@ -452,6 +471,12 @@ export default function MyResumes() {
         isDownloading={isDownloadingFromPreview}
         isStale={false}
         error={previewError}
+        /* The same URL the card renders, so the morph does not swap images
+           mid-flight and the sheet is painted before the PDF arrives. */
+        posterUrl={(() => {
+          const r = resumes.find(x => x.id === previewResumeId);
+          return r ? getThumbnailUrl(r.thumbnail_url, r.pdf_generated_at) : null;
+        })()}
         onRefresh={handleRefreshPreview}
         onDownload={handleDownloadFromPreview}
       />

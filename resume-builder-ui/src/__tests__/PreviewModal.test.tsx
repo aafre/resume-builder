@@ -40,9 +40,8 @@ describe("PreviewModal", () => {
     expect(screen.getByText(/generating pdf preview/i)).toBeInTheDocument();
     expect(screen.getByText(/this usually takes 2-5 seconds/i)).toBeInTheDocument();
 
-    // Should show spinner
-    const spinner = document.querySelector(".animate-spin");
-    expect(spinner).toBeInTheDocument();
+    // The paper is already on screen; the print head is what says "working".
+    expect(document.querySelector(".sheet-scan")).toBeInTheDocument();
   });
 
   it("shows error message when error is provided", () => {
@@ -139,9 +138,8 @@ describe("PreviewModal", () => {
     // Banner should be visible with warning text
     expect(screen.getByText(/your edits aren't reflected yet/i)).toBeInTheDocument();
 
-    // Banner parent should have amber background styling
-    const bannerContainer = screen.getByText(/your edits aren't reflected yet/i).closest(".bg-amber-50");
-    expect(bannerContainer).toBeInTheDocument();
+    // Staleness is carried by the chip in the top strip, on the ink ground.
+    expect(screen.getByText(/outdated/i)).toBeInTheDocument();
 
     // Should have refresh button in banner
     const refreshButtons = screen.getAllByRole("button", { name: /refresh/i });
@@ -293,13 +291,12 @@ describe("PreviewModal", () => {
     );
 
     const refreshButtons = screen.getAllByRole("button", { name: /refresh|regenerate/i });
-    // Button should contain spinner
-    const buttonWithSpinner = refreshButtons.find((btn) => {
-      const spinner = btn.querySelector(".animate-spin");
-      return spinner !== null;
-    });
+    // Button swaps its icon for the indeterminate working rail
+    const buttonWithRail = refreshButtons.find(
+      (btn) => btn.querySelector(".phase-rail") !== null
+    );
 
-    expect(buttonWithSpinner).toBeDefined();
+    expect(buttonWithRail).toBeDefined();
   });
 
   // The lock pins a fixed body at a negative offset instead of setting

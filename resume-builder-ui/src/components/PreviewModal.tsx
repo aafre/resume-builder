@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, useId, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useCallback, useId, lazy, Suspense } from 'react';
 import ModalShell from './shared/ModalShell';
 import { MdClose, MdRefresh, MdFileDownload, MdWarning } from 'react-icons/md';
 import { isMobileDevice } from '../utils/deviceDetection';
@@ -21,10 +21,28 @@ interface PreviewModalProps {
   error: string | null;
   onRefresh: () => void;
   onDownload: () => void;
+  /**
+   * Already-cached thumbnail of this resume, painted on the sheet the instant
+   * the modal opens so the paper is never an empty white box while the real PDF
+   * builds. `/my-resumes` has one per card; the editor does not.
+   */
+  posterUrl?: string | null;
 }
 
 type LoadingState = 'idle' | 'loading' | 'loaded' | 'error';
 
+/**
+ * The print.
+ *
+ * A single sheet of paper on a studio ground, morphing out of the card that
+ * opened it — the card thumbnail and this sheet share `view-transition-name:
+ * resume-sheet`, so the browser animates one into the other (the handoff lives
+ * in `MyResumes.handlePreview`). Firefox has no View Transitions and simply
+ * cuts, which is the correct fallback.
+ *
+ * The sheet's geometry exists from the first frame regardless of what is inside
+ * it, so no state here — generating, error, empty, loaded — moves the layout.
+ */
 const PreviewModal: React.FC<PreviewModalProps> = ({
   isOpen,
   onClose,
@@ -36,10 +54,10 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
   error,
   onRefresh,
   onDownload,
+  posterUrl = null,
 }) => {
   const [loadingState, setLoadingState] = useState<LoadingState>('idle');
   const [isMobile] = useState(() => isMobileDevice());
-  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   // Update loading state when generation status or error changes
   useEffect(() => {
@@ -69,6 +87,26 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
     setLoadingState('error');
   }, []);
 
+  const showStale = isStale && !isGenerating;
+  const pdfVisible = Boolean(previewUrl) && loadingState === 'loaded';
+
+  // Once a print has been seen, a regenerate shows the previous one dimmed
+  // under the scan rather than blanking the paper — the sheet keeps saying
+  // what the resume looks like while the next version builds.
+  const [hasPrinted, setHasPrinted] = useState(false);
+  useEffect(() => {
+    if (pdfVisible) setHasPrinted(true);
+  }, [pdfVisible]);
+  useEffect(() => {
+    if (!isOpen) setHasPrinted(false);
+  }, [isOpen]);
+
+  const iconButton =
+    "grid place-items-center w-11 h-11 rounded-full bg-white/10 text-white " +
+    "hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 " +
+    "focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink " +
+    "transition-colors";
+
   return (
     <ModalShell
       isOpen={isOpen}
@@ -76,116 +114,84 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
       labelledBy={titleId}
       overlayTestId="preview-modal-container"
       panelTestId="preview-modal-content"
-      overlayClassName="fixed inset-0 z-[9999] flex items-end lg:items-center lg:justify-center bg-black/60 backdrop-blur-sm animate-fade-in"
-      panelClassName="bg-white rounded-t-2xl lg:rounded-2xl shadow-2xl w-full lg:max-w-5xl lg:mx-4 h-[92dvh] lg:h-[90vh] flex flex-col animate-slide-up lg:animate-scale-in"
+      overlayClassName="fixed inset-0 z-[9999] bg-ink/95 backdrop-blur-sm"
+      panelClassName="h-full w-full flex flex-col outline-none"
     >
-          {/* Header */}
-          <div className="flex items-center justify-between p-4 lg:p-6 border-b border-gray-200 flex-shrink-0">
-            <div className="flex items-center gap-3">
-              <h2 id={titleId} className="text-lg lg:text-xl font-semibold text-ink">
-                PDF Preview
-              </h2>
-              {isStale && !isGenerating && (
-                <span className="flex items-center gap-1 text-xs lg:text-sm text-amber-600 bg-amber-50 px-2 py-1 rounded-full">
-                  <MdWarning className="text-sm" />
-                  Outdated
-                </span>
-              )}
-            </div>
+      {/* Top strip */}
+      <div className="flex items-center gap-3 px-4 sm:px-6 py-4 border-b border-white/10 flex-shrink-0">
+        <h2
+          id={titleId}
+          className="font-display text-lg sm:text-xl font-extrabold text-white"
+        >
+          PDF Preview
+        </h2>
 
-            <button
-              onClick={onClose}
-              className="p-2 text-ink/60 hover:text-ink hover:bg-chalk-dark rounded-lg transition-colors"
-              title="Close (ESC)"
-            >
-              <MdClose className="text-xl" />
-            </button>
-          </div>
+        {showStale && (
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300/25 bg-amber-300/10 px-2.5 py-1 font-mono text-xs tracking-[0.15em] uppercase text-amber-200">
+            <MdWarning className="text-sm" aria-hidden="true" />
+            Outdated
+          </span>
+        )}
 
-          {/* Staleness Warning Banner */}
-          {isStale && !isGenerating && (
-            <div className="bg-amber-50 border-b border-amber-200 px-4 py-3 flex items-center justify-between flex-shrink-0">
-              <div className="flex items-center gap-2 text-amber-800">
-                <MdWarning className="text-lg flex-shrink-0" />
-                <span className="text-sm">
-                  Your edits aren't reflected yet. Click "Refresh Preview" to see latest changes.
-                </span>
-              </div>
-              <button
-                onClick={onRefresh}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-600 text-white rounded-lg text-sm font-medium hover:bg-amber-700 transition-colors"
-              >
-                <MdRefresh className="text-base" />
-                Refresh
-              </button>
-            </div>
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close preview"
+          title="Close (ESC)"
+          className={`ml-auto ${iconButton}`}
+        >
+          <MdClose className="text-xl" />
+        </button>
+      </div>
+
+      {showStale && (
+        <p className="flex-shrink-0 border-b border-white/10 px-4 sm:px-6 py-2 text-sm font-extralight text-white/60">
+          Your edits aren&apos;t reflected yet — regenerate to print the latest.
+        </p>
+      )}
+
+      {/* The sheet */}
+      <div className="flex-1 min-h-0 grid place-items-center px-4 sm:px-6 py-5">
+        <div
+          data-testid="preview-sheet"
+          /* ponytail: Letter (8.5x11), the page size wkhtmltopdf emits here —
+             resume_generator.py passes no explicit page-size, so this tracks
+             the toolchain default. If the generator ever pins A4, change this
+             to aspect-[210/297] or the sheet will crop the page. */
+          style={{ viewTransitionName: 'resume-sheet' }}
+          className="relative overflow-clip rounded-lg bg-white shadow-2xl w-full max-h-full aspect-[85/110] sm:w-auto sm:h-full sm:max-w-full"
+        >
+          {/* Cached thumbnail — the paper is never blank while the PDF builds */}
+          {posterUrl && !pdfVisible && (
+            <img
+              src={posterUrl}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 h-full w-full object-cover object-top"
+            />
           )}
 
-          {/* PDF Viewer Area - fills remaining space */}
-          <div className="flex-1 overflow-auto bg-chalk-dark relative">
-            {/* Skeleton Loader - fades out when PDF loaded */}
-            {loadingState === 'loading' && (
-              <div className="absolute inset-0 bg-white flex flex-col items-center justify-center z-10 transition-opacity duration-300">
-                <div className="animate-spin rounded-full h-12 w-12 border-4 border-accent border-t-transparent mb-4"></div>
-                <p className="text-ink/60 font-medium mb-2">Generating PDF preview...</p>
-                <p className="text-ink/60 text-sm">This usually takes 2-5 seconds</p>
-              </div>
-            )}
+          {/* Print head, only while the server is actually rendering */}
+          {isGenerating && (
+            <span
+              aria-hidden="true"
+              className="sheet-scan pointer-events-none"
+            />
+          )}
 
-            {/* Error State */}
-            {loadingState === 'error' && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-white">
-                <div className="text-center p-8">
-                  <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <MdWarning className="text-3xl text-red-600" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-ink mb-2">
-                    Preview Generation Failed
-                  </h3>
-                  <p className="text-gray-600 mb-6 max-w-md">{error}</p>
-                  <button
-                    onClick={onRefresh}
-                    className="flex items-center gap-2 px-6 py-3 bg-accent text-ink rounded-lg font-medium hover:bg-accent/90 transition-colors mx-auto"
-                  >
-                    <MdRefresh className="text-lg" />
-                    Try Again
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* Empty State */}
-            {loadingState === 'idle' && !previewUrl && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-white">
-                <div className="text-center p-8">
-                  <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <MdFileDownload className="text-3xl text-accent-text" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-ink mb-2">
-                    No Preview Available
-                  </h3>
-                  <p className="text-gray-600 mb-6">
-                    Click "Generate Preview" to see your resume
-                  </p>
-                  <button
-                    onClick={onRefresh}
-                    className="flex items-center gap-2 px-6 py-3 bg-accent text-ink rounded-lg font-medium hover:bg-accent/90 transition-colors mx-auto"
-                  >
-                    Generate Preview
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* PDF Viewer - iframe on desktop, PDF.js on mobile */}
-            {previewUrl && (
-              isMobile ? (
-                <Suspense fallback={
-                  <div className="absolute inset-0 bg-white flex flex-col items-center justify-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-accent border-t-transparent mb-4"></div>
-                    <p className="text-ink/60 font-medium">Loading PDF viewer...</p>
-                  </div>
-                }>
+          {/* PDF Viewer - iframe on desktop, PDF.js on mobile */}
+          {previewUrl && (
+            <div
+              className={`absolute inset-0 transition-opacity duration-500 ${
+                pdfVisible
+                  ? 'opacity-100'
+                  : hasPrinted && isGenerating
+                    ? 'opacity-40'
+                    : 'opacity-0'
+              }`}
+            >
+              {isMobile ? (
+                <Suspense fallback={null}>
                   <PdfViewerMobile
                     pdfUrl={previewUrl}
                     onLoad={handleIframeLoad}
@@ -194,63 +200,111 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
                 </Suspense>
               ) : (
                 <iframe
-                  ref={iframeRef}
                   src={`${previewUrl}#toolbar=0&navpanes=0&scrollbar=1&view=FitH`}
                   title="Resume PDF Preview"
                   onLoad={handleIframeLoad}
-                  className={`w-full h-full border-none transition-opacity duration-300 ${
-                    loadingState === 'loaded' ? 'opacity-100' : 'opacity-0'
-                  }`}
+                  className="h-full w-full border-none"
                   style={{ border: 'none' }}
                 />
-              )
-            )}
-          </div>
+              )}
+            </div>
+          )}
 
-          {/* Footer Actions */}
-          <div className="border-t border-gray-200 bg-white flex-shrink-0">
-            {/* Action Buttons */}
-            <div className="p-4 lg:p-6 grid grid-cols-2 gap-3 lg:flex lg:justify-end">
-              <button
-                onClick={onRefresh}
-                disabled={isGenerating}
-                className="flex items-center justify-center gap-2 px-4 lg:px-6 py-3.5 bg-white border-2 border-gray-300 text-ink rounded-xl font-medium hover:bg-chalk hover:border-ink/60 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.98] min-h-[52px]"
-                style={{ WebkitTapHighlightColor: "transparent" }}
-              >
-                {isGenerating ? (
-                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-gray-600 border-t-transparent"></div>
-                ) : (
-                  <MdRefresh className="text-xl" />
-                )}
-                <span className="hidden sm:inline">{isStale ? 'Refresh Preview' : 'Regenerate'}</span>
-                <span className="sm:hidden">Refresh</span>
-              </button>
-              <button
-                onClick={onDownload}
-                disabled={isGenerating || isDownloading || !previewUrl}
-                className="flex items-center justify-center gap-2 px-4 lg:px-6 py-3.5 bg-gradient-to-r from-emerald-600 to-green-600 text-white rounded-xl font-semibold hover:from-emerald-500 hover:to-green-500 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transition-all active:scale-[0.98] min-h-[52px]"
-                style={{ WebkitTapHighlightColor: "transparent" }}
-              >
-                {isDownloading ? (
-                  <>
-                    <WorkingRail className="h-1.5 w-8 shrink-0 !bg-white/25 [&>span]:!bg-white/80" />
-                    <PhaseLabel
-                      phase={downloadPhase}
-                      fallback="Building your PDF"
-                      className="truncate"
-                    />
-                  </>
-                ) : (
-                  <>
-                    <MdFileDownload className="text-xl" />
-                    <span>Download</span>
-                  </>
-                )}
+          {/* Generating — the paper is already here, so this only names the work */}
+          {loadingState === 'loading' && (
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-white via-white/95 to-transparent p-6 pt-20 text-center">
+              <p className="font-display font-medium text-ink">
+                Generating PDF preview...
+              </p>
+              <p className="text-sm text-ink/60">This usually takes 2-5 seconds</p>
+            </div>
+          )}
+
+          {/* Error State */}
+          {loadingState === 'error' && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 p-8 text-center">
+              <div className="mb-4 grid h-16 w-16 place-items-center rounded-full bg-red-50">
+                <MdWarning className="text-3xl text-red-600" />
+              </div>
+              <h3 className="font-display text-lg font-bold text-ink mb-2">
+                Preview Generation Failed
+              </h3>
+              <p className="mb-6 max-w-md text-ink/60">{error}</p>
+              <button type="button" onClick={onRefresh} className="btn-primary gap-2 px-6">
+                <MdRefresh className="text-lg" />
+                Try Again
               </button>
             </div>
-            {/* Safe area padding for devices with notches/home indicators */}
-            <div style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))' }} />
-          </div>
+          )}
+
+          {/* Empty State */}
+          {loadingState === 'idle' && !previewUrl && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-white p-8 text-center">
+              <div className="mb-4 grid h-16 w-16 place-items-center rounded-full bg-accent/10">
+                <MdFileDownload className="text-3xl text-accent-text" />
+              </div>
+              <h3 className="font-display text-lg font-bold text-ink mb-2">
+                No Preview Available
+              </h3>
+              <p className="mb-6 text-ink/60">
+                Click "Generate Preview" to see your resume
+              </p>
+              <button type="button" onClick={onRefresh} className="btn-primary px-6">
+                Generate Preview
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Toolbar — floats over the ground rather than sitting under the paper */}
+      <div className="flex-shrink-0 px-4 sm:px-6 pb-4">
+        <div className="mx-auto flex w-full max-w-md items-center gap-2 rounded-2xl border border-white/15 bg-white/10 p-2 backdrop-blur-xl sm:max-w-lg">
+          <button
+            type="button"
+            onClick={onRefresh}
+            disabled={isGenerating}
+            className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl px-4 font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+            style={{ WebkitTapHighlightColor: "transparent" }}
+          >
+            {isGenerating ? (
+              <WorkingRail className="h-1.5 w-8 shrink-0 !bg-white/25 [&>span]:!bg-white/80" />
+            ) : (
+              <MdRefresh className="text-xl" />
+            )}
+            <span className="hidden sm:inline">
+              {isStale ? 'Refresh Preview' : 'Regenerate'}
+            </span>
+            <span className="sm:hidden">Refresh</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={onDownload}
+            disabled={isGenerating || isDownloading || !previewUrl}
+            className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-accent px-4 font-bold text-ink transition-transform hover:-translate-y-0.5 active:scale-[0.98] disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+            style={{ WebkitTapHighlightColor: "transparent" }}
+          >
+            {isDownloading ? (
+              <>
+                <WorkingRail className="h-1.5 w-8 shrink-0" />
+                <PhaseLabel
+                  phase={downloadPhase}
+                  fallback="Building your PDF"
+                  className="truncate"
+                />
+              </>
+            ) : (
+              <>
+                <MdFileDownload className="text-xl" />
+                <span>Download</span>
+              </>
+            )}
+          </button>
+        </div>
+        {/* Safe area padding for devices with notches/home indicators */}
+        <div style={{ paddingBottom: 'max(0px, env(safe-area-inset-bottom))' }} />
+      </div>
     </ModalShell>
   );
 };

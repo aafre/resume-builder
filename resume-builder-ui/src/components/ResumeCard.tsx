@@ -7,7 +7,7 @@ import { KebabMenu } from './KebabMenu';
  * Adds cache-busting query parameter to thumbnail URL
  * Uses pdf_generated_at timestamp to ensure unique URLs for each version
  */
-const getThumbnailUrl = (
+export const getThumbnailUrl = (
   thumbnail_url: string | null | undefined,
   pdf_generated_at: string | null | undefined
 ): string | null => {
@@ -40,6 +40,13 @@ interface ResumeCardProps {
   onRename: (id: string, newTitle: string) => Promise<void>;
   isEditButtonLoading?: boolean;
   isPreviewLoading?: boolean;
+  /**
+   * Hand this card's thumbnail the shared `view-transition-name: resume-sheet`
+   * so the preview modal can morph out of it. Exactly one element in the
+   * document may hold that name, so MyResumes moves it in lockstep with the
+   * modal opening and closing.
+   */
+  isMorphing?: boolean;
 }
 
 export function ResumeCard({
@@ -51,7 +58,8 @@ export function ResumeCard({
   onDuplicate,
   onRename,
   isEditButtonLoading = false,
-  isPreviewLoading = false
+  isPreviewLoading = false,
+  isMorphing = false
 }: ResumeCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(resume.title);
@@ -112,7 +120,7 @@ export function ResumeCard({
 
   return (
     <div
-      className="bg-white rounded-2xl border border-black/[0.06] shadow-premium shadow-premium-hover hover:-translate-y-1 transition-all duration-300 group"
+      className="bg-white rounded-2xl border border-black/[0.06] shadow-sm hover:shadow-md transition-shadow duration-200 group"
     >
       {/* Thumbnail */}
       <div
@@ -126,7 +134,7 @@ export function ResumeCard({
             e.currentTarget.click();
           }
         }}
-        className={`relative bg-chalk-dark h-48 overflow-hidden rounded-t-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
+        className={`relative bg-chalk-dark h-48 overflow-clip rounded-t-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
           isPreviewLoading ? 'cursor-wait' : 'cursor-pointer'
         }`}
         onClick={() => !isPreviewLoading && onPreview(resume.id)}
@@ -141,6 +149,7 @@ export function ResumeCard({
           }`}
           width="300"
           height="192"
+          style={{ viewTransitionName: isMorphing ? 'resume-sheet' : undefined }}
         />
 
         {/* Preview Loading Overlay */}
