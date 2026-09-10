@@ -8,16 +8,58 @@
  */
 
 import { Link } from 'react-router-dom';
+import { Check, Minus } from 'lucide-react';
 import SEOPageLayout from '../shared/SEOPageLayout';
 import RevealSection from '../shared/RevealSection';
 import PageHero from '../shared/PageHero';
 import FeatureGrid from '../shared/FeatureGrid';
+import Band from '../shared/Band';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
 import TemplateCarousel from '../TemplateCarousel';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
 import type { SEOConfig } from '../../types/seo';
+
+const CV_COUNTRIES = [
+  'United Kingdom',
+  'Ireland',
+  'Europe (most countries)',
+  'Australia',
+  'New Zealand',
+  'South Africa',
+];
+
+const RESUME_COUNTRIES = ['United States', 'Canada'];
+
+const DO_INCLUDE: [string, string][] = [
+  ['Personal profile', '(3-4 lines summarising your experience)'],
+  ['Contact details', '(phone, email, city/region)'],
+  ['Work experience', 'with quantified achievements'],
+  ['Education', 'and relevant qualifications'],
+  ['Key skills', 'relevant to the role'],
+];
+
+const DO_NOT_INCLUDE: [string, string][] = [
+  ['Photo', '(unless specifically requested)'],
+  ['Date of birth', 'or age'],
+  ['Marital status', ''],
+  ['National insurance number', ''],
+  ['"References available upon request"', ''],
+];
+
+const DATE_FORMATS = [
+  '"January 2024 - Present"',
+  '"Jan 2025 - Dec 2026"',
+  '"2022 - 2024" (year only)',
+];
+
+const RELATED = [
+  { to: '/cv-templates/ats-friendly', label: 'ATS-Friendly CV Templates' },
+  { to: '/free-cv-builder-no-sign-up', label: 'Free CV Builder' },
+  { to: '/blog/resume-vs-cv-difference', label: 'CV vs Resume: Full Guide' },
+  { to: '/resume-keywords', label: 'CV Keywords by Industry' },
+];
 
 export default function CVTemplatesPage() {
   const config = SEO_PAGES.cvTemplates;
@@ -63,6 +105,9 @@ export default function CVTemplatesPage() {
       {/* Template Gallery Section */}
       <section id="template-gallery" className="py-12 -mx-4 sm:-mx-6 md:-mx-8">
         <div className="text-center mb-8">
+          <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4">
+            The gallery
+          </p>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4">
             Browse CV Templates
           </h2>
@@ -74,203 +119,212 @@ export default function CVTemplatesPage() {
         <TemplateCarousel showHeader={false} />
       </section>
 
-      {/* CV vs Resume Explanation */}
-      <RevealSection variant="fade-up">
-      <div className="my-16 cv-auto cv-h-400">
-        <div className="max-w-4xl mx-auto bg-accent/[0.06] border border-accent/20 rounded-xl p-8">
-          <h2 className="text-2xl font-bold text-ink mb-4">
-            CV or Resume? Which Term Should You Use?
-          </h2>
-          <div className="grid md:grid-cols-2 gap-6">
+      {/* CV vs Resume. The tinted accent panel this replaced was the largest
+          soft-green surface on the page, spending the accent on a paragraph
+          rather than on an action. Ink says "read this one" and spends none of
+          the 10%. */}
+      <Band tone="ink" reserve="cv-h-400">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12 md:mb-16">
+            <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">
+              Terminology
+            </p>
+            <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-white">
+              CV or Resume? Which Term Should You Use?
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
             <div>
-              <h3 className="font-bold text-ink mb-2">Use "CV" (Curriculum Vitae)</h3>
-              <ul className="text-ink/80 space-y-1 list-disc pl-5">
-                <li>United Kingdom</li>
-                <li>Ireland</li>
-                <li>Europe (most countries)</li>
-                <li>Australia</li>
-                <li>New Zealand</li>
-                <li>South Africa</li>
+              <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent mb-5">
+                Use "CV" (Curriculum Vitae)
+              </h3>
+              <ul className="border-t border-white/10">
+                {CV_COUNTRIES.map((c) => (
+                  <li
+                    key={c}
+                    className="py-2.5 border-b border-white/10 font-extralight text-white/60"
+                  >
+                    {c}
+                  </li>
+                ))}
               </ul>
             </div>
             <div>
-              <h3 className="font-bold text-ink mb-2">Use "Resume"</h3>
-              <ul className="text-ink/80 space-y-1 list-disc pl-5">
-                <li>United States</li>
-                <li>Canada</li>
+              <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent mb-5">
+                Use "Resume"
+              </h3>
+              <ul className="border-t border-white/10">
+                {RESUME_COUNTRIES.map((c) => (
+                  <li
+                    key={c}
+                    className="py-2.5 border-b border-white/10 font-extralight text-white/60"
+                  >
+                    {c}
+                  </li>
+                ))}
               </ul>
-              <p className="text-accent-text text-sm mt-3">
+              <p className="text-sm text-white/60 mt-5">
                 Looking for US-style resumes?{' '}
-                <Link to="/templates" className="underline hover:text-ink">
+                <Link
+                  to="/templates"
+                  className="text-accent font-medium underline underline-offset-4 decoration-accent/40 hover:decoration-accent"
+                >
                   View Resume Templates
                 </Link>
               </p>
             </div>
           </div>
-          <p className="text-ink/80 mt-4 text-sm">
+          <p className="text-white/60 font-extralight mt-10 max-w-2xl leading-relaxed">
             The document format is essentially the same. Use whichever term is standard in your target country.
             Our templates work for both.
           </p>
         </div>
-      </div>
-      </RevealSection>
+      </Band>
 
       {/* UK CV Format Guide */}
       <RevealSection variant="fade-up">
-      <div className="my-16 cv-auto cv-h-500">
-        <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
-          UK CV Format Essentials
-        </h2>
-        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6">
-          <div className="bg-white rounded-2xl shadow-premium border-l-4 border-l-accent p-6">
-            <h3 className="font-display text-xl font-bold text-ink mb-4">Do Include</h3>
-            <ul className="space-y-2 text-ink/60">
-              <li className="flex items-start">
-                <span className="text-accent-text font-bold mr-3" aria-hidden="true">&#10003;</span>
-                <span><strong>Personal profile</strong> (3-4 lines summarising your experience)</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-accent-text font-bold mr-3" aria-hidden="true">&#10003;</span>
-                <span><strong>Contact details</strong> (phone, email, city/region)</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-accent-text font-bold mr-3" aria-hidden="true">&#10003;</span>
-                <span><strong>Work experience</strong> with quantified achievements</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-accent-text font-bold mr-3" aria-hidden="true">&#10003;</span>
-                <span><strong>Education</strong> and relevant qualifications</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-accent-text font-bold mr-3" aria-hidden="true">&#10003;</span>
-                <span><strong>Key skills</strong> relevant to the role</span>
-              </li>
-            </ul>
+        <div className="my-16 cv-auto cv-h-500">
+          <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase text-center mb-4">
+            UK conventions
+          </p>
+          <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-12 md:mb-16 text-center">
+            UK CV Format Essentials
+          </h2>
+          <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-2xl border border-black/[0.06] p-6 md:p-8">
+              <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-5">
+                Do Include
+              </h3>
+              <ul className="space-y-3">
+                {DO_INCLUDE.map(([term, rest]) => (
+                  <li key={term} className="flex items-start gap-3 text-ink/60 font-extralight">
+                    <Check
+                      className="w-4 h-4 mt-1 flex-none text-accent-text"
+                      strokeWidth={2.5}
+                      aria-hidden="true"
+                    />
+                    <span>
+                      <strong className="font-bold text-ink">{term}</strong> {rest}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="bg-white rounded-2xl border border-black/[0.06] p-6 md:p-8">
+              <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-ink/60 mb-5">
+                Do Not Include
+              </h3>
+              <ul className="space-y-3">
+                {DO_NOT_INCLUDE.map(([term, rest]) => (
+                  <li key={term} className="flex items-start gap-3 text-ink/60 font-extralight">
+                    <Minus
+                      className="w-4 h-4 mt-1 flex-none text-ink/40"
+                      strokeWidth={2.5}
+                      aria-hidden="true"
+                    />
+                    <span>
+                      <strong className="font-bold text-ink">{term}</strong> {rest}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-          <div className="bg-white rounded-2xl shadow-premium border-l-4 border-l-red-400 p-6">
-            <h3 className="font-display text-xl font-bold text-ink mb-4">Do Not Include</h3>
-            <ul className="space-y-2 text-ink/60">
-              <li className="flex items-start">
-                <span className="text-red-600 font-bold mr-3" aria-hidden="true">&#10007;</span>
-                <span><strong>Photo</strong> (unless specifically requested)</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-red-600 font-bold mr-3" aria-hidden="true">&#10007;</span>
-                <span><strong>Date of birth</strong> or age</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-red-600 font-bold mr-3" aria-hidden="true">&#10007;</span>
-                <span><strong>Marital status</strong></span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-red-600 font-bold mr-3" aria-hidden="true">&#10007;</span>
-                <span><strong>National insurance number</strong></span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-red-600 font-bold mr-3" aria-hidden="true">&#10007;</span>
-                <span><strong>"References available upon request"</strong></span>
-              </li>
-            </ul>
-          </div>
+          <p className="text-center text-ink/60 font-extralight mt-8 max-w-2xl mx-auto leading-relaxed">
+            UK equality laws discourage personal information that could lead to discrimination.
+            Focus on your skills and experience instead.
+          </p>
         </div>
-        <p className="text-center text-ink/60 mt-6 max-w-2xl mx-auto">
-          UK equality laws discourage personal information that could lead to discrimination.
-          Focus on your skills and experience instead.
-        </p>
-      </div>
       </RevealSection>
 
-      {/* Length Guidelines */}
+      {/* Length. One real measurement, so it is set as one: the numeral at
+          display scale with a mono unit label, rather than boxed as a stat
+          tile inside a lifted card. */}
       <RevealSection variant="fade-up">
-      <div className="my-16 cv-auto cv-h-300">
-        <div className="max-w-4xl mx-auto bg-white rounded-2xl p-8 shadow-premium border border-black/[0.06]">
-          <h2 className="font-display text-2xl font-bold text-ink mb-4 text-center">
-            How Long Should a UK CV Be?
-          </h2>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-8">
-            <div className="text-center">
-              <div className="text-6xl font-bold text-accent-text">2</div>
-              <div className="text-ink/60">Pages Maximum</div>
+        <div className="my-16 cv-auto cv-h-300">
+          <div className="max-w-4xl mx-auto grid sm:grid-cols-[auto_1fr] gap-8 sm:gap-12 items-center">
+            <div className="text-center sm:text-left">
+              <div className="font-display text-[6rem] leading-none font-extrabold tracking-tight text-ink tabular-nums">
+                2
+              </div>
+              <div className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mt-2">
+                Pages maximum
+              </div>
             </div>
-            <div className="text-ink/60 max-w-md">
-              <p className="mb-2">
-                <strong>Standard UK CV:</strong> 2 pages is the accepted length for most professional roles.
+            <div>
+              <h2 className="font-display text-2xl font-extrabold tracking-tight text-ink mb-4">
+                How Long Should a UK CV Be?
+              </h2>
+              <p className="text-ink/60 font-extralight leading-relaxed mb-2">
+                <strong className="font-bold text-ink">Standard UK CV:</strong> 2 pages is the accepted length for most professional roles.
               </p>
-              <p className="text-sm text-ink/60">
+              <p className="text-sm text-ink/60 font-extralight leading-relaxed">
                 Exceptions: Academic CVs can be longer. Entry-level CVs may be 1 page.
                 Senior executives with 15+ years experience may extend to 3 pages if needed.
               </p>
             </div>
           </div>
         </div>
-      </div>
       </RevealSection>
 
       {config.features && <FeatureGrid features={config.features} />}
 
-      {/* Date Format Section */}
-      <RevealSection variant="fade-up">
-      <div className="my-16 cv-auto cv-h-300">
-        <div className="max-w-4xl mx-auto bg-amber-50 border border-amber-200 rounded-xl p-8">
-          <h3 className="text-2xl font-bold text-amber-900 mb-4">
+      {/* Date format. Was an amber-50 panel with amber-900 headings — a fourth
+          colour family introduced for one advisory block on a system that has
+          one accent. Tone carries it instead. */}
+      <Band tone="chalk-dark" reserve="cv-h-300">
+        <div className="max-w-4xl mx-auto">
+          <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4">
+            Formatting
+          </p>
+          <h2 className="font-display text-2xl md:text-3xl font-extrabold tracking-tight text-ink mb-10">
             UK Date Format for CVs
-          </h3>
-          <div className="grid md:grid-cols-2 gap-6">
+          </h2>
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
             <div>
-              <h4 className="font-bold text-amber-800 mb-2">Recommended Formats</h4>
-              <ul className="text-amber-700 space-y-1">
-                <li>"January 2024 - Present"</li>
-                <li>"Jan 2025 - Dec 2026"</li>
-                <li>"2022 - 2024" (year only)</li>
+              <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-ink/60 mb-4">
+                Recommended Formats
+              </h3>
+              <ul className="border-t border-ink/10">
+                {DATE_FORMATS.map((d) => (
+                  <li key={d} className="py-2.5 border-b border-ink/10 font-mono text-sm text-ink">
+                    {d}
+                  </li>
+                ))}
               </ul>
             </div>
             <div>
-              <h4 className="font-bold text-amber-800 mb-2">Important</h4>
-              <p className="text-amber-700">
+              <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-ink/60 mb-4">
+                Important
+              </h3>
+              <p className="text-ink/60 font-extralight leading-relaxed">
                 Be consistent throughout your CV. If you use abbreviated months in one place,
                 use them everywhere. Our editor helps maintain consistency automatically.
               </p>
             </div>
           </div>
         </div>
-      </div>
-      </RevealSection>
+      </Band>
 
       <FAQSection faqs={config.faqs} />
 
       {/* Related Pages */}
       <RevealSection variant="fade-up">
-      <div className="my-16 cv-auto cv-h-200">
-        <h3 className="font-display text-2xl font-bold text-ink mb-6 text-center">
-          Explore More CV Resources
-        </h3>
-        <div className="flex flex-wrap justify-center gap-4">
-          <Link
-            to="/cv-templates/ats-friendly"
-            className="px-6 py-3 bg-accent/10 text-ink/80 rounded-lg hover:bg-accent/20 transition-colors"
-          >
-            ATS-Friendly CV Templates
-          </Link>
-          <Link
-            to="/free-cv-builder-no-sign-up"
-            className="px-6 py-3 bg-accent/10 text-ink/80 rounded-lg hover:bg-accent/20 transition-colors"
-          >
-            Free CV Builder
-          </Link>
-          <Link
-            to="/blog/resume-vs-cv-difference"
-            className="btn-secondary py-3 px-6"
-          >
-            CV vs Resume: Full Guide
-          </Link>
-          <Link
-            to="/resume-keywords"
-            className="btn-secondary py-3 px-6"
-          >
-            CV Keywords by Industry
-          </Link>
+        <div className="my-16 cv-auto cv-h-200">
+          <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase text-center mb-4">
+            Elsewhere
+          </p>
+          <h2 className="font-display text-2xl font-extrabold tracking-tight text-ink mb-12 md:mb-16 text-center">
+            Explore More CV Resources
+          </h2>
+          <div className="flex flex-wrap justify-center gap-4">
+            {RELATED.map((r) => (
+              <Link key={r.to} to={r.to} className="btn-secondary py-3 px-6">
+                {r.label}
+              </Link>
+            ))}
+          </div>
         </div>
-      </div>
       </RevealSection>
 
       <DownloadCTA

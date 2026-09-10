@@ -29,8 +29,8 @@ export default function AICoverLetterPrompts() {
         </p>
 
         {/* Table of Contents */}
-        <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
-          <h2 className="font-bold text-ink mb-4 text-lg">Table of Contents</h2>
+        <nav className="toc-inline bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8" aria-label="On this page">
+          <p className="font-mono text-xs tracking-[0.15em] uppercase text-ink/60 mb-4">Table of Contents</p>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
             <li><a href="#before-you-start" className="text-accent-text hover:underline">Before You Start: What AI Needs From You</a></li>
             <li><a href="#tailored-cover-letters" className="text-accent-text hover:underline">Tailored Cover Letter Prompts (#1-5)</a></li>

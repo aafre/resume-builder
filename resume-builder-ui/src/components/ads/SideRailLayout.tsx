@@ -34,8 +34,10 @@ export const SideRailLayout = ({
 
   return (
     <div className="flex justify-center gap-6">
-      {/* Left rail */}
-      <aside className="hidden 2xl:block w-[160px] flex-shrink-0" aria-label="Left advertisement">
+      {/* Left rail — relative+z so a full-bleed content section (e.g. the chalk
+          horizontal-scroll band) can't paint over it the way DOM order otherwise
+          lets it over the left but not the right rail. */}
+      <aside className="hidden 2xl:block w-[160px] flex-shrink-0 relative z-10" aria-label="Left advertisement">
         <div className="sticky top-[88px]">
           <AdContainer
             adSlot={AD_CONFIG.slots.sideRailLeft}
@@ -62,7 +64,7 @@ export const SideRailLayout = ({
       </div>
 
       {/* Right rail */}
-      <aside className="hidden 2xl:block w-[160px] flex-shrink-0" aria-label="Right advertisement">
+      <aside className="hidden 2xl:block w-[160px] flex-shrink-0 relative z-10" aria-label="Right advertisement">
         <div className="sticky top-[88px]">
           <AdContainer
             adSlot={AD_CONFIG.slots.sideRailRight}

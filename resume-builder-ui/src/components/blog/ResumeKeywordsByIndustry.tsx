@@ -24,8 +24,8 @@ export default function ResumeKeywordsByIndustry() {
         </p>
 
         {/* Table of Contents */}
-        <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
-          <h2 className="font-bold text-ink mb-4 text-lg">Jump to Your Industry</h2>
+        <nav className="toc-inline bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8" aria-label="On this page">
+          <p className="font-mono text-xs tracking-[0.15em] uppercase text-ink/60 mb-4">Jump to Your Industry</p>
           <div className="grid sm:grid-cols-2 gap-x-8 gap-y-2 text-ink/80">
             <div className="space-y-2">
               <p><a href="#technology" className="text-accent-text hover:underline">Technology / Software Engineering</a></p>
@@ -64,8 +64,8 @@ export default function ResumeKeywordsByIndustry() {
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 mt-6">
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Technical Keywords</h3>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-4">Technical Keywords</h3>
             <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
               <li>Python, JavaScript, TypeScript, Java, C++, Go, Rust</li>
               <li>React, Angular, Vue.js, Next.js, Node.js</li>
@@ -77,8 +77,8 @@ export default function ResumeKeywordsByIndustry() {
               <li>Git, GitHub Actions, Terraform, Infrastructure as Code</li>
             </ul>
           </div>
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Process & Methodology</h3>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-4">Process & Methodology</h3>
             <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
               <li>Agile, Scrum, Kanban, Sprint Planning</li>
               <li>Test-Driven Development (TDD)</li>
@@ -106,8 +106,8 @@ export default function ResumeKeywordsByIndustry() {
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 mt-6">
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Clinical & Technical</h3>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-4">Clinical & Technical</h3>
             <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
               <li>Patient assessment / triage</li>
               <li>Electronic Health Records (EHR) — Epic, Cerner, Meditech</li>
@@ -119,8 +119,8 @@ export default function ResumeKeywordsByIndustry() {
               <li>Infection control / sterile technique</li>
             </ul>
           </div>
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Certifications & Soft Skills</h3>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-4">Certifications & Soft Skills</h3>
             <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
               <li>BLS, ACLS, PALS certification</li>
               <li>RN, LPN, CNA, NP licensure</li>
@@ -144,8 +144,8 @@ export default function ResumeKeywordsByIndustry() {
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 mt-6">
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Technical & Analytical</h3>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-4">Technical & Analytical</h3>
             <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
               <li>Financial modeling / forecasting</li>
               <li>Excel (VLOOKUP, pivot tables, macros)</li>
@@ -157,8 +157,8 @@ export default function ResumeKeywordsByIndustry() {
               <li>Portfolio management</li>
             </ul>
           </div>
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Regulatory & Certifications</h3>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-4">Regulatory & Certifications</h3>
             <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
               <li>CPA, CFA, CFP, Series 7/63</li>
               <li>SOX compliance (Sarbanes-Oxley)</li>
@@ -182,8 +182,8 @@ export default function ResumeKeywordsByIndustry() {
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 mt-6">
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Digital Marketing Skills</h3>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-4">Digital Marketing Skills</h3>
             <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
               <li>SEO / SEM / PPC (Google Ads, Meta Ads)</li>
               <li>Content marketing / content strategy</li>
@@ -195,8 +195,8 @@ export default function ResumeKeywordsByIndustry() {
               <li>Influencer marketing / brand partnerships</li>
             </ul>
           </div>
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Metrics & Strategy</h3>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-4">Metrics & Strategy</h3>
             <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
               <li>ROI / ROAS (Return on Ad Spend)</li>
               <li>CAC (Customer Acquisition Cost)</li>
@@ -216,8 +216,8 @@ export default function ResumeKeywordsByIndustry() {
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6 mt-6">
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Sales Skills & Tools</h3>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-4">Sales Skills & Tools</h3>
             <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
               <li>Salesforce / HubSpot CRM / Pipedrive</li>
               <li>Pipeline management / forecasting</li>
@@ -229,8 +229,8 @@ export default function ResumeKeywordsByIndustry() {
               <li>Contract negotiation / closing</li>
             </ul>
           </div>
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Metrics & Results</h3>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-4">Metrics & Results</h3>
             <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
               <li>Quota attainment (% of target)</li>
               <li>Revenue growth / YoY growth</li>
@@ -250,8 +250,8 @@ export default function ResumeKeywordsByIndustry() {
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6 mt-6">
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Teaching & Curriculum</h3>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-4">Teaching & Curriculum</h3>
             <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
               <li>Lesson planning / curriculum development</li>
               <li>Differentiated instruction</li>
@@ -263,8 +263,8 @@ export default function ResumeKeywordsByIndustry() {
               <li>State standards alignment (Common Core)</li>
             </ul>
           </div>
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Technology & Development</h3>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-4">Technology & Development</h3>
             <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
               <li>Google Classroom / Canvas / Blackboard</li>
               <li>Educational technology (EdTech)</li>
@@ -284,8 +284,8 @@ export default function ResumeKeywordsByIndustry() {
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6 mt-6">
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Technical & Process</h3>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-4">Technical & Process</h3>
             <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
               <li>Lean Manufacturing / Six Sigma (Green Belt, Black Belt)</li>
               <li>Kaizen / continuous improvement</li>
@@ -297,8 +297,8 @@ export default function ResumeKeywordsByIndustry() {
               <li>Root cause analysis (5 Whys, Fishbone)</li>
             </ul>
           </div>
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Safety & Compliance</h3>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-4">Safety & Compliance</h3>
             <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
               <li>OSHA compliance / safety regulations</li>
               <li>GMP (Good Manufacturing Practices)</li>
@@ -318,8 +318,8 @@ export default function ResumeKeywordsByIndustry() {
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6 mt-6">
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Service Skills</h3>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-4">Service Skills</h3>
             <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
               <li>CRM platforms (Zendesk, Salesforce, HubSpot)</li>
               <li>Conflict resolution / de-escalation</li>
@@ -331,8 +331,8 @@ export default function ResumeKeywordsByIndustry() {
               <li>Customer retention</li>
             </ul>
           </div>
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Retail Specific</h3>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-4">Retail Specific</h3>
             <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
               <li>POS systems / cash handling</li>
               <li>Visual merchandising</li>
@@ -356,8 +356,8 @@ export default function ResumeKeywordsByIndustry() {
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6 mt-6">
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Core HR Skills</h3>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-4">Core HR Skills</h3>
             <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
               <li>Talent acquisition / recruitment</li>
               <li>HRIS (Workday, BambooHR, ADP)</li>
@@ -369,8 +369,8 @@ export default function ResumeKeywordsByIndustry() {
               <li>Succession planning</li>
             </ul>
           </div>
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Compliance & Strategy</h3>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-4">Compliance & Strategy</h3>
             <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
               <li>FMLA, ADA, EEO, FLSA compliance</li>
               <li>Payroll processing (ADP, Paychex)</li>
@@ -390,8 +390,8 @@ export default function ResumeKeywordsByIndustry() {
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6 mt-6">
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Methodologies & Tools</h3>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-4">Methodologies & Tools</h3>
             <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
               <li>PMP / CAPM / Scrum Master certification</li>
               <li>Agile / Scrum / Waterfall / Hybrid</li>
@@ -403,8 +403,8 @@ export default function ResumeKeywordsByIndustry() {
               <li>Stakeholder management</li>
             </ul>
           </div>
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Delivery & Results</h3>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="font-mono text-xs tracking-[0.15em] uppercase text-accent-text mb-4">Delivery & Results</h3>
             <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
               <li>On-time / on-budget delivery</li>
               <li>Cross-functional team leadership</li>
