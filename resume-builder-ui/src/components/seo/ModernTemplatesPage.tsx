@@ -11,9 +11,17 @@ import FeatureGrid from '../shared/FeatureGrid';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
 import RevealSection from '../shared/RevealSection';
+import Band from '../shared/Band';
 import TemplateCarousel from '../TemplateCarousel';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
+
+const INDUSTRIES = [
+  { name: 'Technology', note: 'Software, SaaS, IT' },
+  { name: 'Startups', note: 'Early-stage companies' },
+  { name: 'Marketing', note: 'Digital, content, growth' },
+  { name: 'Design', note: 'UX, product, graphic' },
+];
 
 export default function ModernTemplatesPage() {
   const config = SEO_PAGES.modernTemplates;
@@ -32,6 +40,9 @@ export default function ModernTemplatesPage() {
       {/* Template Gallery Section */}
       <section className="py-12 -mx-4 sm:-mx-6 md:-mx-8">
         <div className="text-center mb-8">
+          <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4">
+            The gallery
+          </p>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4">
             Browse Modern Templates
           </h2>
@@ -46,11 +57,14 @@ export default function ModernTemplatesPage() {
       {/* What Makes Modern Templates Different */}
       <RevealSection variant="fade-up" stagger>
         <div className="my-16">
-          <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
+          <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase text-center mb-4">
+            Four traits
+          </p>
+          <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-12 md:mb-16 text-center">
             What Makes a Modern Resume Stand Out?
           </h2>
           <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
-            <div className="bg-white rounded-2xl p-6 card-gradient-border shadow-premium">
+            <div className="bg-white rounded-2xl p-8 card-gradient-border spot-card shadow-premium shadow-premium-hover hover:-translate-y-1 transition-all duration-300">
               <h3 className="font-display text-xl font-bold text-ink mb-3">Clean Typography</h3>
               <p className="text-ink/60">
                 Modern templates use contemporary sans-serif fonts with clear hierarchy.
@@ -58,21 +72,21 @@ export default function ModernTemplatesPage() {
                 and professional.
               </p>
             </div>
-            <div className="bg-white rounded-2xl p-6 card-gradient-border shadow-premium">
+            <div className="bg-white rounded-2xl p-8 card-gradient-border spot-card shadow-premium shadow-premium-hover hover:-translate-y-1 transition-all duration-300">
               <h3 className="font-display text-xl font-bold text-ink mb-3">Strategic White Space</h3>
               <p className="text-ink/60">
                 Generous margins and spacing between sections create visual breathing room.
                 This makes your resume easier to scan and more pleasant to read.
               </p>
             </div>
-            <div className="bg-white rounded-2xl p-6 card-gradient-border shadow-premium">
+            <div className="bg-white rounded-2xl p-8 card-gradient-border spot-card shadow-premium shadow-premium-hover hover:-translate-y-1 transition-all duration-300">
               <h3 className="font-display text-xl font-bold text-ink mb-3">Subtle Color Accents</h3>
               <p className="text-ink/60">
                 Modern designs often incorporate a single accent color for headers or dividers.
                 This adds personality without overwhelming the content.
               </p>
             </div>
-            <div className="bg-white rounded-2xl p-6 card-gradient-border shadow-premium">
+            <div className="bg-white rounded-2xl p-8 card-gradient-border spot-card shadow-premium shadow-premium-hover hover:-translate-y-1 transition-all duration-300">
               <h3 className="font-display text-xl font-bold text-ink mb-3">Flexible Layouts</h3>
               <p className="text-ink/60">
                 Whether you have extensive experience or are just starting out, modern
@@ -87,41 +101,35 @@ export default function ModernTemplatesPage() {
         {config.features && <FeatureGrid features={config.features} />}
       </RevealSection>
 
-      {/* Industries Section */}
-      <RevealSection variant="fade-up">
-        <div className="my-16 cv-auto cv-h-300">
-          <div className="max-w-5xl mx-auto bg-accent/[0.06] border border-accent/20 rounded-xl p-8">
-            <h3 className="text-2xl font-bold text-ink mb-4 text-center">
-              Best Industries for Modern Resume Templates
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center mt-6">
-              <div className="bg-white p-4 rounded-lg shadow-sm">
-                <p className="font-semibold text-ink">Technology</p>
-                <p className="text-ink/60 text-sm">Software, SaaS, IT</p>
-              </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm">
-                <p className="font-semibold text-ink">Startups</p>
-                <p className="text-ink/60 text-sm">Early-stage companies</p>
-              </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm">
-                <p className="font-semibold text-ink">Marketing</p>
-                <p className="text-ink/60 text-sm">Digital, content, growth</p>
-              </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm">
-                <p className="font-semibold text-ink">Design</p>
-                <p className="text-ink/60 text-sm">UX, product, graphic</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </RevealSection>
+      {/* Industries. Was a tinted accent panel holding four white cards —
+          cards inside a card, and the page's largest green surface spent on a
+          list of four industry names. It is a filed index on its own band. */}
+      <Band tone="chalk-dark" reserve="cv-h-300">
+        <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase text-center mb-4">
+          Best fit
+        </p>
+        <h3 className="font-display text-2xl md:text-3xl font-extrabold tracking-tight text-ink mb-12 md:mb-16 text-center">
+          Best Industries for Modern Resume Templates
+        </h3>
+        <ul className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-px bg-ink/10 border border-ink/10 rounded-2xl overflow-clip">
+          {INDUSTRIES.map((ind) => (
+            <li key={ind.name} className="bg-chalk-dark px-4 py-6 text-center">
+              <p className="font-display font-bold text-ink">{ind.name}</p>
+              <p className="text-ink/60 text-sm mt-1">{ind.note}</p>
+            </li>
+          ))}
+        </ul>
+      </Band>
 
       <FAQSection faqs={config.faqs} />
 
       {/* Related Templates */}
       <RevealSection variant="fade-up">
         <div className="my-16 cv-auto cv-h-200">
-          <h3 className="font-display text-2xl font-bold text-ink mb-6 text-center">
+          <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase text-center mb-4">
+            Elsewhere
+          </p>
+          <h3 className="font-display text-2xl font-extrabold tracking-tight text-ink mb-12 md:mb-16 text-center">
             Explore Other Template Styles
           </h3>
           <div className="flex flex-wrap justify-center gap-4">

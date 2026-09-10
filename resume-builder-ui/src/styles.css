@@ -2082,3 +2082,125 @@ main:has(.seo-shell) {
     transition: none !important;
   }
 }
+
+/* ═════════════════════════════════════════════════════════════════════════
+   The ATS parse demo
+   ═════════════════════════════════════════════════════════════════════════
+   /ats-resume-templates made its central argument — that a graphic-heavy
+   template arrives at the recruiter as garbage — with two static white cards
+   sitting side by side, each holding a pre-garbled block of mono text. The
+   claim was asserted twice rather than demonstrated once, and the reader had
+   to do the comparison themselves.
+
+   It is now one machine: a sheet on the left, a scan that runs down it, and
+   the parse it produces appearing on the right in the order the scan reaches
+   it. The reader watches the same page go in and two different things come
+   out. Everything is driven from `view()` — there is no scroll listener here
+   for the same reason there is none on the step rail.
+
+   The static fallback is the finished state, not a degraded one: the parse is
+   fully written out and only the scan is missing, which is exactly the page it
+   was before, composed better. */
+
+.ats-sheet {
+  position: relative;
+  overflow: clip;
+}
+
+/* The scan. A 2px accent rule with its own bloom, travelling the height of the
+   sheet. Hidden at rest so the browsers without scroll timelines get a still
+   document rather than a stalled effect frozen across it. */
+.ats-scan {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  /* Full-height box carrying a 2px rule at its top edge, so the travel can be
+     written as translateY(100%) and stay a compositor transform at any sheet
+     size. A 2px element cannot express "the height of the sheet" in its own
+     percentage units, which is the trap here. */
+  will-change: transform;
+}
+
+.ats-scan::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 212, 126, 0) 0%,
+    rgba(0, 212, 126, 0.9) 18%,
+    rgba(0, 212, 126, 0.9) 82%,
+    rgba(0, 212, 126, 0) 100%
+  );
+  box-shadow: 0 0 24px 2px rgba(0, 212, 126, 0.45);
+}
+
+@keyframes ats-scan-run {
+  0%   { transform: translateY(0);    opacity: 0; }
+  12%  {                              opacity: 1; }
+  88%  {                              opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+
+/* Each parse line resolves as the scan passes the part of the sheet it came
+   from. The stagger is carried by `animation-range`, not `animation-delay`:
+   a scroll-driven animation has no clock to delay against, so the lines are
+   offset by giving each a later finish instead. */
+.ats-line {
+  opacity: 1;
+}
+
+@keyframes ats-line-in {
+  from { opacity: 0; transform: translateX(-6px); filter: blur(2px); }
+  to   { opacity: 1; transform: none;             filter: blur(0); }
+}
+
+@supports (animation-timeline: view()) {
+  .ats-scan {
+    animation: ats-scan-run linear both;
+    animation-timeline: view(block);
+    animation-range: entry 90% cover 55%;
+  }
+
+  .ats-line {
+    opacity: 0;
+    animation: ats-line-in linear both;
+    animation-timeline: view(block);
+    /* Same start for every line, a finish that walks down the block — so they
+       land in reading order, tracking the scan rather than racing it. */
+    animation-range: entry 90% cover calc(24% + var(--i, 0) * 4%);
+  }
+}
+
+/* The parse readout. `bg-white/5` over ink composites to #252525, which is a
+   third ground and a stricter one — white/60 measures 6.43:1 there and is the
+   value this block is set in. */
+.ats-readout {
+  font-variant-numeric: tabular-nums;
+  tab-size: 2;
+}
+
+/* The segmented control. Two states, and the selected one has to be legible on
+   ink without becoming the loudest thing in the band — so it is a white chip
+   with ink text, and the unselected side is a plain white/60 label. */
+.ats-toggle {
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ats-scan {
+    display: none !important;
+  }
+
+  .ats-line {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
