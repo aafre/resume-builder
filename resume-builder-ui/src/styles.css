@@ -1687,3 +1687,88 @@ div[data-google-query-id] {
 .tone-do   { color: #007a48; }
 .tone-dont { color: #b42318; }
 .tone-note { color: #92400e; }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   /examples/:slug — the resume as one sheet
+
+   The page used to render the resume twice: a CDN screenshot of the printed
+   PDF, then the same resume again beneath it as flat HTML "for SEO", each
+   sealed in its own white card with its own header bar. Two weak objects
+   where the visitor came for exactly one.
+
+   These rules make a single sheet — the print at the top, the readable
+   document continuing below the same paper edge — and set the HTML half as a
+   *document* (rules, tabular dates, a real measure) rather than as UI chrome
+   with header bars and pill chips.
+
+   The print stays an <img> with its intrinsic width/height and eager
+   fetchpriority: it is the LCP element on a prerendered, search-dependent
+   page, and none of this may move it.
+   ------------------------------------------------------------------------- */
+
+.ex-doc {
+  /* Dates and years sit in their own column on the right; proportional
+     numerals make that column ragged at a glance. */
+  font-variant-numeric: tabular-nums;
+}
+
+/* Section rule: the mono label, then a hairline that spends the rest of the
+   width. Same fading gradient as the article reading spine, so a resume
+   section and an article section are visibly the same idea. */
+.ex-rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(12, 12, 12, 0.14),
+    rgba(12, 12, 12, 0.05) 45%,
+    transparent
+  );
+}
+
+/* Bullets belong to the document, not to the interface: a small neutral
+   marker, never the accent — a resume full of green dots is a green resume. */
+.ex-doc__bullets li::marker {
+  color: rgba(12, 12, 12, 0.3);
+}
+
+/* Selecting the resume is the point — people come here to lift bullet points.
+   Make the selection the brand's, not the browser's. */
+.ex-sheet ::selection {
+  background-color: rgba(0, 212, 126, 0.25);
+  color: #0c0c0c;
+}
+
+/* The hub card thumbnail and the example page's print share
+   `view-transition-name: example-sheet`, so the browser morphs the small crop
+   into the full sheet. Exactly one element carries the name at a time — the
+   hub assigns it only to the card being clicked, the example page's print
+   holds it permanently, and the two never coexist. Distinct from
+   `resume-sheet` (my-resumes) and `template-sheet` (/templates), which are
+   already spoken for.
+
+   Firefox has no View Transitions and simply cuts; withViewTransition() skips
+   the transition outright under reduced motion. */
+::view-transition-old(example-sheet),
+::view-transition-new(example-sheet) {
+  /* A card crop and a full page have different aspect ratios; height:100% plus
+     a top-anchored cover keeps both snapshots filling the morph box instead of
+     squashing mid-flight. */
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  animation-duration: 380ms;
+  animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+::view-transition-group(example-sheet) {
+  animation-duration: 380ms;
+  animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* The hub card's crop. Fading the bottom edge makes the resume read as a page
+   continuing behind the card body rather than an image chopped in half — the
+   card is a window onto the sheet, not a thumbnail of it. */
+.ex-card-crop img {
+  -webkit-mask-image: linear-gradient(to bottom, #000 62%, rgba(0, 0, 0, 0));
+  mask-image: linear-gradient(to bottom, #000 62%, rgba(0, 0, 0, 0));
+}

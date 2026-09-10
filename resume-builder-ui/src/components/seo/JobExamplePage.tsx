@@ -4,17 +4,17 @@
  * URL: /examples/:slug
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import SEOPageLayout from '../shared/SEOPageLayout';
-import PageHero from '../shared/PageHero';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
 import BulletPointBank from '../shared/BulletPointBank';
 import BreadcrumbsWithSchema from '../shared/BreadcrumbsWithSchema';
 import RevealSection from '../shared/RevealSection';
 import { usePageSchema } from '../../hooks/usePageSchema';
-import { loadJobExample, convertToEditorFormat } from '../../utils/yamlLoader';
+import { loadJobExample, convertToEditorFormat, getCachedJobExample } from '../../utils/yamlLoader';
+import { getPrerenderPayload } from '../../utils/prerenderPayload';
 import { getRelatedJobs, getJobExampleBySlug, JOB_CATEGORIES } from '../../data/jobExamples';
 import { getMatchingKeywordSlug, getKeywordJobTitle } from '../../utils/crossLinkHelpers';
 import { useAuth } from '../../contexts/AuthContext';
@@ -30,6 +30,92 @@ import type { Section } from '../../types';
 const PREVIEW_BASE_URL = import.meta.env.VITE_SUPABASE_URL
   ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/template-previews`
   : '';
+
+/**
+ * Hydration payload.
+ *
+ * The page's whole body comes from `fetch('/examples/<slug>.yml')`, which cannot
+ * resolve before the first client render. These routes are prerendered, so the
+ * resume is already painted in the HTML — and without a synchronous seed React's
+ * first client render is the loading skeleton, which wipes that painted resume
+ * until the fetch lands (~1s of blank on the cluster carrying the site's third
+ * highest impression count).
+ *
+ * So the page emits its own resolved data as a JSON script tag. The prerenderer
+ * captures it like any other DOM, and the entry bundle snapshots it before React
+ * hydrates — it cannot be read from here, because this route is `lazy()` and its
+ * Suspense fallback has already replaced #root (tag included) by the time this
+ * component first renders. See utils/prerenderPayload.ts.
+ *
+ * On a client-side navigation there is no snapshot for the slug and the fetch
+ * path runs as before.
+ */
+const PAYLOAD_ID = 'job-example-data';
+
+function readHydrationPayload(slug: string | undefined): JobExampleData | null {
+  if (!slug) return null;
+  const parsed = getPrerenderPayload<JobExampleData>(PAYLOAD_ID);
+  // The snapshot is whichever example was prerendered into this document; a
+  // client-side navigation to a different slug must not read it.
+  return parsed?.meta?.slug === slug ? parsed : null;
+}
+
+/**
+ * Data available on the very first render: the prerendered payload on a cold
+ * load, or the YAML cache the hub warmed on hover for a client-side one.
+ * Either way the sheet paints immediately instead of after a frame of skeleton.
+ */
+function readSynchronousData(slug: string | undefined): JobExampleData | null {
+  if (!slug) return null;
+  return readHydrationPayload(slug) ?? getCachedJobExample(slug);
+}
+
+// `</script>` inside the JSON would close the tag early. The data is our own, but
+// an unescaped `<` in any resume field is still a script-injection shape.
+const serializePayload = (data: JobExampleData) =>
+  JSON.stringify(data).replace(/</g, '\\u003c');
+
+/**
+ * A section of the resume document: a mono label, then a hairline that spends
+ * the remaining width. Heading level stays h4, matching what this page shipped
+ * before, so the document does not start competing with the page's own H2s.
+ */
+const DocSection = ({
+  label,
+  className = '',
+  children,
+}: {
+  label: string;
+  className?: string;
+  children: React.ReactNode;
+}) => (
+  <section className={className}>
+    <div className="flex items-center gap-3 mb-3">
+      <h4 className="font-mono text-[0.6875rem] tracking-[0.15em] uppercase text-ink whitespace-nowrap">
+        {label}
+      </h4>
+      <span className="ex-rule flex-1" aria-hidden="true" />
+    </div>
+    {children}
+  </section>
+);
+
+// A drawn mark rather than the ✓ character, which renders as a different glyph
+// on every platform and carries no stroke weight of its own.
+const CheckMark = () => (
+  <svg
+    viewBox="0 0 16 16"
+    className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-accent-text"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M3 8.5 6.2 11.7 13 5" />
+  </svg>
+);
 
 // Loading skeleton component
 const LoadingSkeleton = () => (
@@ -66,9 +152,15 @@ const NotFound = ({ slug }: { slug: string }) => (
 
 export default function JobExamplePage() {
   const { slug } = useParams<{ slug: string }>();
-  const [data, setData] = useState<JobExampleData | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Seed from the prerendered payload so the first client render matches the
+  // server HTML instead of replacing it with the skeleton. See PAYLOAD_ID above.
+  const [data, setData] = useState<JobExampleData | null>(() => readSynchronousData(slug));
+  const [loading, setLoading] = useState(() => readSynchronousData(slug) === null);
   const [error, setError] = useState(false);
+  // Slug the initial render was already seeded for. Held in a ref rather than
+  // re-read from the DOM in the effect: by the time effects run React owns that
+  // script tag, so a second lookup is a race we do not need to be in.
+  const seededSlug = useRef<string | null>(data ? slug ?? null : null);
   const [showConversionPrompt, setShowConversionPrompt] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showTemplateModal, setShowTemplateModal] = useState(false);
@@ -82,6 +174,12 @@ export default function JobExamplePage() {
     if (!slug) {
       setError(true);
       setLoading(false);
+      return;
+    }
+
+    // Already seeded from the prerendered payload — the round trip would fetch
+    // data we are currently rendering.
+    if (seededSlug.current === slug) {
       return;
     }
 
@@ -243,6 +341,15 @@ export default function JobExamplePage() {
 
   return (
     <SEOPageLayout seoConfig={seoConfig} schemas={schemas}>
+      {/* Captured by the prerenderer; read back synchronously on hydration so the
+          painted resume is never replaced by the skeleton. See PAYLOAD_ID above. */}
+      <script
+        type="application/json"
+        id={PAYLOAD_ID}
+        data-prerender-payload=""
+        dangerouslySetInnerHTML={{ __html: serializePayload(data) }}
+      />
+
       {/* Breadcrumbs */}
       <BreadcrumbsWithSchema
         breadcrumbs={[
@@ -253,195 +360,205 @@ export default function JobExamplePage() {
         ]}
       />
 
-      {/* Hero Section */}
-      <PageHero config={heroConfig} />
-
-      {/* Career Outlook Intro */}
-      {(dbEntry?.careerOutlook || data.meta.careerOutlook) && (
-        <div className="max-w-4xl mx-auto mb-8 px-4">
-          <p className="text-lg font-extralight text-ink/60 leading-relaxed">
+      {/* Masthead. Left-aligned and tightened so the sheet — the thing the
+          visitor actually came for — clears the fold instead of sitting below
+          a centred 72px headline and three stacked paragraphs. Every word of
+          the old hero copy is still here. */}
+      <header className="mb-10 md:mb-14">
+        <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4">
+          Resume Example{categoryInfo ? ` · ${categoryInfo.title}` : ''}
+        </p>
+        <h1 className="font-display text-[clamp(2rem,4.2vw,3.25rem)] font-extrabold leading-[1.08] tracking-tight text-ink max-w-4xl">
+          {heroConfig.h1}
+        </h1>
+        <p className="mt-5 text-lg md:text-xl font-extralight text-ink/60 leading-relaxed max-w-3xl">
+          {heroConfig.subtitle}
+        </p>
+        <p className="mt-3 text-base font-extralight text-ink/60 leading-relaxed max-w-3xl">
+          {heroConfig.description}
+        </p>
+        {(dbEntry?.careerOutlook || data.meta.careerOutlook) && (
+          <p className="mt-3 text-base font-extralight text-ink/60 leading-relaxed max-w-3xl">
             {dbEntry?.careerOutlook || data.meta.careerOutlook}
           </p>
-        </div>
-      )}
+        )}
+      </header>
 
-      {/* Resume Preview Section */}
-      <RevealSection>
-        <section className="my-12">
-          <div className="flex flex-col lg:flex-row gap-8">
-            {/* Resume Preview */}
-            <div className="flex-1">
-              <div className="bg-white rounded-2xl shadow-premium border border-black/[0.06] overflow-hidden">
-                <div className="bg-chalk px-6 py-4 border-b border-black/[0.06] flex items-center justify-between">
-                  <h2 className="font-bold text-ink">Resume Preview</h2>
-                  <span className="text-sm text-ink/60">
-                    Template: {data.resume.template.charAt(0).toUpperCase() + data.resume.template.slice(1)}
-                  </span>
-                </div>
+      {/* The sheet and its action rail.
+          Deliberately not wrapped in <RevealSection>: reveals are for
+          below-fold sections, and [data-reveal] starts at opacity:0 — which
+          both holds the print image back from LCP eligibility until the
+          observer fires and leaves the card → sheet view transition nothing
+          visible to morph into. */}
+      <section className="flex flex-col lg:flex-row gap-8 lg:gap-10">
+        {/* One document: the print, then the same resume readable and
+            selectable, under a single paper edge. */}
+        <article className="ex-sheet flex-1 min-w-0 w-full bg-white rounded-2xl shadow-premium border border-black/[0.06] overflow-clip">
+          {/* How this resume actually comes out of the builder. The caption
+              names the relationship between this and the text below it —
+              without it the two read as the same thing shown twice. */}
+          <figure className="bg-chalk-dark px-4 py-6 sm:px-8 sm:py-10">
+            <img
+              src={`${PREVIEW_BASE_URL}/${slug}.webp`}
+              srcSet={`${PREVIEW_BASE_URL}/${slug}-sm.webp 400w, ${PREVIEW_BASE_URL}/${slug}.webp 800w`}
+              sizes="(max-width: 768px) 400px, 550px"
+              alt={`${data.meta.title} resume example - professional ATS-friendly template`}
+              className="mx-auto w-full max-w-[560px] rounded-md shadow-lg border border-black/[0.06]"
+              width={800}
+              height={1131}
+              loading="eager"
+              fetchPriority="high"
+              // Paired with the hub card's thumbnail so the browser morphs the
+              // card into this sheet. Exactly one element holds the name at a
+              // time: the hub assigns it only to the card being clicked.
+              style={{ viewTransitionName: 'example-sheet' }}
+              onError={(e) => {
+                const img = e.target as HTMLImageElement;
+                img.onerror = null;
+                img.src = '/docs/templates/modern-no-icons.png';
+              }}
+            />
+            <figcaption className="mt-5 text-center font-mono text-[0.6875rem] tracking-[0.12em] uppercase text-ink/60">
+              As it prints &mdash; {data.resume.template.charAt(0).toUpperCase() + data.resume.template.slice(1)} template
+            </figcaption>
+          </figure>
 
-                {/* Real Template Preview Image */}
-                <div className="p-4 lg:p-6 bg-white flex justify-center">
-                  <img
-                    src={`${PREVIEW_BASE_URL}/${slug}.webp`}
-                    srcSet={`${PREVIEW_BASE_URL}/${slug}-sm.webp 400w, ${PREVIEW_BASE_URL}/${slug}.webp 800w`}
-                    sizes="(max-width: 768px) 400px, 550px"
-                    alt={`${data.meta.title} resume example - professional ATS-friendly template`}
-                    className="w-full max-w-[550px] rounded-lg shadow-lg border border-black/[0.06]"
-                    width={800}
-                    height={1131}
-                    loading="eager"
-                    fetchPriority="high"
-                    onError={(e) => {
-                      const img = e.target as HTMLImageElement;
-                      img.onerror = null;
-                      img.src = '/docs/templates/modern-no-icons.png';
-                    }}
-                  />
-                </div>
+          {/* The document itself — the full resume, every entry and every
+              bullet, set as a document rather than as UI chrome. */}
+          <div className="ex-doc px-6 sm:px-10 lg:px-14 py-10 lg:py-12">
+            <header className="text-center pb-7 mb-7 border-b border-black/[0.06]">
+              <h3 className="font-display text-[1.75rem] font-extrabold tracking-tight text-ink">
+                {data.resume.contact.name}
+              </h3>
+              <p className="mt-1 text-base text-accent-text">{data.resume.contact.title}</p>
+              <p className="mt-3 font-mono text-[0.6875rem] tracking-[0.08em] text-ink/60">
+                {data.resume.contact.email} &middot; {data.resume.contact.phone} &middot; {data.resume.contact.location}
+              </p>
+            </header>
 
-                {/* Full HTML-styled resume text for SEO */}
-                <div className="px-6 lg:px-8 pb-6 lg:pb-8 bg-white border-t border-black/[0.06] mt-2 pt-6">
-                  {/* Contact Header */}
-                  <div className="text-center border-b border-black/[0.06] pb-6 mb-6">
-                    <h3 className="text-2xl font-bold text-ink">{data.resume.contact.name}</h3>
-                    <p className="text-lg text-accent-text mt-1">{data.resume.contact.title}</p>
-                    <p className="text-ink/60 mt-2 text-sm">
-                      {data.resume.contact.email} | {data.resume.contact.phone} | {data.resume.contact.location}
+            <DocSection label="Professional Summary" className="mb-7">
+              <p className="text-[0.9375rem] leading-relaxed text-ink/75 max-w-[68ch]">
+                {data.resume.summary}
+              </p>
+            </DocSection>
+
+            <DocSection label="Work Experience" className="mb-7">
+              <div className="space-y-5">
+                {data.resume.experience.map((exp, index) => (
+                  <div key={index}>
+                    <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                      <div>
+                        <p className="font-semibold text-ink text-[0.9375rem]">{exp.title}</p>
+                        <p className="text-sm text-ink/60">{exp.company}</p>
+                      </div>
+                      <p className="font-mono text-[0.6875rem] tracking-[0.08em] text-ink/60">
+                        {exp.dates}
+                      </p>
+                    </div>
+                    <ul className="ex-doc__bullets mt-2.5 list-disc pl-5 space-y-1.5">
+                      {exp.bullets.map((bullet, bIndex) => (
+                        <li key={bIndex} className="text-[0.875rem] leading-relaxed text-ink/75 max-w-[68ch]">
+                          {bullet}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </DocSection>
+
+            <DocSection label="Education" className="mb-7">
+              <div className="space-y-3">
+                {data.resume.education.map((edu, index) => (
+                  <div key={index} className="flex flex-wrap items-baseline justify-between gap-x-4">
+                    <div>
+                      <p className="font-semibold text-ink text-[0.9375rem]">{edu.degree}</p>
+                      <p className="text-sm text-ink/60">{edu.school}</p>
+                    </div>
+                    <p className="font-mono text-[0.6875rem] tracking-[0.08em] text-ink/60">
+                      {edu.year}
                     </p>
                   </div>
-
-                  {/* Summary */}
-                  <div className="mb-6">
-                    <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-2">Professional Summary</h4>
-                    <p className="text-ink/80 text-sm leading-relaxed">{data.resume.summary}</p>
-                  </div>
-
-                  {/* Experience — ALL entries, ALL bullets */}
-                  <div className="mb-6">
-                    <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-3">Work Experience</h4>
-                    {data.resume.experience.map((exp, index) => (
-                      <div key={index} className="mb-4">
-                        <div className="flex justify-between items-start mb-1">
-                          <div>
-                            <p className="font-semibold text-ink">{exp.title}</p>
-                            <p className="text-ink/60">{exp.company}</p>
-                          </div>
-                          <p className="text-ink/60 text-sm">{exp.dates}</p>
-                        </div>
-                        <ul className="mt-2 space-y-1">
-                          {exp.bullets.map((bullet, bIndex) => (
-                            <li key={bIndex} className="text-ink/80 text-sm pl-4 relative">
-                              <span className="absolute left-0 text-ink/60">&bull;</span>
-                              {bullet}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Education */}
-                  <div className="mb-6">
-                    <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-2">Education</h4>
-                    {data.resume.education.map((edu, index) => (
-                      <div key={index} className="flex justify-between items-start mb-1">
-                        <div>
-                          <p className="font-semibold text-ink">{edu.degree}</p>
-                          <p className="text-ink/60">{edu.school}</p>
-                        </div>
-                        <p className="text-ink/60 text-sm">{edu.year}</p>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Skills — ALL skills, no truncation */}
-                  <div className={data.resume.certifications?.length ? 'mb-6' : ''}>
-                    <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-2">Skills</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {data.resume.skills.map((skill, index) => (
-                        <span key={index} className="px-2 py-1 bg-chalk-dark text-ink text-sm rounded">
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Certifications (if present) */}
-                  {data.resume.certifications && data.resume.certifications.length > 0 && (
-                    <div>
-                      <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-2">Certifications</h4>
-                      <ul className="space-y-1">
-                        {data.resume.certifications.map((cert, index) => (
-                          <li key={index} className="text-ink/80 text-sm pl-4 relative">
-                            <span className="absolute left-0 text-ink/60">&bull;</span>
-                            {cert}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
+                ))}
               </div>
-            </div>
+            </DocSection>
 
-            {/* Sidebar with CTA */}
-            <div className="lg:w-80">
-              <div className="bg-white rounded-2xl shadow-premium border border-black/[0.06] p-8 sticky top-24">
-                <h3 className="text-xl font-extrabold text-ink mb-4">
-                  Use This Template
-                </h3>
-                <p className="text-ink/60 font-extralight mb-6">
-                  Click below to open this resume in our free editor. Customize the content with your own experience.
-                </p>
+            {/* An inline list, not pill chips: a resume lists its skills, it
+                does not tag them. */}
+            <DocSection
+              label="Skills"
+              className={data.resume.certifications?.length ? 'mb-7' : ''}
+            >
+              <p className="text-[0.9375rem] leading-relaxed text-ink/75">
+                {data.resume.skills.join(' · ')}
+              </p>
+            </DocSection>
 
-                <button
-                  onClick={handleEditTemplate}
-                  disabled={creating}
-                  className="btn-primary w-full py-3 mb-4 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                >
-                  {creating ? (
-                    <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                      Creating...
-                    </>
-                  ) : (
-                    'Edit This Template'
-                  )}
-                </button>
+            {data.resume.certifications && data.resume.certifications.length > 0 && (
+              <DocSection label="Certifications">
+                <ul className="ex-doc__bullets list-disc pl-5 space-y-1.5">
+                  {data.resume.certifications.map((cert, index) => (
+                    <li key={index} className="text-[0.875rem] leading-relaxed text-ink/75">
+                      {cert}
+                    </li>
+                  ))}
+                </ul>
+              </DocSection>
+            )}
+          </div>
+        </article>
 
-                <Link
-                  to="/templates"
-                  className="btn-secondary w-full py-3 block text-center"
-                >
-                  Browse All Templates
-                </Link>
+        {/* Action rail */}
+        <aside className="w-full lg:w-[19rem] lg:flex-shrink-0">
+          <div className="bg-white rounded-2xl shadow-premium border border-black/[0.06] p-7 lg:sticky lg:top-24">
+            <h3 className="font-display text-xl font-extrabold text-ink">
+              Use This Template
+            </h3>
+            <p className="mt-3 text-sm font-extralight text-ink/60 leading-relaxed">
+              Click below to open this resume in our free editor. Customize the content with your own experience.
+            </p>
 
-                <div className="mt-6 pt-6 border-t border-black/[0.06]">
-                  <h4 className="font-bold text-ink mb-3">What you get:</h4>
-                  <ul className="space-y-2 text-sm text-ink/60">
-                    <li className="flex items-center gap-2">
-                      <span className="text-accent-text">&#10003;</span>
-                      ATS-optimized format
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-accent-text">&#10003;</span>
-                      Pre-written bullet points
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-accent-text">&#10003;</span>
-                      Professional layout
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-accent-text">&#10003;</span>
-                      Free PDF download
-                    </li>
-                  </ul>
-                </div>
-              </div>
+            <button
+              onClick={handleEditTemplate}
+              disabled={creating}
+              className="btn-primary w-full py-3 mt-6 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {creating ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-ink"></div>
+                  Creating...
+                </>
+              ) : (
+                'Edit This Template'
+              )}
+            </button>
+
+            <Link
+              to="/templates"
+              className="btn-secondary w-full py-3 mt-3 block text-center"
+            >
+              Browse All Templates
+            </Link>
+
+            <div className="mt-7 pt-6 border-t border-black/[0.06]">
+              <h4 className="text-sm font-bold text-ink mb-3">What you get:</h4>
+              <ul className="space-y-2.5 text-sm text-ink/60">
+                {[
+                  'ATS-optimized format',
+                  'Pre-written bullet points',
+                  'Professional layout',
+                  'Free PDF download',
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2.5">
+                    <CheckMark />
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
-        </section>
-      </RevealSection>
+      </aside>
+      </section>
 
       {/* Bullet Point Bank */}
       <BulletPointBank

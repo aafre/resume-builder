@@ -7,8 +7,8 @@
  * to all job example pages, organized by industry categories.
  */
 
-import { useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useCallback, useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import SEOPageLayout from '../shared/SEOPageLayout';
 import PageHero from '../shared/PageHero';
 import FAQSection from '../shared/FAQSection';
@@ -22,6 +22,15 @@ import {
   JOB_EXAMPLES_DATABASE,
 } from '../../data/jobExamples';
 import type { JobCategory } from '../../data/jobExamples/types';
+import { loadJobExample } from '../../utils/yamlLoader';
+import { withViewTransition } from '../../lib/viewTransition';
+
+// Supabase Storage CDN base URL — the same pre-generated previews the example
+// pages show. A directory of 26 resumes that showed no resumes was the hub's
+// version of the defect the example pages had.
+const PREVIEW_BASE_URL = import.meta.env.VITE_SUPABASE_URL
+  ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/template-previews`
+  : '';
 
 export default function JobExamplesHub() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -30,8 +39,43 @@ export default function JobExamplesHub() {
     initialCategory || 'all'
   );
 
+  const navigate = useNavigate();
+  const [morphingSlug, setMorphingSlug] = useState<string | null>(null);
+
   const jobsByCategory = getJobExamplesByCategory();
   const totalExamples = JOB_EXAMPLES_DATABASE.length;
+
+  /**
+   * Warm both halves of the next page on intent: the route's JS chunk and the
+   * example's YAML. Without this a click lands on the route Suspense fallback
+   * and then a loading skeleton, and the card has nothing to morph into.
+   * Both are idempotent and cached, so repeated hovers are free.
+   */
+  const preloadExample = useCallback((slug: string) => {
+    import('./JobExamplePage');
+    loadJobExample(slug);
+  }, []);
+
+  /**
+   * Morph the card's thumbnail into the example page's sheet. The name is
+   * assigned to this card only for the duration of the navigation, so exactly
+   * one element ever carries it.
+   */
+  const openExample = useCallback(
+    (event: React.MouseEvent, slug: string) => {
+      // Let modified clicks (new tab, new window) behave normally.
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
+        return;
+      }
+      event.preventDefault();
+      preloadExample(slug);
+      setMorphingSlug(slug);
+      withViewTransition(() => navigate(`/examples/${slug}`)).finally(() =>
+        setMorphingSlug(null)
+      );
+    },
+    [navigate, preloadExample]
+  );
 
   // SEO config
   const seoConfig = {
@@ -79,13 +123,17 @@ export default function JobExamplesHub() {
 
   // Handle category selection
   const handleCategoryClick = (category: JobCategory | 'all') => {
-    setSelectedCategory(category);
-    if (category === 'all') {
-      searchParams.delete('category');
-    } else {
-      searchParams.set('category', category);
-    }
-    setSearchParams(searchParams);
+    // Cards enter and leave as the filter changes; a view transition cross-fades
+    // that instead of snapping. No-ops in Firefox and under reduced motion.
+    withViewTransition(() => {
+      setSelectedCategory(category);
+      if (category === 'all') {
+        searchParams.delete('category');
+      } else {
+        searchParams.set('category', category);
+      }
+      setSearchParams(searchParams);
+    });
   };
 
   // Filter categories to show
@@ -118,11 +166,17 @@ export default function JobExamplesHub() {
 
       {/* Category Filter */}
       <section className="my-8">
-        <div className="p-2 bg-white/50 rounded-2xl border border-black/[0.06]">
+        <div
+          role="group"
+          aria-label="Filter resume examples by industry"
+          className="p-2 bg-white/50 rounded-2xl border border-black/[0.06]"
+        >
           <div className="flex flex-wrap justify-center gap-2">
             <button
+              type="button"
               onClick={() => handleCategoryClick('all')}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
+              aria-pressed={selectedCategory === 'all'}
+              className={`min-h-11 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                 selectedCategory === 'all'
                   ? 'bg-accent text-ink'
                   : 'bg-chalk-dark text-ink/60 hover:bg-white hover:shadow-sm'
@@ -133,14 +187,17 @@ export default function JobExamplesHub() {
             {JOB_CATEGORIES.map(category => (
               <button
                 key={category.id}
+                type="button"
                 onClick={() => handleCategoryClick(category.id)}
-                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
+                aria-pressed={selectedCategory === category.id}
+                className={`min-h-11 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                   selectedCategory === category.id
                     ? 'bg-accent text-ink'
                     : 'bg-chalk-dark text-ink/60 hover:bg-white hover:shadow-sm'
                 }`}
               >
-                {category.icon} {category.title.split(' & ')[0]} ({jobsByCategory[category.id].length})
+                <span aria-hidden="true">{category.icon}</span>{' '}
+                {category.title.split(' & ')[0]} ({jobsByCategory[category.id].length})
               </button>
             ))}
           </div>
@@ -168,31 +225,62 @@ export default function JobExamplesHub() {
                 </div>
 
                 {/* Job Cards Grid */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
                   {jobs.map(job => (
                     <Link
                       key={job.slug}
                       to={`/examples/${job.slug}`}
-                      className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-sm hover:shadow-premium hover:-translate-y-1 transition-all duration-300 group"
+                      onMouseEnter={() => preloadExample(job.slug)}
+                      onFocus={() => preloadExample(job.slug)}
+                      onClick={(event) => openExample(event, job.slug)}
+                      className="group flex flex-col bg-white rounded-2xl border border-black/[0.06] shadow-sm hover:shadow-premium hover:-translate-y-1 motion-reduce:hover:translate-y-0 transition-all duration-300 overflow-clip"
                     >
-                      <div className="flex items-start justify-between">
-                        <h3 className="font-bold text-ink group-hover:text-accent-text transition-colors">
-                          {job.title}
-                        </h3>
-                        <span className="text-accent-text opacity-0 group-hover:opacity-100 transition-opacity">
-                          &rarr;
-                        </span>
+                      {/* The resume itself. Cropped to its top third: the
+                          masthead and summary are what tell you whether this is
+                          the right example, and a whole page shrunk to card
+                          width is unreadable anyway. */}
+                      <div className="ex-card-crop bg-chalk-dark px-5 pt-5 overflow-clip h-[132px]">
+                        <img
+                          src={`${PREVIEW_BASE_URL}/${job.slug}-sm.webp`}
+                          alt=""
+                          width={400}
+                          height={566}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full rounded-t-md border border-black/[0.06] border-b-0 shadow-sm"
+                          style={
+                            morphingSlug === job.slug
+                              ? { viewTransitionName: 'example-sheet' }
+                              : undefined
+                          }
+                          onError={(e) => {
+                            // Hide the frame rather than show a broken crop.
+                            const img = e.target as HTMLImageElement;
+                            img.onerror = null;
+                            const frame = img.parentElement;
+                            if (frame) frame.style.display = 'none';
+                          }}
+                        />
                       </div>
-                      <p className="text-sm text-ink/60 mt-2 line-clamp-2">
-                        {job.metaDescription}
-                      </p>
-                      <div className="mt-3 flex items-center gap-2">
-                        <span className="text-xs px-2 py-1 bg-accent/[0.06] text-ink/80 rounded">
-                          Free Template
-                        </span>
-                        <span className="text-xs px-2 py-1 bg-accent/10 text-ink/80 rounded">
-                          ATS-Friendly
-                        </span>
+
+                      <div className="flex flex-col flex-1 p-5">
+                        <div className="flex items-start justify-between gap-3">
+                          <h3 className="font-bold text-ink group-hover:text-accent-text transition-colors">
+                            {job.title}
+                          </h3>
+                          <span
+                            aria-hidden="true"
+                            className="text-accent-text opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            &rarr;
+                          </span>
+                        </div>
+                        <p className="text-sm text-ink/60 mt-2 line-clamp-2">
+                          {job.metaDescription}
+                        </p>
+                        <p className="mt-auto pt-4 font-mono text-[0.6875rem] tracking-[0.12em] uppercase text-ink/60">
+                          Free &middot; ATS-friendly
+                        </p>
                       </div>
                     </Link>
                   ))}
