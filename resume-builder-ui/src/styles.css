@@ -2204,3 +2204,74 @@ main:has(.seo-shell) {
     filter: none !important;
   }
 }
+
+/* ═════════════════════════════════════════════════════════════════════════
+   Legal document prose
+   ═════════════════════════════════════════════════════════════════════════
+   /privacy-policy and /terms-of-service were the last two pages on the site
+   never migrated at all — `container mx-auto`, an h1 at text-3xl font-bold,
+   every section head an <h4> because the size looked right, and the whole
+   document in one shadowed slab at full container width.
+
+   The section bodies stay plain JSX and the inline rules live here, so a legal
+   edit is an edit to a paragraph rather than to a wall of utility classes. */
+
+.legal-prose p {
+  font-weight: 200;
+  color: rgba(12, 12, 12, 0.6);
+  line-height: 1.75;
+  text-wrap: pretty;
+}
+
+.legal-prose p + p {
+  margin-top: 1rem;
+}
+
+.legal-prose strong {
+  font-weight: 700;
+  color: #0c0c0c;
+}
+
+.legal-prose ul {
+  margin-top: 1rem;
+  list-style: none;
+  padding-left: 0;
+}
+
+.legal-prose li {
+  position: relative;
+  padding-left: 1.5rem;
+  font-weight: 200;
+  color: rgba(12, 12, 12, 0.6);
+  line-height: 1.7;
+}
+
+.legal-prose li + li {
+  margin-top: 0.5rem;
+}
+
+/* An en dash rather than a disc: the system has no bulleted list anywhere else
+   and a filled dot at this weight reads heavier than the text it marks. */
+.legal-prose li::before {
+  content: "–";
+  position: absolute;
+  left: 0;
+  color: rgba(12, 12, 12, 0.35);
+}
+
+.legal-prose a {
+  color: #007a48;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(0, 122, 72, 0.35);
+  transition: text-decoration-color 200ms;
+}
+
+.legal-prose a:hover {
+  text-decoration-color: #007a48;
+}
+
+.legal-prose ::selection {
+  background-color: rgba(0, 212, 126, 0.25);
+  color: #0c0c0c;
+}
