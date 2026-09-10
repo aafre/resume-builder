@@ -35,13 +35,16 @@ export default function CompareBuildersCrossLinks({
     : ALL_COMPARISONS;
 
   return (
-    <div className={`${bgColor} rounded-xl p-6 mt-12`}>
-      <h2 className="font-display text-2xl font-extrabold text-ink mb-4">{title}</h2>
+    <div className={`${bgColor} rounded-2xl p-6 md:p-8 mt-12`}>
+      <h2 className="font-display text-2xl font-extrabold tracking-tight text-ink mb-4">{title}</h2>
       <p className="font-display font-extralight text-ink/60 mb-4">{description}</p>
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {links.map((link) => (
           <li key={link.path}>
-            <Link to={link.path} className="text-accent-text hover:underline">
+            <Link
+              to={link.path}
+              className="flex items-baseline gap-3 min-h-11 py-2 text-accent-text font-medium underline underline-offset-4 decoration-accent-text/30 hover:decoration-accent-text transition-colors"
+            >
               {link.label}
             </Link>
           </li>

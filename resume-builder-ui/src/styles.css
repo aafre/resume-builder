@@ -1407,6 +1407,18 @@ div[data-google-query-id] {
   }
 }
 
+/* Two of the long posts carry a hand-written contents block in the body. Above
+   1360px `ArticleRail` puts the same list in the gutter, so the inline one is a
+   second table of contents on the same screen; it hides at exactly the width
+   the rail appears, and stays as the only navigation below it. Its title is a
+   mono label rather than an <h2>, because the rail builds itself from the
+   article's h2 elements and was listing "Table of Contents" as a section. */
+@media (min-width: 1360px) {
+  .toc-inline {
+    display: none;
+  }
+}
+
 .article-rail-inner {
   position: sticky;
   top: calc(var(--header-height-desktop) + 2rem);
