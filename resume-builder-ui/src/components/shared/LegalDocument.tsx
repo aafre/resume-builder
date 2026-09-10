@@ -49,18 +49,26 @@ export default function LegalDocument({
       .filter((el): el is HTMLElement => el !== null);
     if (headings.length === 0) return;
 
-    /* The band is the top fifth of the viewport: a heading is "current" once it
-       has reached the reading position, not when it first appears at the
-       bottom. Without the negative bottom inset every section below the fold
-       counts as intersecting and the rail sits on the last one. */
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.filter((e) => e.isIntersecting);
-        if (visible.length === 0) return;
-        setActiveId(visible[0].target.id);
-      },
-      { rootMargin: '-20% 0px -70% 0px', threshold: 0 }
-    );
+    /* The observer is only the trigger; the answer is read from the rects.
+       Choosing from the entries alone breaks on a document like this one,
+       where a section can be taller than the viewport: nothing is intersecting
+       for that whole stretch, no entry fires, and the rail sits on whichever
+       heading happened to be current when the reader entered the section.
+       Recomputing "the last heading that has passed the reading line" costs one
+       pass over nine elements and is right at every scroll position. */
+    const sync = () => {
+      const line = 140;
+      let current = headings[0];
+      for (const el of headings) {
+        if (el.getBoundingClientRect().top <= line) current = el;
+      }
+      setActiveId(current.id);
+    };
+
+    const observer = new IntersectionObserver(sync, {
+      rootMargin: '0px 0px -60% 0px',
+      threshold: [0, 1],
+    });
 
     headings.forEach((el) => observer.observe(el));
     return () => observer.disconnect();

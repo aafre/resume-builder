@@ -25,7 +25,11 @@ const ErrorPage: React.FC<{ message?: string }> = ({ message }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-ink flex items-center justify-center px-4 py-16 relative overflow-clip">
+    /* Not `min-h-screen`: this renders as a route *and* as an error-boundary
+       fallback inside a page, where forcing a viewport height put a full-height
+       black slab in the middle of a chalk document. 60vh fills the frame as a
+       route and stays proportionate when it is one failed section. */
+    <div className="min-h-[60vh] bg-ink flex items-center justify-center px-4 py-16 relative overflow-clip">
       <SEOHead title="Error | EasyFreeResume" robots="noindex, follow" />
 
       {/* The same bloom the ink bands carry, so the page belongs to the system

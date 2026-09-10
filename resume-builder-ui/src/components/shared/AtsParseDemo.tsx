@@ -118,7 +118,9 @@ function GraphicSheet() {
           fill="rgba(255,255,255,0.3)"
         />
       ))}
-      {/* Skill meters: bars, which arrive as nothing at all */}
+      {/* Skill meters: bars, which arrive as nothing at all. Deliberately not
+          the accent — green means "passing" here, and this is the sheet that
+          fails. */}
       {[210, 232, 254, 276].map((y, i) => (
         <g key={y}>
           <rect x={22} y={y} width={74} height={6} rx={3} fill="rgba(255,255,255,0.16)" />
@@ -128,7 +130,7 @@ function GraphicSheet() {
             width={[62, 44, 70, 36][i]}
             height={6}
             rx={3}
-            fill="rgba(0,212,126,0.75)"
+            fill="rgba(255,255,255,0.62)"
           />
         </g>
       ))}
@@ -224,13 +226,18 @@ export default function AtsParseDemo() {
         </div>
       </div>
 
+      {/* The sheet is a portrait page and the readout is a short block, so an
+          even two-column split left a third of the band empty on the right.
+          The sheet column is capped at the page's real width and the readout
+          matches its height, which is what makes the pair read as one machine
+          rather than as an image beside a caption. */}
       <div
         id={panelId}
-        className="grid md:grid-cols-2 gap-8 lg:gap-12 items-start max-w-5xl mx-auto"
+        className="grid md:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] gap-8 lg:gap-12 items-start max-w-4xl mx-auto"
       >
         {/* Left: what you upload */}
         <figure className="m-0">
-          <figcaption className="font-mono text-[11px] tracking-[0.15em] text-white/60 uppercase mb-3">
+          <figcaption className="font-mono text-xs tracking-[0.15em] text-white/60 uppercase mb-3">
             What you upload
           </figcaption>
           <div className="ats-sheet aspect-[8.5/11] rounded-xl bg-white ring-1 ring-white/10 shadow-2xl">
@@ -241,10 +248,10 @@ export default function AtsParseDemo() {
 
         {/* Right: what comes out */}
         <figure className="m-0">
-          <figcaption className="font-mono text-[11px] tracking-[0.15em] text-white/60 uppercase mb-3">
+          <figcaption className="font-mono text-xs tracking-[0.15em] text-white/60 uppercase mb-3">
             What the ATS sees
           </figcaption>
-          <div className="ats-readout rounded-xl bg-white/5 ring-1 ring-white/10 p-5 sm:p-6 font-mono text-sm leading-relaxed min-h-[220px]">
+          <div className="ats-readout rounded-xl bg-white/5 ring-1 ring-white/10 p-5 sm:p-6 font-mono text-sm leading-relaxed min-h-[220px] md:min-h-[25.9rem]">
             {sample.lines.map((l, i) => (
               <p
                 key={`${variant}-${i}`}
