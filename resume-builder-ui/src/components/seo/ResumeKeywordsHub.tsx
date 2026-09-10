@@ -73,7 +73,7 @@ export default function ResumeKeywordsHub() {
 
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
-      <PageHero config={config.hero} />
+      <PageHero config={config.hero} showcase />
 
       {/* In-content Ad - Below hero */}
       <InContentAd adSlot={AD_CONFIG.slots.keywordsIncontent} marginY={32} />
@@ -399,9 +399,12 @@ export default function ResumeKeywordsHub() {
         </div>
       </RevealSection>
 
-      <div className="mb-16" id="how-to-find">
-        <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4">The Process</span>
-        <StepByStep steps={howToSteps} title="How to find keywords for your resume" />
+      <div id="how-to-find">
+        <StepByStep
+          steps={howToSteps}
+          eyebrow="The Process"
+          title="How to find keywords for your resume"
+        />
       </div>
 
       <div id="faq">

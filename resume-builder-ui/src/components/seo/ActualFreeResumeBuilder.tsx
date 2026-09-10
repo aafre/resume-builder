@@ -23,7 +23,7 @@ export default function ActualFreeResumeBuilder() {
 
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
-      <PageHero config={config.hero} />
+      <PageHero config={config.hero} showcase />
 
       {config.metrics && <ProofSection metrics={config.metrics} />}
 
@@ -44,7 +44,7 @@ export default function ActualFreeResumeBuilder() {
 
       {/* Competitor Comparison Table */}
       <RevealSection variant="fade-up">
-      <div className="mb-16 cv-auto cv-h-600">
+      <div className="band band-bleed band-chalk-dark py-16 md:py-24 cv-auto cv-h-600">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           "Free" resume builders: what they actually charge for
         </h2>

@@ -26,14 +26,13 @@ export default function FreeResumeBuilderNoPayment() {
 
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
-      <PageHero config={config.hero} />
+      <PageHero config={config.hero} showcase />
 
       {/* Comparison Table */}
       {config.comparison && (
-        <RevealSection variant="fade-up">
-          <ComparisonTable
-            items={config.comparison}
-            headers={[
+        <ComparisonTable
+          items={config.comparison}
+          headers={[
               'Truly Free',
               'No Sign-Up',
               'No Credit Card',
@@ -43,13 +42,12 @@ export default function FreeResumeBuilderNoPayment() {
               'ATS-Optimized',
             ]}
             title="EasyFreeResume vs Typical &quot;Free&quot; Builders"
-          />
-        </RevealSection>
+        />
       )}
 
       {/* Hidden fees other builders charge */}
       <RevealSection variant="fade-up">
-        <div className="mb-16 cv-auto cv-h-600">
+        <div className="band band-bleed band-chalk-dark py-16 md:py-24 cv-auto cv-h-600">
           <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase text-center mb-4">
             Price Breakdown
           </p>
@@ -66,10 +64,10 @@ export default function FreeResumeBuilderNoPayment() {
           </p>
           <div className="max-w-5xl mx-auto overflow-x-auto">
             <table className="w-full bg-white border border-black/[0.06] rounded-xl shadow-sm overflow-hidden">
-              <thead className="bg-chalk-dark">
+              <thead className="bg-ink text-white">
                 <tr>
-                  <th className="px-6 py-4 text-left font-bold text-ink">Builder</th>
-                  <th className="px-6 py-4 text-left font-bold text-ink">Advertised as</th>
+                  <th className="px-6 py-4 text-left font-bold">Builder</th>
+                  <th className="px-6 py-4 text-left font-bold">Advertised as</th>
                   <th className="px-6 py-4 text-left font-bold text-ink">Actual Cost</th>
                   <th className="px-6 py-4 text-left font-bold text-ink">Hidden Catch</th>
                 </tr>

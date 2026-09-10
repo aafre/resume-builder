@@ -41,7 +41,7 @@ export default function FreeResumeBuilderNoSignUp() {
 
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
-      <PageHero config={config.hero} />
+      <PageHero config={config.hero} showcase />
 
       {/* In-content Ad - Below hero */}
       <InContentAd adSlot={AD_CONFIG.slots.freepageIncontent} marginY={32} />
@@ -172,17 +172,17 @@ export default function FreeResumeBuilderNoSignUp() {
 
       {/* Comparison with Paid Builders */}
       <RevealSection variant="fade-up">
-      <div className="mb-16 cv-auto cv-h-500">
+      <div className="band band-bleed band-chalk-dark py-16 md:py-24 cv-auto cv-h-500">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Free no-sign-up vs. paid builders: what you actually get
         </h2>
         <div className="max-w-4xl mx-auto overflow-x-auto">
-          <table className="w-full bg-white border border-black/[0.06] rounded-xl shadow-sm">
-            <thead>
-              <tr className="bg-chalk-dark">
-                <th className="px-5 py-4 text-left font-bold text-ink">Feature</th>
-                <th className="px-5 py-4 text-left font-bold text-accent-text">EasyFreeResume</th>
-                <th className="px-5 py-4 text-left font-bold text-ink/60">Paid Builders</th>
+          <table className="w-full bg-white border border-black/[0.06] rounded-xl shadow-sm overflow-hidden">
+            <thead className="bg-ink text-white">
+              <tr>
+                <th className="px-5 py-4 text-left font-bold">Feature</th>
+                <th className="px-5 py-4 text-left font-bold text-accent">EasyFreeResume</th>
+                <th className="px-5 py-4 text-left font-bold text-white/60">Paid Builders</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-black/[0.06]">

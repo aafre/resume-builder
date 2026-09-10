@@ -60,7 +60,7 @@ export default function ResumeBuilderForStudents() {
 
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
-      <PageHero config={config.hero} />
+      <PageHero config={config.hero} showcase />
 
       {config.features && <FeatureGrid features={config.features} />}
 
@@ -92,7 +92,7 @@ export default function ResumeBuilderForStudents() {
 
       {/* Common mistakes section */}
       <RevealSection variant="fade-up">
-        <div className="mb-16">
+        <div className="band band-bleed band-chalk-dark py-16 md:py-24">
           <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
             AVOID THESE
           </span>

@@ -25,7 +25,7 @@ export default function BestFreeResumeBuilderReddit() {
 
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
-      <PageHero config={config.hero} />
+      <PageHero config={config.hero} showcase />
 
       {/* Answer-first intro for AI Overviews / featured snippets */}
       <div className="max-w-3xl mx-auto -mt-8 mb-16">
@@ -127,7 +127,7 @@ export default function BestFreeResumeBuilderReddit() {
 
       {/* At-a-glance comparison: free-plan reality across builders Reddit names */}
       <RevealSection variant="fade-up">
-      <div className="mb-16 cv-auto cv-h-500">
+      <div className="band band-bleed band-chalk-dark py-16 md:py-24 cv-auto cv-h-500">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4 text-center">
           Free-plan reality check: the builders Reddit names
         </h2>
@@ -140,8 +140,8 @@ export default function BestFreeResumeBuilderReddit() {
             <caption className="sr-only">
               Comparison of free-plan features across EasyFreeResume, Zety, Resume.io, Canva, and Novoresume
             </caption>
-            <thead>
-              <tr className="bg-chalk-dark text-ink">
+            <thead className="bg-ink text-white">
+              <tr>
                 <th scope="col" className="p-3 font-bold">Builder</th>
                 <th scope="col" className="p-3 font-bold text-center">Download without paying?</th>
                 <th scope="col" className="p-3 font-bold text-center">No watermark on free export?</th>

@@ -56,27 +56,22 @@ export default function ZetyFreeAlternative() {
 
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
-      <PageHero config={config.hero} />
+      <PageHero config={config.hero} showcase />
 
       {/* Switch in 3 minutes */}
-      <RevealSection variant="fade-up">
-        <div className="mb-16">
-          <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
-            Switch from Zety in 3 Minutes
-          </h2>
-          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-4xl mx-auto text-center leading-relaxed mb-10">
-            Already spent time building a resume on Zety? Do not pay their download fee. Here is how to switch:
-          </p>
-          {config.steps && <StepByStep steps={config.steps} />}
-        </div>
-      </RevealSection>
+      {config.steps && (
+        <StepByStep
+          steps={config.steps}
+          title="Switch from Zety in 3 Minutes"
+          intro="Already spent time building a resume on Zety? Do not pay their download fee. Here is how to switch:"
+        />
+      )}
 
       {/* Comparison Table */}
       {config.comparison && (
-        <RevealSection variant="fade-up">
-          <ComparisonTable
-            items={config.comparison}
-            headers={[
+        <ComparisonTable
+          items={config.comparison}
+          headers={[
               'Price',
               'PDF Download',
               'Sign-Up Required',
@@ -87,8 +82,7 @@ export default function ZetyFreeAlternative() {
               'ATS-Optimized',
             ]}
             title="EasyFreeResume vs Zety — Feature Comparison"
-          />
-        </RevealSection>
+        />
       )}
 
       {/* Everything Zety charges for */}

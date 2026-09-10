@@ -25,7 +25,7 @@ export default function ResumeBuilderForNurses() {
 
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
-      <PageHero config={config.hero} />
+      <PageHero config={config.hero} showcase />
 
       {config.features && <FeatureGrid features={config.features} />}
 
@@ -57,7 +57,7 @@ export default function ResumeBuilderForNurses() {
 
       {/* Common mistakes section */}
       <RevealSection variant="fade-up">
-        <div className="mb-16 max-w-4xl mx-auto">
+        <div className="band band-bleed band-chalk-dark py-16 md:py-24">
           <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
             AVOID THESE PITFALLS
           </span>
@@ -68,7 +68,7 @@ export default function ResumeBuilderForNurses() {
             Nurse hiring managers scan resumes for specific clinical details. These mistakes make
             your application blend in with hundreds of others — or get filtered out entirely.
           </p>
-          <div className="space-y-4">
+          <div className="space-y-4 max-w-4xl mx-auto">
             {[
               {
                 mistake: 'Listing personal qualities instead of clinical skills',

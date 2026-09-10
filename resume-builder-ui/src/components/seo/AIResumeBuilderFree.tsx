@@ -50,7 +50,7 @@ export default function AIResumeBuilderFree() {
 
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
-      <PageHero config={config.hero} />
+      <PageHero config={config.hero} showcase />
 
       {config.steps && <StepByStep steps={config.steps} />}
 

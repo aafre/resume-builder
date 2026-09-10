@@ -61,13 +61,13 @@ export default function ResumeBuilderForVeterans() {
 
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
-      <PageHero config={config.hero} />
+      <PageHero config={config.hero} showcase />
 
       {config.features && <FeatureGrid features={config.features} />}
 
       {/* Military-to-civilian translation section */}
       <RevealSection variant="fade-up">
-        <div className="mb-16">
+        <div className="band band-bleed band-chalk-dark py-16 md:py-24">
           <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
             TRANSLATION GUIDE
           </span>
@@ -83,11 +83,11 @@ export default function ResumeBuilderForVeterans() {
             </Link>.
           </p>
           <div className="max-w-4xl mx-auto overflow-x-auto">
-            <table className="w-full bg-white border border-black/[0.06] rounded-xl shadow-sm">
-              <thead>
-                <tr className="bg-chalk-dark">
-                  <th className="px-6 py-4 text-left font-bold text-ink">Military Term</th>
-                  <th className="px-6 py-4 text-left font-bold text-accent-text">Civilian Translation</th>
+            <table className="w-full bg-white border border-black/[0.06] rounded-xl shadow-sm overflow-hidden">
+              <thead className="bg-ink text-white">
+                <tr>
+                  <th className="px-6 py-4 text-left font-bold">Military Term</th>
+                  <th className="px-6 py-4 text-left font-bold text-accent">Civilian Translation</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-black/[0.06]">

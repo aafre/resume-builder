@@ -1772,3 +1772,313 @@ div[data-google-query-id] {
   -webkit-mask-image: linear-gradient(to bottom, #000 62%, rgba(0, 0, 0, 0));
   mask-image: linear-gradient(to bottom, #000 62%, rgba(0, 0, 0, 0));
 }
+
+
+/* ═════════════════════════════════════════════════════════════════════════
+   SEO LANDING SURFACES — the proof reel
+
+   Twenty pages share eight components and, before this, one register: a
+   centred H2 over a grid of white cards, repeated eight times, with the only
+   tonal change arriving in the closing CTA at the very bottom. Every section
+   was set at the same volume, so nothing on the page could be louder than
+   anything else and the reader had no spine to follow.
+
+   The fix is dynamic range, not new decoration. Three things carry it:
+
+   1. `.band-bleed` lets a section escape the layout max-width and change the
+      tone of the whole viewport row, so a page reads as chalk → ink →
+      chalk-dark → chalk rather than one continuous sheet of white cards.
+   2. The "how it works" band is the page's one authored moment: it sits on
+      ink, and its rail draws itself from the scroll position.
+   3. Everything else is a *state*, not an entrance — the spotlight edge on a
+      feature card only exists under the pointer.
+
+   All of it is CSS-driven and degrades to the composed static layout. There is
+   deliberately no JS fallback for the scroll timelines: a scroll listener
+   driving paint on twenty marketing pages is a worse trade than a rail that
+   simply arrives already drawn.
+   ═════════════════════════════════════════════════════════════════════════ */
+
+/* ── Full-bleed tonal band ──
+   SEOPageLayout constrains its children to max-w-6xl, so a band has to escape
+   that box to tint the full viewport row and then re-inset its own content.
+   `margin-inline` pulls the box out to the viewport edges; `padding-inline`
+   puts the content back exactly where it was, so nothing nested inside needs
+   to know it is in a band.
+
+   The band overshoots the viewport by about half a scrollbar on each side,
+   because `vw` counts the scrollbar and the layout does not. That overshoot is
+   absorbed by the `overflow-x: hidden` already on `body`, which is the only
+   element in this app allowed to carry it.
+
+   It must NOT be absorbed any closer in. `.seo-shell` sits inside a `<main>`
+   that carries `px-4`, so the shell's own box stops 16px short of the viewport
+   on each side — putting a clip there cut every band exactly 16px in from the
+   edge, which is the one thing a full-bleed band cannot do. The lesson
+   generalises: clip on the nearest ancestor is the instinct, and it is wrong
+   whenever that ancestor is itself inset.
+
+   `<main>` is the nearest ancestor that is genuinely full width, so the clip
+   goes there, scoped with `:has()` so it lands on SEO pages only and no other
+   surface inherits it. `clip` rather than `hidden` for the usual reason: main
+   is a `flex-grow` item, and `hidden` on one axis forces the other to `auto`,
+   which turns it into a scroll container and collapses the column. */
+main:has(.seo-shell) {
+  overflow-x: clip;
+}
+.band-bleed {
+  margin-inline: calc(50% - 50vw);
+  padding-inline: calc(50vw - 50%);
+}
+
+/* A scroll reveal that wraps a full-bleed band must not transform. Every
+   reveal variant ends in a scale, and a scaled band cannot reach the viewport
+   edges — its tonal edge visibly slides inward while the entrance runs, which
+   reads as a rendering fault rather than as motion. These wrappers keep the
+   fade and drop the geometry; the components that own their own Band put the
+   reveal inside it instead, where transforming is harmless. */
+[data-reveal]:has(> .band-bleed) {
+  transform: none;
+}
+
+/* The shell owns the browser surfaces below — the parts of the page nobody
+   drew. It deliberately owns no overflow; see the note above. */
+.seo-shell ::selection {
+  background-color: rgba(0, 212, 126, 0.25);
+  color: #0c0c0c;
+}
+
+/* Comparison tables run price columns down the page ($5-$25/month against
+   Free). Proportional numerals make those columns ragged, and the whole
+   argument of the table is that one column is shorter than the other — the
+   digits have to line up for that shape to read. */
+.seo-shell table {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Vertical rhythm belongs to the band. The section each one replaced carried
+   its own mb-16, so the margin is set here rather than at ~40 call sites. */
+.band {
+  position: relative;
+  margin-block: 4rem;
+}
+
+.band-ink {
+  background-color: #0c0c0c;
+  color: #ffffff;
+  /* The bloom below is deliberately larger than the band and sits above its top
+     edge; without this it painted a green haze over the bottom of whatever
+     section came before, and pushed the document ~58px wider than the viewport.
+     `clip`, so the band never becomes a scroll container. */
+  overflow: clip;
+}
+
+/* Ink bands get a single soft accent bloom rather than a border. The band is
+   already the tonal event; an edge on top of it would be a second one. At 5%
+   over ink this is barely a colour — it stops the black reading as a flat
+   printed rectangle and gives the rail something to sit in. */
+.band-ink::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(900px, 120%);
+  height: 420px;
+  transform: translate(-50%, -35%);
+  border-radius: 9999px;
+  background: rgba(0, 212, 126, 0.05);
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.band-chalk-dark {
+  background-color: #f6f6f5;
+}
+
+.band-white {
+  background-color: #ffffff;
+}
+
+/* ── The step rail ──
+   The old connector was three separate absolutely-positioned hairlines, one
+   per card, offset by translate-x-12 and hidden below md — so on the one
+   breakpoint where it showed it read as a broken dashed thing, and on mobile
+   the sequence had no visual continuity at all.
+
+   It is now one rail per axis, drawn behind the cards, and it *draws* from the
+   scroll position: the eye follows the line into the sequence instead of being
+   handed three finished boxes. scaleX/scaleY from a pinned origin, so the whole
+   thing is a compositor transform and reserves its own space — no geometry
+   animates and there is nothing here for CLS to see.
+
+   The base rule leaves the rail fully drawn. Firefox has no scroll-driven
+   animations and correctly gets a static rail, which is the same idea holding
+   still rather than a degraded one. */
+.step-rail {
+  position: relative;
+  /* Mobile: a vertical spine down the gutter the numerals sit in, so the
+     stacked steps read as one sequence rather than three unrelated cards.
+     28px is the numeral column's centre — retune both together or neither. */
+  --rail-dir: 180deg;
+  --rail-full: scaleY(1);
+  --rail-origin: top;
+}
+
+.step-rail::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 28px;
+  width: 2px;
+  /* The rail spans the grid, but the last step's copy runs well below its
+     numeral, so a hard stop at the grid's edge leaves a tail hanging under the
+     final card. Fading the last stretch ends the sequence on the numeral
+     without having to know how tall the copy is. */
+  -webkit-mask-image: linear-gradient(180deg, #000 78%, transparent 96%);
+  mask-image: linear-gradient(180deg, #000 78%, transparent 96%);
+  background: linear-gradient(
+    var(--rail-dir),
+    rgba(0, 212, 126, 0.9),
+    rgba(255, 255, 255, 0.18)
+  );
+  transform: var(--rail-full);
+  transform-origin: var(--rail-origin);
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .step-rail {
+    --rail-dir: 90deg;
+    --rail-full: scaleX(1);
+    --rail-origin: left;
+  }
+
+  /* Horizontal: pinned to the numerals' centreline and inset by a sixth of the
+     width at each end, so the rail spans between the first and last numeral
+     rather than running off into the band's padding. */
+  .step-rail::before {
+    /* Horizontal, the rail already stops at the outer numerals, so the fade is
+       not needed and would only thin the right-hand end. */
+    -webkit-mask-image: none;
+    mask-image: none;
+    /* The numeral is 64px tall at md, so its centreline is 32px down; the rail
+       is 2px, hence 31. */
+    top: 31px;
+    bottom: auto;
+    left: 16.6667%;
+    right: 16.6667%;
+    width: auto;
+    height: 2px;
+  }
+}
+
+@keyframes step-rail-draw {
+  from { transform: var(--rail-zero); }
+  to   { transform: var(--rail-full); }
+}
+
+@supports (animation-timeline: view()) {
+  .step-rail {
+    --rail-zero: scaleY(0);
+  }
+
+  .step-rail::before {
+    animation: step-rail-draw linear both;
+    animation-timeline: view();
+    /* Starts as the band's top edge clears most of the viewport and completes
+       around the point the last card is fully readable — the line arrives just
+       ahead of the reader rather than racing them to the end. */
+    animation-range: entry 85% cover 40%;
+  }
+
+  @media (min-width: 768px) {
+    .step-rail {
+      --rail-zero: scaleX(0);
+    }
+  }
+}
+
+/* The numeral. On ink, Signal Green measures 9.98:1, so the accent can carry
+   text here — the one polarity where that is true. Mono because these are
+   positions in a sequence, which is measurement, not decoration. */
+.step-num {
+  font-variant-numeric: tabular-nums;
+  box-shadow:
+    0 0 0 1px rgba(0, 212, 126, 0.35),
+    0 0 32px -8px rgba(0, 212, 126, 0.5);
+}
+
+/* ── Spotlight edge on feature cards ──
+   A hover state, not an entrance: it exists only under the pointer and leaves
+   nothing behind. The static .card-gradient-border hairline stays as the
+   resting edge; this rides above it on ::after and fades in.
+
+   Coarse pointers never hover, so both the listener and the effect are gated on
+   a fine pointer — on touch the card keeps its resting edge and nothing about
+   it reads as missing. */
+@media (hover: hover) and (pointer: fine) {
+  .spot-card {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .spot-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: radial-gradient(
+      200px circle at var(--mx, 50%) var(--my, 0%),
+      rgba(0, 212, 126, 0.7),
+      rgba(0, 212, 126, 0) 72%
+    );
+    /* Two mask layers composited to `exclude` leave only the padding ring
+       painted, which is what turns a fill into a border that can hold a
+       gradient. Same technique as .card-gradient-border, tracking a point
+       instead of holding a fixed angle. */
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 280ms cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+
+  .spot-card:hover::after,
+  .spot-card:focus-within::after {
+    opacity: 1;
+  }
+}
+
+/* ── Hero showcase ──
+   The stack itself is .hero-stack, shared verbatim with the landing page. Only
+   the framing differs: on an SEO page the H1 is the LCP element on a
+   prerendered document and must stay that way, so the sheets go out lazily at
+   low priority and the column reserves its height up front. */
+.hero-showcase {
+  min-height: 340px;
+}
+
+@media (min-width: 1024px) {
+  .hero-showcase {
+    min-height: 460px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step-rail::before {
+    animation: none !important;
+    transform: var(--rail-full) !important;
+  }
+
+  .spot-card::after {
+    transition: none !important;
+  }
+}
