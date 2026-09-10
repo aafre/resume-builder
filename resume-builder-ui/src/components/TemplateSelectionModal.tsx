@@ -138,7 +138,7 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="text-ink/60 hover:text-gray-600 transition-colors p-2 rounded-full hover:bg-chalk-dark -mr-2"
+            className="min-h-11 min-w-11 flex items-center justify-center text-ink/60 hover:text-ink transition-colors rounded-full hover:bg-chalk-dark -mr-2"
             aria-label="Close modal"
             data-testid="template-selection-close"
           >
@@ -155,15 +155,15 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
             >
               <div className="text-center">
                 <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-accent mx-auto mb-3"></div>
-                <p className="text-gray-600">Loading templates...</p>
+                <p className="text-ink/60">Loading templates...</p>
               </div>
             </div>
           ) : error ? (
             <div className="text-center py-12" data-testid="template-selection-error">
-              <p className="text-red-600 mb-4">{error}</p>
+              <p className="tone-dont mb-4">{error}</p>
               <button
                 onClick={handleRetry}
-                className="text-accent-text hover:text-ink/80 font-medium"
+                className="min-h-11 px-3 text-accent-text hover:text-ink font-medium rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
               >
                 Try Again
               </button>
@@ -181,7 +181,7 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
                     key={template.id}
                     type="button"
                     onClick={() => setSelectedTemplateId(template.id)}
-                    className={`group relative bg-white rounded-xl border-2 overflow-hidden transition-all duration-200 text-left active:scale-[0.98] flex flex-row lg:flex-col ${
+                    className={`group relative bg-white rounded-xl border-2 overflow-hidden transition-all duration-200 text-left active:scale-[0.98] flex flex-row lg:flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
                       isSelected
                         ? 'border-accent ring-2 ring-accent/30'
                         : 'border-gray-200 hover:border-accent/30'
@@ -245,7 +245,7 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
             type="button"
             onClick={handleContinue}
             disabled={!selectedTemplateId || loading}
-            className="w-full lg:w-auto lg:ml-auto lg:block px-6 py-2.5 bg-accent text-ink font-semibold rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            className="btn-primary w-full lg:w-auto lg:ml-auto lg:block py-2.5 px-6 disabled:opacity-50 disabled:cursor-not-allowed"
             data-testid="template-selection-continue"
           >
             Use This Style
