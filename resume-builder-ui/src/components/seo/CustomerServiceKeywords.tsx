@@ -29,7 +29,7 @@ export default function CustomerServiceKeywords() {
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
       {config.breadcrumbs && <BreadcrumbsWithSchema breadcrumbs={config.breadcrumbs} />}
 
-      <PageHero config={config.hero} />
+      <PageHero config={config.hero} showcase />
 
       {/* Hub navigation */}
       <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 mb-12 max-w-4xl mx-auto">
@@ -283,7 +283,7 @@ export default function CustomerServiceKeywords() {
 
       {/* Core Skills Section */}
       <RevealSection>
-        <div className="mb-16">
+        <div className="band band-bleed band-chalk-dark py-16 md:py-24">
           <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase">Core Skills</span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
             Core customer service skills (soft skills)
@@ -501,7 +501,7 @@ export default function CustomerServiceKeywords() {
 
       {/* Example Section */}
       <RevealSection>
-        <div className="mb-16">
+        <div className="band band-bleed band-chalk-dark py-16 md:py-24">
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 text-center">
             How to use these keywords: before/after examples
           </h2>

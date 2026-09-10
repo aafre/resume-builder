@@ -95,7 +95,7 @@ export default function JobKeywordsPage() {
     >
       <BreadcrumbsWithSchema breadcrumbs={breadcrumbs} />
 
-      <PageHero config={heroConfig} />
+      <PageHero config={heroConfig} showcase />
 
       {/* Role Intro Section */}
       {jobData.roleIntro && (
@@ -127,7 +127,7 @@ export default function JobKeywordsPage() {
 
       {/* Core Skills Section */}
       <RevealSection>
-        <div className="mb-16 cv-auto cv-h-500">
+        <div className="band band-bleed band-chalk-dark py-16 md:py-24 cv-auto cv-h-500">
           <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase">Core Skills</span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
             Core {jobData.title.toLowerCase()} skills (soft skills)
@@ -295,7 +295,7 @@ export default function JobKeywordsPage() {
 
       {/* Example Section */}
       <RevealSection>
-        <div className="mb-16 cv-auto cv-h-400">
+        <div className="band band-bleed band-chalk-dark py-16 md:py-24 cv-auto cv-h-400">
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 text-center">
             How to use these keywords: examples
           </h2>

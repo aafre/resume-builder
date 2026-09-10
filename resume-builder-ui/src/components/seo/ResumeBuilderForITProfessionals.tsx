@@ -25,7 +25,7 @@ export default function ResumeBuilderForITProfessionals() {
 
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
-      <PageHero config={config.hero} />
+      <PageHero config={config.hero} showcase />
 
       {config.features && <FeatureGrid features={config.features} />}
 
@@ -56,7 +56,7 @@ export default function ResumeBuilderForITProfessionals() {
 
       {/* Common mistakes section */}
       <RevealSection variant="fade-up">
-        <div className="mb-16 max-w-4xl mx-auto">
+        <div className="band band-bleed band-chalk-dark py-16 md:py-24">
           <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
             AVOID THESE PITFALLS
           </span>
@@ -67,7 +67,7 @@ export default function ResumeBuilderForITProfessionals() {
             Tech recruiters review hundreds of resumes per week. These mistakes send yours straight to
             the rejection pile — even when you have the skills for the job.
           </p>
-          <div className="space-y-4">
+          <div className="space-y-4 max-w-4xl mx-auto">
             {[
               {
                 mistake: 'Listing every technology you have ever touched',

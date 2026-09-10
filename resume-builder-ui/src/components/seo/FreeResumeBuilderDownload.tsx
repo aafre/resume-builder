@@ -25,7 +25,7 @@ export default function FreeResumeBuilderDownload() {
 
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
-      <PageHero config={config.hero} />
+      <PageHero config={config.hero} showcase />
 
       {config.steps && <StepByStep steps={config.steps} />}
 
@@ -212,7 +212,7 @@ export default function FreeResumeBuilderDownload() {
 
       {/* Download vs online builders comparison */}
       <RevealSection variant="fade-up">
-        <div className="mb-16 cv-auto cv-h-600">
+        <div className="band band-bleed band-chalk-dark py-16 md:py-24 cv-auto cv-h-600">
           <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase text-center mb-4">
             Comparison
           </p>
@@ -229,10 +229,10 @@ export default function FreeResumeBuilderDownload() {
           </p>
           <div className="max-w-4xl mx-auto overflow-x-auto">
             <table className="w-full bg-white border border-black/[0.06] rounded-xl shadow-sm overflow-hidden">
-              <thead className="bg-chalk-dark">
+              <thead className="bg-ink text-white">
                 <tr>
-                  <th className="px-6 py-4 text-left font-bold text-ink">Feature</th>
-                  <th className="px-6 py-4 text-center font-bold text-accent-text">Download Builder (EasyFreeResume)</th>
+                  <th className="px-6 py-4 text-left font-bold">Feature</th>
+                  <th className="px-6 py-4 text-center font-bold text-accent">Download Builder (EasyFreeResume)</th>
                   <th className="px-6 py-4 text-center font-bold text-ink">Online-Only Builder</th>
                 </tr>
               </thead>
