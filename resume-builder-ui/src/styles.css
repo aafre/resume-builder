@@ -1401,7 +1401,13 @@ div[data-google-query-id] {
   .article-rail {
     display: block;
     position: absolute;
+    /* top+bottom stretches the box to the full height of the .container
+       parent. Without this it collapses to the height of the list itself,
+       and the sticky inner (below) can only stay pinned for that one
+       list-height of scroll before its containing block scrolls out — the
+       rail appeared to "go away" a screen into a long article. */
     top: 0;
+    bottom: 0;
     left: 0;
     width: 11rem;
     transform: translateX(calc(-100% - 2.5rem));
