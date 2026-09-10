@@ -84,7 +84,7 @@ export default function AtsFriendlyTemplate() {
                     key={term}
                     className="grid grid-cols-[7.5rem_1fr] gap-4 py-3.5 border-b border-ink/10"
                   >
-                    <dt className="font-mono text-[11px] tracking-[0.12em] uppercase text-ink/60 pt-1">
+                    <dt className="font-mono text-xs tracking-[0.12em] uppercase text-ink/60 pt-1">
                       {term}
                     </dt>
                     <dd className="text-ink font-medium">{value}</dd>
