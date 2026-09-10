@@ -1737,3 +1737,38 @@ div[data-google-query-id] {
   background-color: rgba(0, 212, 126, 0.25);
   color: #0c0c0c;
 }
+
+/* The hub card thumbnail and the example page's print share
+   `view-transition-name: example-sheet`, so the browser morphs the small crop
+   into the full sheet. Exactly one element carries the name at a time — the
+   hub assigns it only to the card being clicked, the example page's print
+   holds it permanently, and the two never coexist. Distinct from
+   `resume-sheet` (my-resumes) and `template-sheet` (/templates), which are
+   already spoken for.
+
+   Firefox has no View Transitions and simply cuts; withViewTransition() skips
+   the transition outright under reduced motion. */
+::view-transition-old(example-sheet),
+::view-transition-new(example-sheet) {
+  /* A card crop and a full page have different aspect ratios; height:100% plus
+     a top-anchored cover keeps both snapshots filling the morph box instead of
+     squashing mid-flight. */
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  animation-duration: 380ms;
+  animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+::view-transition-group(example-sheet) {
+  animation-duration: 380ms;
+  animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* The hub card's crop. Fading the bottom edge makes the resume read as a page
+   continuing behind the card body rather than an image chopped in half — the
+   card is a window onto the sheet, not a thumbnail of it. */
+.ex-card-crop img {
+  -webkit-mask-image: linear-gradient(to bottom, #000 62%, rgba(0, 0, 0, 0));
+  mask-image: linear-gradient(to bottom, #000 62%, rgba(0, 0, 0, 0));
+}

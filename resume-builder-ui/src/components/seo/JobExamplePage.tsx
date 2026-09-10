@@ -13,7 +13,7 @@ import BulletPointBank from '../shared/BulletPointBank';
 import BreadcrumbsWithSchema from '../shared/BreadcrumbsWithSchema';
 import RevealSection from '../shared/RevealSection';
 import { usePageSchema } from '../../hooks/usePageSchema';
-import { loadJobExample, convertToEditorFormat } from '../../utils/yamlLoader';
+import { loadJobExample, convertToEditorFormat, getCachedJobExample } from '../../utils/yamlLoader';
 import { getPrerenderPayload } from '../../utils/prerenderPayload';
 import { getRelatedJobs, getJobExampleBySlug, JOB_CATEGORIES } from '../../data/jobExamples';
 import { getMatchingKeywordSlug, getKeywordJobTitle } from '../../utils/crossLinkHelpers';
@@ -58,6 +58,16 @@ function readHydrationPayload(slug: string | undefined): JobExampleData | null {
   // The snapshot is whichever example was prerendered into this document; a
   // client-side navigation to a different slug must not read it.
   return parsed?.meta?.slug === slug ? parsed : null;
+}
+
+/**
+ * Data available on the very first render: the prerendered payload on a cold
+ * load, or the YAML cache the hub warmed on hover for a client-side one.
+ * Either way the sheet paints immediately instead of after a frame of skeleton.
+ */
+function readSynchronousData(slug: string | undefined): JobExampleData | null {
+  if (!slug) return null;
+  return readHydrationPayload(slug) ?? getCachedJobExample(slug);
 }
 
 // `</script>` inside the JSON would close the tag early. The data is our own, but
@@ -144,8 +154,8 @@ export default function JobExamplePage() {
   const { slug } = useParams<{ slug: string }>();
   // Seed from the prerendered payload so the first client render matches the
   // server HTML instead of replacing it with the skeleton. See PAYLOAD_ID above.
-  const [data, setData] = useState<JobExampleData | null>(() => readHydrationPayload(slug));
-  const [loading, setLoading] = useState(() => readHydrationPayload(slug) === null);
+  const [data, setData] = useState<JobExampleData | null>(() => readSynchronousData(slug));
+  const [loading, setLoading] = useState(() => readSynchronousData(slug) === null);
   const [error, setError] = useState(false);
   // Slug the initial render was already seeded for. Held in a ref rather than
   // re-read from the DOM in the effect: by the time effects run React owns that
@@ -374,174 +384,181 @@ export default function JobExamplePage() {
         )}
       </header>
 
-      {/* The sheet and its action rail */}
-      <RevealSection>
-        <section className="flex flex-col lg:flex-row gap-8 lg:gap-10">
-          {/* One document: the print, then the same resume readable and
-              selectable, under a single paper edge. */}
-          <article className="ex-sheet flex-1 min-w-0 w-full bg-white rounded-2xl shadow-premium border border-black/[0.06] overflow-clip">
-            {/* How this resume actually comes out of the builder. The caption
-                names the relationship between this and the text below it —
-                without it the two read as the same thing shown twice. */}
-            <figure className="bg-chalk-dark px-4 py-6 sm:px-8 sm:py-10">
-              <img
-                src={`${PREVIEW_BASE_URL}/${slug}.webp`}
-                srcSet={`${PREVIEW_BASE_URL}/${slug}-sm.webp 400w, ${PREVIEW_BASE_URL}/${slug}.webp 800w`}
-                sizes="(max-width: 768px) 400px, 550px"
-                alt={`${data.meta.title} resume example - professional ATS-friendly template`}
-                className="mx-auto w-full max-w-[560px] rounded-md shadow-lg border border-black/[0.06]"
-                width={800}
-                height={1131}
-                loading="eager"
-                fetchPriority="high"
-                onError={(e) => {
-                  const img = e.target as HTMLImageElement;
-                  img.onerror = null;
-                  img.src = '/docs/templates/modern-no-icons.png';
-                }}
-              />
-              <figcaption className="mt-5 text-center font-mono text-[0.6875rem] tracking-[0.12em] uppercase text-ink/60">
-                As it prints &mdash; {data.resume.template.charAt(0).toUpperCase() + data.resume.template.slice(1)} template
-              </figcaption>
-            </figure>
+      {/* The sheet and its action rail.
+          Deliberately not wrapped in <RevealSection>: reveals are for
+          below-fold sections, and [data-reveal] starts at opacity:0 — which
+          both holds the print image back from LCP eligibility until the
+          observer fires and leaves the card → sheet view transition nothing
+          visible to morph into. */}
+      <section className="flex flex-col lg:flex-row gap-8 lg:gap-10">
+        {/* One document: the print, then the same resume readable and
+            selectable, under a single paper edge. */}
+        <article className="ex-sheet flex-1 min-w-0 w-full bg-white rounded-2xl shadow-premium border border-black/[0.06] overflow-clip">
+          {/* How this resume actually comes out of the builder. The caption
+              names the relationship between this and the text below it —
+              without it the two read as the same thing shown twice. */}
+          <figure className="bg-chalk-dark px-4 py-6 sm:px-8 sm:py-10">
+            <img
+              src={`${PREVIEW_BASE_URL}/${slug}.webp`}
+              srcSet={`${PREVIEW_BASE_URL}/${slug}-sm.webp 400w, ${PREVIEW_BASE_URL}/${slug}.webp 800w`}
+              sizes="(max-width: 768px) 400px, 550px"
+              alt={`${data.meta.title} resume example - professional ATS-friendly template`}
+              className="mx-auto w-full max-w-[560px] rounded-md shadow-lg border border-black/[0.06]"
+              width={800}
+              height={1131}
+              loading="eager"
+              fetchPriority="high"
+              // Paired with the hub card's thumbnail so the browser morphs the
+              // card into this sheet. Exactly one element holds the name at a
+              // time: the hub assigns it only to the card being clicked.
+              style={{ viewTransitionName: 'example-sheet' }}
+              onError={(e) => {
+                const img = e.target as HTMLImageElement;
+                img.onerror = null;
+                img.src = '/docs/templates/modern-no-icons.png';
+              }}
+            />
+            <figcaption className="mt-5 text-center font-mono text-[0.6875rem] tracking-[0.12em] uppercase text-ink/60">
+              As it prints &mdash; {data.resume.template.charAt(0).toUpperCase() + data.resume.template.slice(1)} template
+            </figcaption>
+          </figure>
 
-            {/* The document itself — the full resume, every entry and every
-                bullet, set as a document rather than as UI chrome. */}
-            <div className="ex-doc px-6 sm:px-10 lg:px-14 py-10 lg:py-12">
-              <header className="text-center pb-7 mb-7 border-b border-black/[0.06]">
-                <h3 className="font-display text-[1.75rem] font-extrabold tracking-tight text-ink">
-                  {data.resume.contact.name}
-                </h3>
-                <p className="mt-1 text-base text-accent-text">{data.resume.contact.title}</p>
-                <p className="mt-3 font-mono text-[0.6875rem] tracking-[0.08em] text-ink/60">
-                  {data.resume.contact.email} &middot; {data.resume.contact.phone} &middot; {data.resume.contact.location}
-                </p>
-              </header>
+          {/* The document itself — the full resume, every entry and every
+              bullet, set as a document rather than as UI chrome. */}
+          <div className="ex-doc px-6 sm:px-10 lg:px-14 py-10 lg:py-12">
+            <header className="text-center pb-7 mb-7 border-b border-black/[0.06]">
+              <h3 className="font-display text-[1.75rem] font-extrabold tracking-tight text-ink">
+                {data.resume.contact.name}
+              </h3>
+              <p className="mt-1 text-base text-accent-text">{data.resume.contact.title}</p>
+              <p className="mt-3 font-mono text-[0.6875rem] tracking-[0.08em] text-ink/60">
+                {data.resume.contact.email} &middot; {data.resume.contact.phone} &middot; {data.resume.contact.location}
+              </p>
+            </header>
 
-              <DocSection label="Professional Summary" className="mb-7">
-                <p className="text-[0.9375rem] leading-relaxed text-ink/75 max-w-[68ch]">
-                  {data.resume.summary}
-                </p>
-              </DocSection>
+            <DocSection label="Professional Summary" className="mb-7">
+              <p className="text-[0.9375rem] leading-relaxed text-ink/75 max-w-[68ch]">
+                {data.resume.summary}
+              </p>
+            </DocSection>
 
-              <DocSection label="Work Experience" className="mb-7">
-                <div className="space-y-5">
-                  {data.resume.experience.map((exp, index) => (
-                    <div key={index}>
-                      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                        <div>
-                          <p className="font-semibold text-ink text-[0.9375rem]">{exp.title}</p>
-                          <p className="text-sm text-ink/60">{exp.company}</p>
-                        </div>
-                        <p className="font-mono text-[0.6875rem] tracking-[0.08em] text-ink/60">
-                          {exp.dates}
-                        </p>
-                      </div>
-                      <ul className="ex-doc__bullets mt-2.5 list-disc pl-5 space-y-1.5">
-                        {exp.bullets.map((bullet, bIndex) => (
-                          <li key={bIndex} className="text-[0.875rem] leading-relaxed text-ink/75 max-w-[68ch]">
-                            {bullet}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </DocSection>
-
-              <DocSection label="Education" className="mb-7">
-                <div className="space-y-3">
-                  {data.resume.education.map((edu, index) => (
-                    <div key={index} className="flex flex-wrap items-baseline justify-between gap-x-4">
+            <DocSection label="Work Experience" className="mb-7">
+              <div className="space-y-5">
+                {data.resume.experience.map((exp, index) => (
+                  <div key={index}>
+                    <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                       <div>
-                        <p className="font-semibold text-ink text-[0.9375rem]">{edu.degree}</p>
-                        <p className="text-sm text-ink/60">{edu.school}</p>
+                        <p className="font-semibold text-ink text-[0.9375rem]">{exp.title}</p>
+                        <p className="text-sm text-ink/60">{exp.company}</p>
                       </div>
                       <p className="font-mono text-[0.6875rem] tracking-[0.08em] text-ink/60">
-                        {edu.year}
+                        {exp.dates}
                       </p>
                     </div>
-                  ))}
-                </div>
-              </DocSection>
+                    <ul className="ex-doc__bullets mt-2.5 list-disc pl-5 space-y-1.5">
+                      {exp.bullets.map((bullet, bIndex) => (
+                        <li key={bIndex} className="text-[0.875rem] leading-relaxed text-ink/75 max-w-[68ch]">
+                          {bullet}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </DocSection>
 
-              {/* An inline list, not pill chips: a resume lists its skills, it
-                  does not tag them. */}
-              <DocSection
-                label="Skills"
-                className={data.resume.certifications?.length ? 'mb-7' : ''}
-              >
-                <p className="text-[0.9375rem] leading-relaxed text-ink/75">
-                  {data.resume.skills.join(' · ')}
-                </p>
-              </DocSection>
+            <DocSection label="Education" className="mb-7">
+              <div className="space-y-3">
+                {data.resume.education.map((edu, index) => (
+                  <div key={index} className="flex flex-wrap items-baseline justify-between gap-x-4">
+                    <div>
+                      <p className="font-semibold text-ink text-[0.9375rem]">{edu.degree}</p>
+                      <p className="text-sm text-ink/60">{edu.school}</p>
+                    </div>
+                    <p className="font-mono text-[0.6875rem] tracking-[0.08em] text-ink/60">
+                      {edu.year}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </DocSection>
 
-              {data.resume.certifications && data.resume.certifications.length > 0 && (
-                <DocSection label="Certifications">
-                  <ul className="ex-doc__bullets list-disc pl-5 space-y-1.5">
-                    {data.resume.certifications.map((cert, index) => (
-                      <li key={index} className="text-[0.875rem] leading-relaxed text-ink/75">
-                        {cert}
-                      </li>
-                    ))}
-                  </ul>
-                </DocSection>
-              )}
-            </div>
-          </article>
-
-          {/* Action rail */}
-          <aside className="w-full lg:w-[19rem] lg:flex-shrink-0">
-            <div className="bg-white rounded-2xl shadow-premium border border-black/[0.06] p-7 lg:sticky lg:top-24">
-              <h3 className="font-display text-xl font-extrabold text-ink">
-                Use This Template
-              </h3>
-              <p className="mt-3 text-sm font-extralight text-ink/60 leading-relaxed">
-                Click below to open this resume in our free editor. Customize the content with your own experience.
+            {/* An inline list, not pill chips: a resume lists its skills, it
+                does not tag them. */}
+            <DocSection
+              label="Skills"
+              className={data.resume.certifications?.length ? 'mb-7' : ''}
+            >
+              <p className="text-[0.9375rem] leading-relaxed text-ink/75">
+                {data.resume.skills.join(' · ')}
               </p>
+            </DocSection>
 
-              <button
-                onClick={handleEditTemplate}
-                disabled={creating}
-                className="btn-primary w-full py-3 mt-6 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                {creating ? (
-                  <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-ink"></div>
-                    Creating...
-                  </>
-                ) : (
-                  'Edit This Template'
-                )}
-              </button>
-
-              <Link
-                to="/templates"
-                className="btn-secondary w-full py-3 mt-3 block text-center"
-              >
-                Browse All Templates
-              </Link>
-
-              <div className="mt-7 pt-6 border-t border-black/[0.06]">
-                <h4 className="text-sm font-bold text-ink mb-3">What you get:</h4>
-                <ul className="space-y-2.5 text-sm text-ink/60">
-                  {[
-                    'ATS-optimized format',
-                    'Pre-written bullet points',
-                    'Professional layout',
-                    'Free PDF download',
-                  ].map((item) => (
-                    <li key={item} className="flex items-start gap-2.5">
-                      <CheckMark />
-                      {item}
+            {data.resume.certifications && data.resume.certifications.length > 0 && (
+              <DocSection label="Certifications">
+                <ul className="ex-doc__bullets list-disc pl-5 space-y-1.5">
+                  {data.resume.certifications.map((cert, index) => (
+                    <li key={index} className="text-[0.875rem] leading-relaxed text-ink/75">
+                      {cert}
                     </li>
                   ))}
                 </ul>
-              </div>
+              </DocSection>
+            )}
+          </div>
+        </article>
+
+        {/* Action rail */}
+        <aside className="w-full lg:w-[19rem] lg:flex-shrink-0">
+          <div className="bg-white rounded-2xl shadow-premium border border-black/[0.06] p-7 lg:sticky lg:top-24">
+            <h3 className="font-display text-xl font-extrabold text-ink">
+              Use This Template
+            </h3>
+            <p className="mt-3 text-sm font-extralight text-ink/60 leading-relaxed">
+              Click below to open this resume in our free editor. Customize the content with your own experience.
+            </p>
+
+            <button
+              onClick={handleEditTemplate}
+              disabled={creating}
+              className="btn-primary w-full py-3 mt-6 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {creating ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-ink"></div>
+                  Creating...
+                </>
+              ) : (
+                'Edit This Template'
+              )}
+            </button>
+
+            <Link
+              to="/templates"
+              className="btn-secondary w-full py-3 mt-3 block text-center"
+            >
+              Browse All Templates
+            </Link>
+
+            <div className="mt-7 pt-6 border-t border-black/[0.06]">
+              <h4 className="text-sm font-bold text-ink mb-3">What you get:</h4>
+              <ul className="space-y-2.5 text-sm text-ink/60">
+                {[
+                  'ATS-optimized format',
+                  'Pre-written bullet points',
+                  'Professional layout',
+                  'Free PDF download',
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2.5">
+                    <CheckMark />
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
-          </aside>
-        </section>
-      </RevealSection>
+          </div>
+      </aside>
+      </section>
 
       {/* Bullet Point Bank */}
       <BulletPointBank
