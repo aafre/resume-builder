@@ -1687,3 +1687,53 @@ div[data-google-query-id] {
 .tone-do   { color: #007a48; }
 .tone-dont { color: #b42318; }
 .tone-note { color: #92400e; }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   /examples/:slug — the resume as one sheet
+
+   The page used to render the resume twice: a CDN screenshot of the printed
+   PDF, then the same resume again beneath it as flat HTML "for SEO", each
+   sealed in its own white card with its own header bar. Two weak objects
+   where the visitor came for exactly one.
+
+   These rules make a single sheet — the print at the top, the readable
+   document continuing below the same paper edge — and set the HTML half as a
+   *document* (rules, tabular dates, a real measure) rather than as UI chrome
+   with header bars and pill chips.
+
+   The print stays an <img> with its intrinsic width/height and eager
+   fetchpriority: it is the LCP element on a prerendered, search-dependent
+   page, and none of this may move it.
+   ------------------------------------------------------------------------- */
+
+.ex-doc {
+  /* Dates and years sit in their own column on the right; proportional
+     numerals make that column ragged at a glance. */
+  font-variant-numeric: tabular-nums;
+}
+
+/* Section rule: the mono label, then a hairline that spends the rest of the
+   width. Same fading gradient as the article reading spine, so a resume
+   section and an article section are visibly the same idea. */
+.ex-rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(12, 12, 12, 0.14),
+    rgba(12, 12, 12, 0.05) 45%,
+    transparent
+  );
+}
+
+/* Bullets belong to the document, not to the interface: a small neutral
+   marker, never the accent — a resume full of green dots is a green resume. */
+.ex-doc__bullets li::marker {
+  color: rgba(12, 12, 12, 0.3);
+}
+
+/* Selecting the resume is the point — people come here to lift bullet points.
+   Make the selection the brand's, not the browser's. */
+.ex-sheet ::selection {
+  background-color: rgba(0, 212, 126, 0.25);
+  color: #0c0c0c;
+}
