@@ -412,15 +412,16 @@ details .faq-content > div {
   border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 14px 40px rgba(0,0,0,0.10);
   transform: var(--pos);
-  animation: hero-deal 15s linear infinite both;
+  animation: hero-deal 9s linear infinite both;
 }
 /* Delays are chosen so the animated stack at t=0 matches the resting fan
-   above: -10s lands data-i 1 on the mid keyframe, -5s lands data-i 2 on the
-   back one. That is what keeps the entrance and the reduced-motion state
-   showing the same three sheets in the same three places. */
+   above: -6s lands data-i 1 on the mid keyframe, -3s lands data-i 2 on the
+   back one (both -2/3 and -1/3 of the cycle). That is what keeps the entrance
+   and the reduced-motion state showing the same three sheets in the same
+   three places. */
 .hero-sheet[data-i="0"] { --pos: var(--pos-0); }
-.hero-sheet[data-i="1"] { --pos: var(--pos-1); animation-delay: -10s; }
-.hero-sheet[data-i="2"] { --pos: var(--pos-2); animation-delay: -5s; }
+.hero-sheet[data-i="1"] { --pos: var(--pos-1); animation-delay: -6s; }
+.hero-sheet[data-i="2"] { --pos: var(--pos-2); animation-delay: -3s; }
 
 @keyframes hero-deal {
   /* face-up, held there for most of its third of the cycle */
