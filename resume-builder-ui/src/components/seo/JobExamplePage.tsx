@@ -4,7 +4,7 @@
  * URL: /examples/:slug
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import SEOPageLayout from '../shared/SEOPageLayout';
 import PageHero from '../shared/PageHero';
@@ -15,6 +15,7 @@ import BreadcrumbsWithSchema from '../shared/BreadcrumbsWithSchema';
 import RevealSection from '../shared/RevealSection';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { loadJobExample, convertToEditorFormat } from '../../utils/yamlLoader';
+import { getPrerenderPayload } from '../../utils/prerenderPayload';
 import { getRelatedJobs, getJobExampleBySlug, JOB_CATEGORIES } from '../../data/jobExamples';
 import { getMatchingKeywordSlug, getKeywordJobTitle } from '../../utils/crossLinkHelpers';
 import { useAuth } from '../../contexts/AuthContext';
@@ -30,6 +31,40 @@ import type { Section } from '../../types';
 const PREVIEW_BASE_URL = import.meta.env.VITE_SUPABASE_URL
   ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/template-previews`
   : '';
+
+/**
+ * Hydration payload.
+ *
+ * The page's whole body comes from `fetch('/examples/<slug>.yml')`, which cannot
+ * resolve before the first client render. These routes are prerendered, so the
+ * resume is already painted in the HTML — and without a synchronous seed React's
+ * first client render is the loading skeleton, which wipes that painted resume
+ * until the fetch lands (~1s of blank on the cluster carrying the site's third
+ * highest impression count).
+ *
+ * So the page emits its own resolved data as a JSON script tag. The prerenderer
+ * captures it like any other DOM, and the entry bundle snapshots it before React
+ * hydrates — it cannot be read from here, because this route is `lazy()` and its
+ * Suspense fallback has already replaced #root (tag included) by the time this
+ * component first renders. See utils/prerenderPayload.ts.
+ *
+ * On a client-side navigation there is no snapshot for the slug and the fetch
+ * path runs as before.
+ */
+const PAYLOAD_ID = 'job-example-data';
+
+function readHydrationPayload(slug: string | undefined): JobExampleData | null {
+  if (!slug) return null;
+  const parsed = getPrerenderPayload<JobExampleData>(PAYLOAD_ID);
+  // The snapshot is whichever example was prerendered into this document; a
+  // client-side navigation to a different slug must not read it.
+  return parsed?.meta?.slug === slug ? parsed : null;
+}
+
+// `</script>` inside the JSON would close the tag early. The data is our own, but
+// an unescaped `<` in any resume field is still a script-injection shape.
+const serializePayload = (data: JobExampleData) =>
+  JSON.stringify(data).replace(/</g, '\\u003c');
 
 // Loading skeleton component
 const LoadingSkeleton = () => (
@@ -66,9 +101,15 @@ const NotFound = ({ slug }: { slug: string }) => (
 
 export default function JobExamplePage() {
   const { slug } = useParams<{ slug: string }>();
-  const [data, setData] = useState<JobExampleData | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Seed from the prerendered payload so the first client render matches the
+  // server HTML instead of replacing it with the skeleton. See PAYLOAD_ID above.
+  const [data, setData] = useState<JobExampleData | null>(() => readHydrationPayload(slug));
+  const [loading, setLoading] = useState(() => readHydrationPayload(slug) === null);
   const [error, setError] = useState(false);
+  // Slug the initial render was already seeded for. Held in a ref rather than
+  // re-read from the DOM in the effect: by the time effects run React owns that
+  // script tag, so a second lookup is a race we do not need to be in.
+  const seededSlug = useRef<string | null>(data ? slug ?? null : null);
   const [showConversionPrompt, setShowConversionPrompt] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showTemplateModal, setShowTemplateModal] = useState(false);
@@ -82,6 +123,12 @@ export default function JobExamplePage() {
     if (!slug) {
       setError(true);
       setLoading(false);
+      return;
+    }
+
+    // Already seeded from the prerendered payload — the round trip would fetch
+    // data we are currently rendering.
+    if (seededSlug.current === slug) {
       return;
     }
 
@@ -243,6 +290,15 @@ export default function JobExamplePage() {
 
   return (
     <SEOPageLayout seoConfig={seoConfig} schemas={schemas}>
+      {/* Captured by the prerenderer; read back synchronously on hydration so the
+          painted resume is never replaced by the skeleton. See PAYLOAD_ID above. */}
+      <script
+        type="application/json"
+        id={PAYLOAD_ID}
+        data-prerender-payload=""
+        dangerouslySetInnerHTML={{ __html: serializePayload(data) }}
+      />
+
       {/* Breadcrumbs */}
       <BreadcrumbsWithSchema
         breadcrumbs={[
