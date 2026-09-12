@@ -120,6 +120,7 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
             <button
               onClick={onClose}
               disabled={isLoading}
+              autoFocus={isDestructive}
               className="w-full lg:w-auto px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700
                 hover:bg-gray-50 active:bg-gray-100
                 transition-colors disabled:opacity-50 disabled:cursor-not-allowed
@@ -131,6 +132,7 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
             <button
               onClick={handleConfirm}
               disabled={isLoading}
+              autoFocus={!isDestructive}
               className={`w-full lg:w-auto px-6 py-3 rounded-lg font-medium
                 shadow-md hover:shadow-lg active:scale-95
                 transition-all disabled:opacity-50 disabled:cursor-not-allowed
