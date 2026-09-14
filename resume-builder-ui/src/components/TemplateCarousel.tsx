@@ -497,6 +497,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
             ? templates.find(t => t.id === selectedTemplateForModal)?.name || ''
             : ''
         }
+        templateImageUrl={templates.find(t => t.id === selectedTemplateForModal)?.image_url}
       />
 
       {/* Resume Recovery Modal */}
