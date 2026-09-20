@@ -125,6 +125,7 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
                 transition-colors disabled:opacity-50 disabled:cursor-not-allowed
                 min-h-[48px] lg:min-h-[44px]"
               style={{ WebkitTapHighlightColor: "transparent" }}
+              autoFocus
             >
               {cancelText}
             </button>
