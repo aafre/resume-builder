@@ -60,6 +60,45 @@ const PROGRAMS: Program[] = [
     description: 'Classroom instruction plus hands-on engineering work on real Microsoft products. A common landing spot for career changers and returners entering software engineering.',
   },
   {
+    company: 'SAP',
+    name: 'Returnship Program',
+    region: 'USA / EMEA',
+    duration: '20 weeks (North America) / 6 months (EMEA)',
+    locations: 'Madrid, Johannesburg, Riyadh, Paris, and other EMEA/North America sites depending on role',
+    eligibility: 'Mid-career professionals with 5+ years of work experience and a career break of 2+ years for caregiving, relocation, personal healthcare, or military service',
+    url: 'https://jobs.sap.com/go/SAP-Returnship-Program/5365101/',
+    verifiedOn: '2026-09-22',
+    applicationStatus: 'unknown',
+    statusNote: 'No application window published on the official page; roles are posted as they open.',
+    description: 'Workshops, coaching, and a dedicated buddy during ramp-up, with two duration tracks depending on region.',
+  },
+  {
+    company: 'PayPal',
+    name: 'Recharge Program',
+    region: 'USA',
+    duration: '6-week paid bootcamp track (confirmed via PayPal’s own newsroom); the program page also references a separate longer track whose length we could not confirm directly',
+    locations: 'Confirmed operating in India via PayPal’s APAC newsroom; the official jobs.recharge landing page did not render enough text for us to confirm other locations',
+    eligibility: 'Skilled technologists who have taken a career break for personal or family reasons',
+    url: 'https://www.paypal.com/us/webapps/mpp/jobs/recharge',
+    verifiedOn: '2026-09-22',
+    applicationStatus: 'unknown',
+    statusNote: 'The official landing page loads via JavaScript we could not read directly; corroborated instead via PayPal’s own newsroom article, which states no fixed application window.',
+    description: 'A bootcamp-plus-program track built in partnership with Path Forward, for technologists returning after a career break.',
+  },
+  {
+    company: 'IBM',
+    name: 'Tech Re-Entry Program',
+    region: 'USA',
+    duration: 'Not published on the official page we verified',
+    locations: 'United States, Canada, India, China, UK, Germany, Australia — stated on IBM’s own page as expanding to more countries',
+    eligibility: 'Career break of 1+ years, with skills matching an open role',
+    url: 'https://www.ibm.com/careers/blog/return-to-the-workforce-with-the-ibm-tech-re-entry-program',
+    verifiedOn: '2026-09-22',
+    applicationStatus: 'unknown',
+    statusNote: 'No application window published on the official page.',
+    description: 'A full-time, paid returnship for technical professionals, spanning seven countries in one program.',
+  },
+  {
     company: 'Deloitte',
     name: 'Return to Work Programme (UK)',
     region: 'UK',
@@ -84,6 +123,19 @@ const PROGRAMS: Program[] = [
     applicationStatus: 'unknown',
     statusNote: 'No published application deadline; the site directs candidates to a fellowship-finder tool rather than a fixed window.',
     description: 'A longer, research-specific fellowship for STEM and other academic researchers rebuilding a career after a break — not a corporate returnship, but the most established UK returner scheme in this space.',
+  },
+  {
+    company: 'UBS',
+    name: 'Career Comeback',
+    region: 'UK / Global',
+    duration: 'Not published — direct permanent hire, not a fixed-term returnship',
+    locations: 'Americas, EMEA (including the UK, excluding Switzerland and Poland), Switzerland, Poland, Asia Pacific (excluding India), India',
+    eligibility: 'Career break of 2+ years, any reason',
+    url: 'https://www.ubs.com/global/en/careers/professional-careers/career-comeback.html',
+    verifiedOn: '2026-09-22',
+    applicationStatus: 'open',
+    statusNote: 'The official page frames recruitment as ongoing ("whenever you’re ready, we’re here to meet you") rather than a fixed annual window.',
+    description: 'Unlike most programs here, UBS hires returners directly into permanent roles rather than a temporary fixed-term returnship.',
   },
   {
     company: 'Goldman Sachs',
@@ -123,6 +175,19 @@ const PROGRAMS: Program[] = [
     applicationStatus: 'unknown',
     statusNote: 'No published intake window; the page directs candidates to join a talent community for updates.',
     description: 'Mentorship, tool/technology upskilling, and structured re-entry support for women rebuilding a career in India.',
+  },
+  {
+    company: 'Accenture',
+    name: 'Career Reboot Program',
+    region: 'India',
+    duration: 'Varies by business unit and role; not fixed',
+    locations: 'India',
+    eligibility: 'Career break of 24+ months',
+    url: 'https://www.accenture.com/in-en/careers/life-at-accenture/career-reboot-program',
+    verifiedOn: '2026-09-22',
+    applicationStatus: 'open',
+    statusNote: 'The official India page runs rolling "Apply now" applications rather than a fixed intake window.',
+    description: 'Tailored learning paths and mentorship for professionals in India restarting a career after an extended break.',
   },
   {
     company: 'Amazon',
@@ -243,6 +308,23 @@ export default function ReturnToWorkPrograms() {
           an application window, we say so instead of guessing.
         </p>
 
+        <div className="callout callout-note rounded-xl p-6">
+          <h3 className="text-xl font-bold tone-note mb-3">Programs We Checked and Removed</h3>
+          <p className="tone-note">
+            Three programs that appear on older lists did not survive verification and are not
+            included below: <strong>Meta's Return to Work program</strong> (the official
+            metacareers.com/facebook.com application page returns a 404, and Meta's own program
+            partner, Path Forward, states the application window has closed with no listed
+            successor page), <strong>NBCUniversal's Act Two</strong> (the specific program URL now
+            redirects to NBCUniversal's general careers homepage, and the current programs listing
+            does not name a dedicated page), and <strong>Walmart's "Return to Tech"</strong> (we
+            could not locate an official page for a program by this name on walmart.com or
+            tech.walmart.com). If you know of a live, current official page for any of these,{' '}
+            <a href="mailto:support@easyfreeresume.com" className="underline">let us know</a> and
+            we'll re-verify and add it back.
+          </p>
+        </div>
+
         {/* Table of Contents */}
         <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
           <h2 className="font-bold text-ink mb-4 text-lg">Table of Contents</h2>
@@ -311,8 +393,9 @@ export default function ReturnToWorkPrograms() {
           India Programs
         </h2>
         <p className="text-lg leading-relaxed text-ink/60 mb-6">
-          JPMorgan Chase's ReEntry Program (see USA section above) also hires in Bengaluru,
-          Hyderabad, Mumbai, and Pune as part of the same global intake.
+          JPMorgan Chase's ReEntry Program and IBM's Tech Re-Entry Program (both in the USA
+          section above) also hire in India as part of the same global intakes &mdash; JPMorgan in
+          Bengaluru, Hyderabad, Mumbai, and Pune; IBM per its own page's stated country list.
         </p>
         <div className="space-y-6">
           {INDIA_PROGRAMS.map((p) => <ProgramCard key={`${p.company}-${p.name}`} program={p} />)}
