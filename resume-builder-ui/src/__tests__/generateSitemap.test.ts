@@ -218,7 +218,7 @@ describe('Sitemap XML Generation', () => {
   });
 
   describe('Lastmod honesty', () => {
-    it('derives /blog/* lastmod from blogPosts.lastUpdated ?? publishDate, not the build date', () => {
+    it('derives /blog/* lastmod as lastUpdated ?? curated sitemapUrls value ?? publishDate, never the build date', () => {
       const today = new Date().toISOString().split('T')[0];
       let checked = 0;
       blogPosts.forEach(post => {
@@ -226,13 +226,26 @@ describe('Sitemap XML Generation', () => {
         const actual = lastmodFor(xml, loc, baseUrl);
         if (actual === null) return; // post isn't in the sitemap (e.g. still comingSoon)
         checked += 1;
-        expect(actual).toBe(post.lastUpdated ?? post.publishDate);
+        const curated = STATIC_URLS.find(p => p.loc === loc)?.lastmod;
+        const expected = post.lastUpdated ?? curated ?? post.publishDate;
+        expect(actual).toBe(expected);
+        // The curated sitemapUrls.ts value must never be silently discarded in favor
+        // of the (usually older) publishDate when lastUpdated isn't set — that was
+        // the regression this test exists to catch.
+        if (!post.lastUpdated && curated) {
+          expect(actual).toBe(curated);
+        }
       });
       // Sanity check the assertion actually ran against real data, and that at least
       // one post's real date differs from "today" (proving we didn't just get lucky
       // because the build date happens to match).
       expect(checked).toBeGreaterThan(0);
-      expect(blogPosts.some(p => (p.lastUpdated ?? p.publishDate) !== today)).toBe(true);
+      expect(
+        blogPosts.some(p => {
+          const curated = STATIC_URLS.find(sp => sp.loc === `/blog/${p.slug}`)?.lastmod;
+          return (p.lastUpdated ?? curated ?? p.publishDate) !== today;
+        })
+      ).toBe(true);
     });
 
     it('produces identical lastmod values across two consecutive builds with no content change', () => {

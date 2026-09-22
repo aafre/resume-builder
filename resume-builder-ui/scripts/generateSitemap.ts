@@ -44,11 +44,14 @@ const JOB_EXAMPLES = JOB_EXAMPLES_DATABASE.map(job => ({
   lastmod: job.lastmod || new Date().toISOString().split('T')[0],
 }));
 
-// Blog lastmod comes from blogPosts.ts (lastUpdated ?? publishDate), never the build
-// date — this is the single source of truth so a post's date can't drift out of sync
-// with sitemapUrls.ts the way the old manual dual-edit checklist allowed.
-const BLOG_LASTMOD_BY_SLUG = new Map<string, string>(
-  blogPosts.map(post => [post.slug, post.lastUpdated ?? post.publishDate])
+// Blog lastmod precedence: explicit lastUpdated wins (it's the real edit signal),
+// then the curated sitemapUrls.ts value (may capture a content update lastUpdated
+// hasn't been backfilled for yet), then publishDate as the last resort. This is
+// never the build date, so lastmod can't drift on a no-op deploy the way the old
+// build-date stamp did, but it also doesn't discard curated history the way a bare
+// `lastUpdated ?? publishDate` would for the 43/46 posts with no lastUpdated set.
+const BLOG_META_BY_SLUG = new Map<string, { lastUpdated?: string; publishDate: string }>(
+  blogPosts.map(post => [post.slug, { lastUpdated: post.lastUpdated, publishDate: post.publishDate }])
 );
 
 /**
@@ -103,9 +106,12 @@ export function generateSitemap(): string {
   // Add static URLs
   STATIC_URLS.forEach(page => {
     const blogSlug = page.loc.startsWith('/blog/') ? page.loc.slice('/blog/'.length) : null;
-    const blogLastmod = blogSlug ? BLOG_LASTMOD_BY_SLUG.get(blogSlug) : undefined;
+    const blogMeta = blogSlug ? BLOG_META_BY_SLUG.get(blogSlug) : undefined;
+    const lastmod = blogMeta
+      ? blogMeta.lastUpdated ?? page.lastmod ?? blogMeta.publishDate
+      : page.lastmod;
     addUrl(page.loc, {
-      lastmod: blogLastmod ?? page.lastmod,
+      lastmod,
       changefreq: page.changefreq,
       priority: page.priority
     });
