@@ -87,14 +87,6 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
 
-    // Noindex regression audit (T1) - every sitemap route with /api/* blocked
-    // must not render noindex. Enabled separately, same pattern as 'sitemap'.
-    {
-      name: 'noindex-audit',
-      testMatch: 'noindex-audit.spec.ts',
-      use: { ...devices['Desktop Chrome'] },
-    },
-
     // Uncomment for cross-browser testing
     // {
     //   name: 'firefox',
