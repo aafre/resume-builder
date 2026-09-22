@@ -38,6 +38,27 @@ export function generateSoftwareApplicationSchema(): StructuredDataConfig {
 }
 
 /**
+ * Generate Person schema for the site's author entity
+ * Owner decision 2026-09-22: first name only, no surname anywhere.
+ * Used for: BlogPosting author (see BlogLayout.tsx)
+ */
+export function generatePersonSchema(): StructuredDataConfig {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Amit',
+    url: `${BASE_URL}/about`,
+    jobTitle: 'Founder',
+    worksFor: {
+      '@type': 'Organization',
+      name: 'EasyFreeResume',
+      url: BASE_URL,
+    },
+    sameAs: ['https://github.com/aafre'],
+  };
+}
+
+/**
  * Generate WebSite schema
  * Used for: home page
  */
