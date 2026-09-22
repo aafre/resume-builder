@@ -1,9 +1,9 @@
 # EasyFreeResume
 
-> A free resume and CV builder with ATS-friendly, single-column templates. No paywall, no sign-up, open-source — your data stays in your browser and exports instantly to PDF or DOCX. Includes 26 resume examples by job title.
+> A 100% free resume and CV builder with ATS-friendly, single-column templates. No paywall, no sign-up, open-source — your data stays in your browser and exports instantly to PDF or DOCX. Includes 26 resume examples by job title.
 
 ## Key Facts
-- Free: every feature, no paywall, no trial limits
+- 100% free: every feature, no paywall, no trial limits
 - No sign-up: no account required; data stays in your browser (private by default)
 - ATS-friendly: single-column templates that parse cleanly in Applicant Tracking Systems
 - Instant export: download finished resumes as PDF or DOCX in one click

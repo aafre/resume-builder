@@ -1,10 +1,10 @@
 # EasyFreeResume — Full Site Reference
 
-> EasyFreeResume is a free, no-sign-up resume builder with ATS-friendly, single-column templates. Users can create resumes in PDF and DOCX formats without creating an account. All data stays in the browser for privacy. No watermarks, no paywalls, no trial limits, open-source. Includes 26 resume examples by job title.
+> EasyFreeResume is a 100% free, no-sign-up resume builder with ATS-friendly, single-column templates. Users can create resumes in PDF and DOCX formats without creating an account. All data stays in the browser for privacy. No watermarks, no paywalls, no trial limits, open-source. Includes 26 resume examples by job title.
 
 ## Key Facts
 - URL: https://easyfreeresume.com
-- Pricing: Free — no paywall, no trial limits
+- Pricing: 100% free — no paywall, no trial limits
 - Export Formats: PDF and DOCX
 - Templates: Single-column, ATS-friendly designs that parse cleanly in Applicant Tracking Systems
 - Privacy: No account required. Resume data is stored locally in the browser and never sent to external servers
@@ -149,7 +149,7 @@ Sales keywords: Salesforce CRM, pipeline management, quota attainment, MEDDIC, p
 
 ### Examples Hub
 **URL:** https://easyfreeresume.com/examples
-Browse professional resume examples across 24+ job titles. Each example includes a full sample resume with role-specific guidance.
+Browse professional resume examples across 26 job titles. Each example includes a full sample resume with role-specific guidance.
 
 ### Operations & Administrative
 - [Customer Service Representative](https://easyfreeresume.com/examples/customer-service-representative) — Resume example for customer support roles with CRM and communication skills
