@@ -430,6 +430,12 @@ export default function ResumeEmploymentGaps() {
               &mdash; paid returnships at top companies for career returners
             </li>
             <li>
+              <Link to="/blog/resume-after-career-break" className="text-accent-text hover:underline">
+                How to Write a Resume After a Career Break
+              </Link>{' '}
+              &mdash; format strategy and returnship-specific advice for multi-year gaps
+            </li>
+            <li>
               <Link to="/blog/career-change-resume-guide" className="text-accent-text hover:underline">
                 Career Change Resume Guide
               </Link>{' '}
