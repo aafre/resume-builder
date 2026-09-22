@@ -1,16 +1,18 @@
 # EasyFreeResume — Full Site Reference
 
-> EasyFreeResume is a 100% free, no-sign-up resume builder with ATS-optimized templates. Users can create professional resumes in PDF and DOCX formats without creating an account. All data stays in the browser for complete privacy. No watermarks, no paywalls, no trial limits.
+> EasyFreeResume is a free, no-sign-up resume builder with ATS-friendly, single-column templates. Users can create resumes in PDF and DOCX formats without creating an account. All data stays in the browser for privacy. No watermarks, no paywalls, no trial limits, open-source. Includes 26 resume examples by job title.
 
 ## Key Facts
 - URL: https://easyfreeresume.com
-- Pricing: Completely free — all features, all templates, forever
+- Pricing: Free — no paywall, no trial limits
 - Export Formats: PDF and DOCX
-- Templates: Professional, ATS-friendly designs that pass Applicant Tracking Systems
+- Templates: Single-column, ATS-friendly designs that parse cleanly in Applicant Tracking Systems
 - Privacy: No account required. Resume data is stored locally in the browser and never sent to external servers
 - No watermarks on downloaded resumes
 - No paywalls or premium tiers
 - No trial period or usage limits
+- Open-source: source code is publicly available
+- 26 resume examples by job title
 
 ## Frequently Asked Questions
 
@@ -195,10 +197,6 @@ Browse professional resume examples across 24+ job titles. Each example includes
 
 ## AI Resume Guides
 
-### ChatGPT Resume Prompts
-**URL:** https://easyfreeresume.com/blog/chatgpt-resume-prompts
-Copy-paste ChatGPT prompts for writing resume summaries, bullet points, skills sections, and tailoring resumes to specific job descriptions.
-
 ### Claude Resume Prompts
 **URL:** https://easyfreeresume.com/blog/claude-resume-prompts
 Prompts optimized for Anthropic's Claude AI to help write and improve resume content, including summary generation and keyword optimization.
@@ -206,10 +204,6 @@ Prompts optimized for Anthropic's Claude AI to help write and improve resume con
 ### Gemini Resume Prompts
 **URL:** https://easyfreeresume.com/blog/gemini-resume-prompts
 Google Gemini prompts for resume writing, including bullet point improvement, skills extraction, and job description matching.
-
-### Grok Resume Prompts
-**URL:** https://easyfreeresume.com/blog/grok-resume-prompts
-xAI Grok prompts for resume building, including conversational approaches to resume improvement.
 
 ### AI Resume Writing Guide
 **URL:** https://easyfreeresume.com/blog/ai-resume-writing-guide
@@ -304,7 +298,7 @@ Guide to answering behavioral interview questions using the STAR method, with ex
 ## Competitor Comparisons
 
 ### Zety vs EasyFreeResume
-**URL:** https://easyfreeresume.com/blog/zety-vs-easy-free-resume
+**URL:** https://easyfreeresume.com/easyfreeresume-vs-zety
 Side-by-side comparison of Zety ($5.95-$23.95/month) and EasyFreeResume (free). Covers pricing, features, templates, ATS compatibility, and privacy.
 
 ### Resume.io vs EasyFreeResume

@@ -1,12 +1,14 @@
 # EasyFreeResume
 
-> A 100% free resume and CV builder with ATS-optimized templates. No paywall, no sign-up, no watermarks — your data stays in your browser and exports instantly to PDF or DOCX.
+> A free resume and CV builder with ATS-friendly, single-column templates. No paywall, no sign-up, open-source — your data stays in your browser and exports instantly to PDF or DOCX. Includes 26 resume examples by job title.
 
 ## Key Facts
-- 100% free: every feature, forever — no paywall, no trial limits, no hidden fees
+- Free: every feature, no paywall, no trial limits
 - No sign-up: no account required; data stays in your browser (private by default)
 - ATS-friendly: single-column templates that parse cleanly in Applicant Tracking Systems
 - Instant export: download finished resumes as PDF or DOCX in one click
+- Open-source: source code is publicly available
+- 26 resume examples by job title
 - URL: https://easyfreeresume.com
 
 ## Resume & CV Builder
@@ -38,7 +40,6 @@
 ## AI Resume Guides
 - [Claude Resume Prompts](https://easyfreeresume.com/blog/claude-resume-prompts)
 - [Gemini Resume Prompts](https://easyfreeresume.com/blog/gemini-resume-prompts)
-- [ChatGPT Resume Prompts](https://easyfreeresume.com/blog/chatgpt-resume-prompts)
 - [AI Resume Writing Guide](https://easyfreeresume.com/blog/ai-resume-writing-guide)
 
 ## Resume Writing Guides
@@ -50,5 +51,5 @@
 
 ## Comparisons & Roundups
 - [Best Free Resume Builders 2026](https://easyfreeresume.com/blog/best-free-resume-builders-2026)
-- [Zety vs EasyFreeResume](https://easyfreeresume.com/blog/zety-vs-easy-free-resume)
+- [Zety vs EasyFreeResume](https://easyfreeresume.com/easyfreeresume-vs-zety)
 - [Resume.io vs EasyFreeResume](https://easyfreeresume.com/blog/resume-io-vs-easy-free-resume)
