@@ -122,12 +122,68 @@ async function getRobotsMeta(page: Page): Promise<string | null> {
   return page.evaluate(() => document.querySelector('meta[name="robots"]')?.getAttribute('content') ?? null);
 }
 
+/**
+ * Wait for the blocked-fetch → noindex race to have had a chance to resolve
+ * before reading `<meta name="robots">`.
+ *
+ * A prerendered route ships `index, follow` and its real `<h1>` as static
+ * markup — both are satisfied before React ever hydrates. The defect this
+ * suite exists to catch only exists post-hydration: a component's `useEffect`
+ * fires an `/api/*` call, `blockApi()` aborts it, the `.catch()` handler
+ * commits a state update, and (for routes using react-helmet-async) a
+ * further Helmet effect flushes the new `<meta>` tag. Reading the tag right
+ * after `domcontentloaded` + `<h1>` samples the PRERENDERED value and would
+ * go green even with the exact `TemplateCarousel`-renders-`<ErrorPage/>`
+ * defect reintroduced — confirmed directly: with only an `<h1>` wait, the
+ * mutation-tested `/templates` run passed the robots assertion and only
+ * failed later, on the cards-visible assertion, an accident of that one
+ * test's extra checks that the other 120 routes don't have.
+ *
+ * So: attach a listener for our own intercepted `/api/*` traffic BEFORE
+ * navigation (a listener attached after `goto()` can miss a request an
+ * effect fires within the first tick), then once the page is interactive,
+ * give any such request a window to appear and — if one did — hold for one
+ * more settle window covering the `.catch()` → setState → re-render →
+ * Helmet-effect chain. This is bounded and scoped to traffic *we* blocked —
+ * not `networkidle`, which hangs on unrelated background noise (ads,
+ * analytics, a flaky image CDN) that has nothing to do with whether the
+ * route is indexable.
+ */
+function watchForApiRequest(page: Page): { seen: () => boolean; dispose: () => void } {
+  let seen = false;
+  const onRequest = (req: { url: () => string }) => {
+    if (req.url().includes('/api/')) seen = true;
+  };
+  page.on('request', onRequest);
+  return { seen: () => seen, dispose: () => page.off('request', onRequest) };
+}
+
+async function waitForNoindexRaceToSettle(page: Page, apiWatcher: { seen: () => boolean }): Promise<void> {
+  // Detection window: an effect that fires an /api/* call on mount does so
+  // within a tick or two of commit, not hundreds of ms — 300ms is generous
+  // headroom, not a guess at network latency (the request is aborted
+  // locally, no round trip involved). Kept short because most routes in the
+  // sitemap make no /api/* call at all and would otherwise pay this on every
+  // one of 121 tests for nothing.
+  const deadline = Date.now() + 300;
+  while (!apiWatcher.seen() && Date.now() < deadline) {
+    await page.waitForTimeout(25);
+  }
+  if (apiWatcher.seen()) {
+    // Settle window: covers .catch() -> setState -> re-render -> (for
+    // react-helmet-async routes) the Helmet effect that actually writes the
+    // new <meta> tag to the DOM.
+    await page.waitForTimeout(400);
+  }
+}
+
 test.describe('Noindex audit — /api/* blocked', () => {
   for (const path of urls) {
     const expectNoindex = NOINDEX_ROUTES_MIRROR.has(path);
 
     test(`'${path}' does not go noindex on a blocked API${expectNoindex ? ' (expected noindex)' : ''}`, async ({ page }) => {
       await blockApi(page);
+      const apiWatcher = watchForApiRequest(page);
       // `waitUntil: 'networkidle'` is deliberately avoided: pages with a
       // preview <img> whose src 404s into the SPA shell (e.g. no
       // VITE_SUPABASE_URL configured locally) retry-render in a tight loop
@@ -139,6 +195,8 @@ test.describe('Noindex audit — /api/* blocked', () => {
       const response = await page.goto(path, { waitUntil: 'domcontentloaded', timeout: 30000 });
       expect(response?.ok(), `'${path}' returned status ${response?.status()}`).toBe(true);
       await page.waitForSelector('h1', { timeout: 15000 }).catch(() => {});
+      await waitForNoindexRaceToSettle(page, apiWatcher);
+      apiWatcher.dispose();
 
       const robots = await getRobotsMeta(page);
       if (expectNoindex) {
@@ -158,8 +216,11 @@ test.describe('Noindex audit — /api/* blocked', () => {
 
   test('/templates: cards visible and each CTA reaches the editor, with /api/* blocked', async ({ page }) => {
     await blockApi(page);
+    const apiWatcher = watchForApiRequest(page);
     await page.goto('/templates', { waitUntil: 'domcontentloaded', timeout: 30000 });
     await page.waitForSelector('h1', { timeout: 15000 }).catch(() => {});
+    await waitForNoindexRaceToSettle(page, apiWatcher);
+    apiWatcher.dispose();
 
     const robots = await getRobotsMeta(page);
     expect(robots ?? '').not.toContain('noindex');
