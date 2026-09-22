@@ -11,6 +11,7 @@ import dotenv from 'dotenv';
 import { JOBS_DATABASE } from '../src/data/jobKeywords/index';
 import { JOB_EXAMPLES_DATABASE } from '../src/data/jobExamples/index';
 import { STATIC_URLS } from '../src/data/sitemapUrls';
+import { blogPosts } from '../src/data/blogPosts';
 import {
   HREFLANG_PAIRS,
   CV_REGIONS,
@@ -34,11 +35,21 @@ const JOBS = JOBS_DATABASE.map(job => ({
 }));
 
 // Job examples data for pSEO pages
+// ponytail: seam for A5 (Track C) — JobExampleInfo.lastmod is optional and unset today,
+// so this falls back to the build date for every entry. Once A5 wires each YAML's
+// meta.lastmod into JOB_EXAMPLES_DATABASE, entries with a real lastmod stop drifting.
 const JOB_EXAMPLES = JOB_EXAMPLES_DATABASE.map(job => ({
   slug: job.slug,
   priority: job.priority,
-  lastmod: new Date().toISOString().split('T')[0],
+  lastmod: job.lastmod || new Date().toISOString().split('T')[0],
 }));
+
+// Blog lastmod comes from blogPosts.ts (lastUpdated ?? publishDate), never the build
+// date — this is the single source of truth so a post's date can't drift out of sync
+// with sitemapUrls.ts the way the old manual dual-edit checklist allowed.
+const BLOG_LASTMOD_BY_SLUG = new Map<string, string>(
+  blogPosts.map(post => [post.slug, post.lastUpdated ?? post.publishDate])
+);
 
 /**
  * Escape special XML characters to ensure valid XML output
@@ -91,8 +102,10 @@ export function generateSitemap(): string {
 
   // Add static URLs
   STATIC_URLS.forEach(page => {
+    const blogSlug = page.loc.startsWith('/blog/') ? page.loc.slice('/blog/'.length) : null;
+    const blogLastmod = blogSlug ? BLOG_LASTMOD_BY_SLUG.get(blogSlug) : undefined;
     addUrl(page.loc, {
-      lastmod: page.lastmod,
+      lastmod: blogLastmod ?? page.lastmod,
       changefreq: page.changefreq,
       priority: page.priority
     });

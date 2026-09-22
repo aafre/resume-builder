@@ -120,6 +120,7 @@ export interface JobExampleInfo {
   priority: number;
   metaDescription: string;
   careerOutlook?: string;          // 1-2 sentence career outlook intro for SEO differentiation
+  lastmod?: string;                // Last modified date (YYYY-MM-DD); falls back to build date if unset
 }
 
 /**
