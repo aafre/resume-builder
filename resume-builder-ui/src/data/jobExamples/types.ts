@@ -185,6 +185,8 @@ export interface JobExampleInfo {
   priority: number;
   metaDescription: string;
   careerOutlook?: string;          // 1-2 sentence career outlook intro for SEO differentiation
+  lastmod?: string;                // YYYY-MM-DD, mirrors this role's YAML meta.lastmod; sitemap
+                                    // falls back to today's date when absent (pre-A5 behavior)
 }
 
 /**
