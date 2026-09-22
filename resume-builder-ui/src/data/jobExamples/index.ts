@@ -260,9 +260,23 @@ export function getJobExampleBySlug(slug: string): JobExampleInfo | undefined {
 }
 
 /**
- * Get related jobs for a given slug
+ * Get related jobs for a given slug.
+ *
+ * `explicitSlugs` is the YAML's own `relatedJobs` field (curated per role).
+ * When it resolves to at least one known slug, it wins outright — it is a
+ * deliberate editorial choice, not a fallback to blend with the algorithm.
+ * Unknown slugs are dropped silently rather than failing the page.
  */
-export function getRelatedJobs(slug: string, limit = 4): JobExampleInfo[] {
+export function getRelatedJobs(slug: string, limit = 4, explicitSlugs?: string[]): JobExampleInfo[] {
+  if (explicitSlugs && explicitSlugs.length > 0) {
+    const explicit = explicitSlugs
+      .filter(s => s !== slug)
+      .map(s => getJobExampleBySlug(s))
+      .filter((job): job is JobExampleInfo => !!job)
+      .slice(0, limit);
+    if (explicit.length > 0) return explicit;
+  }
+
   const currentJob = getJobExampleBySlug(slug);
   if (!currentJob) return [];
 
