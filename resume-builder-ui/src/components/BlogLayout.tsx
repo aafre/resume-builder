@@ -62,10 +62,15 @@ export default function BlogLayout({
     : '';
 
   // Do-not-touch list (seo-tracking/protected-pages.md, context §5): schema on these
-  // two posts must stay exactly as-is. Everything else gets the Person author entity.
+  // pages must stay exactly as-is — body, meta, title, H1, schema, canonical, internal
+  // links. Two are the always-protected top-5 pages; three are the MIRAGE tier that
+  // also render via BlogLayout. Everything else gets the Person author entity.
   const isProtectedAuthorPage = [
     '/blog/resume-no-experience',
     '/blog/how-why-easyfreeresume-completely-free',
+    '/blog/best-free-resume-builders-2026',
+    '/blog/resume-io-vs-easy-free-resume',
+    '/easyfreeresume-vs-indeed-resume-builder',
   ].includes(typeof window !== 'undefined' ? window.location.pathname.replace(/\/+$/, '') : '');
 
   return (
