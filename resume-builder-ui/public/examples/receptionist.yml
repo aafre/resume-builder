@@ -8,6 +8,113 @@ meta:
   metaDescription: "Receptionist resume example highlighting front desk skills and customer interaction. Free to edit and download."
   category: operations
   priority: 0.7
+  lastmod: "2026-09-22"
+
+answerBlock: >
+  A strong receptionist resume leads with the phone and visitor volume you handled daily
+  (calls, check-ins, scheduling), names the specific phone and scheduling systems you used,
+  and shows you can keep a front desk calm during a busy walk-in rush — not just "greeted
+  visitors."
+
+howToWrite:
+  - "Open with a summary that states your front-desk setting (medical, legal, corporate) and years of experience — a hiring manager scanning 40 resumes decides in seconds whether your environment matches theirs."
+  - "List the specific phone system and scheduling software you've used (multi-line, Outlook, EHR check-in) by name — recruiters and ATS keyword filters look for the tool, not the word 'phones.'"
+  - "Quantify visitor and call volume per shift (e.g. '80+ patients daily,' '150+ calls'). A receptionist resume with no numbers reads the same for a 5-person office and a 200-person lobby."
+  - "Separate front-desk duties from any admin support you did — filing, mail, calendar management for executives — so the resume shows range beyond just answering phones."
+  - "If you handle confidential records (medical, legal, HR), say so explicitly and name any privacy training (HIPAA) — it signals trust before the interview."
+  - "Keep it to one page. Receptionist hiring managers skim; a second page of generic office tasks works against you."
+
+summaryExamples:
+  - level: entry
+    summary: >
+      Organized and personable recent graduate seeking a front desk role. Comfortable managing
+      a multi-line phone system, scheduling appointments, and greeting visitors professionally.
+      Strong Microsoft Office skills and a calm, welcoming manner under pressure.
+  - level: mid
+    summary: >
+      Receptionist with 3+ years of experience managing front desk operations in a fast-paced
+      professional office. Handles 100+ calls and 50+ visitors daily using multi-line phone
+      systems and electronic scheduling. Known for keeping the front desk organized during
+      high-volume periods.
+  - level: senior
+    summary: >
+      Senior receptionist with 8+ years across legal and medical front-desk settings, including
+      2 years training new hires on phone and check-in procedures. Manages scheduling for
+      12+ staff, vendor coordination, and confidential document handling with zero compliance
+      incidents.
+
+skills:
+  hard:
+    - Multi-Line Phone Systems
+    - Appointment Scheduling Software
+    - Microsoft Outlook Calendar Management
+    - Visitor Management Systems
+    - Data Entry & Filing
+    - Electronic Health Records (EHR) Check-In
+  soft:
+    - Professional Phone Etiquette
+    - De-escalation Under Time Pressure
+    - Multitasking During Peak Hours
+    - Discretion With Confidential Information
+
+keywords:
+  - Front Desk Operations
+  - Multi-Line Phone System
+  - Appointment Scheduling
+  - Visitor Management
+  - Calendar Management
+  - Customer Service
+  - Data Entry
+  - Microsoft Office Suite
+  - HIPAA Compliance
+  - Office Administration
+
+certifications:
+  - Microsoft Office Specialist (MOS)
+  - HIPAA Privacy Certification (for medical/dental front desks)
+  - CPR/First Aid Certification (a plus for medical offices)
+
+mistakes:
+  - mistake: "Writing \"answered phones and greeted people\" with no numbers"
+    fix: "State the actual daily volume: \"Managed multi-line phone system handling 150+ calls daily.\" The number is what separates a quiet office from a 12-attorney law firm."
+  - mistake: "Naming the job title but not the setting"
+    fix: "Say whether it was a medical, legal, or corporate front desk — the software, pace, and confidentiality requirements differ enough that recruiters filter on it."
+  - mistake: "Listing \"customer service\" as the only skill"
+    fix: "Break it into what you actually did: visitor check-in, scheduling, mail handling, phone triage — each is a keyword an ATS scans for separately."
+  - mistake: "Omitting the specific scheduling or EHR software used"
+    fix: "Name it: Outlook, Epic, Calendly. A resume that only says \"scheduling software\" reads as if you've never used a named tool."
+
+bulletRewrites:
+  - weak: "Answered phones and greeted visitors"
+    improved: "Managed multi-line phone system handling 150+ calls daily while greeting and directing 75+ visitors in a 12-attorney law office"
+    reason: "Adds the specific volume and setting, turning a generic duty into evidence you can handle a high-traffic professional front desk."
+  - weak: "Responsible for scheduling appointments"
+    improved: "Scheduled and confirmed appointments for [number] providers using [scheduling software], reducing no-shows by [X%] through proactive reminder calls"
+    reason: "Names the tool and frames scheduling as a result (fewer no-shows), not just a task — placeholders mark where the candidate fills in their real numbers."
+  - weak: "Handled office supplies and mail"
+    improved: "Managed office supply inventory and incoming/outgoing mail for a 50-person office, cutting supply costs by [X%] through consolidated ordering"
+    reason: "Shows ownership of a process with a measurable outcome instead of listing a task with no context for its scale."
+  - weak: "Good with people and organized"
+    improved: "Maintained 99% positive visitor feedback while managing a waiting area serving 80+ patients daily across two providers"
+    reason: "Replaces a subjective self-description with a verifiable outcome tied to the actual front-desk workload."
+
+salaryOutlook:
+  median: "$38,010/year ($18.27/hour)"
+  growth: "Projected to decline 2% from 2025 to 2035"
+  source: "https://www.bls.gov/ooh/office-and-administrative-support/receptionists.htm"
+  asOf: "2026-09-22"
+
+customFaqs:
+  - question: "What software should a receptionist list on their resume?"
+    answer: "Name the specific systems: the phone system (multi-line, VoIP), the scheduling tool (Outlook, Calendly, or an EHR check-in system for medical offices), and Microsoft Office. Listing the actual product names, not just \"phones\" or \"scheduling,\" is what an ATS and a hiring manager scan for."
+  - question: "How do I show receptionist experience without call or visitor numbers?"
+    answer: "Estimate conservatively from memory rather than omitting the metric entirely — \"managed a busy multi-line phone system\" is weaker than \"handled 100+ calls daily,\" and most receptionists can reconstruct a reasonable daily average from their shift length and role."
+  - question: "Should a receptionist resume mention HIPAA or confidentiality?"
+    answer: "Yes, if the role touched patient, legal, or HR records. Naming HIPAA training or a confidentiality track record signals trustworthiness before the interview — it's one of the first things medical and legal office managers screen for."
+  - question: "Is one page enough for a receptionist resume with 8+ years of experience?"
+    answer: "Usually yes. Receptionist hiring managers are screening for front-desk fit, not a full career history — keep the most recent and most relevant roles detailed, and compress earlier front-desk jobs into one or two lines each."
+  - question: "What's the difference between a medical receptionist and a corporate receptionist resume?"
+    answer: "A medical receptionist resume should emphasize EHR check-in systems, insurance verification, and HIPAA compliance. A corporate receptionist resume should emphasize visitor and vendor management, multi-executive calendar coordination, and conference room scheduling. Match the vocabulary to the setting you're applying to."
 
 resume:
   template: classic
