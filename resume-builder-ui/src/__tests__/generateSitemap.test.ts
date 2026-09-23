@@ -34,8 +34,8 @@ describe('Sitemap XML Generation', () => {
   let xml: string;
 
   beforeAll(() => {
-    // Set env var for consistent base URL in tests
-    process.env.VITE_APP_URL = baseUrl;
+    // A DEV build URL must not leak into the sitemap (prod shipped dev URLs).
+    process.env.VITE_APP_URL = 'https://dev.easyfreeresume.com';
     xml = generateSitemap();
   });
 

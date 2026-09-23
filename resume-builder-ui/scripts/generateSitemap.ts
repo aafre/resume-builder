@@ -86,15 +86,11 @@ export function escapeXml(unsafe: string): string {
  * Exported for testing
  */
 export function generateSitemap(): string {
-  // Load from environment variable, fallback to production URL
-  // In local dev: VITE_APP_URL is loaded from .env via dotenv
-  // In Docker/CI: VITE_APP_URL should be passed as build arg
-  // Fallback ensures builds succeed even if not explicitly set
-  const baseUrl = process.env.VITE_APP_URL || 'https://easyfreeresume.com';
-
-  if (!process.env.VITE_APP_URL) {
-    console.warn('⚠️  VITE_APP_URL not set, using default: https://easyfreeresume.com');
-  }
+  // Always the canonical host, never the build's VITE_APP_URL: the same image
+  // is built with the DEV URL and promoted to prod, which shipped a prod
+  // sitemap of 120 dev.easyfreeresume.com URLs (2026-09-23). Canonicals
+  // (SEOHead BASE_URL) are hardcoded to prod for the same reason.
+  const baseUrl = 'https://easyfreeresume.com';
 
   // Use Map to store unique URLs and prevent duplicates
   const urls = new Map<string, { lastmod: string; changefreq: string; priority: number }>();
