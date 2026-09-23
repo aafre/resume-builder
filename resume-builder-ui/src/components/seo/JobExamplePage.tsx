@@ -742,7 +742,7 @@ export default function JobExamplePage() {
               </h2>
               <p className="text-sm text-ink/75 leading-relaxed">
                 Median pay: <span className="font-semibold text-ink">{data.salaryOutlook.median}</span>.
-                {' '}Projected job growth: <span className="font-semibold text-ink">{data.salaryOutlook.growth}</span>.
+                {' '}Job growth: <span className="font-semibold text-ink">{data.salaryOutlook.growth}</span>.
                 {data.salaryOutlook.occupation && ` Mapped to the BLS occupation "${data.salaryOutlook.occupation}."`}
                 {' '}US figures only.
               </p>
