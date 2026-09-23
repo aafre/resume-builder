@@ -221,7 +221,7 @@ export default function BlogLayout({
         </RevealSection>
 
         <RevealSection variant="fade-up">
-          <AuthorBio />
+          <AuthorBio legacy={isProtectedAuthorPage} />
         </RevealSection>
 
         {(() => {
