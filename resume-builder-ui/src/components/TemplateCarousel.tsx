@@ -95,6 +95,9 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
 
   // Show modal when user clicks "Use Template"
   const handleUseTemplate = async (templateId: string) => {
+    // One lookup/create at a time: a second card's response could otherwise
+    // overwrite the selected template or open both modals.
+    if (creating || checkingExistingResume) return;
     trackTemplateSelected({ template_id: templateId });
     // Set early so the card that was clicked can show its own busy state
     // while we look up existing resumes.
@@ -351,9 +354,8 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
       <div className="container mx-auto max-w-6xl px-4 pb-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {templates.map((template, index) => {
-            const busy =
-              (creating || checkingExistingResume) &&
-              selectedTemplateForModal === template.id;
+            const locked = creating || checkingExistingResume;
+            const busy = locked && selectedTemplateForModal === template.id;
             return (
               <React.Fragment key={template.id}>
                 <div className="group flex flex-col bg-white rounded-3xl border border-ink/10 shadow-[0_1px_2px_rgba(12,12,12,0.04),0_16px_40px_-20px_rgba(12,12,12,0.25)] hover:shadow-[0_1px_2px_rgba(12,12,12,0.04),0_28px_60px_-24px_rgba(12,12,12,0.32)] transition-shadow duration-300 overflow-clip">
@@ -396,7 +398,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
                     <button
                       className="mt-6 w-full inline-flex items-center justify-center bg-accent text-ink py-4 px-6 rounded-xl font-semibold transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0"
                       onClick={() => handleUseTemplate(template.id)}
-                      disabled={busy}
+                      disabled={locked}
                     >
                       {busy ? (
                         <>

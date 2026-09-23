@@ -4,6 +4,10 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import TemplateCarousel from '../components/TemplateCarousel';
 import { fetchTemplates } from '../services/templates';
+import { apiClient } from '../lib/api-client';
+
+// Mutable so a test can sign in; hoisted because vi.mock factories are.
+const auth = vi.hoisted(() => ({ session: null as unknown }));
 
 // Mock dependencies
 vi.mock('react-router-dom', async () => {
@@ -29,7 +33,7 @@ vi.mock('../services/templates', async () => {
 
 vi.mock('../contexts/AuthContext', () => ({
   useAuth: () => ({
-    session: null,
+    session: auth.session,
     isAnonymous: true,
     isAuthenticated: false,
     anonMigrationInProgress: false,
@@ -76,6 +80,28 @@ describe('TemplateCarousel', () => {
 
   afterEach(() => {
     cleanup();
+    auth.session = null;
+  });
+
+  it('locks every start CTA while one existing-resume lookup is pending', async () => {
+    auth.session = { access_token: 'token' };
+    // Never resolves: the lookup stays in flight for the whole test.
+    (apiClient.get as ReturnType<typeof vi.fn>).mockReturnValue(new Promise(() => {}));
+    render(
+      <MemoryRouter>
+        <TemplateCarousel />
+      </MemoryRouter>
+    );
+    await waitFor(() => expect(screen.getByAltText('Template 1')).toBeInTheDocument());
+
+    const ctas = screen.getAllByRole('button', { name: /start with this template/i });
+    await userEvent.click(ctas[0]);
+
+    const all = screen.getAllByRole('button', { name: /start with this template|checking/i });
+    expect(all).toHaveLength(mockTemplates.length);
+    all.forEach((b) => expect(b).toBeDisabled());
+    await userEvent.click(all[1]);
+    expect(apiClient.get).toHaveBeenCalledTimes(1);
   });
 
   it('renders images with correct loading attributes', async () => {
