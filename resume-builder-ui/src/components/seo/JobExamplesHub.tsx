@@ -79,7 +79,7 @@ export default function JobExamplesHub() {
 
   // SEO config
   const seoConfig = {
-    title: 'Free Resume Examples by Job Title (2026) | 50+ Professional Templates',
+    title: `Free Resume Examples by Job Title (2026) | ${totalExamples}+ Professional Templates`,
     description:
       'Browse free resume examples for every job title. Customer service, software engineer, nurse, teacher, and more. Edit instantly in our free builder.',
     keywords: [
