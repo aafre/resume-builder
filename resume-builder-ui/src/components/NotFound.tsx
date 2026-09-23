@@ -11,7 +11,7 @@ const NotFound: React.FC = () => {
         {/* 404 Card */}
         <div className="glass glass-hover rounded-3xl p-8 md:p-12 text-center">
           {/* 404 Code */}
-          <div className="font-display text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-600 mb-6">
+          <div className="font-display text-6xl font-extrabold text-ink mb-6">
             404
           </div>
 

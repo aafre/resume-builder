@@ -1107,7 +1107,7 @@ export default function ResumeKeywordScanner() {
                 Resumes that score below the threshold &mdash; typically around 60&ndash;75% match depending on the company &mdash; are automatically filtered out. The recruiter never sees them. That means your resume could be perfect in every other way, but without the right keywords, it disappears into a digital void.
               </p>
               <p className="text-lg font-extralight text-ink/60 leading-relaxed">
-                Keywords are only one failure mode, though. Want the full manual ATS check beyond keywords? See our <Link to="/blog/free-ats-resume-check" className="text-accent hover:underline">free ATS resume check guide</Link> for the plain-text paste test and structural audit that catch what a keyword scan alone can&rsquo;t.
+                Keywords are only one failure mode, though. Want the full manual ATS check beyond keywords? See our <Link to="/blog/free-ats-resume-check" className="text-accent-text hover:underline">free ATS resume check guide</Link> for the plain-text paste test and structural audit that catch what a keyword scan alone can&rsquo;t.
               </p>
             </div>
 

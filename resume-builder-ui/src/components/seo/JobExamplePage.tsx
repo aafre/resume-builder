@@ -670,7 +670,7 @@ export default function JobExamplePage() {
             <div className="space-y-5 max-w-3xl mx-auto">
               {data.bulletRewrites.map((rewrite, index) => (
                 <div key={index} className="bg-white rounded-xl border border-black/[0.06] overflow-clip">
-                  <p className="px-5 py-3 text-sm text-ink/50 line-through bg-chalk-dark">{rewrite.weak}</p>
+                  <p className="px-5 py-3 text-sm text-ink/60 line-through bg-chalk-dark">{rewrite.weak}</p>
                   <p className="px-5 py-3 text-sm text-ink border-t border-black/[0.06]">{rewrite.improved}</p>
                   <p className="px-5 py-3 text-xs text-accent-text border-t border-black/[0.06]">Why it works: {rewrite.reason}</p>
                 </div>
@@ -757,7 +757,7 @@ export default function JobExamplePage() {
                 {data.salaryOutlook.occupation && ` Mapped to the BLS occupation "${data.salaryOutlook.occupation}."`}
                 {' '}US figures only.
               </p>
-              <p className="mt-3 text-xs text-ink/50">
+              <p className="mt-3 text-xs text-ink/60">
                 Source: <a href={data.salaryOutlook.source} target="_blank" rel="noopener noreferrer" className="underline hover:text-accent-text">
                   U.S. Bureau of Labor Statistics, Occupational Outlook Handbook
                 </a> &middot; as of {data.salaryOutlook.asOf}
