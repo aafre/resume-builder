@@ -29,12 +29,16 @@ import type { FAQConfig } from '../../types/seo';
 import type { Section } from '../../types';
 
 /**
- * Pilots for the A5 example-page template upgrade (2026-09). `relatedJobs`
- * curation from the YAML is only honoured for these slugs — the other 23
- * pages must render identically to before this change; Wave 2 removes this
- * gate as it rolls the schema out sitewide.
+ * Every YAML — including the 23 legacy (pre-A5) pages — already carries a
+ * curated `relatedJobs` field, so gating on the slug (or on the field's mere
+ * presence) doesn't distinguish A5 pages from legacy ones. `answerBlock` is
+ * only populated for pages upgraded to the A5 schema (2026-09), so its
+ * presence is what actually means "honour this YAML's relatedJobs curation" —
+ * legacy pages keep the existing category/priority algorithm unchanged.
  */
-const A5_PILOT_SLUGS = new Set(['receptionist', 'registered-nurse', 'software-engineer']);
+export function isA5Page(data: JobExampleData | null): boolean {
+  return !!data?.answerBlock;
+}
 
 // Supabase Storage CDN base URL for pre-generated resume preview images
 const PREVIEW_BASE_URL = import.meta.env.VITE_SUPABASE_URL
@@ -214,7 +218,7 @@ export default function JobExamplePage() {
 
   // Compute derived values (always computed to maintain hook order)
   const relatedJobs = slug
-    ? getRelatedJobs(slug, 4, A5_PILOT_SLUGS.has(slug) ? data?.relatedJobs : undefined)
+    ? getRelatedJobs(slug, 4, isA5Page(data) ? data?.relatedJobs : undefined)
     : [];
   const dbEntry = slug ? getJobExampleBySlug(slug) : undefined;
   const categoryInfo = data ? JOB_CATEGORIES.find(c => c.id === data.meta.category) : null;
