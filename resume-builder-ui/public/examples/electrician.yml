@@ -68,7 +68,7 @@ mistakes:
   - mistake: "Writing \"installed and repaired electrical systems\" with no scale or license detail"
     fix: "State your license level and the project scale: \"Licensed journeyman electrician installing systems for commercial buildings up to 500K sq ft.\" Without licensure and scale, the bullet could describe a helper or a master electrician equally."
   - mistake: "Omitting the safety record"
-    fix: "State it directly: \"Zero workplace incidents over 8-year career.\" Commercial and industrial employers screen for safety history as a hard filter, especially for crews handling live electrical work."
+    fix: "State it directly: \"[Zero] workplace incidents over [N]-year career.\" Commercial and industrial employers screen for safety history as a hard filter, especially for crews handling live electrical work."
   - mistake: "Not naming the code standard worked to"
     fix: "Cite it: \"Ensured all work complied with NEC 2023 code requirements.\" Code updates on a cycle, so naming the version signals you stay current rather than working from outdated training."
   - mistake: "Listing \"troubleshooting\" as a skill with no tool or outcome"
