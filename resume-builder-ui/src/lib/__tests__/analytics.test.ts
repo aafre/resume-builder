@@ -174,12 +174,17 @@ describe('analytics', () => {
           $set_once: { $initial_current_url: dirty, $initial_referrer: dirty },
           $set: { $current_url: dirty },
         },
+        $set_once: { $initial_current_url: dirty },
+        $set: { $current_url: dirty },
       });
 
       expect(JSON.stringify(out.properties)).not.toMatch(/nurse|tok=/);
       expect(out.properties.$session_entry_url).toBe('https://x.com/jobs');
       expect(out.properties.$set_once.$initial_current_url).toBe('https://x.com/jobs');
       expect(out.properties.$referrer).toBe('$direct');
+      // Root-level person props (posthog's $identify shape)
+      expect(out.$set_once.$initial_current_url).toBe('https://x.com/jobs');
+      expect(out.$set.$current_url).toBe('https://x.com/jobs');
 
       window.requestIdleCallback = originalRIC;
     });
