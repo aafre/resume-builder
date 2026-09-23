@@ -14,9 +14,18 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
-vi.mock('../services/templates', () => ({
-  fetchTemplates: vi.fn(),
-}));
+vi.mock('../services/templates', async () => {
+  const actual = await vi.importActual<typeof import('../services/templates')>(
+    '../services/templates'
+  );
+  return {
+    ...actual,
+    fetchTemplates: vi.fn(),
+    // Real STATIC_TEMPLATES: the "blocked API" describe block below asserts
+    // against it directly, and the other tests just see it get replaced by
+    // mockTemplates once the mocked fetchTemplates resolves.
+  };
+});
 
 vi.mock('../contexts/AuthContext', () => ({
   useAuth: () => ({
@@ -148,5 +157,48 @@ describe('TemplateCarousel', () => {
     await waitFor(() => {
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
+  });
+});
+
+describe('TemplateCarousel with /api/templates blocked', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    (fetchTemplates as ReturnType<typeof vi.fn>).mockRejectedValue(
+      new Error('net::ERR_FAILED')
+    );
+  });
+
+  afterEach(() => {
+    cleanup();
+  });
+
+  it('still renders the static template grid with working CTAs, not an error page', async () => {
+    render(
+      <MemoryRouter>
+        <TemplateCarousel />
+      </MemoryRouter>
+    );
+
+    // The static seed is on-screen from the very first render — no spinner,
+    // no ErrorPage, no NotFound gate to wait past.
+    expect(screen.getByAltText('Professional')).toBeInTheDocument();
+    expect(screen.getByAltText('Elegant')).toBeInTheDocument();
+    expect(screen.getByAltText('Minimalist')).toBeInTheDocument();
+    expect(screen.getByAltText('Modern')).toBeInTheDocument();
+
+    expect(
+      screen.getAllByRole('button', { name: /start with this template/i })
+    ).toHaveLength(4);
+
+    // The background refresh fails; the page says so inline instead of
+    // swapping to a full error/404 surface.
+    await waitFor(() => {
+      expect(
+        screen.getByText(/couldn't refresh live template previews/i)
+      ).toBeInTheDocument();
+    });
+
+    // Content is still there after the failed refresh settles.
+    expect(screen.getByAltText('Professional')).toBeInTheDocument();
   });
 });

@@ -1,8 +1,8 @@
-import React, { useEffect, useState, lazy, Suspense } from "react";
+import React, { useEffect, useState } from "react";
 import { flushSync } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { withViewTransition } from "../lib/viewTransition";
-import { fetchTemplates } from "../services/templates";
+import { fetchTemplates, STATIC_TEMPLATES, type Template } from "../services/templates";
 import { apiClient } from "../lib/api-client";
 import { ArrowRightIcon, MagnifyingGlassPlusIcon } from "@heroicons/react/24/solid";
 import { useAuth } from "../contexts/AuthContext";
@@ -16,31 +16,12 @@ import { InFeedAd, AD_CONFIG } from "./ads";
 import { useResumeCreate } from "../hooks/useResumeCreate";
 import { trackTemplateSelected } from "../lib/analytics";
 
-// Lazy-loaded error components
-const NotFound = lazy(() => import("./NotFound"));
-const ErrorPage = lazy(() => import("./ErrorPage"));
-
-// Loading component for Suspense fallback
-const LoadingSpinner = () => (
-  <div className="flex items-center justify-center min-h-[200px]">
-    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
-  </div>
-);
-
-interface Template {
-  id: string;
-  name: string;
-  description: string;
-  image_url: string;
-}
-
 interface TemplateCarouselProps {
   /** Hide the header section when embedded in another page (e.g., TemplatesPage) */
   showHeader?: boolean;
 }
 
 const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }) => {
-  const [templates, setTemplates] = useState<Template[]>([]);
   /** Index of the template open in the full-screen reader, or null. */
   const [previewIndex, setPreviewIndex] = useState<number | null>(null);
   /**
@@ -49,8 +30,11 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
    * it moves in lockstep with the reader opening and closing.
    */
   const [morphIndex, setMorphIndex] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // Seeded from the static list so the page always has content to render on
+  // first paint — /api/templates is a background refresh below, never a
+  // rendering dependency. See STATIC_TEMPLATES for why.
+  const [templates, setTemplates] = useState<Template[]>(STATIC_TEMPLATES);
+  const [apiUnavailable, setApiUnavailable] = useState(false);
   const [showStartModal, setShowStartModal] = useState(false);
   const [selectedTemplateForModal, setSelectedTemplateForModal] = useState<string | null>(null);
   const [checkingExistingResume, setCheckingExistingResume] = useState(false);
@@ -63,22 +47,30 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
   const { session, isAnonymous, isAuthenticated, anonMigrationInProgress } = useAuth();
   const { createResume, creating } = useResumeCreate();
 
-  // Fetch templates on component mount
+  // Background refresh of the static list — never a rendering dependency.
+  // On failure (e.g. Googlebot's renderer can't reach /api/*, or the API is
+  // briefly down), the page keeps showing STATIC_TEMPLATES and surfaces a
+  // small inline notice instead of an error page.
   useEffect(() => {
-    const loadTemplates = async () => {
+    let cancelled = false;
+
+    const refreshTemplates = async () => {
       try {
-        setLoading(true);
         const data = await fetchTemplates();
-        setTemplates(data);
+        if (!cancelled && Array.isArray(data) && data.length > 0) {
+          setTemplates(data);
+          setApiUnavailable(false);
+        }
       } catch (err) {
-        setError("Failed to load templates. Please try again later.");
-        console.error("Error fetching templates:", err);
-      } finally {
-        setLoading(false);
+        console.error("Error refreshing templates (showing static list):", err);
+        if (!cancelled) setApiUnavailable(true);
       }
     };
 
-    loadTemplates();
+    refreshTemplates();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   // Open the full-screen reader, morphing the card image into the sheet.
@@ -330,38 +322,6 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
     );
   }
 
-  // Loading state for template fetch
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-chalk flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
-          <p className="text-xl text-ink/60">
-            Loading beautiful templates...
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  // Error state - use proper ErrorPage component
-  if (error) {
-    return (
-      <Suspense fallback={<LoadingSpinner />}>
-        <ErrorPage />
-      </Suspense>
-    );
-  }
-
-  // Empty state - use proper NotFound component for 404-style experience
-  if (templates.length === 0) {
-    return (
-      <Suspense fallback={<LoadingSpinner />}>
-        <NotFound />
-      </Suspense>
-    );
-  }
-
   return (
     <div className={showHeader ? "min-h-screen bg-chalk" : ""}>
       {/* Header Section - only shown when used standalone */}
@@ -372,6 +332,17 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
           </h1>
           <p className="text-xl font-extralight text-ink/60 max-w-2xl mx-auto">
             Professional, ATS-friendly designs that get you interviews. Choose a template and start building in minutes.
+          </p>
+        </div>
+      )}
+
+      {/* Live refresh failed — the grid above is still the real static list,
+          this is just an honest note, not a blocking error state. */}
+      {apiUnavailable && (
+        <div className="container mx-auto max-w-6xl px-4 mb-8">
+          <p className="text-sm text-ink/60 bg-chalk-dark border border-ink/10 rounded-xl px-4 py-3 text-center">
+            We couldn't refresh live template previews just now — showing our
+            standard set below.
           </p>
         </div>
       )}

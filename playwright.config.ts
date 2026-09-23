@@ -16,7 +16,10 @@ dotenv.config({ path: path.resolve(__dirname, '.env.test') });
  * - PDF generation (download, preview)
  *
  * NOTE: E2E tests are currently DISABLED (testMatch: ['DISABLED_*.spec.ts'])
- * Re-enable by changing testMatch to ['**/*.spec.ts'] when ready to fix/run tests
+ * Re-enable by changing testMatch to a glob matching all spec files when
+ * ready to fix/run tests. (Not written literally here — the glob's own
+ * `star-slash` sequence closes this block comment early and breaks config
+ * parsing for every project, including the explicit-testMatch ones below.)
  */
 export default defineConfig({
   testDir: './e2e/tests',
