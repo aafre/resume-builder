@@ -8,6 +8,106 @@ meta:
   metaDescription: "Marketing coordinator resume example with campaign management and digital marketing skills."
   category: corporate
   priority: 0.7
+  lastmod: "2026-09-23"
+
+answerBlock: >
+  A strong marketing coordinator resume shows in-role campaign execution — channels
+  owned, content calendar cadence, and event or vendor coordination — backed by a
+  performance number (open rate, follower growth, leads generated), not generic
+  "supported marketing initiatives" language.
+
+howToWrite:
+  - "Name the channels you own end-to-end — email, social, paid, or events — rather than saying 'assisted with marketing,' which reads as support work with no defined ownership."
+  - "State your content cadence (e.g. '20+ posts weekly across 4 platforms') so a hiring manager can gauge the volume you're used to managing."
+  - "Pair each channel with a performance metric: open rate, follower growth, cost per lead, attendee count — coordinators are measured on execution results, not just activity."
+  - "List the specific marketing tools by name (Mailchimp, HubSpot, Canva, Google Analytics) — this is what an ATS keyword filter and a hiring manager both scan for first."
+  - "Separate campaign coordination from event/vendor logistics if you did both — they're distinct skill sets and naming both broadens the roles you qualify for."
+  - "Keep it to one page unless you have 5+ years — coordinator roles are screened for channel breadth and execution speed, not tenure."
+
+summaryExamples:
+  - level: entry
+    summary: >
+      Marketing coordinator with 1-2 years of experience executing email and social
+      campaigns for a mid-size agency. Manages a 15-post weekly content calendar across
+      3 platforms using Canva and Mailchimp. Comfortable owning a channel end-to-end
+      from content creation to performance reporting.
+  - level: mid
+    summary: >
+      Marketing coordinator with 4+ years coordinating multi-channel campaigns across
+      email, social, and paid advertising. Manages a 20-post weekly content calendar
+      across 4 platforms and plans 12 corporate events annually. Increased email open
+      rates by [X%] through A/B testing and list segmentation.
+  - level: senior
+    summary: >
+      Senior marketing coordinator with 7+ years owning campaign execution across email,
+      social, paid, and event channels for a multi-brand portfolio. Trains junior
+      coordinators on content calendar management and campaign reporting, and has run
+      vendor relationships worth $[X]00K+ annually.
+
+skills:
+  hard:
+    - Campaign Coordination (Email, Social, Paid)
+    - Content Calendar Management
+    - Google Analytics
+    - Mailchimp / HubSpot
+    - Event & Vendor Logistics
+    - A/B Testing & List Segmentation
+  soft:
+    - Cross-Functional Coordination
+    - Meeting Campaign Deadlines
+    - Reporting Results to Stakeholders
+    - Managing Multiple Concurrent Campaigns
+
+keywords:
+  - Campaign Management
+  - Social Media Marketing
+  - Email Marketing
+  - Content Calendar Management
+  - Event Marketing
+  - Google Analytics
+  - Marketing Automation
+  - A/B Testing
+  - Vendor Management
+  - Brand Guidelines
+
+certifications:
+  - Google Analytics Individual Qualification
+  - HubSpot Marketing Software Certification
+  - Meta Certified Digital Marketing Associate
+
+mistakes:
+  - mistake: "Saying \"assisted with marketing initiatives\" with no owned channel"
+    fix: "Name the channel you owned end-to-end: \"Managed email campaigns for a 20K-subscriber list\" reads as ownership, not support."
+  - mistake: "Listing content volume with no performance result"
+    fix: "Pair the cadence with an outcome: \"20+ posts weekly, growing engagement rate [X%] quarter over quarter\" — volume alone doesn't show the work landed."
+  - mistake: "Naming \"social media\" without the specific platforms"
+    fix: "List the platforms by name — Instagram, LinkedIn, TikTok — since campaign mechanics and audience differ enough that recruiters filter on the platform."
+  - mistake: "Combining campaign coordination and event planning into one vague bullet"
+    fix: "Separate them: they're different skill sets, and naming both broadens which coordinator openings the resume matches."
+
+bulletRewrites:
+  - weak: "Assisted with marketing campaigns across channels"
+    improved: "Coordinated email, social, and paid ad campaigns across 3 channels for a [industry] brand, increasing email open rates by [X%] through A/B testing"
+    reason: "Names the owned channels and attaches a measurable, testable outcome instead of a support-level description."
+  - weak: "Managed social media content calendar"
+    improved: "Managed a 20-post weekly content calendar across 4 platforms, growing combined followers from [X] to [Y] over [timeframe]"
+    reason: "Quantifies cadence and platform count, then closes with a specific growth result."
+  - weak: "Helped plan company events"
+    improved: "Planned and executed [number] corporate events annually with budgets up to $[amount], coordinating venue, catering, and 50+ attendee logistics"
+    reason: "Shows event scale (budget, headcount) rather than an unspecified planning task."
+  - weak: "Created marketing materials for the team"
+    improved: "Produced [number]+ pieces of marketing collateral (email, social graphics, one-pagers) monthly using Canva and Adobe, supporting [number] concurrent campaigns"
+    reason: "Names the tools and output volume, making the production workload legible to a hiring manager."
+
+customFaqs:
+  - question: "What's the difference between a marketing coordinator and a marketing manager resume?"
+    answer: "A coordinator resume emphasizes in-role execution — the channels you owned, the content calendar you ran, the events you coordinated. A manager resume emphasizes strategy, budget ownership, and team leadership. If you're applying to a coordinator role, lead with execution volume and results, not aspirational strategy language."
+  - question: "How many marketing tools should I list on a coordinator resume?"
+    answer: "List the tools you've actually used hands-on, grouped by function — email (Mailchimp, HubSpot), analytics (Google Analytics), design (Canva, Adobe). 8-12 named tools is typical; a longer unfocused list reads as padding rather than depth."
+  - question: "How do I show marketing coordinator experience without exact campaign numbers?"
+    answer: "Use a bracketed placeholder for the real figure you can't recall exactly (\"[X%] increase in open rate\") rather than a rounded guess, or describe the scope instead — platform count, content cadence, or team size supported — until you can confirm the metric."
+  - question: "Should a marketing coordinator resume include event planning experience?"
+    answer: "Yes, if it's part of the role — name it separately from campaign coordination since it's a distinct skill set (vendor logistics, budget, attendee management). Naming both broadens which coordinator openings your resume matches, since some roles weight events more heavily than others."
 
 resume:
   template: modern
