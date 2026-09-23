@@ -192,8 +192,10 @@ export default function JobExamplePage() {
     }
 
     // Already seeded from the prerendered payload — the round trip would fetch
-    // data we are currently rendering.
+    // data we are currently rendering. Consumed once: after client navigation
+    // away and Back, `data` belongs to the other slug and must be refetched.
     if (seededSlug.current === slug) {
+      seededSlug.current = null;
       return;
     }
 
