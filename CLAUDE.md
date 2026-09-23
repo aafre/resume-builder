@@ -155,11 +155,14 @@ Explicit ads are controlled by the `VITE_ENABLE_EXPLICIT_ADS` environment variab
 
 ### Blog Page Update Checklist
 
-When modifying a blog page (especially comparison/competitor pages), update the date in **both** places:
-1. **`dateModified`** in the `generateComparisonSchema()` call inside the blog component (e.g., `ZetyVsEasyFreeResume.tsx`)
-2. **`lastmod`** in `resume-builder-ui/src/data/sitemapUrls.ts` for the corresponding URL entry
+A blog URL's sitemap `lastmod` resolves as the **later** of `lastUpdated` in
+`resume-builder-ui/src/data/blogPosts.ts` and the curated value in `sitemapUrls.ts`, else
+`publishDate` (see `generateSitemap.ts`). On a substantive edit:
+1. Set **`lastUpdated`** in `blogPosts.ts` for the slug — this is the primary signal.
+2. Set **`dateModified`** in the blog component too, where one exists (e.g. `generateComparisonSchema()` in `ZetyVsEasyFreeResume.tsx`).
+3. `sitemapUrls.ts` `lastmod` is only a fallback — leave it alone unless you have a reason to bump it.
 
-The sitemap is regenerated during `npm run build`, but the source dates in `sitemapUrls.ts` are manual.
+Never bump any of these dates without a substantive content change.
 
 ## Design System (2026 Revamp)
 
