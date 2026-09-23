@@ -118,8 +118,15 @@ async function blockApi(page: Page) {
   await page.route('**/api/**', (route) => route.abort());
 }
 
+// Every robots meta, joined: Helmet appends its own tag after the prerendered
+// one, so querySelector() returns the stale `index, follow` while Google obeys
+// the most restrictive tag. Reading only the first made the audit blind to the
+// exact ErrorPage defect it guards (mutation-tested 2026-09-23).
 async function getRobotsMeta(page: Page): Promise<string | null> {
-  return page.evaluate(() => document.querySelector('meta[name="robots"]')?.getAttribute('content') ?? null);
+  return page.evaluate(() => {
+    const tags = [...document.querySelectorAll('meta[name="robots"]')];
+    return tags.length ? tags.map((m) => m.getAttribute('content') ?? '').join(' | ') : null;
+  });
 }
 
 /**
