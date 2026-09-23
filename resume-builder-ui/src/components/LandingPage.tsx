@@ -1,6 +1,5 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import CountUp from "react-countup";
 import SEOHead from "./SEOHead";
 import { generateSoftwareApplicationSchema, generateWebSiteSchema, generateFAQPageSchema, generateVideoObjectSchema, wrapInGraph } from "../utils/schemaGenerators";
 import CompanyMarquee from "./CompanyMarquee";
@@ -25,6 +24,29 @@ const d = (delay: string) => ({ "--d": delay }) as React.CSSProperties;
 // and read as duplicates at this size, so only one is in the stack. Order is
 // the resting front-to-back order; .hero-sheet[data-i] keys off the index.
 const HERO_SHEETS = ["alex_rivera", "jane_doe", "modern-with-icons"] as const;
+
+// Mechanical-counter numerals. Each digit keeps its own glyph as DOM text and
+// the rolling drum is a ::before (.odo-d in styles.css) that starts and ends on
+// that same glyph — so prerender, no-JS, reduced motion and the settled roll
+// all render identically, with nothing to hydrate. Right-hand columns spin more
+// turns; left-hand columns land first, like a real odometer.
+const Odometer = ({ value }: { value: string }) => {
+  const count = value.replace(/\D/g, "").length;
+  let k = 0;
+  const cols = [...value].map((ch, i) => {
+    if (!/\d/.test(ch)) return <span key={i} className="odo-s">{ch}</span>;
+    const fromRight = count - 1 - k;
+    const style = { "--n": ch, "--t": 3 - Math.min(2, fromRight >> 1), "--k": k++ } as React.CSSProperties;
+    return <span key={i} className="odo-d" style={style}>{ch}</span>;
+  });
+  // The columns are separate boxes, so AT would read "1 5 0…"; role="img"
+  // names the whole value once and keeps the DOM text single for crawlers.
+  return (
+    <span role="img" aria-label={value} className="odo" style={{ "--cols": count } as React.CSSProperties}>
+      {cols}
+    </span>
+  );
+};
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -73,12 +95,8 @@ const LandingPage: React.FC = () => {
   // un-reveals, so the one-shot build sequence does not replay on scroll-back.
   const heroFrameRef = useScrollReveal<HTMLElement>({ once: false, rootMargin: '0px' });
 
-  const prefersReducedMotion = useMemo(
-    () =>
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    [],
-  );
+  // Triggers the stats odometer roll (.odo-band.revealed in styles.css)
+  const statsRef = useScrollReveal<HTMLDivElement>({ threshold: 0.5 });
 
   // Features data
   const features = [
@@ -333,29 +351,22 @@ const LandingPage: React.FC = () => {
       </div>
 
       {/* ═══════════ STATS ═══════════ */}
-      <section className="bg-chalk-dark py-14">
-        <RevealSection stagger className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-0 sm:divide-x sm:divide-ink/10">
+      <section className="bg-chalk-dark py-16 md:py-20">
+        <div ref={statsRef} className="odo-band max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-12 sm:gap-0 sm:divide-x sm:divide-ink/10">
           <div className="text-center sm:px-16">
-            <p className="font-mono text-3xl md:text-4xl font-normal text-ink mb-1">
-              {prefersReducedMotion ? (
-                <>{resumeCountValue.toLocaleString("en-US")}+</>
-              ) : (
-                <CountUp end={resumeCountValue} separator="," suffix="+" duration={2.5} enableScrollSpy scrollSpyOnce />
-              )}
+            <p className="font-mono text-5xl md:text-7xl font-normal text-ink tracking-tight">
+              <Odometer value={`${resumeCountValue.toLocaleString("en-US")}+`} />
             </p>
-            <p className="font-display text-sm font-extralight text-ink/60 tracking-wide">Resumes Created</p>
+            <p className="mt-5 font-mono text-xs tracking-[0.15em] uppercase text-ink/60">Resumes Created</p>
           </div>
           <div className="text-center sm:px-16">
-            <p className="font-mono text-3xl md:text-4xl font-normal text-ink mb-1">
-              {prefersReducedMotion ? (
-                <>100%</>
-              ) : (
-                <CountUp end={100} suffix="%" duration={2} enableScrollSpy scrollSpyOnce />
-              )}
+            <p className="inline-block font-mono text-5xl md:text-7xl font-normal text-ink tracking-tight">
+              <Odometer value="100%" />
+              <span aria-hidden="true" className="odo-rule block h-0.5 mt-3 bg-accent-text" />
             </p>
-            <p className="font-display text-sm font-extralight text-ink/60 tracking-wide">ATS Compatible</p>
+            <p className="mt-2 font-mono text-xs tracking-[0.15em] uppercase text-ink/60">ATS Compatible</p>
           </div>
-        </RevealSection>
+        </div>
       </section>
 
       {/* ═══════════ AD SLOT ═══════════ */}

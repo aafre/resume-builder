@@ -201,6 +201,63 @@
   @apply hover:shadow-2xl hover:bg-white/90 transition-all duration-500;
 }
 
+/* ── Landing stats odometer (<Odometer> in LandingPage.tsx) ──
+   Static by default: the DOM digits ARE the number. Only a revealed band with
+   motion allowed hides each glyph behind a drum strip (::before) that rolls
+   from the digit through --t full turns back to the same digit, so the settled
+   frame is the prerendered one. Strip = 4 cycles, enough for n + 3 turns. */
+.odo {
+  --h: 1.15em;
+  display: inline-flex;
+  line-height: var(--h);
+  font-variant-numeric: tabular-nums;
+}
+.odo-d {
+  position: relative;
+  display: inline-block;
+  height: var(--h);
+  overflow: clip;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Drum shading: the strip fades at the top/bottom edge like a curved wheel */
+  .odo-band.revealed .odo-d {
+    -webkit-text-fill-color: transparent;
+    -webkit-mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent);
+    mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent);
+  }
+  .odo-band.revealed .odo-d::before {
+    content: "0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A 0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A 0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A 0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9";
+    content: "0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A 0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A 0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A 0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9" / "";
+    position: absolute;
+    inset: 0 0 auto;
+    white-space: pre;
+    -webkit-text-fill-color: currentColor;
+    will-change: transform;
+    /* Left columns land first; the overshoot shows a sliver of the next digit */
+    animation: odo-roll calc(0.9s + var(--k) * 0.14s) cubic-bezier(0.2, 1.15, 0.35, 1) both;
+  }
+  .odo-band.revealed .odo-s {
+    animation: odo-drop 0.5s cubic-bezier(0.16, 1, 0.3, 1) calc(0.6s + var(--cols) * 0.14s) both;
+  }
+  .odo-band.revealed .odo-rule {
+    transform-origin: left;
+    animation: odo-fill 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.2s both;
+  }
+}
+
+@keyframes odo-roll {
+  from { transform: translateY(calc(var(--n) * -1 * var(--h))); }
+  45%  { filter: blur(0.04em); } /* motion blur at top speed */
+  to   { transform: translateY(calc((var(--n) + var(--t) * 10) * -1 * var(--h))); }
+}
+@keyframes odo-drop {
+  from { opacity: 0; transform: translateY(-0.35em); }
+}
+@keyframes odo-fill {
+  from { transform: scaleX(0); }
+}
+
 /* ── Scroll-Reveal System ── */
 
 /* Base: invisible but RESERVES FULL SPACE (no CLS) */
