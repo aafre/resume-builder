@@ -11,10 +11,6 @@ export const administrativeAssistant: JobKeywordsData = {
   category: 'business',
   priority: 0.85,
   lastmod: '2026-02-10',
-  // B5 2026-09-23: keywords migrated to /examples/administrative-assistant.yml
-  // (Administrative Support, Calendar Management, Confidentiality, Budget
-  // Management all present there). 0 impressions 28d. See PR decision table.
-  noindex: true,
 
   roleIntro:
     'Administrative assistants are the operational backbone of every organization, and hiring managers use ATS systems to filter for very specific competencies — from software proficiency (Microsoft 365, Google Workspace) to organizational skills (calendar management, travel coordination, expense reporting). Whether you are targeting an entry-level admin role, a senior administrative coordinator position, or an executive assistant role supporting C-suite leaders, your resume must demonstrate both technical tool fluency and the soft skills that keep offices running smoothly. This guide covers the 60+ keywords that pass ATS filters at companies from small businesses to Fortune 500 corporations.',
