@@ -69,7 +69,7 @@ mistakes:
   - mistake: "Not naming the practice management or imaging software used"
     fix: "Name it: Dentrix, Eaglesoft, Open Dental, or the specific digital X-ray sensor system. \"Computer skills\" is not a keyword an ATS or office manager searches for."
   - mistake: "Leaving out sterilization/OSHA compliance"
-    fix: "State it directly: \"Maintained sterilization protocols and OSHA compliance with zero citations.\" Infection control is a licensing-adjacent responsibility, not implied by the job title."
+    fix: "State it directly: \"Maintained sterilization protocols and OSHA compliance, passing [number] consecutive inspections.\" Infection control is a licensing-adjacent responsibility, not implied by the job title."
 
 bulletRewrites:
   - weak: "Assisted the dentist with patient procedures"
@@ -79,7 +79,7 @@ bulletRewrites:
     improved: "Captured digital radiographs and intraoral photographs for [number] patients weekly with [X%] first-attempt diagnostic quality"
     reason: "Names the modality (digital, intraoral) and frames the work as a measurable quality outcome, not just a task; placeholder marks where the candidate fills in their real numbers."
   - weak: "Responsible for sterilizing instruments"
-    improved: "Maintained sterilization protocols and OSHA compliance across [number] operatories, passing all infection-control inspections with zero citations"
+    improved: "Maintained sterilization protocols and OSHA compliance across [number] operatories, passing [number] consecutive infection-control inspections with no citations"
     reason: "Converts a routine duty into a compliance track record, which is what hiring dentists actually screen for."
   - weak: "Good with nervous patients"
     improved: "Reduced patient anxiety through clear chairside communication, contributing to a [X%] patient retention rate across a 2-dentist general practice"

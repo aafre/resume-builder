@@ -35,12 +35,12 @@ summaryExamples:
       EPA-certified HVAC technician with 7+ years of experience installing, maintaining, and
       repairing residential and commercial HVAC systems. Services 8-10 calls daily during peak
       season, handles refrigerant recovery and charging per EPA guidelines, and maintains a
-      97% customer satisfaction rating.
+      [X%] customer satisfaction rating.
   - level: senior
     summary: >
       Senior HVAC technician with 10+ years across residential, commercial, and light
       industrial systems, including 3 years leading installation projects up to 50 tons and
-      mentoring junior technicians. Maintains a 95% first-time fix rate and a 40% repeat
+      mentoring junior technicians. Maintains a [X%] first-time fix rate and a [X%] repeat
       customer/referral rate.
 
 skills:
@@ -67,7 +67,7 @@ mistakes:
   - mistake: "Writing \"installed and repaired HVAC systems\" with no scale or certification detail"
     fix: "State your EPA 608 level and the system scale: \"EPA 608 Universal-certified technician installing residential splits up to commercial rooftop units up to 50 tons.\" Without this, the bullet reads the same for an apprentice and a lead tech."
   - mistake: "Omitting the first-time fix rate or satisfaction score"
-    fix: "State it directly: \"Achieved 95% first-time fix rate through thorough diagnostic procedures.\" Service managers screen for reliability metrics, not just years of experience."
+    fix: "State it directly: \"Achieved [X%] first-time fix rate through thorough diagnostic procedures.\" Service managers screen for reliability metrics, not just years of experience."
   - mistake: "Not naming the refrigerant type or diagnostic tools used"
     fix: "Name it: R-410A, VRF systems, electronic leak detectors, UV dye. \"Refrigerant handling\" alone doesn't show which systems you're actually qualified on."
   - mistake: "Leaving out peak-season call volume"

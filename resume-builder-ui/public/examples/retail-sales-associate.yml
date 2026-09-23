@@ -34,13 +34,13 @@ summaryExamples:
   - level: mid
     summary: >
       Results-driven retail sales associate with 4+ years of experience exceeding sales targets
-      in high-volume retail environments. Achieves $50K+ in monthly sales, consistently
-      exceeding targets by 15-20%, while training new hires on POS systems and sales technique.
+      in high-volume retail environments. Achieves [dollar amount]+ in monthly sales, consistently
+      exceeding targets by [X%], while training new hires on POS systems and sales technique.
   - level: senior
     summary: >
       Senior retail sales associate with 6+ years across department and specialty retail,
       including 2 years mentoring new associates and covering supervisor shifts. Manages a
-      personal client book of 200+ repeat customers and consistently ranks in the top 5% of
+      personal client book of 200+ repeat customers and consistently ranks in the top [X%] of
       sales performers.
 
 skills:
@@ -64,7 +64,7 @@ certifications:
 
 mistakes:
   - mistake: "Writing \"provided excellent customer service\" with no sales evidence"
-    fix: "Lead with a number: \"Achieved $50K+ monthly sales, exceeding targets by 15-20%.\" Service claims without a sales or retention metric attached are the most common retail resume filler."
+    fix: "Lead with a number: \"Achieved [dollar amount]+ monthly sales, exceeding targets by [X%].\" Service claims without a sales or retention metric attached are the most common retail resume filler."
   - mistake: "Listing \"stocked shelves and helped customers\" as the whole job"
     fix: "Break it into what actually differentiates you: sales performance, visual merchandising, upselling technique, or loss-prevention contribution — each is a separate signal to a hiring manager."
   - mistake: "Omitting the store/department scale"
@@ -77,11 +77,11 @@ bulletRewrites:
     improved: "Assisted 100+ customers daily with product selection and checkout, maintaining expert knowledge across 500+ SKUs in men's apparel and accessories"
     reason: "Adds daily volume and SKU scope, turning a generic duty into evidence of product depth and pace."
   - weak: "Responsible for meeting sales goals"
-    improved: "Achieved $50K+ in monthly sales, exceeding targets by [X%] and ranking [number] among [team size] associates in department"
+    improved: "Achieved [dollar amount]+ in monthly sales, exceeding targets by [X%] and ranking [number] among [team size] associates in department"
     reason: "Converts a vague responsibility into a ranked, quantified outcome; placeholders mark where the candidate fills in their real figures."
   - weak: "Worked the register and handled returns"
-    improved: "Processed [number]+ POS transactions weekly with zero cash-drawer discrepancies, including returns and exchanges while maximizing customer retention"
-    reason: "Shows accuracy (zero discrepancies) and reframes returns handling as a retention-focused skill, not just a task."
+    improved: "Processed [number]+ POS transactions weekly with [number] cash-drawer discrepancies, including returns and exchanges while maximizing customer retention"
+    reason: "Shows accuracy (a low, honest discrepancy count) and reframes returns handling as a retention-focused skill, not just a task."
   - weak: "Good at customer service and team player"
     improved: "Maintained [X%] customer satisfaction rating while training [number] new associates on sales technique and POS operations"
     reason: "Replaces a subjective self-description with a measurable service outcome plus a leadership signal (training others)."
