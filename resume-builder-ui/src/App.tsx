@@ -124,6 +124,7 @@ const GeminiResumePrompts = lazy(() => import("./components/blog/GeminiResumePro
 const AICoverLetterPrompts = lazy(() => import("./components/blog/AICoverLetterPrompts"));
 const CareerChangeResumeGuide = lazy(() => import("./components/blog/CareerChangeResumeGuide"));
 const ResumeEmploymentGaps = lazy(() => import("./components/blog/ResumeEmploymentGaps"));
+const ResumeAfterCareerBreak = lazy(() => import("./components/blog/ResumeAfterCareerBreak"));
 const ReturnToWorkPrograms = lazy(() => import("./components/blog/ReturnToWorkPrograms"));
 const AIJobDescriptionAnalyzer = lazy(() => import("./components/blog/AIJobDescriptionAnalyzer"));
 const AIResumeReview = lazy(() => import("./components/blog/AIResumeReview"));
@@ -917,6 +918,14 @@ function AppContent() {
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <ResumeEmploymentGaps />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/resume-after-career-break"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ResumeAfterCareerBreak />
               </Suspense>
             }
           />

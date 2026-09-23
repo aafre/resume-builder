@@ -9,7 +9,7 @@ describe("blogPosts", () => {
     expect(hubPost).toMatchObject({
       slug: "ai-resume-prompts-hub",
       publishDate: "2026-05-13",
-      lastUpdated: "2026-05-13",
+      lastUpdated: "2026-05-25",
       readTime: "12 min",
       category: "AI & Tools",
     });
