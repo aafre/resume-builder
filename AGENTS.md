@@ -27,7 +27,7 @@ Skip style, lint, and formatting — CI (`pr-validation.yml`) handles those.
 ### Frontend (React + TS, `resume-builder-ui/`)
 
 - Tailwind silently drops unknown classes — no build or test catches it. Flag classes
-  not defined in `tailwind.config.js` (e.g. `text-mist`, `stone-warm`).
+  not defined in `tailwind.config.js` on the PR's target branch.
 - `text-accent` on light grounds fails contrast (1.87:1); small text there must use
   `text-accent-text`. Inside `bg-ink` blocks `text-accent` is correct — don't flag it.
 - `overflow-hidden` on flex layout containers creates a scroll container and has broken
