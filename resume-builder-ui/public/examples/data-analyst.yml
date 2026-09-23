@@ -8,6 +8,108 @@ meta:
   metaDescription: "Data analyst resume example with SQL, Python, and visualization tool expertise. ATS-optimized."
   category: tech
   priority: 0.8
+  lastmod: "2026-09-23"
+
+answerBlock: >
+  A strong data analyst resume names the actual stack (SQL, Python or R, and a BI tool
+  like Tableau or Power BI) rather than "data analysis," and shows the kind of business
+  question the analysis answered — churn, pricing, funnel drop-off — with the outcome
+  attached, not just the query.
+
+howToWrite:
+  - "Lead with the stack, not the title: 'SQL, Python (Pandas), Tableau' in the summary tells a recruiter in one line whether you match the job's tool requirements."
+  - "Pair every analysis with the business question it answered — pricing, churn, funnel drop-off, campaign ROI — so the resume reads as decisions influenced, not queries run."
+  - "Quantify dataset scale (row counts, table joins) and cadence (daily ETL, weekly reporting) so the resume signals whether you've worked at toy scale or production scale."
+  - "Separate ad-hoc analysis from owned reporting infrastructure (dashboards you built and maintain) — the second is a stronger signal of ongoing responsibility."
+  - "Name the database and warehouse (PostgreSQL, BigQuery, Snowflake) alongside the visualization tool — ATS filters and hiring managers both search on the specific product."
+  - "Keep unverifiable outcomes bracketed rather than invented: '[X%] reduction in churn' beats a rounded number you can't defend in an interview."
+
+summaryExamples:
+  - level: entry
+    summary: >
+      Data analyst with hands-on SQL and Python experience from academic projects and an
+      internship analyzing customer behavior data. Comfortable building dashboards in
+      Tableau and writing joins across multiple tables. Looking to apply statistical
+      analysis skills to real business questions.
+  - level: mid
+    summary: >
+      Data analyst with 4+ years turning SQL and Python analysis into business decisions.
+      Builds and maintains Tableau dashboards tracking revenue and retention KPIs for
+      stakeholders across product and marketing. Has identified pricing and retention
+      opportunities worth over $[X]M in the past two years.
+  - level: senior
+    summary: >
+      Senior data analyst with 7+ years leading analysis for e-commerce and financial
+      services teams, from ad-hoc SQL investigations to production ETL pipelines in
+      Python and Airflow. Mentors junior analysts on query optimization and statistical
+      rigor, and presents findings directly to VP-level stakeholders.
+
+skills:
+  hard:
+    - SQL (Joins, Window Functions, CTEs)
+    - Python (Pandas, NumPy)
+    - Tableau / Power BI
+    - Statistical Analysis & A/B Testing
+    - ETL Pipeline Development
+    - Data Warehousing (BigQuery, Snowflake)
+  soft:
+    - Translating Data Into Business Recommendations
+    - Stakeholder Presentation
+    - Cross-Functional Collaboration
+    - Attention to Data Quality
+
+keywords:
+  - SQL
+  - Python (Pandas, NumPy)
+  - Tableau
+  - Power BI
+  - ETL
+  - Statistical Analysis
+  - A/B Testing
+  - Data Modeling
+  - Dashboard Development
+  - KPI Tracking
+  - Exploratory Data Analysis (EDA)
+  - Business Intelligence
+
+certifications:
+  - Google Data Analytics Professional Certificate
+  - Tableau Desktop Certified Associate
+  - Microsoft Certified: Data Analyst Associate
+
+mistakes:
+  - mistake: "Saying \"proficient in Excel\" without specifics"
+    fix: "Name what that means: \"Excel (VLOOKUP, PivotTables, Power Query)\" — the generic claim gives a recruiter nothing to filter on."
+  - mistake: "Listing SQL with no evidence of complexity"
+    fix: "Show the query types you actually write: \"complex joins, window functions, CTEs, query optimization for 10M+ row tables.\""
+  - mistake: "Only showing technical skills, not business impact"
+    fix: "Connect the analysis to an outcome — revenue, cost savings, a decision it changed — not just the tool used to produce it."
+  - mistake: "Generic \"data analysis\" with no domain context"
+    fix: "Name the domain: \"customer churn analysis,\" \"pricing optimization,\" \"marketing attribution\" — it tells a hiring manager whether your experience matches their team."
+
+bulletRewrites:
+  - weak: "Analyzed data and created reports for stakeholders"
+    improved: "Built 12 interactive Tableau dashboards tracking revenue and retention KPIs for [number] stakeholders, reducing manual reporting time by [X hours] weekly"
+    reason: "Names the tool, the audience, and a measurable time outcome instead of a generic reporting duty."
+  - weak: "Used SQL to look at customer data"
+    improved: "Wrote SQL queries joining 8+ tables across a 10M-row customer dataset to identify a pricing anomaly that recovered $[amount] in lost revenue"
+    reason: "Shows query complexity and ties the analysis to a specific, defensible dollar outcome."
+  - weak: "Worked on data cleaning"
+    improved: "Built a Python data-validation pipeline catching [number] data integrity issues per month before they reached downstream dashboards"
+    reason: "Reframes a maintenance task as an owned process with a measurable reliability outcome."
+  - weak: "Helped with A/B testing"
+    improved: "Ran A/B test analysis for [feature/campaign] reaching statistical significance, resulting in a [X%] improvement in [conversion rate/click-through rate]"
+    reason: "Names the statistical method and pairs it with a bracketed outcome the candidate fills in from their real result."
+
+customFaqs:
+  - question: "Do I need Python for a data analyst resume, or is SQL and Excel enough?"
+    answer: "Many data analyst roles still accept SQL + Excel + a visualization tool (Tableau or Power BI) as the core stack. Python with Pandas and NumPy is increasingly expected and opens doors to more technical roles, so include it prominently if you know it — otherwise prioritize SQL depth first."
+  - question: "How do I show business impact on a data analyst resume without inflating numbers?"
+    answer: "Connect every analysis to a concrete outcome: \"Built a Tableau dashboard tracking daily revenue KPIs that helped sales leadership identify an underperforming region\" is stronger than \"Built dashboard in Tableau.\" If you don't have an exact figure, use a bracketed placeholder rather than rounding up a number you can't defend in an interview."
+  - question: "What's the difference between a data analyst and data scientist resume?"
+    answer: "Data analyst resumes emphasize SQL, Excel, Tableau/Power BI, reporting, and dashboards. Data scientist resumes lean into machine learning, statistical modeling, and experimentation design. There's overlap in SQL and A/B testing, but tailor your keywords to which title the job posting actually uses."
+  - question: "Should I list every BI tool I've used?"
+    answer: "List the tools relevant to your target role, grouped clearly — for example \"Tableau, Power BI\" under visualization and \"PostgreSQL, BigQuery\" under databases. A resume that lists 15 tools with no grouping reads as padding rather than depth."
 
 resume:
   template: modern

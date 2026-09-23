@@ -84,6 +84,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     priority: 0.7,
     metaDescription: 'Marketing coordinator resume example with campaign management and digital marketing skills.',
     careerOutlook: 'Marketing coordinators serve as the entry point into one of the fastest-growing career tracks in business. Digital marketing skills are in especially high demand, and coordinators who develop SEO, analytics, and campaign management expertise often advance to marketing manager roles earning $65,000-$95,000 within a few years.',
+    lastmod: '2026-09-23',
   },
   {
     slug: 'accountant',
@@ -152,6 +153,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     priority: 0.8,
     metaDescription: 'Data analyst resume example with SQL, Python, and visualization tool expertise.',
     careerOutlook: 'Data analysts are among the most sought-after professionals as organizations increasingly rely on data-driven decision making. The BLS projects 36% growth for data-related roles through 2033, with median salaries around $100,000. Skills in SQL, Python, and BI tools like Tableau open doors across virtually every industry.',
+    lastmod: '2026-09-23',
   },
   {
     slug: 'front-end-developer',
@@ -168,6 +170,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     category: 'creative',
     priority: 0.7,
     metaDescription: 'Graphic designer resume example with design software skills and portfolio highlights.',
+    lastmod: '2026-09-23',
   },
   {
     slug: 'social-media-manager',
@@ -207,6 +210,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     category: 'entry-level',
     priority: 0.7,
     metaDescription: 'Entry level marketing resume example for recent graduates starting their career.',
+    lastmod: '2026-09-23',
   },
 
   // Tier 8: Trades

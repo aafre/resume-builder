@@ -8,6 +8,106 @@ meta:
   metaDescription: "Entry level marketing resume example for recent graduates starting their career."
   category: entry-level
   priority: 0.7
+  lastmod: "2026-09-23"
+
+answerBlock: >
+  With no full-time marketing job yet, the strongest entry-level marketing resume
+  leads with transferable proof — an internship, a campus organization's social
+  account, a class capstone campaign — and states the result each one produced, since
+  a hiring manager can't yet judge you on a title, only on the evidence.
+
+howToWrite:
+  - "Lead with whatever marketing work you've actually done — internship, campus job, student organization's social accounts, a class project — even if unpaid; a hiring manager reads it as the same signal as a first job."
+  - "State a result for each piece of evidence, even an academic one: follower growth, survey response count, or a campaign's simulated reach, so it reads as outcome-driven work, not just coursework completed."
+  - "Name the specific tools you used in coursework or a student role (Google Analytics, Canva, Hootsuite) — this is what separates a resume with real hands-on exposure from one listing 'marketing' as a class topic."
+  - "Include relevant coursework only if you can attach a project or output to it — 'Digital Marketing (capstone: campaign for local nonprofit, 500+ survey respondents)' beats a bare course title."
+  - "If your only marketing experience is an unpaid or personal project — running a small Instagram account, a freelance flyer — include it and name the metric it produced; it's real evidence, not padding."
+  - "Keep it to one page. An entry-level resume padded to two pages with generic bullets reads worse than a tight one page of specific, evidenced work."
+
+summaryExamples:
+  - level: entry
+    summary: >
+      Recent marketing graduate with hands-on experience from a summer internship and a
+      student organization's social media accounts, where content changes were tied
+      directly to engagement and follower growth. Comfortable with Google Analytics and
+      Canva. Looking to bring campaign execution skills to a first full-time marketing role.
+  - level: mid
+    summary: >
+      Marketing graduate with an internship plus 18 months of ongoing student-org
+      marketing responsibility, managing a 25K-follower social presence and a weekly
+      email newsletter. Analyzed campaign performance using Google Analytics and
+      presented findings to a 6-person student leadership team.
+  - level: senior
+    summary: >
+      Marketing graduate with two internships and a part-time freelance marketing
+      practice serving 3 local small businesses, running their social accounts and
+      email campaigns. Comfortable owning a channel independently from content
+      creation through performance reporting.
+
+skills:
+  hard:
+    - Google Analytics
+    - Canva
+    - Social Media Content Creation
+    - Email Marketing (Mailchimp/HubSpot)
+    - Basic SEO
+    - Campaign Performance Tracking
+  soft:
+    - Meeting Content Deadlines Independently
+    - Presenting Results to a Team
+    - Learning New Marketing Tools Quickly
+    - Balancing Coursework and Real Deliverables
+
+keywords:
+  - Digital Marketing
+  - Social Media Marketing
+  - Content Creation
+  - Google Analytics
+  - Email Marketing
+  - Campaign Analysis
+  - Market Research
+  - Copywriting
+  - A/B Testing
+  - SEO Basics
+
+certifications:
+  - Google Analytics Individual Qualification
+  - HubSpot Inbound Marketing Certification
+  - Meta Blueprint Digital Marketing Associate
+
+mistakes:
+  - mistake: "Leaving out unpaid or student-org marketing work because it 'doesn't count'"
+    fix: "Include it and name the result — growing a club's Instagram to [X]K followers is real, evidenced marketing experience, not padding."
+  - mistake: "Listing a marketing course title with no project or output"
+    fix: "Attach what you actually produced: \"Digital Marketing (capstone: campaign for local nonprofit reaching 500+ survey respondents).\""
+  - mistake: "Writing \"passionate about marketing\" instead of showing evidence"
+    fix: "Replace the self-description with a specific piece of work and its result — a hiring manager weighs one concrete example over any number of adjectives."
+  - mistake: "Padding to two pages with generic bullet points"
+    fix: "Cut to one page and keep only bullets with a specific tool, action, and result — a short resume of evidenced work reads stronger than a long one of vague tasks."
+
+bulletRewrites:
+  - weak: "Helped with social media for a student club"
+    improved: "Managed Instagram and TikTok accounts for a 200-member student club, growing followers from [X] to [Y] over one semester through a weekly content calendar"
+    reason: "Turns unpaid club work into a specific, measurable marketing result with a stated timeframe."
+  - weak: "Completed a marketing class project"
+    improved: "Built an integrated marketing campaign for a local nonprofit as a capstone project, including a market research survey with 500+ respondents"
+    reason: "Names the deliverable and a concrete number instead of describing it as generic coursework."
+  - weak: "Interned in marketing over the summer"
+    improved: "Assisted campaign execution across email, social, and digital channels during a 12-week marketing internship, creating content that achieved [X%] higher engagement than the prior quarter"
+    reason: "Adds duration, channel scope, and a comparative performance outcome to an otherwise generic internship line."
+  - weak: "Good with social media and writing"
+    improved: "Wrote and scheduled [number]+ social posts monthly for [organization/client], using Canva for graphics and tracking performance in [platform analytics tool]"
+    reason: "Replaces a self-assessed skill claim with a specific output volume and the tools used to produce it."
+
+customFaqs:
+  - question: "How do I write an entry-level marketing resume with no full-time marketing job?"
+    answer: "Lead with whatever marketing work you've actually done — an internship, a student organization's social accounts, a class capstone campaign, or freelance work for a local business. A hiring manager reads unpaid or academic marketing work as real evidence as long as you attach a specific result to it, not just a task description."
+  - question: "Should I include my GPA or coursework on an entry-level marketing resume?"
+    answer: "Include coursework only when you can attach a project or measurable output to it — a bare course title adds little. GPA is worth including if it's 3.5 or above; otherwise, leave it off and let your project and internship evidence carry the resume instead."
+  - question: "What's the difference between an entry-level marketing resume and a marketing coordinator resume?"
+    answer: "An entry-level resume draws its evidence from coursework, internships, and student organizations because there's no marketing job yet. A coordinator resume draws from in-role channel ownership and execution results. If you've held a marketing coordinator title, even briefly, that experience belongs at the top instead."
+  - question: "How do I quantify results from a student club or unpaid project?"
+    answer: "Use whatever numbers you tracked at the time — follower count before and after, survey response count, email open rate, event attendance. If you didn't track a metric, reconstruct a reasonable estimate from what you remember rather than omitting the achievement entirely."
 
 resume:
   template: minimal
