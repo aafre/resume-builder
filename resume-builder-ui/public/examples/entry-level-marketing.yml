@@ -107,7 +107,7 @@ customFaqs:
   - question: "What's the difference between an entry-level marketing resume and a marketing coordinator resume?"
     answer: "An entry-level resume draws its evidence from coursework, internships, and student organizations because there's no marketing job yet. A coordinator resume draws from in-role channel ownership and execution results. If you've held a marketing coordinator title, even briefly, that experience belongs at the top instead."
   - question: "How do I quantify results from a student club or unpaid project?"
-    answer: "Use whatever numbers you tracked at the time — follower count before and after, survey response count, email open rate, event attendance. If you didn't track a metric, reconstruct a reasonable estimate from what you remember rather than omitting the achievement entirely."
+    answer: "Use whatever numbers you tracked at the time — follower count before and after, survey response count, email open rate, event attendance. If you don't have an exact figure, pull it from wherever it's recorded (the platform's own analytics, a report you submitted, a supervisor who can confirm it) rather than guessing, or describe the outcome without a number: 'grew the club's follower count over one semester' still shows the work, even without a percentage attached."
 
 resume:
   template: minimal
