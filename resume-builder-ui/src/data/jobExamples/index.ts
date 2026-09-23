@@ -21,6 +21,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     priority: 0.8,
     metaDescription: 'Professional customer service representative resume example with bullet points and skills. Edit instantly in our free builder.',
     careerOutlook: 'Customer service representatives are in growing demand, with the BLS projecting steady openings driven by e-commerce and remote support roles. Median pay ranges from $30,000 to $45,000, and many employers now offer fully remote positions, making this an accessible career path with clear advancement into team lead and management roles.',
+    lastmod: '2026-09-23',
   },
   {
     slug: 'administrative-assistant',
@@ -29,6 +30,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     priority: 0.8,
     metaDescription: 'Administrative assistant resume example with office skills and experience. Free template ready to customize.',
     careerOutlook: 'Administrative assistants are needed in virtually every industry, making this one of the most versatile career paths available. With experience, many admins advance to office manager or executive assistant roles, where salaries can reach $55,000-$75,000 depending on the sector and location.',
+    lastmod: '2026-09-23',
   },
   {
     slug: 'receptionist',
@@ -44,6 +46,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     category: 'operations',
     priority: 0.7,
     metaDescription: 'Retail sales associate resume example with sales achievements and customer service skills.',
+    lastmod: '2026-09-23',
   },
   {
     slug: 'warehouse-worker',
@@ -61,6 +64,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     priority: 0.8,
     metaDescription: 'Project manager resume example with leadership and methodology expertise. Includes PMP-ready format.',
     careerOutlook: 'Project management is one of the fastest-growing professions, with PMI reporting that employers will need 25 million new project managers by 2030. PMP-certified professionals earn a median salary of $120,000, and the role applies across tech, construction, healthcare, and finance.',
+    lastmod: '2026-09-23',
   },
   {
     slug: 'business-analyst',
@@ -69,6 +73,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     priority: 0.8,
     metaDescription: 'Business analyst resume example with data analysis and requirements gathering skills.',
     careerOutlook: 'Business analysts are in high demand as companies invest in digital transformation and data-driven strategies. The role bridges business needs and technical solutions, with median salaries ranging from $75,000 to $110,000. Strong growth is expected in tech, finance, and consulting sectors.',
+    lastmod: '2026-09-23',
   },
   {
     slug: 'human-resources-generalist',
@@ -76,6 +81,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     category: 'corporate',
     priority: 0.7,
     metaDescription: 'HR generalist resume example covering recruitment, benefits, and employee relations.',
+    lastmod: '2026-09-23',
   },
   {
     slug: 'marketing-coordinator',
@@ -118,6 +124,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     priority: 0.7,
     metaDescription: 'Dental assistant resume example with chairside assistance and patient care skills.',
     careerOutlook: 'Dental assisting is one of the fastest-growing healthcare occupations, with the BLS projecting 8% growth through 2032. Earning a Certified Dental Assistant (CDA) credential can boost starting salaries from $38,000 to over $45,000 and opens doors to expanded-function and dental hygienist career paths.',
+    lastmod: '2026-09-23',
   },
 
   // Tier 4: Education
@@ -233,6 +240,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     priority: 0.7,
     metaDescription: 'Electrician resume example with certifications and installation experience.',
     careerOutlook: 'The skilled trades face a significant labor shortage, and electricians are among the most in-demand. Median pay is around $61,000, with master electricians and those specializing in renewable energy or EV infrastructure earning $80,000 or more. Apprenticeship programs offer a debt-free path into the profession.',
+    lastmod: '2026-09-23',
   },
   {
     slug: 'hvac-technician',
@@ -241,6 +249,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     priority: 0.7,
     metaDescription: 'HVAC technician resume example with system maintenance and repair expertise.',
     careerOutlook: 'HVAC technicians benefit from strong demand driven by new construction, aging infrastructure, and the green energy transition to heat pumps and high-efficiency systems. The BLS projects 6% job growth through 2032, with median earnings around $57,000 and experienced technicians in high-cost markets earning $75,000 or more.',
+    lastmod: '2026-09-23',
   },
 ];
 
