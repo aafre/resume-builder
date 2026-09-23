@@ -204,9 +204,17 @@ describe('Sitemap XML Generation', () => {
       });
     });
 
-    it('should include all job keyword URLs', () => {
-      JOBS_DATABASE.forEach(job => {
+    it('should include all non-noindexed job keyword URLs', () => {
+      JOBS_DATABASE.filter(job => !job.noindex).forEach(job => {
         expect(xml).toContain(`<loc>${baseUrl}/resume-keywords/${job.slug}</loc>`);
+      });
+    });
+
+    it('should exclude noindexed job keyword URLs (B5 consolidation)', () => {
+      const noindexed = JOBS_DATABASE.filter(job => job.noindex);
+      expect(noindexed.length).toBeGreaterThan(0);
+      noindexed.forEach(job => {
+        expect(xml).not.toContain(`<loc>${baseUrl}/resume-keywords/${job.slug}</loc>`);
       });
     });
 
