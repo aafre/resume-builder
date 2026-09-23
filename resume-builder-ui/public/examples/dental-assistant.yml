@@ -8,6 +8,98 @@ meta:
   metaDescription: "Dental assistant resume example with chairside assistance and patient care skills."
   category: healthcare
   priority: 0.7
+  lastmod: "2026-09-23"
+
+answerBlock: >
+  A strong dental assistant resume leads with your chairside scope (4-handed dentistry,
+  digital X-rays, impressions, sterilization) and your RDA/CDA credential up front, then
+  proves patient volume with a daily-patient number — not just "assisted the dentist."
+
+howToWrite:
+  - "Lead with your credential (RDA, CDA, or state-specific certification) in the title or first line — dental offices filter on licensure before they read anything else."
+  - "Name the exact procedures you supported chairside: restorations, extractions, sealants, impressions, digital radiography — 'assisted the dentist' tells a hiring manager nothing about your actual scope."
+  - "State daily or weekly patient volume and how many dentists/operatories you supported (e.g. '25+ patients daily across 2 operatories') so the office can gauge pace fit."
+  - "Name your practice management software (Dentrix, Eaglesoft, Open Dental) and your imaging system — these are searchable keywords, not generic phrases."
+  - "Call out sterilization and OSHA/infection-control compliance explicitly; it is a licensing-adjacent requirement offices screen for, not a soft skill."
+  - "If you're bilingual or trained in pediatric/behavior-management techniques, say so — many practices weight this heavily and it rarely appears on generic templates."
+
+summaryExamples:
+  - level: entry
+    summary: >
+      Recently certified dental assistant (RDA) trained in chairside assistance, digital
+      radiography, and sterilization protocols. Comfortable supporting restorative and
+      preventive procedures under dentist supervision, with a calm chairside manner for
+      anxious patients.
+  - level: mid
+    summary: >
+      RDA-certified dental assistant with 5+ years of chairside experience in general and
+      cosmetic dentistry. Supports 2 dentists treating 25+ patients daily; skilled in digital
+      radiography, impressions, and patient education on post-operative and preventive care.
+  - level: senior
+    summary: >
+      Senior dental assistant with 8+ years across general, cosmetic, and pediatric practices,
+      including 3 years training new hires on OSHA compliance and chairside protocol. Manages
+      sterilization oversight and treatment coordination for a 3-operatory practice.
+
+skills:
+  hard:
+    - Chairside (4-Handed) Dentistry
+    - Digital Radiography
+    - Impression Taking
+    - Sterilization & Infection Control
+    - Dentrix / Eaglesoft Practice Management Software
+    - Temporary Restoration Placement
+  soft:
+    - Patient Anxiety Management
+    - Clear Post-Operative Instruction
+    - Operatory Turnover Under Time Pressure
+    - Discretion With Patient Records (HIPAA)
+
+certifications:
+  - Registered Dental Assistant (RDA) or Certified Dental Assistant (CDA)
+  - X-Ray/Radiography Certification
+  - CPR/BLS Certified
+  - Coronal Polishing Certificate (where state-permitted)
+
+mistakes:
+  - mistake: "Writing \"assisted the dentist with procedures\" with no specifics"
+    fix: "Name the actual procedures: \"Assisted with restorations, extractions, and sealant placement for 25+ patients daily.\" Vague duty phrasing reads the same for a 1-chair office and a 6-operatory practice."
+  - mistake: "Omitting the RDA/CDA credential from the top of the resume"
+    fix: "Put your licensure status in the title line or opening sentence — many offices legally cannot let an unlicensed assistant perform certain chairside tasks, so this is a hard filter, not a nice-to-have."
+  - mistake: "Not naming the practice management or imaging software used"
+    fix: "Name it: Dentrix, Eaglesoft, Open Dental, or the specific digital X-ray sensor system. \"Computer skills\" is not a keyword an ATS or office manager searches for."
+  - mistake: "Leaving out sterilization/OSHA compliance"
+    fix: "State it directly: \"Maintained sterilization protocols and OSHA compliance, passing [number] consecutive inspections.\" Infection control is a licensing-adjacent responsibility, not implied by the job title."
+
+bulletRewrites:
+  - weak: "Assisted the dentist with patient procedures"
+    improved: "Provided chairside assistance for 2 dentists treating 25+ patients daily, supporting restorative, cosmetic, and preventive procedures"
+    reason: "Adds provider count and daily patient volume, turning a generic duty into evidence of pace and scope."
+  - weak: "Took X-rays of patients"
+    improved: "Captured digital radiographs and intraoral photographs for [number] patients weekly with [X%] first-attempt diagnostic quality"
+    reason: "Names the modality (digital, intraoral) and frames the work as a measurable quality outcome, not just a task; placeholder marks where the candidate fills in their real numbers."
+  - weak: "Responsible for sterilizing instruments"
+    improved: "Maintained sterilization protocols and OSHA compliance across [number] operatories, passing [number] consecutive infection-control inspections with no citations"
+    reason: "Converts a routine duty into a compliance track record, which is what hiring dentists actually screen for."
+  - weak: "Good with nervous patients"
+    improved: "Reduced patient anxiety through clear chairside communication, contributing to a [X%] patient retention rate across a 2-dentist general practice"
+    reason: "Replaces a subjective trait with a workplace outcome tied to retention, which reads as evidence rather than a self-assessment."
+
+salaryOutlook:
+  median: "$48,070/year ($23.11/hour)"
+  growth: "Projected to grow 7% from 2025 to 2035 (much faster than average)"
+  source: "https://www.bls.gov/ooh/healthcare/dental-assistants.htm"
+  asOf: "2026-09-23"
+
+customFaqs:
+  - question: "Do I need to be RDA or CDA certified to work as a dental assistant?"
+    answer: "Requirements vary by state — some allow on-the-job training for basic duties, while expanded functions (like placing sealants or taking X-rays) usually require a state-recognized credential such as RDA or CDA. Put your specific credential and state on the resume so an office can confirm you meet their scope-of-practice rules."
+  - question: "What software should a dental assistant list on a resume?"
+    answer: "Name the practice management system (Dentrix, Eaglesoft, Open Dental) and the digital imaging/radiography system you've used. These are the tools offices search for by name, not generic terms like \"dental software.\""
+  - question: "How do I show dental assistant experience without exact patient numbers?"
+    answer: "Reconstruct a reasonable daily average from your typical schedule — for example, if you supported one dentist seeing patients every 30-45 minutes across an 8-hour day, that's roughly 12-16 patients. A conservative estimate beats no number at all."
+  - question: "Should a dental assistant resume mention pediatric or bilingual skills?"
+    answer: "Yes, if applicable. Pediatric behavior-management experience and bilingual ability (especially Spanish) are specifically screened for by many general and pediatric practices and rarely appear on generic templates, so naming them is a real differentiator."
 
 resume:
   template: professional
