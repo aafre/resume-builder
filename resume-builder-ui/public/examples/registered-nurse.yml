@@ -8,6 +8,118 @@ meta:
   metaDescription: "Registered nurse resume example with clinical skills and patient care experience. ATS-optimized nursing resume."
   category: healthcare
   priority: 0.8
+  lastmod: "2026-09-22"
+
+answerBlock: >
+  A strong RN resume names the unit and patient-to-nurse ratio you worked, the EMR system
+  (Epic, Cerner) by name, every mandatory certification (BLS, ACLS, PALS) up front, and at
+  least one outcome metric — fall rate, HCAHPS score, or medication accuracy — because
+  nurse recruiters filter on certifications and unit type before they read a single bullet.
+
+howToWrite:
+  - "Lead with your unit and setting — ICU, ER, med-surg, telemetry — in the summary. Nursing is specialized enough that \"registered nurse\" alone tells a recruiter nothing about whether you fit their opening."
+  - "List every mandatory certification (RN license state, BLS, ACLS, PALS) near the top, not buried at the bottom. Many hospital ATS systems auto-reject resumes missing a required certification keyword."
+  - "Name your EMR system explicitly — Epic, Cerner, Meditech. Charting speed and accuracy in a specific system is a real, screened-for skill, not a footnote."
+  - "State your patient load or ratio per shift (e.g. \"5-7 patients on a 32-bed med-surg unit\"). It tells a nurse manager your acuity level and pace immediately."
+  - "Add at least one quality or safety metric tied to your unit — fall rate reduction, medication error rate, HCAHPS/patient satisfaction percentile — nursing resumes are evaluated on patient-safety outcomes, not just tasks performed."
+  - "If you've precepted or mentored new grads, say how many and over what period — hospitals weight this heavily for charge-nurse and lead roles."
+
+summaryExamples:
+  - level: entry
+    summary: >
+      Newly licensed RN, BSN, with clinical rotations in med-surg, ICU, and emergency
+      settings. ACLS and BLS certified. Comfortable with Epic EMR from clinical placements
+      and eager to bring strong patient assessment and communication skills to a
+      structured new-graduate residency program.
+  - level: mid
+    summary: >
+      Registered nurse with 4+ years of experience in medical-surgical and telemetry care.
+      Manages 5-7 patients per shift on a 32-bed unit, documents in Epic EMR, and
+      contributed to a unit quality-improvement initiative that reduced fall rates.
+      BLS, ACLS certified.
+  - level: senior
+    summary: >
+      Charge nurse with 8+ years in emergency and critical care, including 3 years
+      precepting new graduate nurses through a hospital residency program. ACLS, PALS,
+      and TNCC certified. Track record of maintaining zero medication errors while
+      overseeing a 6-nurse team during evening shifts.
+
+skills:
+  hard:
+    - Patient Assessment & Triage
+    - Medication Administration
+    - IV Therapy & Central Line Care
+    - Epic / Cerner EMR Documentation
+    - Cardiac Monitoring & Rhythm Interpretation
+    - Wound Care & Dressing Changes
+  soft:
+    - Interdisciplinary Team Communication
+    - Patient & Family Education
+    - Composure Under High-Acuity Pressure
+    - Mentoring New Graduate Nurses
+
+keywords:
+  - Patient Care
+  - Patient Assessment
+  - Clinical Documentation
+  - Electronic Medical Records (EMR)
+  - Epic Systems
+  - Cerner
+  - IV Therapy
+  - Medication Administration
+  - Triage
+  - Care Coordination
+  - HIPAA Compliance
+
+certifications:
+  - Registered Nurse License (state-specific)
+  - Basic Life Support (BLS)
+  - Advanced Cardiovascular Life Support (ACLS)
+  - Pediatric Advanced Life Support (PALS)
+  - Trauma Nursing Core Course (TNCC) — for ER roles
+
+mistakes:
+  - mistake: "Leaving certifications for the bottom of the resume"
+    fix: "Move RN license, BLS, ACLS (and PALS/TNCC if relevant) into the header or a dedicated line near the top — many hospital ATS systems screen on these before a human ever reads the resume."
+  - mistake: "Writing \"provided patient care\" with no unit context"
+    fix: "Name the unit and acuity: \"provided direct care in a Level I trauma center ED\" or \"managed 5-7 patients on a 32-bed med-surg unit\" tells a nurse manager your pace and specialty instantly."
+  - mistake: "Omitting the EMR system"
+    fix: "Always name it — Epic, Cerner, Meditech. Recruiters filter for the specific system the hospital uses, since retraining time is a real hiring cost."
+  - mistake: "No quality or safety metric anywhere on the resume"
+    fix: "Add one: fall rate reduction, HCAHPS percentile, medication accuracy rate, or hand-hygiene compliance improvement — nursing is evaluated on patient-safety outcomes."
+
+bulletRewrites:
+  - weak: "Took care of patients on the floor"
+    improved: "Managed care for 5-7 patients per shift on a 32-bed medical-surgical unit, administering IV medications via Epic MAR and monitoring vital signs"
+    reason: "Names the unit, patient load, and EMR system — the three details a nurse manager screens for first."
+  - weak: "Gave medications to patients"
+    improved: "Administered [number]+ medications per shift following physician orders with [X%] documented accuracy, using Epic's barcode medication administration workflow"
+    reason: "Turns a routine task into a measurable accuracy claim tied to a named system, with placeholders where real figures belong."
+  - weak: "Helped train new nurses"
+    improved: "Precepted 4 new graduate nurses through a 12-week hospital orientation program, with [number]/4 retained past the first year"
+    reason: "Quantifies both the mentoring scope and its outcome, which is what charge-nurse and lead-RN postings specifically screen for."
+  - weak: "Worked to reduce patient falls"
+    improved: "Participated in a unit-based fall-prevention initiative that reduced fall rates by [X%] over [timeframe] through hourly rounding and updated risk assessments"
+    reason: "Frames the work as a quality-improvement outcome with a timeframe, matching how hospitals report and reward safety metrics."
+
+salaryOutlook:
+  occupation: "Registered Nurses"
+  median: "$97,550/year ($46.90/hour)"
+  growth: "Projected to grow 6% from 2025 to 2035, faster than average"
+  source: "https://www.bls.gov/ooh/healthcare/registered-nurses.htm"
+  asOf: "2026-09-22"
+
+customFaqs:
+  - question: "Which certifications should go at the top of a registered nurse resume?"
+    answer: "Your active RN license (with state), BLS, and ACLS at minimum — these are frequently mandatory ATS filters for hospital systems. Add PALS for pediatric or ED roles and TNCC or CCRN if the posting mentions trauma or critical care specifically."
+  - question: "How do I list EMR experience if I've only used one system?"
+    answer: "List it explicitly by name (\"Epic EMR documentation\") rather than the generic \"electronic health records.\" If you're applying to a hospital using a different system, note that you're a fast learner on new EMR platforms in your cover letter, not the resume."
+  - question: "Should a new grad RN resume include clinical rotations?"
+    answer: "Yes — list rotation units (ICU, med-surg, ER) the same way you'd list work experience, including the EMR system used and any specific skills practiced (IV starts, wound care, medication administration), since new grads are evaluated on rotation breadth."
+  - question: "What patient-to-nurse ratio should I state if it varied by shift?"
+    answer: "Give a realistic range (\"5-7 patients per shift\") rather than a single number or omitting it — the range communicates both your typical and peak acuity load, which is exactly what a hiring manager is trying to assess."
+  - question: "Is a two-page nursing resume acceptable?"
+    answer: "Yes, more than for most roles — nurses with 10+ years, multiple units, and several certifications often need two pages to list mandatory credentials, unit history, and quality metrics without cutting anything a hospital ATS screens on."
 
 resume:
   template: professional

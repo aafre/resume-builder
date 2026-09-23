@@ -19,12 +19,26 @@ import { getRelatedJobs, getJobExampleBySlug, JOB_CATEGORIES } from '../../data/
 import { getMatchingKeywordSlug, getKeywordJobTitle } from '../../utils/crossLinkHelpers';
 import { useAuth } from '../../contexts/AuthContext';
 import { useResumeCreate } from '../../hooks/useResumeCreate';
+import { trackCtaClicked } from '../../lib/analytics';
+import { generateHowToSchema } from '../../utils/schemaGenerators';
 import ConversionPromptModal from '../ConversionPromptModal';
 import AuthModal from '../AuthModal';
 import TemplateSelectionModal from '../TemplateSelectionModal';
 import type { JobExampleData } from '../../data/jobExamples/types';
 import type { FAQConfig } from '../../types/seo';
 import type { Section } from '../../types';
+
+/**
+ * Every YAML — including the 23 legacy (pre-A5) pages — already carries a
+ * curated `relatedJobs` field, so gating on the slug (or on the field's mere
+ * presence) doesn't distinguish A5 pages from legacy ones. `answerBlock` is
+ * only populated for pages upgraded to the A5 schema (2026-09), so its
+ * presence is what actually means "honour this YAML's relatedJobs curation" —
+ * legacy pages keep the existing category/priority algorithm unchanged.
+ */
+export function isA5Page(data: JobExampleData | null): boolean {
+  return !!data?.answerBlock;
+}
 
 // Supabase Storage CDN base URL for pre-generated resume preview images
 const PREVIEW_BASE_URL = import.meta.env.VITE_SUPABASE_URL
@@ -178,8 +192,10 @@ export default function JobExamplePage() {
     }
 
     // Already seeded from the prerendered payload — the round trip would fetch
-    // data we are currently rendering.
+    // data we are currently rendering. Consumed once: after client navigation
+    // away and Back, `data` belongs to the other slug and must be refetched.
     if (seededSlug.current === slug) {
+      seededSlug.current = null;
       return;
     }
 
@@ -203,7 +219,9 @@ export default function JobExamplePage() {
   }, [slug]);
 
   // Compute derived values (always computed to maintain hook order)
-  const relatedJobs = slug ? getRelatedJobs(slug, 4) : [];
+  const relatedJobs = slug
+    ? getRelatedJobs(slug, 4, isA5Page(data) ? data?.relatedJobs : undefined)
+    : [];
   const dbEntry = slug ? getJobExampleBySlug(slug) : undefined;
   const categoryInfo = data ? JOB_CATEGORIES.find(c => c.id === data.meta.category) : null;
   const faqs: FAQConfig[] = data?.customFaqs || (data ? generateFAQs(data) : []);
@@ -228,9 +246,17 @@ export default function JobExamplePage() {
     canonicalUrl: `/examples/${slug || ''}`,
   };
 
-  // Create schema (must be called unconditionally to maintain hook order)
+  // Create schema (must be called unconditionally to maintain hook order).
+  // `items` populates the ItemList from the same related-jobs list rendered
+  // below — previously this was omitted, so the itemList type was declared
+  // but the schema was never actually emitted.
   const baseSchemas = usePageSchema({
     type: 'itemList',
+    items: relatedJobs.map((job) => ({
+      name: job.title,
+      url: `/examples/${job.slug}`,
+      description: job.metaDescription,
+    })),
     faqs,
     breadcrumbs: [
       { label: 'Home', href: '/' },
@@ -239,7 +265,10 @@ export default function JobExamplePage() {
     ],
   });
 
-  // Add ImageObject schema for Google Images traffic on resume example queries
+  // Add ImageObject schema for Google Images traffic on resume example queries,
+  // plus HowTo schema when the role has step-by-step writing guidance. HowTo
+  // rich-result eligibility was deprecated by Google — this stays for parsers
+  // that still read it, not for a SERP feature that no longer exists.
   const schemas = data ? [
     ...baseSchemas,
     {
@@ -256,6 +285,17 @@ export default function JobExamplePage() {
         name: 'EasyFreeResume',
       },
     },
+    ...(data.howToWrite && data.howToWrite.length > 0
+      ? [
+          generateHowToSchema(
+            `How to Write a ${data.meta.title} Resume`,
+            `Step-by-step guide to writing a ${data.meta.title.toLowerCase()} resume.`,
+            data.howToWrite.map((step, i) => ({ name: `Step ${i + 1}`, text: step })),
+            undefined,
+            data.meta.lastmod
+          ),
+        ]
+      : []),
   ] : baseSchemas;
 
   // Create resume from job example data
@@ -285,6 +325,8 @@ export default function JobExamplePage() {
   // Handle "Edit This Template" click - show template selection first
   const handleEditTemplate = () => {
     if (!data || !session) return;
+
+    trackCtaClicked({ cta_id: 'example_edit_template', page: `/examples/${data.meta.slug}` });
 
     // Always show template selection modal first
     setShowTemplateModal(true);
@@ -371,6 +413,14 @@ export default function JobExamplePage() {
         <h1 className="font-display text-[clamp(2rem,4.2vw,3.25rem)] font-extrabold leading-[1.08] tracking-tight text-ink max-w-4xl">
           {heroConfig.h1}
         </h1>
+        {/* The extraction unit for AI answers — a direct, self-contained
+            answer to "what does a good X resume look like", ahead of the
+            marketing subtitle. */}
+        {data.answerBlock && (
+          <p className="mt-5 text-lg font-normal text-ink/80 leading-relaxed max-w-3xl">
+            {data.answerBlock}
+          </p>
+        )}
         <p className="mt-5 text-lg md:text-xl font-extralight text-ink/60 leading-relaxed max-w-3xl">
           {heroConfig.subtitle}
         </p>
@@ -420,6 +470,8 @@ export default function JobExamplePage() {
             />
             <figcaption className="mt-5 text-center font-mono text-[0.6875rem] tracking-[0.12em] uppercase text-ink/60">
               As it prints &mdash; {data.resume.template.charAt(0).toUpperCase() + data.resume.template.slice(1)} template
+              <br />
+              Illustrative example, not a real person&rsquo;s resume
             </figcaption>
           </figure>
 
@@ -559,6 +611,156 @@ export default function JobExamplePage() {
           </div>
       </aside>
       </section>
+
+      {/* How to Write */}
+      {data.howToWrite && data.howToWrite.length > 0 && (
+        <RevealSection>
+          <section className="my-16 max-w-3xl mx-auto cv-auto cv-h-400">
+            <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4">Step by Step</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 text-center">
+              How to Write a {data.meta.title} Resume
+            </h2>
+            <ol className="space-y-4">
+              {data.howToWrite.map((step, index) => (
+                <li key={index} className="flex gap-4 bg-white rounded-xl p-5 border border-black/[0.06]">
+                  <span className="font-mono text-sm text-accent-text flex-shrink-0">{String(index + 1).padStart(2, '0')}</span>
+                  <p className="text-ink/75 leading-relaxed">{step}</p>
+                </li>
+              ))}
+            </ol>
+          </section>
+        </RevealSection>
+      )}
+
+      {/* Entry-level vs experienced summaries */}
+      {data.summaryExamples && data.summaryExamples.length > 0 && (
+        <RevealSection stagger>
+          <section className="my-16 cv-auto cv-h-400">
+            <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4">By Experience Level</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 text-center">
+              {data.meta.title} Resume Summary Examples
+            </h2>
+            <div className="grid md:grid-cols-3 gap-4 max-w-5xl mx-auto">
+              {data.summaryExamples.map((example) => (
+                <div key={example.level} className="bg-white rounded-xl p-6 border border-black/[0.06]">
+                  <p className="font-mono text-[0.6875rem] tracking-[0.15em] uppercase text-accent-text mb-3">
+                    {example.level === 'entry' ? 'Entry-Level' : example.level === 'mid' ? 'Mid-Career' : 'Senior'}
+                  </p>
+                  <p className="text-sm text-ink/75 leading-relaxed">{example.summary}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </RevealSection>
+      )}
+
+      {/* Weak -> improved bullet rewrites, with the reason each rewrite works */}
+      {data.bulletRewrites && data.bulletRewrites.length > 0 && (
+        <RevealSection stagger>
+          <section className="my-16 cv-auto cv-h-600">
+            <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4">Before &amp; After</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 text-center">
+              {data.meta.title} Bullet Point Rewrites
+            </h2>
+            <div className="space-y-5 max-w-3xl mx-auto">
+              {data.bulletRewrites.map((rewrite, index) => (
+                <div key={index} className="bg-white rounded-xl border border-black/[0.06] overflow-clip">
+                  <p className="px-5 py-3 text-sm text-ink/50 line-through bg-chalk-dark">{rewrite.weak}</p>
+                  <p className="px-5 py-3 text-sm text-ink border-t border-black/[0.06]">{rewrite.improved}</p>
+                  <p className="px-5 py-3 text-xs text-accent-text border-t border-black/[0.06]">Why it works: {rewrite.reason}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </RevealSection>
+      )}
+
+      {/* Role-specific skills and ATS keywords */}
+      {(data.skills || (data.keywords && data.keywords.length > 0)) && (
+        <RevealSection stagger>
+          <section className="my-16 cv-auto cv-h-400">
+            <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4">What to Highlight</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 text-center">
+              Skills for a {data.meta.title} Resume
+            </h2>
+            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              {data.skills && (
+                <div className="bg-white rounded-xl p-6 border border-black/[0.06]">
+                  <h3 className="font-bold text-ink mb-3">Hard Skills</h3>
+                  <p className="text-sm text-ink/75 leading-relaxed">{data.skills.hard.join(' · ')}</p>
+                  <h3 className="font-bold text-ink mt-5 mb-3">Soft Skills</h3>
+                  <p className="text-sm text-ink/75 leading-relaxed">{data.skills.soft.join(' · ')}</p>
+                </div>
+              )}
+              {data.keywords && data.keywords.length > 0 && (
+                <div className="bg-white rounded-xl p-6 border border-black/[0.06]">
+                  <h3 className="font-bold text-ink mb-3">ATS Keywords</h3>
+                  <p className="text-sm text-ink/75 leading-relaxed">{data.keywords.join(' · ')}</p>
+                </div>
+              )}
+            </div>
+          </section>
+        </RevealSection>
+      )}
+
+      {/* Certifications worth listing, where the role genuinely has them */}
+      {data.certifications && data.certifications.length > 0 && (
+        <RevealSection>
+          <section className="my-16 max-w-3xl mx-auto cv-auto cv-h-200">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight mb-6 text-center">
+              Certifications Worth Earning
+            </h2>
+            <ul className="ex-doc__bullets list-disc pl-5 space-y-1.5 text-ink/75">
+              {data.certifications.map((cert, index) => (
+                <li key={index}>{cert}</li>
+              ))}
+            </ul>
+          </section>
+        </RevealSection>
+      )}
+
+      {/* Role-specific mistakes to avoid */}
+      {data.mistakes && data.mistakes.length > 0 && (
+        <RevealSection stagger>
+          <section className="my-16 cv-auto cv-h-400">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight mb-8 text-center">
+              Common {data.meta.title} Resume Mistakes
+            </h2>
+            <div className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
+              {data.mistakes.map((item, index) => (
+                <div key={index} className="bg-white rounded-xl p-5 border border-black/[0.06]">
+                  <p className="text-sm font-semibold text-ink mb-1">{item.mistake}</p>
+                  <p className="text-sm text-ink/60">{item.fix}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </RevealSection>
+      )}
+
+      {/* BLS salary outlook — US-only, omitted rather than guessed */}
+      {data.salaryOutlook && (
+        <RevealSection>
+          <section className="my-16 max-w-3xl mx-auto cv-auto cv-h-200">
+            <div className="bg-chalk-dark rounded-xl p-6 border border-black/[0.06]">
+              <h2 className="text-xl font-bold text-ink mb-2">
+                {data.meta.title} Salary Outlook (US)
+              </h2>
+              <p className="text-sm text-ink/75 leading-relaxed">
+                Median pay: <span className="font-semibold text-ink">{data.salaryOutlook.median}</span>.
+                {' '}Job growth: <span className="font-semibold text-ink">{data.salaryOutlook.growth}</span>.
+                {data.salaryOutlook.occupation && ` Mapped to the BLS occupation "${data.salaryOutlook.occupation}."`}
+                {' '}US figures only.
+              </p>
+              <p className="mt-3 text-xs text-ink/50">
+                Source: <a href={data.salaryOutlook.source} target="_blank" rel="noopener noreferrer" className="underline hover:text-accent-text">
+                  U.S. Bureau of Labor Statistics, Occupational Outlook Handbook
+                </a> &middot; as of {data.salaryOutlook.asOf}
+              </p>
+            </div>
+          </section>
+        </RevealSection>
+      )}
 
       {/* Bullet Point Bank */}
       <BulletPointBank

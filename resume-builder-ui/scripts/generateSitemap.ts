@@ -34,10 +34,9 @@ const JOBS = JOBS_DATABASE.map(job => ({
   lastmod: job.lastmod || new Date().toISOString().split('T')[0],
 }));
 
-// Job examples data for pSEO pages
-// ponytail: seam for A5 (Track C) — JobExampleInfo.lastmod is optional and unset today,
-// so this falls back to the build date for every entry. Once A5 wires each YAML's
-// meta.lastmod into JOB_EXAMPLES_DATABASE, entries with a real lastmod stop drifting.
+// Job examples data for pSEO pages. `lastmod` reads the role's curated date
+// (A5) when set, falling back to today's date — unchanged behavior for the
+// 23 roles that don't have one yet.
 const JOB_EXAMPLES = JOB_EXAMPLES_DATABASE.map(job => ({
   slug: job.slug,
   priority: job.priority,

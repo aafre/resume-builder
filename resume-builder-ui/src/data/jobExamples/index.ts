@@ -36,6 +36,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     category: 'operations',
     priority: 0.7,
     metaDescription: 'Receptionist resume example highlighting front desk skills and customer interaction. Free to edit and download.',
+    lastmod: '2026-09-22',
   },
   {
     slug: 'retail-sales-associate',
@@ -100,6 +101,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     priority: 0.8,
     metaDescription: 'Registered nurse resume example with clinical skills and patient care experience.',
     careerOutlook: 'Nursing faces a nationwide shortage projected to continue through 2030, giving RNs exceptional job security and bargaining power. Median pay is around $81,000, with specialty paths in ICU, OR, and nurse practitioner roles pushing compensation well above $100,000.',
+    lastmod: '2026-09-22',
   },
   {
     slug: 'medical-assistant',
@@ -141,6 +143,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     category: 'tech',
     priority: 0.8,
     metaDescription: 'Software engineer resume example with programming skills and project achievements.',
+    lastmod: '2026-09-22',
   },
   {
     slug: 'data-analyst',
@@ -260,9 +263,23 @@ export function getJobExampleBySlug(slug: string): JobExampleInfo | undefined {
 }
 
 /**
- * Get related jobs for a given slug
+ * Get related jobs for a given slug.
+ *
+ * `explicitSlugs` is the YAML's own `relatedJobs` field (curated per role).
+ * When it resolves to at least one known slug, it wins outright — it is a
+ * deliberate editorial choice, not a fallback to blend with the algorithm.
+ * Unknown slugs are dropped silently rather than failing the page.
  */
-export function getRelatedJobs(slug: string, limit = 4): JobExampleInfo[] {
+export function getRelatedJobs(slug: string, limit = 4, explicitSlugs?: string[]): JobExampleInfo[] {
+  if (explicitSlugs && explicitSlugs.length > 0) {
+    const explicit = explicitSlugs
+      .filter(s => s !== slug)
+      .map(s => getJobExampleBySlug(s))
+      .filter((job): job is JobExampleInfo => !!job)
+      .slice(0, limit);
+    if (explicit.length > 0) return explicit;
+  }
+
   const currentJob = getJobExampleBySlug(slug);
   if (!currentJob) return [];
 
