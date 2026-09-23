@@ -30,7 +30,7 @@ export default function HowToListSkills() {
       title="How to List Skills on a Resume: A Step-by-Step Guide (100+ Examples)"
       description="Master the art of creating a powerful skills section. Learn what to include, how to format it, and get inspired with over 100 examples for any industry."
       publishDate="2026-01-23"
-      lastUpdated="2026-03-22"
+      lastUpdated="2026-09-22"
       readTime="12 min"
       keywords={[
         "how to list skills on resume",
@@ -43,35 +43,97 @@ export default function HowToListSkills() {
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-ink/60 font-medium">
-          Updated for 2026: The skills section remains one of the most important
-          parts of your resume. It's a quick snapshot that tells recruiters and
-          Applicant Tracking Systems (ATS) whether you have the qualifications
-          for the job.
+          List 8-12 skills, hard skills first, matched to the exact language
+          in the job posting. That much is table stakes — every guide says it.
+          What actually separates resumes is three things most guides skip:
+          where the section sits on the page, how ATS parsers actually read
+          it (not how you assume they do), and whether each skill is backed
+          by proof elsewhere on the resume.
         </p>
 
         <p className="text-lg leading-relaxed text-ink/60">
-          But many job seekers struggle with it. What skills should you include?
-          How should you format them? This guide will walk you through
-          everything you need to know to create a skills section that gets
-          results. If you are starting from scratch, our{" "}
+          This guide covers formatting and 100+ examples like most skills
+          guides do, but leads with the three things that actually change
+          outcomes: placement, parsing behavior, and evidence pairing. If you
+          are starting from scratch, our{" "}
           <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
             complete resume writing guide
           </Link>{" "}
           covers the full picture.
         </p>
 
-        <div className="callout callout-note rounded-xl p-6 my-8">
-          <h3 className="font-bold tone-note mb-3">⚡ Quick Impact Check</h3>
-          <p className="tone-note">
-            A well-crafted skills section can be the difference between your
-            resume being filtered out by ATS or making it to a human recruiter.
-            Studies show that over 75% of resumes are rejected by ATS before a
-            human ever sees them. See our{" "}
-            <Link to="/blog/ats-resume-optimization" className="text-accent-text hover:underline">
-              ATS optimization guide
-            </Link>{" "}
-            for a full breakdown of how these systems parse your skills.
-          </p>
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          Placement, ATS Parsing, and Evidence Pairing
+        </h2>
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
+          Hard vs. soft and format options get all the attention. These three
+          decisions matter more and are covered less.
+        </p>
+
+        <div className="space-y-6 mb-8">
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="text-lg font-bold tone-do mb-3">
+              Placement: Where the Section Goes Changes What It Does
+            </h3>
+            <p className="tone-do mb-3">
+              Skills placed directly below your{" "}
+              <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
+                professional summary
+              </Link>{" "}
+              get scanned early by both ATS keyword parsers and the first
+              human pass — put your highest-priority, most job-specific
+              skills there. If you have 10+ years of experience, moving the
+              skills section below your work history lets your career
+              narrative lead instead of a list of tools; recruiters at that
+              level expect the experience section to do the convincing.
+              Entry-level candidates with thin experience sections should do
+              the opposite and place skills higher, since it is the section
+              with the most concrete content early in the resume.
+            </p>
+          </div>
+
+          <div className="callout callout-note rounded-xl p-6">
+            <h3 className="text-lg font-bold tone-note mb-3">
+              ATS Parsing: What Actually Breaks
+            </h3>
+            <p className="tone-note mb-3">
+              Most ATS platforms parse skills as plain text pulled from a
+              single column, in document order. Two-column layouts, tables,
+              text boxes, and skill graphics (star ratings, progress bars)
+              are common sources of parsing failures — the parser either
+              scrambles the reading order or drops the content entirely,
+              which is why a plain bulleted list under its own heading is
+              still the safest default. List both the acronym and the full
+              term for anything abbreviable ("SEO" and "Search Engine
+              Optimization"), since some parsers match on exact strings and
+              you cannot predict which form the job posting's filter uses.
+              Pair a plain-list skills section with an{" "}
+              <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">
+                ATS-friendly template
+              </Link>{" "}
+              so formatting does not undo the wording.
+            </p>
+          </div>
+
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="text-lg font-bold tone-do mb-3">
+              Evidence Pairing: A Listed Skill Is a Claim, Not Proof
+            </h3>
+            <p className="tone-do mb-3">
+              Every skill in your skills section should also appear, in
+              action, somewhere in your experience bullets. "Python" on its
+              own is an unverified line item; "Python" listed alongside a
+              bullet that reads "Built a Python ETL pipeline processing 2M
+              records daily" is evidence. Before finalizing your list, check
+              each skill against your experience section — if a skill
+              appears nowhere else on the resume, either add a bullet that
+              demonstrates it or cut it. Strong{" "}
+              <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">
+                action verbs
+              </Link>{" "}
+              in those bullets do the pairing work for you.
+            </p>
+          </div>
         </div>
 
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">

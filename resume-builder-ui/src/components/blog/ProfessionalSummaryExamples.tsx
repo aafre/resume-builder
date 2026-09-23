@@ -30,7 +30,7 @@ export default function ProfessionalSummaryExamples() {
       title="30+ Professional Summary Examples for Resumes (2026)"
       description="Copy-paste professional summary examples for every industry: tech, healthcare, finance, marketing, student. Plus a 60-second formula for writing your own."
       publishDate="2026-01-18"
-      lastUpdated="2026-03-22"
+      lastUpdated="2026-09-22"
       readTime="12 min"
       keywords={[
         "professional summary",
@@ -46,21 +46,13 @@ export default function ProfessionalSummaryExamples() {
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-ink/60 font-medium">
-          Your professional summary is the most important section of your
-          resume — it is the first thing recruiters read and often determines
-          whether they continue reading. A compelling summary can be the
-          difference between landing an interview and having your resume
-          overlooked. This guide provides 30+ proven examples across every
-          experience level and industry, plus a 60-second formula for writing
-          your own. If you are building your resume from scratch, pair this
-          guide with our{" "}
-          <Link
-            to="/blog/how-to-write-a-resume-guide"
-            className="text-accent-text hover:underline"
-          >
-            complete resume writing guide
-          </Link>{" "}
-          for end-to-end coverage.
+          A professional summary is 3-4 sentences at the top of your resume
+          that states your experience, top skills, and one measurable result —
+          in that order. It replaces the objective statement because it leads
+          with what you offer, not what you want. The hardest version to write
+          is the one where your situation is not a straight line: career
+          change, a gap, no experience yet, or a jump to senior scope. Those
+          get worked examples with reasoning below, not just more samples.
         </p>
 
         {/* Table of Contents */}
@@ -71,6 +63,7 @@ export default function ProfessionalSummaryExamples() {
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
             <li><a href="#what-makes-effective" className="text-accent-text hover:underline">What Makes a Professional Summary Effective?</a></li>
             <li><a href="#formula" className="text-accent-text hover:underline">Professional Summary Formula (60-Second Template)</a></li>
+            <li><a href="#by-situation" className="text-accent-text hover:underline">Examples by Situation (Career Changer, Returner, No Experience, Senior)</a></li>
             <li><a href="#by-experience" className="text-accent-text hover:underline">Examples by Experience Level</a></li>
             <li><a href="#by-industry" className="text-accent-text hover:underline">Industry-Specific Examples</a></li>
             <li><a href="#mistakes" className="text-accent-text hover:underline">Common Mistakes to Avoid</a></li>
@@ -87,9 +80,9 @@ export default function ProfessionalSummaryExamples() {
             Quick Impact
           </h3>
           <p className="text-ink/80">
-            Studies show that recruiters spend just 6-8 seconds scanning a
-            resume initially. Your professional summary must immediately
-            communicate your value proposition and make them want to learn more.
+            A recruiter scans your summary before deciding whether to read the
+            rest of the resume. It has to communicate your value proposition
+            immediately — not after a paragraph of throat-clearing.
           </p>
         </div>
 
@@ -191,6 +184,118 @@ export default function ProfessionalSummaryExamples() {
                 data-driven storytelling and brand building. Seeking to lead
                 demand generation strategy at a high-growth technology
                 company.&rdquo;
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <h2 id="by-situation" className="text-3xl font-bold text-ink mt-12 mb-6">
+          Examples by Situation, With the Reasoning
+        </h2>
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
+          A wall of interchangeable summaries does not help if your career
+          does not fit a straight line. These four situations are the ones
+          people get stuck on most — each example comes with the reasoning
+          for why it is built the way it is, not just the finished text.
+        </p>
+
+        <div className="space-y-6 my-8">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">Career Changer (Teacher to UX Design)</h4>
+            <p className="text-ink/60 italic leading-relaxed mb-4">
+              "Former high school educator transitioning to UX design after
+              completing a 6-month UX certification and shipping three
+              portfolio projects, including a redesign that cut a mock
+              checkout flow's task time by 40% in usability testing.
+              Ten years of experience breaking down complex material for
+              varied audiences — a skill that translates directly to user
+              research and information architecture. Seeking a junior UX
+              role where classroom-honed empathy and newly built design
+              skills both contribute."
+            </p>
+            <div className="callout callout-note rounded-lg p-4">
+              <p className="tone-note text-sm">
+                <strong>Why this works:</strong> It does not hide the career
+                change or apologize for it. It names the new-field proof
+                point first (the certification and a measurable portfolio
+                result), then reframes the old career as a transferable
+                skill instead of dead weight. A career-change summary that
+                buries the new skills under years of unrelated title history
+                reads as unconvinced of itself.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">Returning After a Career Break</h4>
+            <p className="text-ink/60 italic leading-relaxed mb-4">
+              "Project coordinator with 5 years of experience in construction
+              project management, returning to the workforce after a
+              two-year caregiving leave. Managed vendor schedules and
+              budgets up to $800K across 12 concurrent projects prior to
+              leave; maintained industry knowledge through a project
+              management recertification completed in the past year. Ready
+              to bring proven coordination skills back to a fast-paced
+              team."
+            </p>
+            <div className="callout callout-note rounded-lg p-4">
+              <p className="tone-note text-sm">
+                <strong>Why this works:</strong> It states the gap once, in
+                neutral language, instead of letting the reader guess or
+                omitting it and hoping nobody notices the date math. It then
+                immediately pivots back to pre-break evidence and a concrete
+                sign of staying current (the recertification), so the gap
+                reads as accounted for rather than as a warning sign.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">No Professional Experience Yet</h4>
+            <p className="text-ink/60 italic leading-relaxed mb-4">
+              "Business Administration student (graduating May 2027) with
+              hands-on experience through a semester-long consulting
+              practicum, where a 4-person team built a pricing model that
+              the client adopted. Treasurer for a 40-member student
+              organization, managing a $12,000 annual budget. Comfortable
+              with Excel, SQL basics, and fast context-switching between
+              coursework and extracurricular commitments."
+            </p>
+            <div className="callout callout-note rounded-lg p-4">
+              <p className="tone-note text-sm">
+                <strong>Why this works:</strong> With no job history to lean
+                on, it substitutes the closest available evidence —
+                coursework with a real outcome, and an extracurricular role
+                with actual budget accountability — instead of adjectives
+                like "hardworking" or "motivated," which are unverifiable
+                and used by every other entry-level summary. See our{" "}
+                <Link to="/blog/resume-no-experience" className="text-accent-text hover:underline">
+                  full guide to resumes with no experience
+                </Link>{" "}
+                for the rest of the page built around this same approach.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">Senior / Executive Scope Jump</h4>
+            <p className="text-ink/60 italic leading-relaxed mb-4">
+              "Engineering Manager with 9 years building and leading teams,
+              stepping into first Director-level scope. Currently manage 3
+              team leads and 14 engineers across two product lines; owned
+              the technical roadmap that took a platform from 99.5% to
+              99.95% uptime over 18 months. Looking to apply the same
+              systems-and-people approach across a broader organization."
+            </p>
+            <div className="callout callout-note rounded-lg p-4">
+              <p className="tone-note text-sm">
+                <strong>Why this works:</strong> Rather than inflating the
+                current title, it states the actual scope (team size,
+                reporting lines) and pairs it with one result at that scope,
+                then names the target scope explicitly. A senior summary
+                that only lists adjectives ("strategic," "visionary")
+                without a scope number reads as aspirational rather than
+                ready.
               </p>
             </div>
           </div>
