@@ -1,184 +1,339 @@
 import BlogLayout from '../BlogLayout';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 interface Program {
   company: string;
   name: string;
-  fields: string;
+  region: string;
   duration: string;
-  paid: boolean;
-  minGap: string;
+  locations: string;
+  eligibility: string;
   url: string;
+  verifiedOn: string;
+  applicationStatus: 'open' | 'closed' | 'unknown';
+  statusNote: string;
   description: string;
 }
 
+// Every row below was checked against the company's own program page (not a third-party
+// listicle) on the verifiedOn date. A live link does not mean applications are open — if the
+// official page did not state a window, applicationStatus is "unknown", not "open".
 const PROGRAMS: Program[] = [
   {
-    company: 'JP Morgan Chase',
+    company: 'JPMorgan Chase',
     name: 'ReEntry Program',
-    fields: 'Finance, Technology, Operations, Risk, Compliance',
-    duration: '15 weeks',
-    paid: true,
-    minGap: '2+ years',
-    url: 'https://www.jpmorganchase.com/careers',
-    description: 'One of the largest and longest-running returnship programs. Operates across multiple business lines with a strong conversion rate to full-time roles. Available in the US, UK, and India.',
+    region: 'USA / EMEA / APAC',
+    duration: '15 weeks (April–July)',
+    locations: 'Atlanta, Boston, Brooklyn, Charlotte, Chicago, Columbus, Dallas, Houston, Jersey City, New York, Newark, Palo Alto, Plano, Tampa, Tempe, Wilmington, Buenos Aires, Bournemouth, Dublin, Edinburgh, Frankfurt, Geneva, Glasgow, London, Paris, Warsaw, Bengaluru, Hyderabad, Mumbai, Pune',
+    eligibility: 'Extended career break of 2+ years; was at Associate/VP level or equivalent when you left the workforce',
+    url: 'https://www.jpmorganchase.com/careers/explore-opportunities/programs/reentry-program',
+    verifiedOn: '2026-09-22',
+    applicationStatus: 'closed',
+    statusNote: 'The 2026 cohort has already run. The official page states the 2027 application window runs November 16, 2026 – February 28, 2027.',
+    description: 'One of the longest-running and widest-reaching returnship programs, spanning North America, Europe, Asia Pacific, and South America in one intake.',
   },
   {
     company: 'Goldman Sachs',
     name: 'Returnship',
-    fields: 'Engineering, Finance, Operations, Compliance',
+    region: 'USA / EMEA',
     duration: '12 weeks',
-    paid: true,
-    minGap: '2+ years',
-    url: 'https://www.goldmansachs.com/careers',
-    description: 'The program that coined the term "returnship." Highly competitive with mentorship, training, and networking. Strong track record of converting participants to permanent employees.',
-  },
-  {
-    company: 'Amazon',
-    name: 'Returnship Program',
-    fields: 'Software Engineering, Program Management, Operations',
-    duration: '16 weeks',
-    paid: true,
-    minGap: '1+ years',
-    url: 'https://www.amazon.jobs/en/landing_pages/returnships',
-    description: 'Paid internship-style program with mentorship and a dedicated cohort. Focuses on tech and operations roles. Available in multiple US locations and some international offices.',
+    locations: 'Albany, Chicago, Dallas, Jersey City, New York, Richardson, Salt Lake City, West Palm Beach, Wilmington, Birmingham, Frankfurt, London, Paris, Warsaw',
+    eligibility: 'Open to professionals who have taken a career break; the official page does not publish a minimum break length',
+    url: 'https://www.goldmansachs.com/careers/programs-for-professionals/returnship',
+    verifiedOn: '2026-09-22',
+    applicationStatus: 'unknown',
+    statusNote: 'The page lists program start dates (Americas: January–March 2027; EMEA: Fall 2026) but does not state when applications open or close.',
+    description: 'The program that coined the term "returnship." Paid, on-the-job learning across a range of divisions with dedicated mentorship.',
   },
   {
     company: 'Microsoft',
-    name: 'LEAP Program',
-    fields: 'Software Engineering',
+    name: 'LEAP Engineering Program',
+    region: 'USA',
     duration: '16 weeks',
-    paid: true,
-    minGap: 'Non-traditional background',
+    locations: 'United States (multiple Microsoft engineering sites)',
+    eligibility: 'Broad professional experience and foundational technical training; explicitly open to non-traditional backgrounds, not restricted to career-break returners specifically',
     url: 'https://leap.microsoft.com/',
-    description: 'Designed for career changers and returners entering software engineering. Includes intensive training and placement on a product team. Not limited to those with CS degrees.',
+    verifiedOn: '2026-09-22',
+    applicationStatus: 'unknown',
+    statusNote: 'No application window or deadline is published on the official page.',
+    description: 'Classroom instruction plus hands-on engineering work on real Microsoft products. A common landing spot for career changers and returners entering software engineering.',
+  },
+  {
+    company: 'SAP',
+    name: 'Returnship Program',
+    region: 'USA / EMEA',
+    duration: '20 weeks (North America) / 6 months (EMEA)',
+    locations: 'Madrid, Johannesburg, Riyadh, Paris, and other EMEA/North America sites depending on role',
+    eligibility: 'Mid-career professionals with 5+ years of work experience and a career break of 2+ years for caregiving, relocation, personal healthcare, or military service',
+    url: 'https://jobs.sap.com/go/SAP-Returnship-Program/5365101/',
+    verifiedOn: '2026-09-22',
+    applicationStatus: 'unknown',
+    statusNote: 'No application window published on the official page; roles are posted as they open.',
+    description: 'Workshops, coaching, and a dedicated buddy during ramp-up, with two duration tracks depending on region.',
   },
   {
     company: 'PayPal',
     name: 'Recharge Program',
-    fields: 'Technology, Product, Data Science, Finance',
-    duration: '16 weeks',
-    paid: true,
-    minGap: '2+ years',
-    url: 'https://careers.pypl.com/home/',
-    description: 'Structured return-to-work program with mentorship, professional development, and a clear path to full-time employment. Strong focus on inclusion and supporting diverse returners.',
+    region: 'USA',
+    duration: '6-week paid bootcamp track (confirmed via PayPal’s own newsroom); the program page also references a separate longer track whose length we could not confirm directly',
+    locations: 'Confirmed operating in India via PayPal’s APAC newsroom; the official jobs.recharge landing page did not render enough text for us to confirm other locations',
+    eligibility: 'Skilled technologists who have taken a career break for personal or family reasons',
+    url: 'https://www.paypal.com/us/webapps/mpp/jobs/recharge',
+    verifiedOn: '2026-09-22',
+    applicationStatus: 'unknown',
+    statusNote: 'The official landing page loads via JavaScript we could not read directly; corroborated instead via PayPal’s own newsroom article, which states no fixed application window.',
+    description: 'A bootcamp-plus-program track built in partnership with Path Forward, for technologists returning after a career break.',
   },
   {
     company: 'IBM',
     name: 'Tech Re-Entry Program',
-    fields: 'Software Engineering, Data Science, Cloud, AI',
-    duration: '12 weeks',
-    paid: true,
-    minGap: '1+ years',
-    url: 'https://www.ibm.com/careers',
-    description: 'Focused on technical roles with training in IBM cloud and AI platforms. Good option for engineers who want to update their skills while re-entering the workforce.',
-  },
-  {
-    company: 'Meta',
-    name: 'Return to Work Program',
-    fields: 'Engineering, Product Design, Data',
-    duration: '16 weeks',
-    paid: true,
-    minGap: '2+ years',
-    url: 'https://www.metacareers.com/careerprograms/pathways',
-    description: 'Offers full compensation and benefits during the program. Participants are embedded in real teams working on production products. Strong conversion rate.',
+    region: 'USA',
+    duration: 'Not published on the official page we verified',
+    locations: 'United States, Canada, India, China, UK, Germany, Australia — stated on IBM’s own page as expanding to more countries',
+    eligibility: 'Career break of 1+ years, with skills matching an open role',
+    url: 'https://www.ibm.com/careers/blog/return-to-the-workforce-with-the-ibm-tech-re-entry-program',
+    verifiedOn: '2026-09-22',
+    applicationStatus: 'unknown',
+    statusNote: 'No application window published on the official page.',
+    description: 'A full-time, paid returnship for technical professionals, spanning seven countries in one program.',
   },
   {
     company: 'Deloitte',
-    name: 'Encore Program',
-    fields: 'Consulting, Audit, Tax, Advisory',
-    duration: 'Varies',
-    paid: true,
-    minGap: '2+ years',
-    url: 'https://www.deloitte.com/us/en/careers/join-deloitte/encore-program.html',
-    description: 'Professional services returnship across all major practice areas. Provides training, mentorship, and exposure to client-facing work. Available in the US and UK.',
+    name: 'Return to Work Programme (UK)',
+    region: 'UK',
+    duration: 'No fixed length — roles are typically permanent from day one',
+    locations: 'United Kingdom',
+    eligibility: 'Extended career break of 2+ years, for any reason',
+    url: 'https://www.deloitte.com/uk/en/careers/professional-careers/experienced-careers-programmes-networks.html',
+    verifiedOn: '2026-09-22',
+    applicationStatus: 'open',
+    statusNote: 'The official page states Deloitte UK moved away from a single annual intake and now runs roughly two start dates per month, so the program is effectively always accepting applications.',
+    description: 'Structured onboarding, a returner buddy, and technical refresher training, with rolling entry rather than one cohort a year.',
+  },
+  {
+    company: 'Daphne Jackson Trust',
+    name: 'Daphne Jackson Fellowship',
+    region: 'UK / Republic of Ireland',
+    duration: '2–3 years, part-time research fellowship',
+    locations: 'UK and Republic of Ireland universities and research institutes',
+    eligibility: 'Career break of 2+ years for family, caring, or health reasons; for returning to a research career specifically',
+    url: 'https://daphnejackson.org/',
+    verifiedOn: '2026-09-22',
+    applicationStatus: 'unknown',
+    statusNote: 'No published application deadline; the site directs candidates to a fellowship-finder tool rather than a fixed window.',
+    description: 'A longer, research-specific fellowship for STEM and other academic researchers rebuilding a career after a break — not a corporate returnship, but the most established UK returner scheme in this space.',
+  },
+  {
+    company: 'UBS',
+    name: 'Career Comeback',
+    region: 'UK / Global',
+    duration: 'Not published — direct permanent hire, not a fixed-term returnship',
+    locations: 'Americas, EMEA (including the UK, excluding Switzerland and Poland), Switzerland, Poland, Asia Pacific (excluding India), India',
+    eligibility: 'Career break of 2+ years, any reason',
+    url: 'https://www.ubs.com/global/en/careers/professional-careers/career-comeback.html',
+    verifiedOn: '2026-09-22',
+    applicationStatus: 'open',
+    statusNote: 'The official page frames recruitment as ongoing ("whenever you’re ready, we’re here to meet you") rather than a fixed annual window.',
+    description: 'Unlike most programs here, UBS hires returners directly into permanent roles rather than a temporary fixed-term returnship.',
+  },
+  {
+    company: 'Goldman Sachs',
+    name: 'India Returnship',
+    region: 'India',
+    duration: '12 weeks',
+    locations: 'Bengaluru, Hyderabad',
+    eligibility: 'Open to professionals who have taken a career break; specific minimum length not published',
+    url: 'https://www.goldmansachs.com/worldwide/india/careers/india-returnship',
+    verifiedOn: '2026-09-22',
+    applicationStatus: 'unknown',
+    statusNote: 'No application window published on the official page.',
+    description: 'The India edition of the Goldman Sachs Returnship, running since 2013 with the same paid, 12-week structure as the Americas/EMEA program.',
+  },
+  {
+    company: 'Salesforce',
+    name: 'India Return to Work Program',
+    region: 'India',
+    duration: '6 months, with potential conversion to full-time',
+    locations: 'India',
+    eligibility: 'Career break of 1+ years; the page says it "typically" welcomes 1+ year breaks and is open to men and women, with an emphasis on women and working mothers',
+    url: 'https://www.salesforce.com/company/careers/talent-programs/india-return-work/',
+    verifiedOn: '2026-09-22',
+    applicationStatus: 'unknown',
+    statusNote: 'The page invites candidates to "apply today" or join a talent community, with no published intake dates.',
+    description: 'On-the-job training across sales, technology, product, and customer success, with a six-month runway before a full-time decision.',
+  },
+  {
+    company: 'Wells Fargo',
+    name: 'Glide — Relaunch India',
+    region: 'India',
+    duration: 'Not published',
+    locations: 'India',
+    eligibility: 'Women with 5+ years of experience and a career break of 12+ months',
+    url: 'https://www.wellsfargojobs.com/en/inclusion/return-to-work-programs/glide-program-india/',
+    verifiedOn: '2026-09-22',
+    applicationStatus: 'unknown',
+    statusNote: 'No published intake window; the page directs candidates to join a talent community for updates.',
+    description: 'Mentorship, tool/technology upskilling, and structured re-entry support for women rebuilding a career in India.',
   },
   {
     company: 'Accenture',
-    name: 'Return to Work Program',
-    fields: 'Consulting, Technology, Operations',
-    duration: '16 weeks',
-    paid: true,
-    minGap: '18+ months',
-    url: 'https://www.accenture.com/us-en/careers',
-    description: 'Global program available across multiple practices. Includes dedicated onboarding, coaching, and a buddy system. Open to professionals who have been on a career break.',
+    name: 'Career Reboot Program',
+    region: 'India',
+    duration: 'Varies by business unit and role; not fixed',
+    locations: 'India',
+    eligibility: 'Career break of 24+ months',
+    url: 'https://www.accenture.com/in-en/careers/life-at-accenture/career-reboot-program',
+    verifiedOn: '2026-09-22',
+    applicationStatus: 'open',
+    statusNote: 'The official India page runs rolling "Apply now" applications rather than a fixed intake window.',
+    description: 'Tailored learning paths and mentorship for professionals in India restarting a career after an extended break.',
   },
   {
-    company: 'Walmart',
-    name: 'Return to Tech',
-    fields: 'Software Engineering, Data, Product',
-    duration: '16 weeks',
-    paid: true,
-    minGap: '2+ years',
-    url: 'https://tech.walmart.com/',
-    description: 'Focused on Walmart Global Tech, this program places returners on engineering and data teams. Provides competitive compensation and mentorship throughout.',
-  },
-  {
-    company: 'SAP',
-    name: 'Back to Work Program',
-    fields: 'Software Engineering, UX, Product, Support',
-    duration: '6 months',
-    paid: true,
-    minGap: '2+ years',
-    url: 'https://www.sap.com/careers.html',
-    description: 'Longer-duration program that gives returners more time to ramp up. Includes training on SAP products, mentorship, and networking. Available globally.',
-  },
-  {
-    company: 'NBCUniversal',
-    name: 'Act Two Program',
-    fields: 'Media, Technology, Marketing, Finance',
-    duration: '12 weeks',
-    paid: true,
-    minGap: '2+ years',
-    url: 'https://www.nbcunicareers.com/programs',
-    description: 'Returnship in the media and entertainment industry. Good option for returners interested in creative, tech, or business roles at a major media company.',
-  },
-  {
-    company: 'Credit Suisse / UBS',
-    name: 'Real Returns',
-    fields: 'Banking, Technology, Risk, Compliance',
-    duration: '12-24 weeks',
-    paid: true,
-    minGap: '2+ years',
-    url: 'https://www.ubs.com/careers',
-    description: 'Originally a Credit Suisse program, now continued under UBS. Places returners across banking divisions with structured mentorship and career development.',
+    company: 'Amazon',
+    name: 'rekindle',
+    region: 'India',
+    duration: 'Not published',
+    locations: 'India',
+    eligibility: 'Women with a career break of 12+ months',
+    url: 'https://www.amazon.jobs/content/en/career-programs/rekindle',
+    verifiedOn: '2026-09-22',
+    applicationStatus: 'unknown',
+    statusNote: 'No published intake window on the official page.',
+    description: 'A structured return-to-work track for women, with onboarding, training, and real-time work assignments before a full-time decision.',
   },
 ];
 
+const USA_PROGRAMS = PROGRAMS.filter((p) => p.region.includes('USA'));
+const UK_PROGRAMS = PROGRAMS.filter((p) => p.region.includes('UK'));
+const INDIA_PROGRAMS = PROGRAMS.filter((p) => p.region === 'India');
+const WOMEN_PROGRAMS = PROGRAMS.filter((p) => p.eligibility.toLowerCase().includes('women'));
+
+const STATUS_STYLES: Record<Program['applicationStatus'], string> = {
+  open: 'callout-do tone-do',
+  closed: 'callout-dont tone-dont',
+  unknown: 'callout-note tone-note',
+};
+
+function ProgramCard({ program }: { program: Program }) {
+  return (
+    <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+      <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
+        <div>
+          <h3 className="text-xl font-bold text-ink">{program.company}</h3>
+          <p className="text-accent-text font-medium text-sm">{program.name}</p>
+        </div>
+        <div className="flex flex-wrap gap-2 justify-end">
+          <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-bold callout ${STATUS_STYLES[program.applicationStatus]}`}>
+            {program.applicationStatus === 'open' ? 'Applications open' : program.applicationStatus === 'closed' ? 'Applications closed' : 'Window unknown'}
+          </span>
+          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+            {program.duration}
+          </span>
+        </div>
+      </div>
+      <p className="text-ink/60 text-sm mb-3">{program.description}</p>
+      <div className="grid sm:grid-cols-2 gap-2 text-sm mb-3">
+        <div>
+          <span className="font-medium text-ink">Eligibility:</span>{' '}
+          <span className="text-ink/60">{program.eligibility}</span>
+        </div>
+        <div>
+          <span className="font-medium text-ink">Locations:</span>{' '}
+          <span className="text-ink/60">{program.locations}</span>
+        </div>
+      </div>
+      <p className="text-ink/60 text-xs italic mb-3">{program.statusNote}</p>
+      <div className="flex items-center gap-4 text-xs text-ink/60">
+        <a
+          href={program.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-accent-text hover:underline font-medium text-sm"
+        >
+          View official program page &rarr;
+        </a>
+        <span>Verified {program.verifiedOn}</span>
+      </div>
+    </div>
+  );
+}
+
 export default function ReturnToWorkPrograms() {
+  const itemListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Return to Work and Returnship Programs',
+    itemListElement: PROGRAMS.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: `${p.company} — ${p.name}`,
+      url: p.url,
+    })),
+  };
+
   return (
     <BlogLayout
-      title="Return to Work Programs: 13 Top Companies Hiring Career Returners (2026)"
-      description="Return to work programs and returnships at JP Morgan, Goldman Sachs, Amazon, Microsoft, Meta, and more. Paid programs, eligibility, how to apply, and resume tips for career returners."
+      title="Return to Work Programs: Verified Returnships in the US, UK, and India (2026)"
+      description="A maintained, verified list of return-to-work programs and returnships at JPMorgan Chase, Goldman Sachs, Microsoft, Deloitte, and more — official links, eligibility, and application status, checked directly against each company's own program page."
       publishDate="2026-03-05"
-      readTime="14 min"
+      lastUpdated="2026-09-22"
+      readTime="13 min"
       keywords={[
         'return to work programs',
         'returnship programs',
         'return to work after career break',
         'career returner programs 2026',
-        'returnship programs 2026',
-        'jp morgan reentry program',
-        'goldman sachs returnship',
+        'returnship program 2026',
+        'returnship programs uk',
+        'returnship programs india',
+        'women returnship program',
       ]}
       ctaType="resume"
     >
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(itemListSchema)}</script>
+      </Helmet>
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-ink/60 font-medium">
-          Returnship programs are structured, paid programs designed for professionals re-entering the
-          workforce after a career break. Major companies like JP Morgan, Goldman Sachs, Amazon, and
-          Microsoft run them specifically to tap into experienced talent that traditional hiring often
-          overlooks. This guide covers the top programs, how they work, and how to prepare your
-          application.
+          A returnship is a paid, structured, time-bound program that lets an experienced
+          professional re-enter the workforce after a career break, usually with mentorship and a
+          path to a permanent offer at the end.
         </p>
+
+        <p className="text-lg leading-relaxed text-ink/60">
+          Most "top returnship programs" lists online are years out of date, and companies quietly
+          retire or rename programs. Every row in the table below links to the company's own
+          program page and was checked on the date shown. Where the official page does not state
+          an application window, we say so instead of guessing.
+        </p>
+
+        <div className="callout callout-note rounded-xl p-6">
+          <h3 className="text-xl font-bold tone-note mb-3">Programs We Checked and Removed</h3>
+          <p className="tone-note">
+            Three programs that appear on older lists did not survive verification and are not
+            included below: <strong>Meta's Return to Work program</strong> (the official
+            metacareers.com/facebook.com application page returns a 404, and Meta's own program
+            partner, Path Forward, states the application window has closed with no listed
+            successor page), <strong>NBCUniversal's Act Two</strong> (the specific program URL now
+            redirects to NBCUniversal's general careers homepage, and the current programs listing
+            does not name a dedicated page), and <strong>Walmart's "Return to Tech"</strong> (we
+            could not locate an official page for a program by this name on walmart.com or
+            tech.walmart.com). If you know of a live, current official page for any of these,{' '}
+            <a href="mailto:support@easyfreeresume.com" className="underline">let us know</a> and
+            we'll re-verify and add it back.
+          </p>
+        </div>
 
         {/* Table of Contents */}
         <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
           <h2 className="font-bold text-ink mb-4 text-lg">Table of Contents</h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
             <li><a href="#what-is-returnship" className="text-accent-text hover:underline">What Is a Returnship?</a></li>
-            <li><a href="#programs" className="text-accent-text hover:underline">Top Return-to-Work Programs (2026)</a></li>
-            <li><a href="#comparison" className="text-accent-text hover:underline">Program Comparison Table</a></li>
+            <li><a href="#usa" className="text-accent-text hover:underline">USA Programs</a></li>
+            <li><a href="#uk" className="text-accent-text hover:underline">UK Programs</a></li>
+            <li><a href="#india" className="text-accent-text hover:underline">India Programs</a></li>
+            <li><a href="#women" className="text-accent-text hover:underline">Programs for Women Returners</a></li>
             <li><a href="#resume-tips" className="text-accent-text hover:underline">How to Write a Return-to-Work Resume</a></li>
             <li><a href="#application-tips" className="text-accent-text hover:underline">Application Tips</a></li>
             <li><a href="#faq" className="text-accent-text hover:underline">FAQ</a></li>
@@ -200,104 +355,63 @@ export default function ReturnToWorkPrograms() {
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 mt-6">
           <h3 className="font-bold text-ink mb-3">Key Features of Returnship Programs</h3>
           <ul className="space-y-2 text-ink/80">
-            <li><strong>Paid:</strong> Nearly all major returnships offer competitive compensation (often 80-100% of the equivalent full-time salary)</li>
-            <li><strong>Time-bound:</strong> Typically 12-16 weeks, giving both you and the company a trial period</li>
+            <li><strong>Usually paid:</strong> Every program verified below is paid or explicitly compensated</li>
+            <li><strong>Time-bound:</strong> Most run 12&ndash;16 weeks, some (like Deloitte UK) skip a fixed cohort entirely</li>
             <li><strong>Structured:</strong> Include mentorship, onboarding, training, and regular check-ins</li>
-            <li><strong>Conversion-focused:</strong> Most programs have a 50-80% conversion rate to permanent roles</li>
             <li><strong>Gap-friendly:</strong> Designed specifically for people with career breaks &mdash; a gap is the entry requirement, not a disqualifier</li>
           </ul>
         </div>
 
         <div className="callout callout-note rounded-xl p-6 mt-4">
-          <h3 className="text-xl font-bold tone-note mb-3">Who Qualifies?</h3>
+          <h3 className="text-xl font-bold tone-note mb-3">A Live Link Is Not an Open Application</h3>
           <p className="tone-note">
-            Most programs require a <strong>minimum career break of 1-2 years</strong> and prior
-            professional experience (typically 5+ years). Some are open to career changers from
-            non-traditional backgrounds (like Microsoft LEAP). Each program has specific eligibility
-            criteria &mdash; check the individual program pages below.
+            A company's returnship page can be live and current while its application window is
+            closed for the year, or simply undisclosed until the company decides to open it. Check
+            the <strong>Application Status</strong> badge on each card below, and always confirm on
+            the official page before you plan around a date.
           </p>
         </div>
 
-        {/* Programs */}
-        <h2 id="programs" className="text-3xl font-bold text-ink mt-12 mb-6">
-          Top Return-to-Work Programs (2026)
+        {/* USA */}
+        <h2 id="usa" className="text-3xl font-bold text-ink mt-12 mb-6">
+          USA Programs
         </h2>
-
-        <p className="text-lg leading-relaxed text-ink/60 mb-6">
-          These are the most established returnship programs at major companies. All are paid and most
-          have strong conversion rates to full-time employment.
-        </p>
-
         <div className="space-y-6">
-          {PROGRAMS.map((program, i) => (
-            <div key={i} className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-              <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
-                <div>
-                  <h3 className="text-xl font-bold text-ink">{program.company}</h3>
-                  <p className="text-accent-text font-medium text-sm">{program.name}</p>
-                </div>
-                <div className="flex gap-2">
-                  {program.paid && (
-                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold callout callout-do tone-do">
-                      PAID
-                    </span>
-                  )}
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
-                    {program.duration}
-                  </span>
-                </div>
-              </div>
-              <p className="text-ink/60 text-sm mb-3">{program.description}</p>
-              <div className="grid sm:grid-cols-2 gap-2 text-sm">
-                <div>
-                  <span className="font-medium text-ink">Fields:</span>{' '}
-                  <span className="text-ink/60">{program.fields}</span>
-                </div>
-                <div>
-                  <span className="font-medium text-ink">Min. career break:</span>{' '}
-                  <span className="text-ink/60">{program.minGap}</span>
-                </div>
-              </div>
-              <a
-                href={program.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block mt-3 text-accent-text hover:underline text-sm font-medium"
-              >
-                View program details &rarr;
-              </a>
-            </div>
-          ))}
+          {USA_PROGRAMS.map((p) => <ProgramCard key={`${p.company}-${p.name}`} program={p} />)}
         </div>
 
-        {/* Comparison Table */}
-        <h2 id="comparison" className="text-3xl font-bold text-ink mt-12 mb-6">
-          Program Comparison Table
+        {/* UK */}
+        <h2 id="uk" className="text-3xl font-bold text-ink mt-12 mb-6">
+          UK Programs
         </h2>
+        <div className="space-y-6">
+          {UK_PROGRAMS.map((p) => <ProgramCard key={`${p.company}-${p.name}`} program={p} />)}
+        </div>
 
-        <div className="overflow-x-auto my-8">
-          <table className="w-full bg-white border border-black/[0.06] rounded-xl shadow-sm text-sm">
-            <thead>
-              <tr className="bg-chalk-dark">
-                <th className="px-4 py-3 text-left font-bold text-ink">Company</th>
-                <th className="px-4 py-3 text-left font-bold text-ink">Program</th>
-                <th className="px-4 py-3 text-center font-bold text-ink">Duration</th>
-                <th className="px-4 py-3 text-center font-bold text-ink">Min. Gap</th>
-                <th className="px-4 py-3 text-center font-bold text-ink">Paid</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-black/[0.06]">
-              {PROGRAMS.map((p, i) => (
-                <tr key={i} className={i % 2 === 1 ? 'bg-chalk-dark' : ''}>
-                  <td className="px-4 py-3 font-medium text-ink">{p.company}</td>
-                  <td className="px-4 py-3 text-ink/60">{p.name}</td>
-                  <td className="px-4 py-3 text-center text-ink/60">{p.duration}</td>
-                  <td className="px-4 py-3 text-center text-ink/60">{p.minGap}</td>
-                  <td className="px-4 py-3 text-center tone-do font-medium">{p.paid ? 'Yes' : 'No'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        {/* India */}
+        <h2 id="india" className="text-3xl font-bold text-ink mt-12 mb-6">
+          India Programs
+        </h2>
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
+          JPMorgan Chase's ReEntry Program and IBM's Tech Re-Entry Program (both in the USA
+          section above) also hire in India as part of the same global intakes &mdash; JPMorgan in
+          Bengaluru, Hyderabad, Mumbai, and Pune; IBM per its own page's stated country list.
+        </p>
+        <div className="space-y-6">
+          {INDIA_PROGRAMS.map((p) => <ProgramCard key={`${p.company}-${p.name}`} program={p} />)}
+        </div>
+
+        {/* Women */}
+        <h2 id="women" className="text-3xl font-bold text-ink mt-12 mb-6">
+          Programs for Women Returners
+        </h2>
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
+          These programs explicitly target women rebuilding a career after a break. Several
+          general programs above (JPMorgan, Goldman Sachs, Deloitte, Daphne Jackson) are open to
+          any gender but are commonly used by women returners too.
+        </p>
+        <div className="space-y-6">
+          {WOMEN_PROGRAMS.map((p) => <ProgramCard key={`${p.company}-${p.name}`} program={p} />)}
         </div>
 
         {/* Resume Tips */}
@@ -341,7 +455,7 @@ export default function ReturnToWorkPrograms() {
             {
               num: 6,
               title: 'Tailor to each program',
-              desc: 'Each returnship has different focus areas. A JP Morgan ReEntry application should emphasize financial services experience; an Amazon Returnship should highlight technical delivery and customer obsession.',
+              desc: 'Each returnship has different focus areas. A JPMorgan ReEntry application should emphasize financial services experience; a Deloitte UK application should highlight client-facing and advisory skills.',
             },
           ].map((step) => (
             <div key={step.num} className="flex gap-4 items-start">
@@ -366,6 +480,12 @@ export default function ReturnToWorkPrograms() {
               &mdash; detailed strategies for every type of gap
             </li>
             <li>
+              <Link to="/blog/resume-after-career-break" className="text-accent-text hover:underline">
+                How to Write a Resume After a Career Break
+              </Link>{' '}
+              &mdash; format choice, framing a multi-year gap, and returnship-specific application tips
+            </li>
+            <li>
               <Link to="/blog/career-change-resume-guide" className="text-accent-text hover:underline">
                 Career Change Resume Guide
               </Link>{' '}
@@ -377,12 +497,6 @@ export default function ReturnToWorkPrograms() {
               </Link>{' '}
               &mdash; templates for return-to-work summaries
             </li>
-            <li>
-              <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
-                How to Write a Resume (Complete Guide)
-              </Link>{' '}
-              &mdash; full step-by-step resume writing walkthrough
-            </li>
           </ul>
         </div>
 
@@ -393,11 +507,12 @@ export default function ReturnToWorkPrograms() {
 
         <div className="space-y-6">
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-3">Timing Matters</h3>
+            <h3 className="text-xl font-bold text-ink mb-3">Confirm the Window Yourself</h3>
             <p className="text-ink/60">
-              Most returnship programs have specific application windows, often in spring (February-April)
-              for summer/fall cohorts. Set alerts on company career pages and LinkedIn. Applications
-              typically open 3-4 months before the program starts.
+              Application windows change year to year and are not always published in advance.
+              Bookmark the official page and set an alert on the company's careers site or
+              LinkedIn rather than relying on a fixed date from any third-party list, including
+              this one.
             </p>
           </div>
 
@@ -425,7 +540,7 @@ export default function ReturnToWorkPrograms() {
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Apply to Multiple Programs</h3>
             <p className="text-ink/60">
-              Returnships are competitive. Apply to 3-5 programs that match your background. Each
+              Returnships are competitive. Apply to several programs that match your background. Each
               application should be tailored to the specific company and role &mdash; a generic resume
               sent to all programs will underperform a targeted one.
             </p>
@@ -441,23 +556,19 @@ export default function ReturnToWorkPrograms() {
           {[
             {
               q: 'Are returnship programs paid?',
-              a: 'Yes. Nearly all major returnship programs (JP Morgan, Goldman Sachs, Amazon, Meta, etc.) offer competitive compensation, often at 80-100% of the equivalent full-time salary. Some also include benefits like health insurance during the program.',
+              a: 'Every program verified in this guide is paid or explicitly compensated. Always confirm compensation on the official program page, since terms can change between cohorts.',
             },
             {
               q: 'How long is a typical returnship?',
-              a: 'Most programs run 12-16 weeks, though some (like SAP) extend to 6 months. This gives both the company and the returner time to evaluate fit before making a full-time commitment.',
+              a: 'Most verified programs here run 12-16 weeks. Some, like Deloitte UK, have moved away from a fixed cohort length entirely and place returners into ongoing roles year-round.',
             },
             {
-              q: 'What is the conversion rate to full-time?',
-              a: 'Conversion rates vary by company and year, but most major programs report 50-80% of participants receiving full-time offers. Goldman Sachs and JP Morgan have historically been at the higher end of this range.',
+              q: 'Does a live program page mean applications are open right now?',
+              a: 'No. A company can keep its returnship page online year-round even when the application window is closed or has not been announced yet. Check the Application Status badge on each card above, and verify on the official page before applying.',
             },
             {
               q: 'How long do I need to have been out of work to qualify?',
-              a: 'Most programs require a minimum career break of 1-2 years. Some are flexible on the reason for the break (caregiving, health, education, relocation, personal reasons). Check each program for specific eligibility.',
-            },
-            {
-              q: 'Can I apply to a returnship if I am currently working part-time?',
-              a: 'It depends on the program. Some require that you are not currently employed full-time, while others consider anyone returning from a significant career break regardless of current part-time work. Check the specific program guidelines.',
+              a: 'It varies by program. JPMorgan Chase and the Daphne Jackson Trust require 2+ years; Salesforce India and Wells Fargo Glide accept 1+ year breaks. Check each program’s eligibility above and confirm on the official page, since requirements can change.',
             },
             {
               q: 'Do I need a resume for a returnship application?',
@@ -465,11 +576,11 @@ export default function ReturnToWorkPrograms() {
             },
             {
               q: 'What if there is no returnship in my industry?',
-              a: 'Not all industries have formal returnship programs. In that case, look for companies with "returnship-friendly" hiring practices, apply through standard channels with a well-crafted resume that addresses your gap, and consider organizations like iRelaunch and Path Forward that connect returners with employers.',
+              a: 'Not all industries have formal returnship programs. In that case, look for companies with "returnship-friendly" hiring practices, apply through standard channels with a well-crafted resume that addresses your gap, and consider organizations like iRelaunch and Path Forward that maintain broader directories of return-to-work employers.',
             },
             {
               q: 'Are returnships only for women?',
-              a: 'No. While many returnships were initially designed to address the gender gap in industries like finance and tech, most programs are open to all genders. Anyone with a qualifying career break is eligible to apply.',
+              a: 'No. While some programs (like Amazon rekindle and Wells Fargo Glide) are explicitly for women, most major returnships — JPMorgan Chase, Goldman Sachs, Deloitte — are open to anyone with a qualifying career break.',
             },
           ].map((faq, i) => (
             <div key={i} className="bg-chalk-dark rounded-xl p-5">

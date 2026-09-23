@@ -30,7 +30,7 @@ export default function ResumeActionVerbs() {
       title="Action Verbs for Resumes: 200+ Words to Boost Your Impact"
       description="Replace boring words with powerful action verbs that grab recruiters' attention and showcase your accomplishments."
       publishDate="2026-01-25"
-      lastUpdated="2026-03-22"
+      lastUpdated="2026-09-22"
       readTime="12 min"
       keywords={[
         "resume action verbs",
@@ -44,15 +44,23 @@ export default function ResumeActionVerbs() {
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-ink/60 font-medium">
-          The difference between a good resume and a great one often comes down
-          to word choice. Updated for 2026, action verbs remain powerful tools
-          that transform passive job descriptions into dynamic achievements that
-          capture recruiters' attention and demonstrate your impact. This guide gives you
-          200+ categorized verbs with context on when to use each set, so you can pick the
-          right word for every bullet on your{" "}
+          Action verbs prove what you did, not what you were assigned. The
+          strongest ones fall into four groups: scale (you grew something),
+          ownership (you ran it), improvement (you made it better), or rescue
+          (you fixed it). Match the group to your actual accomplishment, then
+          write a before/after bullet to see it work.
+        </p>
+
+        <p className="text-lg leading-relaxed text-ink/60">
+          Most action-verb lists on the web are alphabetical, which tells you
+          nothing about when to reach for a word. This guide organizes verbs by
+          what they prove about your work instead, with a before/after example
+          for each group, plus a full reference list you can scan by function.
+          Pair it with our{" "}
           <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
-            resume
-          </Link>.
+            resume writing guide
+          </Link>{" "}
+          for the full picture.
         </p>
 
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
@@ -119,404 +127,312 @@ export default function ResumeActionVerbs() {
         </div>
 
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
-          200+ Action Verbs by Category
+          Action Verbs Organized by What They Prove
         </h2>
 
         <p className="text-lg leading-relaxed text-ink/60">
-          Choose verbs that align with your industry and the specific job you're
-          targeting. Each category below includes guidance on when to use those verbs
-          and which roles they suit best.
+          Most action-verb lists are alphabetical, which tells you nothing about
+          when to reach for a word. A better filter: every strong bullet proves
+          one of four things about your work. Pick the group that matches what
+          actually happened, then use the before/after pattern to write your own.
         </p>
 
         <div className="space-y-8 mt-8">
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-2">
-              Leadership & Management
+              Verbs That Prove Scale
             </h3>
             <p className="text-ink/80 text-sm mb-4">
-              Use these verbs when you supervised people, directed initiatives, or were accountable for team outcomes.
-              Ideal for management, executive, and{" "}
-              <Link to="/examples/project-manager" className="text-accent-text hover:underline">
-                project manager
-              </Link>{" "}
-              roles where hiring managers expect evidence of organizational influence.
+              Use these when you grew a number: users, revenue, reach, or
+              headcount. They only work if you can name the before-and-after
+              size, not just the direction. Strong fit for sales, growth,
+              marketing, and operations roles.
             </p>
-            <div className="grid md:grid-cols-4 gap-4 text-ink/80">
+            <div className="grid md:grid-cols-4 gap-4 text-ink/80 mb-4">
               <div>
                 <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Directed</li>
-                  <li>Led</li>
-                  <li>Supervised</li>
-                  <li>Managed</li>
-                  <li>Orchestrated</li>
-                  <li>Coordinated</li>
+                  <li>Scaled</li>
+                  <li>Expanded</li>
+                  <li>Grew</li>
+                  <li>Amplified</li>
                 </ul>
               </div>
               <div>
                 <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Spearheaded</li>
-                  <li>Championed</li>
-                  <li>Facilitated</li>
-                  <li>Mentored</li>
-                  <li>Delegated</li>
-                  <li>Empowered</li>
+                  <li>Launched</li>
+                  <li>Generated</li>
+                  <li>Broadened</li>
+                  <li>Extended</li>
                 </ul>
               </div>
               <div>
                 <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Guided</li>
-                  <li>Inspired</li>
-                  <li>Motivated</li>
-                  <li>Cultivated</li>
+                  <li>Multiplied</li>
+                  <li>Accelerated</li>
                   <li>Mobilized</li>
-                  <li>Unified</li>
+                  <li>Rolled out</li>
                 </ul>
               </div>
               <div>
                 <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Appointed</li>
-                  <li>Authorized</li>
-                  <li>Chaired</li>
-                  <li>Commissioned</li>
-                  <li>Elected</li>
-                  <li>Established</li>
+                  <li>Increased</li>
+                  <li>Boosted</li>
+                  <li>Maximized</li>
+                  <li>Captured</li>
                 </ul>
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 gap-3">
+              <div className="callout callout-dont p-3 rounded">
+                <p className="tone-dont text-sm">
+                  <strong>Before:</strong> "Worked on growing the user base."
+                </p>
+              </div>
+              <div className="callout callout-do p-3 rounded">
+                <p className="tone-do text-sm">
+                  <strong>After:</strong> "Scaled the user base from 10K to
+                  120K by launching a referral program and two new
+                  acquisition channels."
+                </p>
               </div>
             </div>
           </div>
 
           <div className="callout callout-do rounded-xl p-6">
             <h3 className="text-xl font-bold tone-do mb-2">
-              Achievement & Results
+              Verbs That Prove Ownership
             </h3>
             <p className="tone-do text-sm mb-4">
-              Reach for these when describing measurable outcomes: revenue growth, cost savings, quota
-              attainment, or efficiency gains. They pair naturally with numbers, so combine them
-              with{" "}
-              <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
-                quantified accomplishments
-              </Link>{" "}
-              for maximum impact. Best for sales, operations, and any results-driven role.
+              Use these when you were accountable for an outcome end-to-end,
+              not just a contributor to it. They signal you drove the
+              decision, not that you were assigned a task. Best for leads,
+              managers, and anyone who ran a project solo.
             </p>
-            <div className="grid md:grid-cols-4 gap-4 tone-do">
+            <div className="grid md:grid-cols-4 gap-4 tone-do mb-4">
               <div>
                 <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Achieved</li>
-                  <li>Accomplished</li>
-                  <li>Exceeded</li>
-                  <li>Surpassed</li>
-                  <li>Delivered</li>
-                  <li>Completed</li>
+                  <li>Directed</li>
+                  <li>Spearheaded</li>
+                  <li>Owned</li>
+                  <li>Drove</li>
                 </ul>
               </div>
               <div>
                 <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Generated</li>
-                  <li>Produced</li>
-                  <li>Increased</li>
-                  <li>Boosted</li>
-                  <li>Maximized</li>
-                  <li>Amplified</li>
+                  <li>Orchestrated</li>
+                  <li>Championed</li>
+                  <li>Led</li>
+                  <li>Chaired</li>
                 </ul>
               </div>
               <div>
                 <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Expanded</li>
-                  <li>Enhanced</li>
-                  <li>Improved</li>
+                  <li>Established</li>
+                  <li>Founded</li>
+                  <li>Initiated</li>
+                  <li>Authorized</li>
+                </ul>
+              </div>
+              <div>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Pioneered</li>
+                  <li>Commissioned</li>
+                  <li>Appointed</li>
+                  <li>Mentored</li>
+                </ul>
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 gap-3">
+              <div className="bg-white p-3 rounded text-sm tone-dont">
+                <strong>Before:</strong> "Helped with the product launch."
+              </div>
+              <div className="bg-white p-3 rounded text-sm tone-do">
+                <strong>After:</strong> "Owned the product launch end-to-end
+                — roadmap, engineering handoff, and go-to-market — across
+                three teams."
+              </div>
+            </div>
+          </div>
+
+          <div className="callout callout-note rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-note mb-2">
+              Verbs That Prove Improvement
+            </h3>
+            <p className="tone-note text-sm mb-4">
+              Use these when something already existed and you made it
+              measurably better: faster, cheaper, cleaner, or more reliable.
+              They need a delta — a before-and-after number or state. Strong
+              for engineering, ops, and process-focused roles.
+            </p>
+            <div className="grid md:grid-cols-4 gap-4 tone-note mb-4">
+              <div>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
                   <li>Optimized</li>
-                  <li>Strengthened</li>
-                  <li>Advanced</li>
+                  <li>Streamlined</li>
+                  <li>Improved</li>
+                  <li>Reduced</li>
                 </ul>
               </div>
               <div>
                 <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Won</li>
-                  <li>Earned</li>
-                  <li>Secured</li>
-                  <li>Captured</li>
-                  <li>Attained</li>
-                  <li>Realized</li>
+                  <li>Refined</li>
+                  <li>Enhanced</li>
+                  <li>Modernized</li>
+                  <li>Automated</li>
                 </ul>
+              </div>
+              <div>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Simplified</li>
+                  <li>Consolidated</li>
+                  <li>Upgraded</li>
+                  <li>Restructured</li>
+                </ul>
+              </div>
+              <div>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Revitalized</li>
+                  <li>Strengthened</li>
+                  <li>Standardized</li>
+                  <li>Reengineered</li>
+                </ul>
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 gap-3">
+              <div className="bg-white p-3 rounded text-sm tone-dont">
+                <strong>Before:</strong> "Worked on improving the checkout
+                process."
+              </div>
+              <div className="bg-white p-3 rounded text-sm tone-note">
+                <strong>After:</strong> "Streamlined checkout from six steps
+                to three, cutting average completion time by a third."
               </div>
             </div>
           </div>
 
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-2">
-              Innovation & Problem-Solving
+              Verbs That Prove Rescue
             </h3>
             <p className="text-ink/80 text-sm mb-4">
-              Choose these when you built something new, fixed something broken, or improved a process
-              that was not working. Especially effective for engineering, product, design, and R&D roles
-              where creativity and initiative are prized.
+              Use these when something was broken, failing, or at risk, and
+              you were the one who fixed it. This is the most underused
+              category — it demonstrates judgment under pressure. Strong for
+              engineering, support, finance, and crisis-adjacent roles. Pair
+              technical rescue bullets with an{" "}
+              <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">
+                ATS-friendly template
+              </Link>{" "}
+              so the wording parses cleanly.
             </p>
-            <div className="grid md:grid-cols-4 gap-4 text-ink/80">
+            <div className="grid md:grid-cols-4 gap-4 text-ink/80 mb-4">
               <div>
                 <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Innovated</li>
-                  <li>Created</li>
-                  <li>Developed</li>
-                  <li>Designed</li>
-                  <li>Invented</li>
-                  <li>Pioneered</li>
-                </ul>
-              </div>
-              <div>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Revolutionized</li>
-                  <li>Transformed</li>
-                  <li>Revitalized</li>
-                  <li>Modernized</li>
-                  <li>Restructured</li>
-                  <li>Reimagined</li>
-                </ul>
-              </div>
-              <div>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Solved</li>
                   <li>Resolved</li>
-                  <li>Diagnosed</li>
-                  <li>Troubleshot</li>
+                  <li>Rebuilt</li>
+                  <li>Recovered</li>
+                  <li>Salvaged</li>
+                </ul>
+              </div>
+              <div>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Stabilized</li>
                   <li>Debugged</li>
+                  <li>Repaired</li>
+                  <li>Restored</li>
+                </ul>
+              </div>
+              <div>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Diagnosed</li>
+                  <li>Corrected</li>
+                  <li>Troubleshot</li>
                   <li>Rectified</li>
                 </ul>
               </div>
               <div>
                 <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Streamlined</li>
-                  <li>Simplified</li>
-                  <li>Automated</li>
-                  <li>Integrated</li>
-                  <li>Synthesized</li>
-                  <li>Consolidated</li>
+                  <li>Turned around</li>
+                  <li>Averted</li>
+                  <li>Contained</li>
+                  <li>Remedied</li>
                 </ul>
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 gap-3">
+              <div className="bg-white p-3 rounded text-sm tone-dont">
+                <strong>Before:</strong> "Helped fix issues with the
+                reporting system."
+              </div>
+              <div className="bg-white p-3 rounded text-sm text-ink/80">
+                <strong>After:</strong> "Diagnosed a recurring data-pipeline
+                failure, rebuilt the ETL job, and restored dashboard
+                accuracy after three weeks of downtime."
               </div>
             </div>
           </div>
+        </div>
 
-          <div className="callout callout-note rounded-xl p-6">
-            <h3 className="text-xl font-bold tone-note mb-2">
-              Business & Strategy
-            </h3>
-            <p className="tone-note text-sm mb-4">
-              Use these for roles that involve planning, forecasting, or stakeholder management.
-              Strong choices for consultants, analysts, finance professionals, and anyone who influenced
-              business decisions or managed budgets.
-            </p>
-            <div className="grid md:grid-cols-4 gap-4 tone-note">
-              <div>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Strategized</li>
-                  <li>Planned</li>
-                  <li>Forecasted</li>
-                  <li>Projected</li>
-                  <li>Analyzed</li>
-                  <li>Evaluated</li>
-                </ul>
-              </div>
-              <div>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Negotiated</li>
-                  <li>Persuaded</li>
-                  <li>Influenced</li>
-                  <li>Consulted</li>
-                  <li>Advised</li>
-                  <li>Recommended</li>
-                </ul>
-              </div>
-              <div>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Budgeted</li>
-                  <li>Allocated</li>
-                  <li>Invested</li>
-                  <li>Financed</li>
-                  <li>Audited</li>
-                  <li>Calculated</li>
-                </ul>
-              </div>
-              <div>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Partnered</li>
-                  <li>Collaborated</li>
-                  <li>Aligned</li>
-                  <li>Leveraged</li>
-                  <li>Sourced</li>
-                  <li>Procured</li>
-                </ul>
-              </div>
-            </div>
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          More Verbs by Function
+        </h2>
+        <p className="text-lg leading-relaxed text-ink/60">
+          Scale, ownership, improvement, and rescue cover most bullets. For
+          verbs specific to communication, technical execution, analysis, or
+          strategy — including for your{" "}
+          <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
+            skills section
+          </Link>{" "}
+          or{" "}
+          <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
+            professional summary
+          </Link>{" "}
+          — use this reference list.
+        </p>
+        <div className="grid md:grid-cols-4 gap-4 my-6 text-ink/60 text-sm">
+          <div>
+            <h4 className="font-bold text-ink mb-2">Communication</h4>
+            <ul className="list-disc pl-5 space-y-1">
+              <li>Articulated</li>
+              <li>Presented</li>
+              <li>Trained</li>
+              <li>Negotiated</li>
+              <li>Facilitated</li>
+              <li>Advocated</li>
+            </ul>
           </div>
-
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-2">
-              Analysis & Research
-            </h3>
-            <p className="text-ink/80 text-sm mb-4">
-              Best for data-heavy roles: analysts, researchers, scientists, and QA professionals.
-              Use these when you gathered information, interpreted data, or turned findings into
-              recommendations. They also work well in the{" "}
-              <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
-                skills section
-              </Link>{" "}
-              of your resume to signal analytical ability.
-            </p>
-            <div className="grid md:grid-cols-4 gap-4 text-ink/80">
-              <div>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Researched</li>
-                  <li>Investigated</li>
-                  <li>Examined</li>
-                  <li>Studied</li>
-                  <li>Surveyed</li>
-                  <li>Explored</li>
-                </ul>
-              </div>
-              <div>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Measured</li>
-                  <li>Tracked</li>
-                  <li>Monitored</li>
-                  <li>Assessed</li>
-                  <li>Tested</li>
-                  <li>Validated</li>
-                </ul>
-              </div>
-              <div>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Interpreted</li>
-                  <li>Decoded</li>
-                  <li>Identified</li>
-                  <li>Discovered</li>
-                  <li>Uncovered</li>
-                  <li>Revealed</li>
-                </ul>
-              </div>
-              <div>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Compiled</li>
-                  <li>Synthesized</li>
-                  <li>Summarized</li>
-                  <li>Documented</li>
-                  <li>Reported</li>
-                  <li>Presented</li>
-                </ul>
-              </div>
-            </div>
+          <div>
+            <h4 className="font-bold text-ink mb-2">Technical</h4>
+            <ul className="list-disc pl-5 space-y-1">
+              <li>Architected</li>
+              <li>Engineered</li>
+              <li>Deployed</li>
+              <li>Configured</li>
+              <li>Programmed</li>
+              <li>Integrated</li>
+            </ul>
           </div>
-
-          <div className="bg-teal-50 border border-teal-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-teal-800 mb-2">
-              Communication & Training
-            </h3>
-            <p className="text-teal-700 text-sm mb-4">
-              Reach for these when your role involved teaching, presenting, writing, or stakeholder
-              communication. Ideal for educators, HR professionals, marketers, and client-facing roles.
-              These verbs also strengthen a{" "}
-              <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
-                professional summary
-              </Link>{" "}
-              that highlights interpersonal skills.
-            </p>
-            <div className="grid md:grid-cols-4 gap-4 text-teal-700">
-              <div>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Communicated</li>
-                  <li>Articulated</li>
-                  <li>Conveyed</li>
-                  <li>Expressed</li>
-                  <li>Presented</li>
-                  <li>Delivered</li>
-                </ul>
-              </div>
-              <div>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Trained</li>
-                  <li>Educated</li>
-                  <li>Taught</li>
-                  <li>Instructed</li>
-                  <li>Coached</li>
-                  <li>Developed</li>
-                </ul>
-              </div>
-              <div>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Engaged</li>
-                  <li>Connected</li>
-                  <li>Networked</li>
-                  <li>Built</li>
-                  <li>Established</li>
-                  <li>Fostered</li>
-                </ul>
-              </div>
-              <div>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Influenced</li>
-                  <li>Convinced</li>
-                  <li>Persuaded</li>
-                  <li>Promoted</li>
-                  <li>Advocated</li>
-                  <li>Championed</li>
-                </ul>
-              </div>
-            </div>
+          <div>
+            <h4 className="font-bold text-ink mb-2">Analysis</h4>
+            <ul className="list-disc pl-5 space-y-1">
+              <li>Researched</li>
+              <li>Investigated</li>
+              <li>Interpreted</li>
+              <li>Measured</li>
+              <li>Validated</li>
+              <li>Synthesized</li>
+            </ul>
           </div>
-
-          <div className="callout callout-note rounded-xl p-6">
-            <h3 className="text-xl font-bold tone-note mb-2">
-              Technical & Operations
-            </h3>
-            <p className="tone-note text-sm mb-4">
-              Use these for hands-on technical work: building systems, shipping code, managing infrastructure,
-              or maintaining equipment. Essential for software engineers, DevOps, IT administrators, and
-              operations managers. Pair them with an{" "}
-              <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">
-                ATS-friendly template
-              </Link>{" "}
-              to ensure clean parsing.
-            </p>
-            <div className="grid md:grid-cols-4 gap-4 tone-note">
-              <div>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Implemented</li>
-                  <li>Deployed</li>
-                  <li>Executed</li>
-                  <li>Launched</li>
-                  <li>Installed</li>
-                  <li>Configured</li>
-                </ul>
-              </div>
-              <div>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Maintained</li>
-                  <li>Operated</li>
-                  <li>Administered</li>
-                  <li>Managed</li>
-                  <li>Supported</li>
-                  <li>Upgraded</li>
-                </ul>
-              </div>
-              <div>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Programmed</li>
-                  <li>Coded</li>
-                  <li>Built</li>
-                  <li>Engineered</li>
-                  <li>Architected</li>
-                  <li>Designed</li>
-                </ul>
-              </div>
-              <div>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Customized</li>
-                  <li>Adapted</li>
-                  <li>Modified</li>
-                  <li>Refined</li>
-                  <li>Calibrated</li>
-                  <li>Fine-tuned</li>
-                </ul>
-              </div>
-            </div>
+          <div>
+            <h4 className="font-bold text-ink mb-2">Strategy</h4>
+            <ul className="list-disc pl-5 space-y-1">
+              <li>Strategized</li>
+              <li>Forecasted</li>
+              <li>Evaluated</li>
+              <li>Budgeted</li>
+              <li>Partnered</li>
+              <li>Aligned</li>
+            </ul>
           </div>
         </div>
 

@@ -8,7 +8,7 @@ import AuthorBio from './blog/AuthorBio';
 import RelatedArticles from './blog/RelatedArticles';
 import RevealSection from './shared/RevealSection';
 import ArticleRail from './blog/ArticleRail';
-import { generateFAQPageSchema, generateHowToSchema } from '../utils/schemaGenerators';
+import { generateFAQPageSchema, generateHowToSchema, generatePersonSchema } from '../utils/schemaGenerators';
 import type { HowToStep } from '../types/seo';
 
 const dateFormatOptions: Intl.DateTimeFormatOptions = {
@@ -61,6 +61,18 @@ export default function BlogLayout({
     ? 'https://easyfreeresume.com' + (window.location.pathname.replace(/\/+$/, '') || '/')
     : '';
 
+  // Do-not-touch list (seo-tracking/protected-pages.md, context §5): schema on these
+  // pages must stay exactly as-is — body, meta, title, H1, schema, canonical, internal
+  // links. Two are the always-protected top-5 pages; three are the MIRAGE tier that
+  // also render via BlogLayout. Everything else gets the Person author entity.
+  const isProtectedAuthorPage = [
+    '/blog/resume-no-experience',
+    '/blog/how-why-easyfreeresume-completely-free',
+    '/blog/best-free-resume-builders-2026',
+    '/blog/resume-io-vs-easy-free-resume',
+    '/easyfreeresume-vs-indeed-resume-builder',
+  ].includes(typeof window !== 'undefined' ? window.location.pathname.replace(/\/+$/, '') : '');
+
   return (
     <>
       <SEOHead
@@ -83,15 +95,17 @@ export default function BlogLayout({
           "description": description,
           "datePublished": publishDate,
           ...(lastUpdated && { "dateModified": lastUpdated }),
-          "author": {
-            "@type": "Organization",
-            "name": "EasyFreeResume",
-            "url": "https://easyfreeresume.com",
-            "logo": {
-              "@type": "ImageObject",
-              "url": "https://easyfreeresume.com/android-chrome-512x512.png"
-            }
-          },
+          "author": isProtectedAuthorPage
+            ? {
+                "@type": "Organization",
+                "name": "EasyFreeResume",
+                "url": "https://easyfreeresume.com",
+                "logo": {
+                  "@type": "ImageObject",
+                  "url": "https://easyfreeresume.com/android-chrome-512x512.png"
+                }
+              }
+            : (({ '@context': _ctx, ...person }) => person)(generatePersonSchema()),
           "publisher": {
             "@type": "Organization",
             "name": "EasyFreeResume",
@@ -207,7 +221,7 @@ export default function BlogLayout({
         </RevealSection>
 
         <RevealSection variant="fade-up">
-          <AuthorBio />
+          <AuthorBio legacy={isProtectedAuthorPage} />
         </RevealSection>
 
         {(() => {

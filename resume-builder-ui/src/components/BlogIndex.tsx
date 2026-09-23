@@ -12,6 +12,18 @@ const ALL = "All";
 const cardTransitionName = (slug: string) =>
   `post-${slug.replace(/[^a-z0-9]/gi, "-")}`;
 
+// A few blogPosts.ts slugs still 301-redirect server-side (app.py) to a
+// canonical page. blogPosts.ts is a shared registry owned by the SEO
+// orchestrator, so this hub links straight to the destination instead of
+// waiting on the registry to drop the stale slug.
+const CANONICAL_LINK_OVERRIDE: Record<string, string> = {
+  "software-engineer-resume-keywords": "/resume-keywords/software-engineer",
+  "customer-service-resume-keywords": "/resume-keywords/customer-service",
+  "zety-vs-easy-free-resume": "/easyfreeresume-vs-zety",
+};
+
+const postHref = (slug: string) => CANONICAL_LINK_OVERRIDE[slug] ?? `/blog/${slug}`;
+
 export default function BlogIndex() {
   const featuredPost = blogPosts.find((post) => post.featured);
   const regularPosts = useMemo(
@@ -248,7 +260,7 @@ export default function BlogIndex() {
                           </span>
                         ) : (
                           <Link
-                            to={`/blog/${post.slug}`}
+                            to={postHref(post.slug)}
                             className="text-ink hover:text-accent-text transition-colors"
                           >
                             {post.title}
@@ -281,7 +293,7 @@ export default function BlogIndex() {
                           </span>
                         ) : (
                           <Link
-                            to={`/blog/${post.slug}`}
+                            to={postHref(post.slug)}
                             className="text-accent-text hover:text-ink text-sm font-medium transition-colors"
                           >
                             Read more &rarr;

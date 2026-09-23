@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom';
 
-export default function AuthorBio() {
+interface AuthorBioProps {
+  // ponytail: prop, not a new component — protected pages must keep the pre-rebrand copy byte-identical
+  legacy?: boolean;
+}
+
+export default function AuthorBio({ legacy = false }: AuthorBioProps) {
   return (
     <section className="mt-10">
       <div className="bg-chalk-dark rounded-2xl border border-black/[0.04] p-6 md:p-8">
@@ -12,9 +17,13 @@ export default function AuthorBio() {
           </div>
           <div className="flex-1 min-w-0">
             <p className="font-mono text-xs tracking-[0.15em] text-ink/60 uppercase mb-2">Written by</p>
-            <h3 className="font-display text-lg font-extrabold text-ink mb-2">The EasyFreeResume Team</h3>
+            <h3 className="font-display text-lg font-extrabold text-ink mb-2">
+              {legacy ? 'The EasyFreeResume Team' : 'Amit'}
+            </h3>
             <p className="font-display font-extralight text-ink/60 leading-relaxed mb-4">
-              We're a team of career coaches, HR professionals, and developers dedicated to making professional resume building accessible to everyone — completely free, no strings attached.
+              {legacy
+                ? "We're a team of career coaches, HR professionals, and developers dedicated to making professional resume building accessible to everyone — completely free, no strings attached."
+                : 'Amit builds and maintains EasyFreeResume.'}
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
