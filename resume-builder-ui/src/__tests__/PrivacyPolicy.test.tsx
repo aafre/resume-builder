@@ -14,7 +14,7 @@ describe("PrivacyPolicy Component", () => {
 
     expect(screen.getByText("Privacy Policy")).toBeInTheDocument();
     expect(
-      screen.getByText(/Last Updated: 4 August 2026/i)
+      screen.getByText(/Last updated 4 August 2026/i)
     ).toBeInTheDocument();
   });
 
@@ -41,7 +41,7 @@ describe("PrivacyPolicy Component", () => {
     );
 
     // Section heading
-    expect(screen.getByText("2. Google User Data")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Google User Data/ })).toBeInTheDocument();
 
     // Data usage disclosures
     expect(screen.getByText(/Data Accessed from Google:/)).toBeInTheDocument();
