@@ -463,8 +463,13 @@ export default function JobExamplePage() {
               // time: the hub assigns it only to the card being clicked.
               style={{ viewTransitionName: 'example-sheet' }}
               onError={(e) => {
+                // React's onError survives `img.onerror = null`, and a live
+                // srcset outranks src — so without both guards the browser
+                // re-requests the missing webp forever.
                 const img = e.target as HTMLImageElement;
-                img.onerror = null;
+                if (img.dataset.fallback) return;
+                img.dataset.fallback = '1';
+                img.removeAttribute('srcset');
                 img.src = '/docs/templates/modern-no-icons.png';
               }}
             />
