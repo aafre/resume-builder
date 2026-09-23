@@ -315,9 +315,9 @@ export default function ResumeKeywordsGuide() {
               <p className="text-lg leading-relaxed text-ink/60">
                 Some job postings miss common keywords that ATS databases still
                 expect. Cross-reference the posting with our{" "}
-                <Link to="/blog/resume-keywords-by-industry" className="text-accent-text hover:underline">
+                <a href="#industry-keywords" className="text-accent-text hover:underline">
                   resume keywords by industry breakdown
-                </Link>{" "}
+                </a>{" "}
                 or browse the{" "}
                 <Link to="/resume-keywords" className="text-accent-text hover:underline">
                   resume keywords hub
@@ -375,14 +375,6 @@ export default function ResumeKeywordsGuide() {
             resume keywords hub
           </Link>{" "}
           which covers 25+ job titles.
-        </p>
-
-        <p className="text-lg leading-relaxed text-ink/60 mb-8">
-          Need deeper industry breakdowns? Our{" "}
-          <Link to="/blog/resume-keywords-by-industry" className="text-accent-text hover:underline">
-            resume keywords by industry guide
-          </Link>{" "}
-          has expanded lists for each sector below.
         </p>
 
         <div className="space-y-8">
@@ -999,12 +991,6 @@ export default function ResumeKeywordsGuide() {
                 How to Use Resume Keywords
               </Link>{' '}
               &mdash; detailed step-by-step with matching strategies
-            </li>
-            <li>
-              <Link to="/blog/resume-keywords-by-industry" className="text-accent-text hover:underline">
-                Resume Keywords by Industry
-              </Link>{' '}
-              &mdash; expanded keyword lists for 10+ sectors
             </li>
             <li>
               <Link to="/blog/customer-service-resume-keywords-guide" className="text-accent-text hover:underline">

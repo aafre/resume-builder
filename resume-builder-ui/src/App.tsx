@@ -130,7 +130,7 @@ const ReturnToWorkPrograms = lazy(() => import("./components/blog/ReturnToWorkPr
 const AIJobDescriptionAnalyzer = lazy(() => import("./components/blog/AIJobDescriptionAnalyzer"));
 const AIResumeReview = lazy(() => import("./components/blog/AIResumeReview"));
 const CustomerServiceResumeKeywordsGuide = lazy(() => import("./components/blog/CustomerServiceResumeKeywordsGuide"));
-const ResumeKeywordsByIndustry = lazy(() => import("./components/blog/ResumeKeywordsByIndustry"));
+// ResumeKeywordsByIndustry removed - route now redirects to /blog/resume-keywords-guide
 
 // Competitor comparison blog posts
 const ResumeIOVsEasyFreeResume = lazy(() => import("./components/blog/ResumeIOVsEasyFreeResume"));
@@ -814,6 +814,7 @@ function AppContent() {
           {/* Client-side redirect fallbacks — server-side 301s in app.py are primary */}
           {[
             { from: "/blog/software-engineer-resume-keywords", to: "/resume-keywords/software-engineer" },
+            { from: "/blog/resume-keywords-by-industry", to: "/blog/resume-keywords-guide" },
             { from: "/blog/customer-service-resume-keywords", to: "/resume-keywords/customer-service" },
             { from: "/blog/how-to-use-resume-keywords-to-beat-ats", to: "/blog/how-to-use-resume-keywords" },
             { from: "/blog/how-to-list-skills-on-resume", to: "/blog/how-to-list-skills" },
@@ -967,14 +968,6 @@ function AppContent() {
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <CustomerServiceResumeKeywordsGuide />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/blog/resume-keywords-by-industry"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <ResumeKeywordsByIndustry />
               </Suspense>
             }
           />

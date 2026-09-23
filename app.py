@@ -1434,6 +1434,12 @@ def redirect_software_engineer_keywords():
     return redirect("/resume-keywords/software-engineer", code=301)
 
 
+@app.route("/blog/resume-keywords-by-industry")
+def redirect_resume_keywords_by_industry():
+    """Redirect unindexed title-collision post to the canonical survivor"""
+    return redirect("/blog/resume-keywords-guide", code=301)
+
+
 @app.route("/editor")
 def redirect_editor():
     """Redirect bare /editor (soft 404) to templates page"""
@@ -1560,6 +1566,8 @@ PRERENDER_DIR = os.path.join(app.static_folder, "prerendered")
 # Path form is slash-stripped, matching `path.strip("/")` in serve().
 NOINDEX_ROUTES = {
     "blog/ai-cover-letter-prompts",
+    "resume-keywords/data-analyst",
+    "resume-keywords/registered-nurse",
 }
 
 # ponytail: explicit allowlist — expand only after per-route dev/field CWV validation

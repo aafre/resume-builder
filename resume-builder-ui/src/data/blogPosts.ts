@@ -340,14 +340,9 @@ export const blogPosts: BlogPost[] = [
     readTime: "14 min",
     category: "Keywords",
   },
-  {
-    slug: "resume-keywords-by-industry",
-    title: "Resume Keywords by Industry: Complete 2026 List",
-    description: "The definitive list of resume keywords organized by industry: tech, healthcare, finance, marketing, education, and more. ATS-optimized with real examples.",
-    publishDate: "2026-02-17",
-    readTime: "16 min",
-    category: "Keywords",
-  },
+  // resume-keywords-by-industry retired 2026-09-23 — 301'd to resume-keywords-guide
+  // (title-collision genuine merge, PR #803: loser was unindexed, 0 external inbound
+  // links, half the content depth of the survivor). Route kept in App.tsx as a redirect.
   {
     slug: "how-why-easyfreeresume-completely-free",
     title: "How (and Why) is EasyFreeResume Completely Free?",
