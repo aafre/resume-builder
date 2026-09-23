@@ -11,6 +11,7 @@ import dotenv from 'dotenv';
 import { JOBS_DATABASE } from '../src/data/jobKeywords/index';
 import { JOB_EXAMPLES_DATABASE } from '../src/data/jobExamples/index';
 import { STATIC_URLS } from '../src/data/sitemapUrls';
+import { blogPosts } from '../src/data/blogPosts';
 import {
   HREFLANG_PAIRS,
   CV_REGIONS,
@@ -34,11 +35,24 @@ const JOBS = JOBS_DATABASE.map(job => ({
 }));
 
 // Job examples data for pSEO pages
+// ponytail: seam for A5 (Track C) — JobExampleInfo.lastmod is optional and unset today,
+// so this falls back to the build date for every entry. Once A5 wires each YAML's
+// meta.lastmod into JOB_EXAMPLES_DATABASE, entries with a real lastmod stop drifting.
 const JOB_EXAMPLES = JOB_EXAMPLES_DATABASE.map(job => ({
   slug: job.slug,
   priority: job.priority,
-  lastmod: new Date().toISOString().split('T')[0],
+  lastmod: job.lastmod || new Date().toISOString().split('T')[0],
 }));
+
+// Blog lastmod precedence: explicit lastUpdated wins (it's the real edit signal),
+// then the curated sitemapUrls.ts value (may capture a content update lastUpdated
+// hasn't been backfilled for yet), then publishDate as the last resort. This is
+// never the build date, so lastmod can't drift on a no-op deploy the way the old
+// build-date stamp did, but it also doesn't discard curated history the way a bare
+// `lastUpdated ?? publishDate` would for the 43/46 posts with no lastUpdated set.
+const BLOG_META_BY_SLUG = new Map<string, { lastUpdated?: string; publishDate: string }>(
+  blogPosts.map(post => [post.slug, { lastUpdated: post.lastUpdated, publishDate: post.publishDate }])
+);
 
 /**
  * Escape special XML characters to ensure valid XML output
@@ -91,8 +105,13 @@ export function generateSitemap(): string {
 
   // Add static URLs
   STATIC_URLS.forEach(page => {
+    const blogSlug = page.loc.startsWith('/blog/') ? page.loc.slice('/blog/'.length) : null;
+    const blogMeta = blogSlug ? BLOG_META_BY_SLUG.get(blogSlug) : undefined;
+    const lastmod = blogMeta
+      ? blogMeta.lastUpdated ?? page.lastmod ?? blogMeta.publishDate
+      : page.lastmod;
     addUrl(page.loc, {
-      lastmod: page.lastmod,
+      lastmod,
       changefreq: page.changefreq,
       priority: page.priority
     });
