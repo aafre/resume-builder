@@ -65,6 +65,9 @@ export default function LegalDocument({
       setActiveId(current.id);
     };
 
+    // No observer (jsdom, very old browsers): the rail keeps its first heading.
+    if (typeof IntersectionObserver === 'undefined') return;
+
     const observer = new IntersectionObserver(sync, {
       rootMargin: '0px 0px -60% 0px',
       threshold: [0, 1],
