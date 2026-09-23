@@ -68,8 +68,8 @@ export default function ATSFormattingRules() {
           rejects you before a human ever reads a word.
         </p>
 
-        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-          <h2 className="font-bold text-ink mb-4 text-lg">On this page</h2>
+        <nav className="toc-inline bg-accent/[0.06] border border-accent/20 rounded-xl p-6" aria-label="On this page">
+          <p className="font-mono text-xs tracking-[0.15em] uppercase text-ink/60 mb-4">On this page</p>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
             <li><a href="#mechanism" className="text-accent-text hover:underline">How an ATS actually reads your resume</a></li>
             <li><a href="#what-breaks" className="text-accent-text hover:underline">What breaks the parser</a></li>
@@ -78,7 +78,7 @@ export default function ATSFormattingRules() {
             <li><a href="#file-format" className="text-accent-text hover:underline">PDF vs .docx: the honest answer</a></li>
             <li><a href="#faq" className="text-accent-text hover:underline">Frequently asked questions</a></li>
           </ol>
-        </div>
+        </nav>
 
         <h2 id="mechanism" className="text-3xl font-bold text-ink mt-12 mb-6">
           How an ATS Actually Reads Your Resume

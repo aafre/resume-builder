@@ -61,8 +61,8 @@ export default function FreeATSResumeCheck() {
           There is no universal ATS score; each method catches a different failure mode.
         </p>
 
-        <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
-          <h2 className="font-bold text-ink mb-4 text-lg">On this page</h2>
+        <div className="toc-inline bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
+          <p className="font-mono text-xs tracking-[0.15em] uppercase text-ink/60 mb-4">On this page</p>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
             <li>What passing the ATS actually means</li>
             <li>Method 1: Run a free keyword scan</li>

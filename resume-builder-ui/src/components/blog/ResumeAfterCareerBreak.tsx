@@ -26,8 +26,8 @@ export default function ResumeAfterCareerBreak() {
         </p>
 
         {/* Table of Contents */}
-        <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
-          <h2 className="font-bold text-ink mb-4 text-lg">Table of Contents</h2>
+        <nav className="toc-inline bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8" aria-label="On this page">
+          <p className="font-mono text-xs tracking-[0.15em] uppercase text-ink/60 mb-4">Table of Contents</p>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
             <li><a href="#format" className="text-accent-text hover:underline">Functional vs. Chronological: Which Format for a Multi-Year Break</a></li>
             <li><a href="#framing" className="text-accent-text hover:underline">How to Frame the Gap Line</a></li>
