@@ -8,6 +8,108 @@ meta:
   metaDescription: "HR generalist resume example covering recruitment, benefits, and employee relations."
   category: corporate
   priority: 0.7
+  lastmod: "2026-09-23"
+
+answerBlock: >
+  A strong HR generalist resume names the employee headcount you supported, the HRIS platform
+  you worked in (Workday, ADP), and a retention or time-to-fill metric you moved — not just
+  "supported the full employee lifecycle" or "handled HR duties."
+
+howToWrite:
+  - "State the employee headcount and number of locations you supported — HR at a 50-person single-site office and a 300-person multi-site company draw on different skills, and hiring managers filter on it."
+  - "Name the HRIS and applicant tracking system by product — Workday, ADP, iCIMS — not the category. \"HR systems\" tells a recruiter nothing; \"Workday\" tells them you can start using their system faster."
+  - "Quantify recruitment and retention metrics: positions filled annually, average time-to-fill, or the turnover percentage change you drove. These are the numbers HR hiring managers compare across candidates."
+  - "Separate the HR functions you actually owned — recruiting, benefits administration, employee relations, compliance — rather than a single line that says \"full-cycle HR,\" since generalist roles vary widely in which pieces they cover."
+  - "If you handled investigations or compliance (FMLA, ADA, I-9), say so explicitly and note the outcome (zero findings, fully documented) — this is a trust signal HR hiring managers screen for early."
+  - "Show one measurable culture or engagement outcome (reduced turnover, higher survey participation) alongside the administrative wins, since HR generalist roles are evaluated on both operations and impact."
+
+summaryExamples:
+  - level: entry
+    summary: >
+      HR generalist with coursework and internship experience in recruitment coordination,
+      onboarding, and HRIS data entry. Comfortable supporting full-cycle recruiting and benefits
+      administration tasks with strong attention to compliance and confidentiality.
+  - level: mid
+    summary: >
+      HR generalist with 4+ years supporting the full employee lifecycle for a 150-person
+      company. Manages full-cycle recruitment, onboarding, and benefits administration in ADP
+      Workforce Now, reducing average time-to-fill from [X] to [Y] days.
+  - level: senior
+    summary: >
+      SHRM-CP certified HR generalist with 6+ years supporting 300+ employees across 3 offices.
+      Owns recruitment, employee relations, and compliance in Workday, reducing voluntary
+      turnover [X%] through improved onboarding and structured engagement programs.
+
+skills:
+  hard:
+    - HRIS Administration (Workday, ADP Workforce Now)
+    - Full-Cycle Recruitment & Applicant Tracking (iCIMS)
+    - Benefits Administration & Open Enrollment
+    - Payroll Processing & Reconciliation
+    - Employment Law Compliance (FMLA, ADA, I-9)
+    - HR Metrics & Reporting
+  soft:
+    - Confidential Employee Relations Handling
+    - Cross-Departmental Communication
+    - Conflict Mediation
+    - Manager Coaching on Policy
+
+keywords:
+  - Recruitment
+  - Employee Relations
+  - Benefits Administration
+  - HRIS Systems
+  - Payroll Processing
+  - Onboarding
+  - Performance Management
+  - Employment Law
+  - Talent Acquisition
+  - FMLA/ADA Compliance
+
+certifications:
+  - SHRM-CP (Certified Professional)
+  - PHR (Professional in Human Resources)
+
+mistakes:
+  - mistake: "Writing \"supported the full employee lifecycle\" with nothing underneath it"
+    fix: "Break it into the actual functions: \"Managed full-cycle recruitment (50+ hires annually), benefits administration for 300 employees, and FMLA/ADA compliance.\" Each is a distinct keyword an ATS and a recruiter scan for separately."
+  - mistake: "Omitting the HRIS platform by name"
+    fix: "Say Workday or ADP, not \"HR software.\" A generalist role often requires ramp-up time in a specific system, and naming yours signals a faster start."
+  - mistake: "Listing turnover reduction with no baseline"
+    fix: "State both numbers: \"Reduced voluntary turnover from [X%] to [Y%]\" is verifiable; \"reduced turnover\" alone is not."
+  - mistake: "Treating recruiting coordination and full HR generalist duties as interchangeable"
+    fix: "A recruiting coordinator screens resumes and schedules interviews. An HR generalist also owns benefits, compliance, and employee relations. If your role was recruiting-only, say so precisely rather than implying broader generalist scope."
+
+bulletRewrites:
+  - weak: "Supported HR operations for the company"
+    improved: "Supported HR operations for 300+ employees across 3 office locations, owning recruitment, benefits administration, and employee relations"
+    reason: "Names the headcount, the number of locations, and the specific functions owned — turning a vague claim into a scoped set of responsibilities."
+  - weak: "Managed recruitment process"
+    improved: "Managed full-cycle recruitment filling 50+ positions annually with a [X]-day average time-to-fill, sourcing through iCIMS and LinkedIn Recruiter"
+    reason: "Adds volume, a speed metric, and the specific tools used, which together let a hiring manager compare directly against their own recruiting benchmarks."
+  - weak: "Handled employee relations issues"
+    improved: "Investigated and resolved 50+ employee relations cases annually, maintaining full documentation and [zero escalations to legal]"
+    reason: "Quantifies caseload and states an outcome (zero legal escalations) that signals thoroughness without disclosing confidential case details."
+  - weak: "Administered benefits for employees"
+    improved: "Administered health, 401(k), and PTO benefits for 500+ employees with [X%] enrollment accuracy, leading annual open enrollment achieving [X%] voluntary-benefit participation"
+    reason: "Names the specific benefit types, the headcount, and two accuracy/participation metrics instead of describing benefits administration as a single undifferentiated task."
+
+salaryOutlook:
+  occupation: "Human Resources Specialists"
+  median: "$75,940/year ($36.51/hour)"
+  growth: "Projected to grow 6% from 2025 to 2035 (faster than average)"
+  source: "https://www.bls.gov/ooh/business-and-financial/human-resources-specialists.htm"
+  asOf: "2026-09-23"
+
+customFaqs:
+  - question: "What's the difference between an HR generalist and an HR specialist resume?"
+    answer: "An HR generalist resume shows breadth across recruiting, benefits, employee relations, and compliance for one organization. An HR specialist resume shows depth in one function — compensation, benefits, or recruiting — often across multiple organizations or as a dedicated role. Match your resume to which one you actually did."
+  - question: "Do I need SHRM-CP or PHR certification to be an HR generalist?"
+    answer: "It's not always required but is commonly preferred, especially past the entry level, and signals formal knowledge of employment law and HR practice. If you're studying for it, note the target exam date rather than leaving certification status blank."
+  - question: "How do I show HR impact without exact turnover or time-to-fill numbers?"
+    answer: "Reconstruct a reasonable estimate from records you likely still have access to — offer letters, an ATS export, or HRIS reports — rather than omitting the metric. If truly unavailable, a process change (\"built a structured onboarding checklist\") is a valid substitute for a hard number."
+  - question: "Should an HR generalist resume mention specific compliance areas like FMLA or I-9?"
+    answer: "Yes, if you handled them. Naming FMLA, ADA, or I-9 compliance directly signals you can be trusted with legally sensitive processes without oversight, which is one of the first things HR hiring managers screen for in a generalist role."
 
 resume:
   template: professional
