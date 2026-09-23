@@ -61,7 +61,7 @@ export default function FreeATSResumeCheck() {
           There is no universal ATS score; each method catches a different failure mode.
         </p>
 
-        <nav className="toc-inline bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8" aria-label="On this page">
+        <div className="toc-inline bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
           <p className="font-mono text-xs tracking-[0.15em] uppercase text-ink/60 mb-4">On this page</p>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
             <li>What passing the ATS actually means</li>
@@ -71,7 +71,7 @@ export default function FreeATSResumeCheck() {
             <li>Method 4: Audit your resume structure</li>
             <li>How paid ATS checkers compare</li>
           </ol>
-        </nav>
+        </div>
 
         <h2 id="meaning" className="text-3xl font-bold text-ink mt-12 mb-6">
           What &quot;Passing the ATS&quot; Actually Means
