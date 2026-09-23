@@ -218,7 +218,7 @@ describe('Sitemap XML Generation', () => {
   });
 
   describe('Lastmod honesty', () => {
-    it('derives /blog/* lastmod as lastUpdated ?? curated sitemapUrls value ?? publishDate, never the build date', () => {
+    it('derives /blog/* lastmod as the LATER of lastUpdated and curated sitemapUrls value, else publishDate, never the build date', () => {
       const today = new Date().toISOString().split('T')[0];
       let checked = 0;
       blogPosts.forEach(post => {
@@ -227,13 +227,15 @@ describe('Sitemap XML Generation', () => {
         if (actual === null) return; // post isn't in the sitemap (e.g. still comingSoon)
         checked += 1;
         const curated = STATIC_URLS.find(p => p.loc === loc)?.lastmod;
-        const expected = post.lastUpdated ?? curated ?? post.publishDate;
+        const candidates = [post.lastUpdated, curated].filter((d): d is string => !!d);
+        const expected = candidates.length > 0 ? candidates.sort().pop()! : post.publishDate;
         expect(actual).toBe(expected);
-        // The curated sitemapUrls.ts value must never be silently discarded in favor
-        // of the (usually older) publishDate when lastUpdated isn't set — that was
-        // the regression this test exists to catch.
-        if (!post.lastUpdated && curated) {
-          expect(actual).toBe(curated);
+        // The later of the two curated dates must win — a stale/older lastUpdated
+        // must never regress an already-newer curated sitemapUrls value. That is the
+        // regression this test exists to catch.
+        if (post.lastUpdated && curated) {
+          expect(actual >= post.lastUpdated).toBe(true);
+          expect(actual >= curated).toBe(true);
         }
       });
       // Sanity check the assertion actually ran against real data, and that at least
@@ -243,9 +245,32 @@ describe('Sitemap XML Generation', () => {
       expect(
         blogPosts.some(p => {
           const curated = STATIC_URLS.find(sp => sp.loc === `/blog/${p.slug}`)?.lastmod;
-          return (p.lastUpdated ?? curated ?? p.publishDate) !== today;
+          const candidates = [p.lastUpdated, curated].filter((d): d is string => !!d);
+          const expected = candidates.length > 0 ? candidates.sort().pop()! : p.publishDate;
+          return expected !== today;
         })
       ).toBe(true);
+    });
+
+    it('never regresses lastmod below either source date, even when lastUpdated predates the curated value', () => {
+      // Regression guard for the specific bug found on the current tip: several posts
+      // have a lastUpdated older than sitemapUrls' curated lastmod, which the old
+      // `lastUpdated ?? curated ?? publishDate` precedence silently discarded in
+      // favor of the older lastUpdated.
+      let checked = 0;
+      blogPosts.forEach(post => {
+        const loc = `/blog/${post.slug}`;
+        const actual = lastmodFor(xml, loc, baseUrl);
+        if (actual === null) return;
+        const curated = STATIC_URLS.find(p => p.loc === loc)?.lastmod;
+        if (!curated) return;
+        checked += 1;
+        expect(actual >= curated).toBe(true);
+        if (post.lastUpdated) {
+          expect(actual >= post.lastUpdated).toBe(true);
+        }
+      });
+      expect(checked).toBeGreaterThan(0);
     });
 
     it('produces identical lastmod values across two consecutive builds with no content change', () => {

@@ -106,8 +106,11 @@ export function generateSitemap(): string {
   STATIC_URLS.forEach(page => {
     const blogSlug = page.loc.startsWith('/blog/') ? page.loc.slice('/blog/'.length) : null;
     const blogMeta = blogSlug ? BLOG_META_BY_SLUG.get(blogSlug) : undefined;
+    // Blog lastmod must never move backward: take the LATER of blogPosts.lastUpdated
+    // and the curated sitemapUrls value (ISO strings compare lexically), falling back
+    // to publishDate only when both are absent.
     const lastmod = blogMeta
-      ? blogMeta.lastUpdated ?? page.lastmod ?? blogMeta.publishDate
+      ? [blogMeta.lastUpdated, page.lastmod].filter((d): d is string => !!d).sort().pop() ?? blogMeta.publishDate
       : page.lastmod;
     addUrl(page.loc, {
       lastmod,

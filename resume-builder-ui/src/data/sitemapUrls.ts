@@ -106,6 +106,7 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/blog/career-change-resume-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
   { loc: '/blog/resume-employment-gaps', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
   { loc: '/blog/return-to-work-programs', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
+  { loc: '/blog/resume-after-career-break', priority: 0.5, changefreq: 'monthly', lastmod: '2026-09-22' },
 
   // Competitor Comparison Posts (0.5) - recently created
   { loc: '/blog/resume-io-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-04' },
