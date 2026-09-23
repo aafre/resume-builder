@@ -60,8 +60,16 @@ function loadPostHog(): Promise<PostHog | null> {
         if (!event?.properties) return event;
         const p = event.properties;
 
-        if (typeof p.$current_url === 'string') p.$current_url = stripUrl(p.$current_url);
-        if (typeof p.$referrer === 'string') p.$referrer = stripUrl(p.$referrer);
+        // Match by key suffix, not a fixed list: posthog also sends
+        // $session_entry_url, $initial_current_url, $prev_pageview_url etc.,
+        // and person props under $set/$set_once — which posthog puts both inside
+        // properties and as siblings of it (e.g. $identify). Non-URLs like "$direct" pass through.
+        for (const obj of [p, p.$set, p.$set_once, event.$set, event.$set_once]) {
+          if (!obj || typeof obj !== 'object') continue;
+          for (const [k, v] of Object.entries(obj)) {
+            if (typeof v === 'string' && /(url|referrer)$/.test(k)) obj[k] = stripUrl(v) || v;
+          }
+        }
 
         // Heatmaps read window.location.href themselves and buffer points under
         // the full URL as an object KEY inside $heatmap_data — so top-level

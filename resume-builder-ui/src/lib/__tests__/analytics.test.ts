@@ -155,6 +155,40 @@ describe('analytics', () => {
       window.requestIdleCallback = originalRIC;
     });
 
+    it('strips query/hash from every *_url / *_referrer property', async () => {
+      const { initAnalytics } = await import('../analytics');
+
+      const originalRIC = window.requestIdleCallback;
+      window.requestIdleCallback = vi.fn((cb: any) => { cb(); return 1; }) as any;
+      initAnalytics();
+      await vi.dynamicImportSettled();
+
+      const beforeSend = mockInit.mock.calls[0][1].before_send;
+      const dirty = 'https://x.com/jobs?q=nurse#tok=abc';
+      const out = beforeSend({
+        event: 'cta_clicked',
+        properties: {
+          $session_entry_url: dirty,
+          $session_entry_referrer: dirty,
+          $referrer: '$direct',
+          $set_once: { $initial_current_url: dirty, $initial_referrer: dirty },
+          $set: { $current_url: dirty },
+        },
+        $set_once: { $initial_current_url: dirty },
+        $set: { $current_url: dirty },
+      });
+
+      expect(JSON.stringify(out.properties)).not.toMatch(/nurse|tok=/);
+      expect(out.properties.$session_entry_url).toBe('https://x.com/jobs');
+      expect(out.properties.$set_once.$initial_current_url).toBe('https://x.com/jobs');
+      expect(out.properties.$referrer).toBe('$direct');
+      // Root-level person props (posthog's $identify shape)
+      expect(out.$set_once.$initial_current_url).toBe('https://x.com/jobs');
+      expect(out.$set.$current_url).toBe('https://x.com/jobs');
+
+      window.requestIdleCallback = originalRIC;
+    });
+
     it('strips query/hash from nested $heatmap_data URL keys', async () => {
       // Heatmaps buffer points under the full window.location.href as an object
       // KEY, so top-level property sanitising never reaches it. posthog only
