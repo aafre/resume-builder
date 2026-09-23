@@ -1,5 +1,8 @@
 /// <reference types="vite/client" />
 
+/** Build date as YYYY-MM-DD (UTC), injected by vite.config.ts `define`. */
+declare const __BUILD_DATE__: string;
+
 interface ImportMetaEnv {
   readonly VITE_SUPABASE_URL: string;
   readonly VITE_SUPABASE_PUBLISHABLE_KEY: string;

@@ -13,6 +13,7 @@ import {
   ChevronDownIcon,
 } from "@heroicons/react/24/solid";
 import { TUTORIAL_VIDEO } from "../config/videoContent";
+import { getResumeCount } from "../config/resumeCount";
 
 // Animation-delay for the hero build sequence (consumed by hero-* classes in styles.css).
 // Static values only — the landing route must prerender/hydrate byte-identical.
@@ -78,10 +79,10 @@ const LandingPage: React.FC = () => {
     // No auto-redirect for authenticated users - let them see landing page
   }, [searchParams, navigate]);
 
-  // Static approximate count — kept constant (no new Date()) so the prerendered
-  // HTML and the first client render are byte-identical. This is what lets the
-  // landing route hydrate cleanly under hydrateRoot. Bump manually over time.
-  const resumeCountValue = 150000;
+  // Derived from the BUILD date, not the render date (no new Date()), so the
+  // prerendered HTML and the first client render are byte-identical. This is
+  // what lets the landing route hydrate cleanly under hydrateRoot.
+  const resumeCountValue = getResumeCount(__BUILD_DATE__);
 
   // Starts the hero build sequence when the card scrolls into view (mobile:
   // the card sits below the CTAs, so a load-triggered run would finish unseen)
