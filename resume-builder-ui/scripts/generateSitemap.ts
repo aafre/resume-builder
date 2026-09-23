@@ -27,8 +27,12 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Job keywords data imported from single source of truth
-const JOBS = JOBS_DATABASE.map(job => ({
+// Job keywords data imported from single source of truth.
+// Excludes roles noindexed as B5 keyword-cluster consolidation (content
+// migrated to a matching /examples/<role> page) — a noindexed URL has no
+// business in the sitemap (see seo-tracking/mistakes-learned.md precedent:
+// ai-cover-letter-prompts).
+const JOBS = JOBS_DATABASE.filter(job => !job.noindex).map(job => ({
   slug: job.slug,
   priority: job.priority,
   lastmod: job.lastmod || new Date().toISOString().split('T')[0],
