@@ -11,7 +11,7 @@
  * - Cache invalidation and navigation
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '../lib/api-client';
@@ -77,6 +77,10 @@ export function useResumeCreate(): UseResumeCreateReturn {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [creating, setCreating] = useState(false);
+  // Synchronous in-flight guard: `creating` state is stale inside calls made
+  // before React re-renders (e.g. a timer-driven import racing a manual click),
+  // so it cannot block a second concurrent create.
+  const inFlight = useRef(false);
 
   const createResume = useCallback(async (options: CreateResumeOptions): Promise<string | null> => {
     if (!session) {
@@ -84,11 +88,12 @@ export function useResumeCreate(): UseResumeCreateReturn {
       return null;
     }
 
-    if (creating) {
-      // Prevent double-clicks
+    if (inFlight.current) {
+      // Prevent double-clicks and concurrent creates
       return null;
     }
 
+    inFlight.current = true;
     setCreating(true);
 
     try {
@@ -140,9 +145,10 @@ export function useResumeCreate(): UseResumeCreateReturn {
       toast.error("Failed to create resume. Please try again.");
       return null;
     } finally {
+      inFlight.current = false;
       setCreating(false);
     }
-  }, [session, navigate, queryClient, creating]);
+  }, [session, navigate, queryClient]);
 
   return { createResume, creating };
 }

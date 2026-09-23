@@ -36,17 +36,27 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
   const descId = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dropzoneRef = useRef<HTMLButtonElement>(null);
+  // Pending high-confidence auto-import; cancelled by any manual choice,
+  // close, or unmount so it can't fire a second create behind the user's back.
+  const autoImportTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cancelAutoImport = () => {
+    if (autoImportTimer.current) clearTimeout(autoImportTimer.current);
+    autoImportTimer.current = null;
+  };
 
   const { parseResume, parsing, progress, progressMessage, error, clearError } = useResumeParser();
 
   // Reset state when modal closes
   useEffect(() => {
     if (!isOpen) {
+      cancelAutoImport();
       setIsDragging(false);
       setParseResult(null);
       clearError();
     }
   }, [isOpen, clearError]);
+
+  useEffect(() => cancelAutoImport, []);
 
   const handleFileUpload = async (file: File) => {
     try {
@@ -55,7 +65,9 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
 
       // Auto-redirect on high confidence
       if (result.confidence >= 0.9) {
-        setTimeout(() => {
+        cancelAutoImport();
+        autoImportTimer.current = setTimeout(() => {
+          autoImportTimer.current = null;
           onSelectImport(result.yaml, result.confidence, result.warnings);
         }, 1500);
       }
@@ -91,6 +103,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
   };
 
   const handleContinueWithImport = () => {
+    cancelAutoImport();
     if (parseResult) {
       onSelectImport(parseResult.yaml, parseResult.confidence, parseResult.warnings);
     }
@@ -278,7 +291,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
 
       {/* Peers: one click each */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <button type="button" onClick={onSelectEmpty} disabled={parsing} className={OPTION_CARD}>
+        <button type="button" onClick={() => { cancelAutoImport(); onSelectEmpty(); }} disabled={parsing} className={OPTION_CARD}>
           <span className="p-2 rounded-lg bg-chalk-dark text-ink shrink-0" aria-hidden="true">
             <MdEditNote className="text-2xl" />
           </span>
@@ -292,7 +305,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
           />
         </button>
 
-        <button type="button" onClick={onSelectExample} disabled={parsing} className={OPTION_CARD}>
+        <button type="button" onClick={() => { cancelAutoImport(); onSelectExample(); }} disabled={parsing} className={OPTION_CARD}>
           <span className="p-2 rounded-lg bg-chalk-dark text-ink shrink-0" aria-hidden="true">
             <MdPreview className="text-2xl" />
           </span>
