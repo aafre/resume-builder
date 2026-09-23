@@ -93,6 +93,7 @@ const ATSOptimization = lazy(() => import("./components/blog/ATSOptimization"));
 const ATSFormattingRules = lazy(() => import("./components/blog/ATSFormattingRules"));
 const FreeATSResumeCheck = lazy(() => import("./components/blog/FreeATSResumeCheck"));
 const ResumeNoExperience = lazy(() => import("./components/blog/ResumeNoExperience"));
+const FirstJobResumeTeenager = lazy(() => import("./components/blog/FirstJobResumeTeenager"));
 const ProfessionalSummaryExamples = lazy(() => import("./components/blog/ProfessionalSummaryExamples"));
 const ResumeKeywordsGuide = lazy(() => import("./components/blog/ResumeKeywordsGuide"));
 const HumanizeAIResume = lazy(() => import("./components/blog/HumanizeAIResume"));
@@ -661,6 +662,14 @@ function AppContent() {
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <ResumeNoExperience />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/first-job-resume-teenager"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <FirstJobResumeTeenager />
               </Suspense>
             }
           />

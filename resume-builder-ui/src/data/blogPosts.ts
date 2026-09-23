@@ -229,6 +229,16 @@ export const blogPosts: BlogPost[] = [
     category: "Entry Level",
   },
   {
+    slug: "first-job-resume-teenager",
+    title: "First Job Resume for Teenagers: What to Put When You've Never Worked (2026)",
+    description:
+      "A resume guide for 15-18 year olds applying for their first job. What counts as experience, working papers and age rules, what employers actually screen for, and a before/after example.",
+    publishDate: "2026-09-23",
+    lastUpdated: "2026-09-23",
+    readTime: "8 min",
+    category: "Entry Level",
+  },
+  {
     slug: "professional-summary-examples",
     title: "30+ Professional Summary Examples for Resumes (2026)",
     description:
