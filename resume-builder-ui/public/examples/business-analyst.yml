@@ -34,7 +34,7 @@ summaryExamples:
     summary: >
       Business analyst with 4+ years bridging business stakeholders and development teams
       across retail systems projects. Writes user stories and acceptance criteria in Jira,
-      builds process maps in Visio, and has reduced manual reporting time by 30% through
+      builds process maps in Visio, and has reduced manual reporting time by [X%] through
       requirements-driven automation recommendations.
   - level: senior
     summary: >
@@ -78,7 +78,7 @@ mistakes:
   - mistake: "Writing \"gathered requirements\" with no deliverable named"
     fix: "Say what you actually produced: \"Wrote 40+ user stories with acceptance criteria in Jira for a $5M digital transformation initiative.\" The artifact is what a hiring manager can picture reviewing."
   - mistake: "Listing SQL or Tableau as a skill with no context for how it was used"
-    fix: "Tie the tool to a task: \"Wrote SQL queries automating a weekly sales report, cutting manual prep time from 4 hours to 20 minutes\" — the tool alone doesn't show proficiency, the outcome does."
+    fix: "Tie the tool to a task: \"Wrote SQL queries automating a weekly sales report, cutting manual prep time from [X] hours to [Y] minutes\" — the tool alone doesn't show proficiency, the outcome does."
   - mistake: "Describing analysis activity without the business result"
     fix: "Every gap analysis, process map, or requirements doc should end in an outcome — hours saved, cost avoided, defects reduced. \"Analyzed business processes\" with no result reads as unfinished work."
   - mistake: "Blurring business analyst duties with project manager duties"
@@ -89,13 +89,13 @@ bulletRewrites:
     improved: "Led requirements gathering for a $5M digital transformation initiative, producing 40+ user stories with acceptance criteria used by 3 development teams"
     reason: "Names the deliverable, the dollar scale of the initiative, and who consumed the output — turning a vague activity into a specific, verifiable contribution."
   - weak: "Analyzed business processes"
-    improved: "Analyzed 12 business processes across the claims workflow, identifying automation opportunities that saved 2,000+ manual hours annually"
+    improved: "Analyzed 12 business processes across the claims workflow, identifying automation opportunities that saved [X]+ manual hours annually"
     reason: "Quantifies both the scope of analysis and the business result, which is what distinguishes analysis from documentation."
   - weak: "Worked with stakeholders on project scope"
     improved: "Facilitated scoping workshops with stakeholders across 5 departments, resolving [number] conflicting requirements before development began"
     reason: "Shows facilitation as an active skill with a concrete deliverable (resolved conflicts) rather than a passive \"worked with\" phrase; the placeholder marks where a real count belongs."
   - weak: "Created reports and dashboards"
-    improved: "Built a Power BI dashboard tracking 50+ KPIs for the leadership team, replacing a manual Excel process that took 6 hours weekly"
+    improved: "Built a Power BI dashboard tracking 50+ KPIs for the leadership team, replacing a manual Excel process that took [X] hours weekly"
     reason: "Names the tool, the scale (50+ KPIs), and the time saved versus the process it replaced — the comparison is what proves impact."
 
 customFaqs:

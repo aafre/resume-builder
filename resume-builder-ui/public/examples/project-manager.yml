@@ -33,12 +33,12 @@ summaryExamples:
     summary: >
       Project manager with 4+ years delivering technology and process-improvement projects
       with budgets up to $2M. Runs Agile sprint planning and retrospectives for teams of 8-12,
-      with a 95% on-time delivery record across 15 completed projects.
+      with a [X%] on-time delivery record across 15 completed projects.
   - level: senior
     summary: >
       PMP-certified senior project manager with 8+ years delivering $5M+ IT and business
       transformation projects. Manages cross-functional teams of 20+, mentors junior PMs, and
-      has built PMO processes that cut project initiation time by 50%.
+      has built PMO processes that cut project initiation time by [X%].
 
 skills:
   hard:
@@ -73,7 +73,7 @@ certifications:
 
 mistakes:
   - mistake: "Writing \"successfully managed projects\" with no delivery metric"
-    fix: "State the outcome: \"Delivered a $3.5M ERP implementation on time and 10% under budget.\" On-time percentage and budget variance are the two numbers every PM hiring manager looks for first."
+    fix: "State the outcome: \"Delivered a $3.5M ERP implementation on time and [X%] under budget.\" On-time percentage and budget variance are the two numbers every PM hiring manager looks for first."
   - mistake: "Omitting team size and budget scale"
     fix: "Name both: \"Managed a $8M portfolio with cross-functional teams of 15-25.\" Without scale, \"led a team\" could mean 3 people or 30."
   - mistake: "Not naming the methodology"
@@ -86,13 +86,13 @@ bulletRewrites:
     improved: "Led a portfolio of 5 concurrent projects totaling $8M annual budget, managing cross-functional teams of 15-25 across development, design, and analytics"
     reason: "Replaces a vague claim with the actual scale (budget, team size, number of projects) a hiring manager can compare to their own org."
   - weak: "Responsible for project delivery on time and on budget"
-    improved: "Delivered a $3.5M ERP implementation on time and 10% under budget, coordinating 8 vendor teams across 4 time zones"
+    improved: "Delivered a $3.5M ERP implementation on time and [X%] under budget, coordinating 8 vendor teams across 4 time zones"
     reason: "Turns a job-description phrase into a specific, dated achievement with both a dollar figure and a coordination detail that shows the real complexity."
   - weak: "Handled risk management for projects"
     improved: "Built a risk management framework that identified and mitigated 50+ project risks, preventing an estimated [dollar amount] in potential rework"
     reason: "Shows risk management as a system built, not a task performed, with the placeholder marking where a real dollar estimate belongs."
   - weak: "Ran Agile ceremonies for the team"
-    improved: "Implemented an Agile transformation across 4 teams, increasing sprint velocity 40% within two quarters through refined backlog grooming and retrospective action items"
+    improved: "Implemented an Agile transformation across 4 teams, increasing sprint velocity [X%] within two quarters through refined backlog grooming and retrospective action items"
     reason: "Names the specific practices (backlog grooming, retrospectives) and a measurable velocity outcome instead of a generic \"ran ceremonies\" claim."
 
 salaryOutlook:

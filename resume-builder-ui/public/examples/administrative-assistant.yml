@@ -38,7 +38,7 @@ summaryExamples:
     summary: >
       Executive administrative assistant with 8+ years supporting C-level leadership across
       finance and professional services. Manages calendars, travel, and $200K+ in monthly
-      expense processing for a 15-person leadership team with zero compliance issues.
+      expense processing for a 15-person leadership team with [zero compliance incidents].
 
 skills:
   hard:
@@ -86,13 +86,13 @@ bulletRewrites:
     improved: "Managed calendars for 3 C-level executives, scheduling 50+ meetings weekly across conflicting time zones"
     reason: "Names the number of executives and weekly volume, turning a duty into evidence of scale you can repeat for a new employer."
   - weak: "Handled travel arrangements"
-    improved: "Coordinated domestic and international travel for a 15-person leadership team using [travel platform], booking [number]+ trips per quarter with zero missed connections"
+    improved: "Coordinated domestic and international travel for a 15-person leadership team using [travel platform], booking [number]+ trips per quarter with [zero missed connections]"
     reason: "Names the tool and frequency; placeholders mark where the candidate fills in their real trip count."
   - weak: "Processed expense reports"
-    improved: "Processed $200K+ in monthly expense reports with 100% accuracy, reconciling against budget before month-end close"
+    improved: "Processed $200K+ in monthly expense reports with [X%] accuracy, reconciling against budget before month-end close"
     reason: "Converts a routine task into a dollar figure and an accuracy standard an employer can compare against their own volume."
   - weak: "Responsible for office supplies and filing"
-    improved: "Reduced office supply costs 15% by renegotiating vendor contracts, while maintaining a document retrieval system rated 40% faster by staff surveys"
+    improved: "Reduced office supply costs [X%] by renegotiating vendor contracts, while maintaining a document retrieval system rated [X%] faster by staff surveys"
     reason: "Ties two routine tasks to measurable outcomes (cost, speed) instead of listing them as bare responsibilities."
 
 salaryOutlook:

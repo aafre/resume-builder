@@ -33,12 +33,12 @@ summaryExamples:
     summary: >
       HR generalist with 4+ years supporting the full employee lifecycle for a 150-person
       company. Manages full-cycle recruitment, onboarding, and benefits administration in ADP
-      Workforce Now, reducing average time-to-fill from 45 to 30 days.
+      Workforce Now, reducing average time-to-fill from [X] to [Y] days.
   - level: senior
     summary: >
       SHRM-CP certified HR generalist with 6+ years supporting 300+ employees across 3 offices.
       Owns recruitment, employee relations, and compliance in Workday, reducing voluntary
-      turnover 18% through improved onboarding and structured engagement programs.
+      turnover [X%] through improved onboarding and structured engagement programs.
 
 skills:
   hard:
@@ -76,7 +76,7 @@ mistakes:
   - mistake: "Omitting the HRIS platform by name"
     fix: "Say Workday or ADP, not \"HR software.\" A generalist role often requires ramp-up time in a specific system, and naming yours signals a faster start."
   - mistake: "Listing turnover reduction with no baseline"
-    fix: "State both numbers: \"Reduced voluntary turnover from 28% to 10%\" is verifiable; \"reduced turnover\" alone is not."
+    fix: "State both numbers: \"Reduced voluntary turnover from [X%] to [Y%]\" is verifiable; \"reduced turnover\" alone is not."
   - mistake: "Treating recruiting coordination and full HR generalist duties as interchangeable"
     fix: "A recruiting coordinator screens resumes and schedules interviews. An HR generalist also owns benefits, compliance, and employee relations. If your role was recruiting-only, say so precisely rather than implying broader generalist scope."
 
@@ -85,13 +85,13 @@ bulletRewrites:
     improved: "Supported HR operations for 300+ employees across 3 office locations, owning recruitment, benefits administration, and employee relations"
     reason: "Names the headcount, the number of locations, and the specific functions owned — turning a vague claim into a scoped set of responsibilities."
   - weak: "Managed recruitment process"
-    improved: "Managed full-cycle recruitment filling 50+ positions annually with a 45-day average time-to-fill, sourcing through iCIMS and LinkedIn Recruiter"
+    improved: "Managed full-cycle recruitment filling 50+ positions annually with a [X]-day average time-to-fill, sourcing through iCIMS and LinkedIn Recruiter"
     reason: "Adds volume, a speed metric, and the specific tools used, which together let a hiring manager compare directly against their own recruiting benchmarks."
   - weak: "Handled employee relations issues"
-    improved: "Investigated and resolved 50+ employee relations cases annually, maintaining full documentation and zero escalations to legal"
+    improved: "Investigated and resolved 50+ employee relations cases annually, maintaining full documentation and [zero escalations to legal]"
     reason: "Quantifies caseload and states an outcome (zero legal escalations) that signals thoroughness without disclosing confidential case details."
   - weak: "Administered benefits for employees"
-    improved: "Administered health, 401(k), and PTO benefits for 500+ employees with 99% enrollment accuracy, leading annual open enrollment achieving 95% voluntary-benefit participation"
+    improved: "Administered health, 401(k), and PTO benefits for 500+ employees with [X%] enrollment accuracy, leading annual open enrollment achieving [X%] voluntary-benefit participation"
     reason: "Names the specific benefit types, the headcount, and two accuracy/participation metrics instead of describing benefits administration as a single undifferentiated task."
 
 salaryOutlook:
