@@ -8,6 +8,101 @@ meta:
   metaDescription: "Electrician resume example with certifications and installation experience."
   category: trades
   priority: 0.7
+  lastmod: "2026-09-23"
+
+answerBlock: >
+  A strong electrician resume leads with your license level (apprentice, journeyman, master)
+  and state, then proves scope with project scale (panel amperage, square footage, commercial
+  vs. residential) and a clean safety record — not just "installed and repaired electrical
+  systems."
+
+howToWrite:
+  - "State your license level and state up front (Journeyman Electrician, TX License #12345) — this is a legal qualification, not a resume nicety, and most postings filter on it before reading further."
+  - "Name project scale: panel amperage, building square footage, or voltage class. 'Installed electrical systems' means something different at a 2,000 sq ft home versus a 500,000 sq ft commercial site."
+  - "State your safety record explicitly (e.g. 'zero incidents over 8 years') — safety history is a hard screening factor for commercial and industrial employers."
+  - "Cite the code standard you work to (NEC 2023, local amendments) — it signals you stay current, which matters because code updates on a regular cycle."
+  - "If you led or trained apprentices, quantify the crew size — it's evidence of readiness for a foreman or lead role even without that title."
+  - "List your specific tools/test equipment (multimeters, thermal imaging, amp clamps) alongside troubleshooting outcomes — 'troubleshooting skills' alone is a claim, the tool plus the result is evidence."
+
+summaryExamples:
+  - level: entry
+    summary: >
+      Licensed apprentice electrician with hands-on training in residential wiring, panel
+      installation, and NEC code compliance. Completed 2,000+ hours of a 4-year apprenticeship
+      program assisting journeymen on 50+ projects. Strong safety record and eager to advance
+      toward journeyman licensure.
+  - level: mid
+    summary: >
+      Licensed journeyman electrician with 8+ years of experience in commercial and
+      residential electrical systems. Leads crews of 3-4 on installations up to 500K sq ft,
+      maintains zero workplace incidents, and completes projects on schedule with a 98%
+      customer satisfaction rating.
+  - level: senior
+    summary: >
+      Master electrician with 15+ years across commercial, industrial, and residential
+      projects, including 5 years supervising crews of 8+ and managing code-compliance
+      sign-off for general contractors. Maintains a 100% first-submission inspection pass
+      rate and zero safety incidents career-wide.
+
+skills:
+  hard:
+    - Blueprint & Schematic Reading
+    - NEC Code Compliance
+    - Panel & Circuit Installation
+    - Conduit Bending
+    - Load Calculations
+    - Motor Controls & PLC Systems
+  soft:
+    - Crew Leadership & Apprentice Mentoring
+    - Job-Site Safety Enforcement
+    - Client Communication on Technical Issues
+    - Coordination With General Contractors & Other Trades
+
+certifications:
+  - State Journeyman or Master Electrician License
+  - OSHA 10/30-Hour Construction Safety
+  - NFPA 70E Arc Flash Safety
+  - First Aid/CPR Certified
+
+mistakes:
+  - mistake: "Writing \"installed and repaired electrical systems\" with no scale or license detail"
+    fix: "State your license level and the project scale: \"Licensed journeyman electrician installing systems for commercial buildings up to 500K sq ft.\" Without licensure and scale, the bullet could describe a helper or a master electrician equally."
+  - mistake: "Omitting the safety record"
+    fix: "State it directly: \"Zero workplace incidents over 8-year career.\" Commercial and industrial employers screen for safety history as a hard filter, especially for crews handling live electrical work."
+  - mistake: "Not naming the code standard worked to"
+    fix: "Cite it: \"Ensured all work complied with NEC 2023 code requirements.\" Code updates on a cycle, so naming the version signals you stay current rather than working from outdated training."
+  - mistake: "Listing \"troubleshooting\" as a skill with no tool or outcome"
+    fix: "Pair the tool with the result: \"Used multimeters and thermal imaging to diagnose faults, reducing average repair time by 25%.\" A skill word alone is a claim; the tool and outcome are evidence."
+
+bulletRewrites:
+  - weak: "Installed and maintained electrical systems"
+    improved: "Installed and maintained electrical systems for commercial buildings up to 500K sq ft, leading a crew of 3-4 apprentices on each project"
+    reason: "Adds project scale and crew leadership, converting a generic duty into evidence of both technical scope and leadership readiness."
+  - weak: "Diagnosed and fixed electrical problems"
+    improved: "Diagnosed electrical faults using multimeters, amp clamps, and thermal imaging, reducing average repair time by [X%] and maintaining a [X%] first-visit resolution rate"
+    reason: "Names the diagnostic tools and frames the work as measurable efficiency, not just a task description; placeholders mark where real figures go."
+  - weak: "Followed safety procedures on the job"
+    improved: "Maintained zero safety incidents over [number] years while enforcing PPE requirements and conducting job-site safety briefings for crews of [number]"
+    reason: "Converts a passive compliance statement into a verifiable safety track record with crew scope."
+  - weak: "Worked on residential and commercial jobs"
+    improved: "Completed electrical rough-in for [number]+ new commercial construction projects and [number]+ residential service panel installations ranging 100-400 amps"
+    reason: "Replaces a vague scope claim with counted project types and technical specifics (amperage range) that prove depth across both settings."
+
+salaryOutlook:
+  median: "$63,190/year ($30.38/hour)"
+  growth: "Projected to grow 9% from 2025 to 2035 (much faster than average)"
+  source: "https://www.bls.gov/ooh/construction-and-extraction/electricians.htm"
+  asOf: "2026-09-23"
+
+customFaqs:
+  - question: "Do I need my journeyman license listed on my electrician resume?"
+    answer: "Yes, explicitly — state your license level (apprentice, journeyman, or master) and issuing state. Many postings legally require a specific license level to perform certain work, so this is one of the first things a hiring contractor screens for."
+  - question: "How do I show electrician experience without exact project numbers?"
+    answer: "Estimate from your typical workload — for example, if you completed roughly one residential panel install per week over a year, that's a reasonable annual estimate. A conservative, clearly-scoped number beats no number."
+  - question: "What safety information should an electrician put on a resume?"
+    answer: "State your safety record directly (e.g., years without an incident), plus any OSHA or NFPA 70E arc-flash training. Commercial and industrial employers treat safety history as a hard screening factor, not a soft skill."
+  - question: "Should I mention specific tools like thermal imaging cameras or multimeters?"
+    answer: "Yes — naming your diagnostic tools alongside a troubleshooting outcome (e.g., reduced repair time) is stronger evidence than the word \"troubleshooting\" alone, and it matches how employers describe the role in job postings."
 
 resume:
   template: professional
