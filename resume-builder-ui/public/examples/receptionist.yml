@@ -95,7 +95,7 @@ bulletRewrites:
     improved: "Managed office supply inventory and incoming/outgoing mail for a 50-person office, cutting supply costs by [X%] through consolidated ordering"
     reason: "Shows ownership of a process with a measurable outcome instead of listing a task with no context for its scale."
   - weak: "Good with people and organized"
-    improved: "Maintained 99% positive visitor feedback while managing a waiting area serving 80+ patients daily across two providers"
+    improved: "Maintained [X%] positive visitor feedback while managing a waiting area serving 80+ patients daily across two providers"
     reason: "Replaces a subjective self-description with a verifiable outcome tied to the actual front-desk workload."
 
 salaryOutlook:

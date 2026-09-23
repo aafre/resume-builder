@@ -34,7 +34,7 @@ summaryExamples:
   - level: mid
     summary: >
       Full-stack software engineer with 4+ years building and scaling web applications in
-      React, Node.js, and PostgreSQL. Reduced API response time by 60% through caching and
+      React, Node.js, and PostgreSQL. Reduced API response time by [X%] through caching and
       query optimization, and built a component library adopted by 5 product teams.
   - level: senior
     summary: >
