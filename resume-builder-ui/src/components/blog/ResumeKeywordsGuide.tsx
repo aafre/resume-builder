@@ -315,7 +315,7 @@ export default function ResumeKeywordsGuide() {
               <p className="text-lg leading-relaxed text-ink/60">
                 Some job postings miss common keywords that ATS databases still
                 expect. Cross-reference the posting with our{" "}
-                <Link to="/blog/resume-keywords-by-industry" className="text-accent-text hover:underline">
+                <Link to="/blog/resume-keywords-guide" className="text-accent-text hover:underline">
                   resume keywords by industry breakdown
                 </Link>{" "}
                 or browse the{" "}
@@ -379,7 +379,7 @@ export default function ResumeKeywordsGuide() {
 
         <p className="text-lg leading-relaxed text-ink/60 mb-8">
           Need deeper industry breakdowns? Our{" "}
-          <Link to="/blog/resume-keywords-by-industry" className="text-accent-text hover:underline">
+          <Link to="/blog/resume-keywords-guide" className="text-accent-text hover:underline">
             resume keywords by industry guide
           </Link>{" "}
           has expanded lists for each sector below.
@@ -1001,7 +1001,7 @@ export default function ResumeKeywordsGuide() {
               &mdash; detailed step-by-step with matching strategies
             </li>
             <li>
-              <Link to="/blog/resume-keywords-by-industry" className="text-accent-text hover:underline">
+              <Link to="/blog/resume-keywords-guide" className="text-accent-text hover:underline">
                 Resume Keywords by Industry
               </Link>{' '}
               &mdash; expanded keyword lists for 10+ sectors
