@@ -89,13 +89,13 @@ bulletRewrites:
     improved: "Built a full-stack task management app using React, Node.js, and MongoDB, implementing user authentication and a REST API consumed by [number]+ test users"
     reason: "Names the exact stack, the feature set, and a usage scale — turning a vague 'built projects' claim into a specific, defensible piece of work."
   - weak: "Helped students with programming"
-    improved: "Served as Teaching Assistant for Intro to Programming, leading weekly labs for 30 students and creating supplemental study guides that improved average exam scores by 12%"
+    improved: "Served as Teaching Assistant for Intro to Programming, leading weekly labs for 30 students and creating supplemental study guides that improved average exam scores by [X%]"
     reason: "Converts informal helping into a titled, recurring responsibility with a measurable outcome (exam score improvement)."
   - weak: "Did IT support on campus"
-    improved: "Provided technical support to 500+ students and faculty, documenting solutions in a knowledge base that reduced repeat tickets by 25%"
+    improved: "Provided technical support to 500+ students and faculty, documenting solutions in a knowledge base that reduced repeat tickets by [X%]"
     reason: "Adds scale (500+ users) and a process improvement with a measured result, not just a task description."
   - weak: "Fixed a website for a nonprofit"
-    improved: "Redesigned a nonprofit's website on WordPress, building a new donation page that increased online contributions by 40% in the first quarter"
+    improved: "Redesigned a nonprofit's website on WordPress, building a new donation page that increased online contributions by [X%] in the first quarter"
     reason: "Names the platform, the specific deliverable (donation page), and a business outcome the work directly caused."
 
 resume:

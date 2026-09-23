@@ -21,7 +21,7 @@ howToWrite:
   - "Turn your capstone or class project into a bullet with a real deliverable and a number (survey size, dashboard users, campaign reach) — a graded assignment is legitimate resume evidence when framed as work product."
   - "List any part-time or campus job even if it's unrelated to your major. Cash handling, scheduling, and customer service under pressure are transferable signals a hiring manager screens for."
   - "Name the specific software from your coursework (Tableau, SQL, Adobe Creative Suite, Excel) rather than writing 'proficient in data tools' — ATS keyword filters match the tool name, not the category."
-  - "Quantify a leadership role by scope: how many members you led, how large a budget you managed, how much membership grew. 'Active member' says nothing; 'grew club membership from 30 to 75' does."
+  - "Quantify a leadership role by scope: how many members you led, how large a budget you managed, how much membership grew. 'Active member' says nothing; 'grew club membership from [X] to [Y]' does."
   - "Keep it to one page. A college student resume with academic projects, one part-time job, and one leadership role fills a page without padding."
 
 summaryExamples:
@@ -34,7 +34,7 @@ summaryExamples:
     summary: >
       Marketing student with one completed internship and hands-on experience managing social
       accounts and campus events. Applies classroom analytics training to real engagement data,
-      with a capstone project that increased a nonprofit partner's donations by 30%.
+      with a capstone project that increased a nonprofit partner's donations by [X%].
   - level: senior
     summary: >
       Graduating marketing senior with a completed internship, a data-analytics minor, and 18
@@ -78,10 +78,10 @@ mistakes:
 
 bulletRewrites:
   - weak: "Worked on marketing projects for class"
-    improved: "Developed a full digital marketing plan for a local nonprofit as a capstone project, presenting to a panel of [number] marketing professionals and resulting in a 30% donation increase"
+    improved: "Developed a full digital marketing plan for a local nonprofit as a capstone project, presenting to a panel of [number] marketing professionals and resulting in a [X%] donation increase"
     reason: "Names the deliverable, the audience, and the measurable outcome — turning a class assignment into evidence of applied skill."
   - weak: "Active member of student organizations"
-    improved: "Served as Vice President of the Marketing Club, growing membership from 30 to 75 students and organizing [number] networking events per semester"
+    improved: "Served as Vice President of the Marketing Club, growing membership from [X] to [Y] students and organizing [number] networking events per semester"
     reason: "Replaces a vague membership claim with a specific title, a growth number, and a recurring responsibility."
   - weak: "Good at Excel and data analysis"
     improved: "Built pivot-table dashboards analyzing [dataset] for a market research project surveying 200+ respondents, presenting findings to inform a go/no-go recommendation"

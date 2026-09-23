@@ -33,13 +33,13 @@ summaryExamples:
   - level: mid
     summary: >
       Math and science tutor with 2+ years of experience helping grades 6-12 students improve
-      grades and test scores. Has helped 50+ students raise their grade by one letter or more
+      grades and test scores. Has helped 50+ students raise their grade by [one letter grade or more]
       through personalized lesson plans and regular progress tracking with parents.
   - level: senior
     summary: >
       Academic tutor with 4+ years across a learning center and private practice, specializing
-      in SAT/ACT and AP STEM prep. Maintains a 4.8/5.0 average student rating and has guided
-      multiple students from failing grades to A's within a single semester.
+      in SAT/ACT and AP STEM prep. Maintains a [X]/5.0 average student rating and has helped
+      multiple students raise failing grades to passing within [one semester].
 
 skills:
   hard:
@@ -70,7 +70,7 @@ certifications:
 
 mistakes:
   - mistake: "Listing subjects taught with no outcome evidence"
-    fix: "Pair the subject list with a result: '50+ students improved by one letter grade or more' or 'average SAT Math score increase of 120 points.' Subjects alone don't differentiate one tutor from another."
+    fix: "Pair the subject list with a result: '50+ students improved by [a letter grade or more]' or 'average SAT Math score increase of [X] points.' Subjects alone don't differentiate one tutor from another."
   - mistake: "Omitting the grade range or student level served"
     fix: "State it explicitly (grades 6-12, undergraduate Calculus) — learning centers and parents filter tutors by student level before anything else."
   - mistake: "Not mentioning session format or platform"
@@ -80,13 +80,13 @@ mistakes:
 
 bulletRewrites:
   - weak: "Tutored students in math and science"
-    improved: "Provided one-on-one and small-group tutoring in Algebra, Geometry, Chemistry, and Physics for students grades 6-12, helping 50+ students improve grades by one letter or more"
+    improved: "Provided one-on-one and small-group tutoring in Algebra, Geometry, Chemistry, and Physics for students grades 6-12, helping 50+ students improve grades by [one letter grade or more]"
     reason: "Names the exact subjects, the student range, and a measurable outcome across a defined student count."
   - weak: "Made lesson plans for students"
     improved: "Developed customized lesson plans addressing individual learning gaps for [number] active students, tracking progress and reporting to parents on a [weekly/biweekly] basis"
     reason: "Turns a generic planning task into a structured, recurring process with a caseload size and a reporting cadence."
   - weak: "Helped students prepare for tests"
-    improved: "Prepared 30+ students for SAT Math with an average score increase of 120 points through weekly targeted practice tests and error-pattern analysis"
+    improved: "Prepared 30+ students for SAT Math with an average score increase of [X] points through weekly targeted practice tests and error-pattern analysis"
     reason: "Adds the specific exam, a student count, and a quantified score result — the exact evidence a test-prep client screens for."
   - weak: "Built a private tutoring business"
     improved: "Built a private tutoring practice serving 15+ regular students, managing scheduling, billing, and parent communications independently using [scheduling/invoicing tool]"

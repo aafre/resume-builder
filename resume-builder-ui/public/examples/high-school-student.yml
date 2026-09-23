@@ -80,8 +80,8 @@ bulletRewrites:
     improved: "Built a self-employed lawn care client base of 8 regular customers, managing scheduling and billing independently using Square invoicing"
     reason: "Frames informal work as a small business with real operational responsibilities (scheduling, billing), which reads as initiative to an employer."
   - weak: "Started an environmental club"
-    improved: "Founded a school environmental club, growing membership to 25 students and organizing a campus recycling drive that collected 500+ pounds of recyclable materials"
-    reason: "Shows founding initiative plus a measurable outcome (25 members, 500+ pounds), not just that a club exists."
+    improved: "Founded a school environmental club, growing membership to [X] students and organizing a campus recycling drive that collected [Y]+ pounds of recyclable materials"
+    reason: "Shows founding initiative plus a measurable outcome, not just that a club exists — placeholders mark where the real membership and collection totals go."
 
 resume:
   template: minimal
