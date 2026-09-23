@@ -202,6 +202,14 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     metaDescription: 'Internship resume example highlighting academic projects and relevant coursework.',
   },
   {
+    slug: 'no-experience',
+    title: 'No Work Experience',
+    category: 'entry-level',
+    priority: 0.7,
+    metaDescription: 'Free resume example for job seekers with zero paid work history — any age, any stage. Turns volunteer, caregiving, and self-taught skills into a hireable resume.',
+    lastmod: '2026-09-23',
+  },
+  {
     slug: 'entry-level-marketing',
     title: 'Entry Level Marketing',
     category: 'entry-level',
