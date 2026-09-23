@@ -57,9 +57,9 @@ export default function FirstJobResumeTeenager() {
         <p className="text-xl leading-relaxed text-ink/60 font-medium">
           A first-job resume for a teenager works when it treats babysitting, chores,
           volunteering, and school activities as real experience — not filler around
-          an empty work-history section. Add your state's working papers if you're
-          under the legal working age without them, keep it to one page, and lead
-          with what you're reliably available to do.
+          an empty work-history section. If you're under 18, check whether your state
+          requires working papers before you apply, keep the resume to one page, and
+          lead with what you're reliably available to do.
         </p>
 
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
@@ -115,7 +115,7 @@ export default function FirstJobResumeTeenager() {
           settle for you — it's determined by your state's labor department and
           sometimes your school.
         </p>
-        <div className="rounded-lg callout callout-dont/70 callout-dont/80 p-6 my-6">
+        <div className="rounded-lg callout callout-note p-6 my-6">
           <h3 className="font-bold text-ink mb-2">Check before you apply, not after you're hired</h3>
           <p className="text-ink/60">
             Search "[your state] minor work permit" on your state's official
