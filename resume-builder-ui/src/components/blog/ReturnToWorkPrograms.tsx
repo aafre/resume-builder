@@ -77,7 +77,7 @@ const PROGRAMS: Program[] = [
     name: 'Recharge Program',
     region: 'India',
     duration: '6-week paid bootcamp track (confirmed via PayPal’s own newsroom); the program page also references a separate longer track whose length we could not confirm directly',
-    locations: 'Confirmed operating in India (Bangalore, Chennai) via PayPal’s APAC newsroom; the official jobs.recharge landing page did not render enough text for us to confirm other locations',
+    locations: 'Confirmed operating in India via PayPal’s APAC newsroom; the official jobs.recharge landing page did not render enough text for us to confirm other locations',
     eligibility: 'Skilled technologists who have taken a career break for personal or family reasons',
     url: 'https://www.paypal.com/us/webapps/mpp/jobs/recharge',
     verifiedOn: '2026-09-22',
