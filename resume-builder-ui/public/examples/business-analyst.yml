@@ -8,6 +8,105 @@ meta:
   metaDescription: "Business analyst resume example with data analysis and requirements gathering skills."
   category: corporate
   priority: 0.8
+  lastmod: "2026-09-23"
+
+answerBlock: >
+  A strong business analyst resume names the deliverable (BRD, user stories, process maps),
+  the tools you gathered and modeled requirements in (Jira, SQL, Visio), and a business
+  outcome the analysis produced — hours saved, revenue identified, defects reduced — not
+  just "gathered requirements and analyzed data."
+
+howToWrite:
+  - "State your domain up front — finance, healthcare, retail systems — because requirements-gathering technique transfers, but domain knowledge of the systems and regulations doesn't, and hiring managers filter on it."
+  - "Name the deliverable types you produced: BRDs, user stories with acceptance criteria, process flow diagrams, gap analyses. \"Requirements gathering\" alone doesn't tell a hiring manager what artifact you actually handed off."
+  - "List the specific tools by product — Jira, Confluence, SQL, Tableau, Visio — not the category. A business analyst resume that says \"data tools\" instead of \"SQL and Power BI\" reads as unfamiliar with either."
+  - "Quantify the business impact of the analysis, not just the activity: hours saved through automation, dollar value of the business case, number of stakeholders aligned, or defects prevented through better requirements."
+  - "Show the handoff — who you worked with (developers, QA, executives) and how your analysis moved into a decision or a build. A BA resume with no downstream impact reads as documentation, not analysis."
+  - "Distinguish IT/systems business analysis from process-improvement business analysis if your background is mixed — they draw on different keyword sets and different hiring managers screen for them separately."
+
+summaryExamples:
+  - level: entry
+    summary: >
+      Detail-oriented business analyst with a background in data analysis and process
+      documentation, eager to apply requirements-gathering and stakeholder communication skills
+      to cross-functional projects. Proficient in SQL, Excel, and Agile ceremonies.
+  - level: mid
+    summary: >
+      Business analyst with 4+ years bridging business stakeholders and development teams
+      across retail systems projects. Writes user stories and acceptance criteria in Jira,
+      builds process maps in Visio, and has reduced manual reporting time by 30% through
+      requirements-driven automation recommendations.
+  - level: senior
+    summary: >
+      Senior business analyst with 8+ years leading requirements gathering for $5M+
+      technology initiatives in financial services. Mentors junior analysts, facilitates
+      cross-departmental workshops, and has delivered business cases supporting $10M+ in
+      technology investment decisions.
+
+skills:
+  hard:
+    - Requirements Gathering & Documentation (BRD, User Stories)
+    - Process Modeling & Gap Analysis
+    - SQL for Data Analysis
+    - Business Process Mapping (Visio, Lucidchart)
+    - Dashboard & Reporting Tools (Tableau, Power BI)
+    - UAT Test Case Design
+  soft:
+    - Stakeholder Facilitation
+    - Translating Technical Constraints to Business Terms
+    - Workshop Facilitation
+    - Cross-Functional Collaboration
+
+keywords:
+  - Requirements Gathering
+  - Requirements Elicitation
+  - Stakeholder Management
+  - Process Improvement
+  - Gap Analysis
+  - Root Cause Analysis
+  - User Acceptance Testing (UAT)
+  - Business Process Reengineering
+  - Facilitation
+  - Cross-Functional Collaboration
+
+certifications:
+  - Certified Business Analysis Professional (CBAP)
+  - Certified Scrum Product Owner (CSPO)
+  - Lean Six Sigma Green Belt
+
+mistakes:
+  - mistake: "Writing \"gathered requirements\" with no deliverable named"
+    fix: "Say what you actually produced: \"Wrote 40+ user stories with acceptance criteria in Jira for a $5M digital transformation initiative.\" The artifact is what a hiring manager can picture reviewing."
+  - mistake: "Listing SQL or Tableau as a skill with no context for how it was used"
+    fix: "Tie the tool to a task: \"Wrote SQL queries automating a weekly sales report, cutting manual prep time from 4 hours to 20 minutes\" — the tool alone doesn't show proficiency, the outcome does."
+  - mistake: "Describing analysis activity without the business result"
+    fix: "Every gap analysis, process map, or requirements doc should end in an outcome — hours saved, cost avoided, defects reduced. \"Analyzed business processes\" with no result reads as unfinished work."
+  - mistake: "Blurring business analyst duties with project manager duties"
+    fix: "A BA elicits and documents requirements; a PM owns schedule, budget, and delivery. If your resume only lists status reporting and timeline tracking, it reads as a PM resume with the wrong title."
+
+bulletRewrites:
+  - weak: "Gathered requirements for projects"
+    improved: "Led requirements gathering for a $5M digital transformation initiative, producing 40+ user stories with acceptance criteria used by 3 development teams"
+    reason: "Names the deliverable, the dollar scale of the initiative, and who consumed the output — turning a vague activity into a specific, verifiable contribution."
+  - weak: "Analyzed business processes"
+    improved: "Analyzed 12 business processes across the claims workflow, identifying automation opportunities that saved 2,000+ manual hours annually"
+    reason: "Quantifies both the scope of analysis and the business result, which is what distinguishes analysis from documentation."
+  - weak: "Worked with stakeholders on project scope"
+    improved: "Facilitated scoping workshops with stakeholders across 5 departments, resolving [number] conflicting requirements before development began"
+    reason: "Shows facilitation as an active skill with a concrete deliverable (resolved conflicts) rather than a passive \"worked with\" phrase; the placeholder marks where a real count belongs."
+  - weak: "Created reports and dashboards"
+    improved: "Built a Power BI dashboard tracking 50+ KPIs for the leadership team, replacing a manual Excel process that took 6 hours weekly"
+    reason: "Names the tool, the scale (50+ KPIs), and the time saved versus the process it replaced — the comparison is what proves impact."
+
+customFaqs:
+  - question: "What's the difference between a business analyst and a data analyst resume?"
+    answer: "A business analyst resume centers on requirements, process, and stakeholder facilitation — the deliverables are BRDs, user stories, and process maps. A data analyst resume centers on the data itself — queries, statistical analysis, and dashboards built to answer a specific question. If your work is mostly querying and visualizing data rather than gathering requirements, the data analyst example may fit better."
+  - question: "Do I need to know SQL to be a business analyst?"
+    answer: "Not always, but it's increasingly expected, especially at tech and finance companies. If you can write even basic SQL to pull your own data rather than requesting it from an analyst, list it — it signals you can self-serve rather than bottleneck on someone else's time."
+  - question: "How do I show business analyst experience without a large dollar-value project?"
+    answer: "Scale the metric to your actual project: number of stakeholders aligned, hours of manual work automated, number of requirements documented, or percentage reduction in defects after your analysis. The metric doesn't need a dollar sign — it needs to be specific and real."
+  - question: "Should a business analyst resume list Agile or Waterfall experience?"
+    answer: "Yes — name whichever methodology your team actually used (Agile/Scrum, Waterfall, or a hybrid), since it signals what your day-to-day deliverables looked like (sprints and user stories vs. phase-gated BRDs) and many job postings filter on the specific framework."
 
 resume:
   template: professional
