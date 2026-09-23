@@ -15,6 +15,10 @@ export const projectManager: JobKeywordsData = {
   category: 'technology',
   priority: 0.85,
   lastmod: '2026-01-01',
+  // B5 2026-09-23: keywords migrated to /examples/project-manager.yml
+  // (Project Management, Budget Management, Change Management, Stakeholder
+  // Management all present there). 0 impressions 28d. See PR decision table.
+  noindex: true,
 
   keywords: {
     core: [

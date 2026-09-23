@@ -22,6 +22,10 @@ export const softwareEngineer: JobKeywordsData = {
   category: 'technology',
   priority: 0.9,
   lastmod: '2026-02-17',
+  // B5 2026-09-23: keywords migrated to /examples/software-engineer.yml
+  // (Algorithm Design, Data Structures, System Design, React/Node/Docker/K8s
+  // all present there). 0 impressions 28d. See PR decision table.
+  noindex: true,
 
   roleIntro:
     'Hiring teams scan for both technical depth and practical experience. They want to see specific technologies you\'ve used (not just "programming"), evidence of scale (users, transactions, uptime), and proof you can work in modern development environments. Your resume should demonstrate you can ship production code, collaborate with teams, and solve real problems—not just that you\'ve taken courses.',

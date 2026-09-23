@@ -10,6 +10,10 @@ export const registeredNurse: JobKeywordsData = {
   category: 'healthcare',
   priority: 0.8,
   lastmod: '2026-02-02',
+  // B5 2026-09-23: keywords migrated to /examples/registered-nurse.yml
+  // (Patient Care, IV Therapy, Triage, Care Coordination, EMR/Epic/Cerner all
+  // present there). 0 impressions 28d. See PR decision table.
+  noindex: true,
 
   roleIntro:
     'Healthcare recruiters and ATS systems scan for specific clinical competencies, certifications, and EMR experience. Generic terms like "patient care" aren\'t enough — you need to list the exact systems, procedures, and specializations you\'ve worked with. Quantify outcomes (patient loads, satisfaction scores, error reduction) to stand out.',

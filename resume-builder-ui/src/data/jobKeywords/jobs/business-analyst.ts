@@ -11,6 +11,10 @@ export const businessAnalyst: JobKeywordsData = {
   category: 'business',
   priority: 0.85,
   lastmod: '2026-02-10',
+  // B5 2026-09-23: keywords migrated to /examples/business-analyst.yml
+  // (Requirements Gathering, Stakeholder Management, Gap Analysis, Root Cause
+  // Analysis, UAT all present there). 0 impressions 28d. See PR decision table.
+  noindex: true,
 
   roleIntro:
     'Business analysts sit at the intersection of business strategy and technology execution, and hiring managers expect resumes that demonstrate both sides. Your resume must prove you can gather and document requirements, model processes, analyze data, and translate between technical teams and business stakeholders. ATS systems at consulting firms, banks, tech companies, and enterprises filter heavily on methodology keywords (Agile, Waterfall, SAFe), tool proficiency (Jira, Confluence, SQL, Tableau), and deliverable types (BRD, user stories, process maps). This guide covers the 60+ keywords that pass those filters and get your resume in front of hiring managers.',

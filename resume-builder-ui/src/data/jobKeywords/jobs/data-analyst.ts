@@ -16,6 +16,10 @@ export const dataAnalyst: JobKeywordsData = {
   category: 'technology',
   priority: 0.85,
   lastmod: '2026-02-04',
+  // B5 2026-09-23: keywords migrated to /examples/data-analyst.yml (SQL,
+  // Tableau, Power BI, Statistical Analysis, Data Modeling all present
+  // there). 2 impressions/pos 34, 28d. See PR decision table.
+  noindex: true,
 
   roleIntro:
     'Hiring teams want to see that you can translate raw data into actionable business insights. They\'re looking for hands-on SQL skills, experience with visualization tools, and evidence that your analysis drove real business decisions. Show concrete examples where your insights led to measurable outcomes—revenue increases, cost savings, or process improvements.',
