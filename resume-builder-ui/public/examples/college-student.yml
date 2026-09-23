@@ -8,7 +8,87 @@ meta:
   metaDescription: "Free college student resume example with ATS-friendly formatting. Includes coursework, projects, and extracurricular examples. No experience needed."
   category: entry-level
   priority: 0.8
-  lastmod: '2026-02-04'
+  lastmod: '2026-09-23'
+
+answerBlock: >
+  A strong college student resume leads with your major and expected graduation date, then
+  proves you can do the job through coursework projects, campus leadership, and any part-time
+  work — not a vague "hardworking and motivated" summary. Pair a Dean's List GPA with one
+  quantified project result so recruiters see both credentials and output.
+
+howToWrite:
+  - "Put Education above Experience and lead with your major, minor, and expected graduation date — recruiters screening entry-level roles check degree fit before anything else."
+  - "Turn your capstone or class project into a bullet with a real deliverable and a number (survey size, dashboard users, campaign reach) — a graded assignment is legitimate resume evidence when framed as work product."
+  - "List any part-time or campus job even if it's unrelated to your major. Cash handling, scheduling, and customer service under pressure are transferable signals a hiring manager screens for."
+  - "Name the specific software from your coursework (Tableau, SQL, Adobe Creative Suite, Excel) rather than writing 'proficient in data tools' — ATS keyword filters match the tool name, not the category."
+  - "Quantify a leadership role by scope: how many members you led, how large a budget you managed, how much membership grew. 'Active member' says nothing; 'grew club membership from 30 to 75' does."
+  - "Keep it to one page. A college student resume with academic projects, one part-time job, and one leadership role fills a page without padding."
+
+summaryExamples:
+  - level: entry
+    summary: >
+      Sophomore marketing major seeking a summer internship to apply coursework in digital
+      marketing and analytics. Manages a 2,500-follower campus organization account and
+      maintains a 3.6 GPA. Comfortable with Canva, Google Analytics, and Excel from coursework.
+  - level: mid
+    summary: >
+      Marketing student with one completed internship and hands-on experience managing social
+      accounts and campus events. Applies classroom analytics training to real engagement data,
+      with a capstone project that increased a nonprofit partner's donations by 30%.
+  - level: senior
+    summary: >
+      Graduating marketing senior with a completed internship, a data-analytics minor, and 18
+      months of campus leadership experience managing a $15,000 event budget. Seeking a
+      full-time marketing coordinator role to apply coursework and internship experience.
+
+skills:
+  hard:
+    - Google Analytics
+    - Microsoft Excel (Pivot Tables, VLOOKUP)
+    - Tableau
+    - Adobe Creative Suite / Canva
+    - CRM Basics (HubSpot, Salesforce)
+    - Market Research & Surveys
+  soft:
+    - Cross-Functional Collaboration
+    - Public Speaking
+    - Time Management Across Coursework and Activities
+    - Budget Management
+
+keywords:
+  - Digital Marketing
+  - Social Media Marketing
+  - Data Analysis
+  - Market Research
+  - Content Creation
+  - Event Planning
+  - Google Analytics
+  - Microsoft Excel
+  - Team Leadership
+
+mistakes:
+  - mistake: "Listing coursework as a bare list of class names"
+    fix: "Turn one relevant class into a project bullet with a deliverable and number: 'Built a data visualization dashboard analyzing e-commerce trends using Tableau for a capstone project.'"
+  - mistake: "Putting Experience above Education"
+    fix: "As a current student, Education goes first — it's your strongest credential until you have 2+ years of full-time work history."
+  - mistake: "Writing 'various leadership roles' instead of naming the scope"
+    fix: "Name the organization, your title, and a number: members led, budget managed, or membership growth. Vague leadership claims read as filler."
+  - mistake: "Omitting a part-time or retail job because it feels unrelated to the major"
+    fix: "Keep it. Cash handling, training new hires, and hitting customer-satisfaction numbers are transferable skills recruiters screen entry-level candidates for."
+
+bulletRewrites:
+  - weak: "Worked on marketing projects for class"
+    improved: "Developed a full digital marketing plan for a local nonprofit as a capstone project, presenting to a panel of [number] marketing professionals and resulting in a 30% donation increase"
+    reason: "Names the deliverable, the audience, and the measurable outcome — turning a class assignment into evidence of applied skill."
+  - weak: "Active member of student organizations"
+    improved: "Served as Vice President of the Marketing Club, growing membership from 30 to 75 students and organizing [number] networking events per semester"
+    reason: "Replaces a vague membership claim with a specific title, a growth number, and a recurring responsibility."
+  - weak: "Good at Excel and data analysis"
+    improved: "Built pivot-table dashboards analyzing [dataset] for a market research project surveying 200+ respondents, presenting findings to inform a go/no-go recommendation"
+    reason: "Names the tool, the scale of the data, and the business outcome the analysis fed into."
+  - weak: "Helped with events on campus"
+    improved: "Co-organized [number] campus events with attendance of 100-500 students and a combined budget of $15,000, coordinating with vendors and facilities staff"
+    reason: "Adds scale (attendance, budget) and shows cross-team coordination, not just task participation."
 
 resume:
   template: minimal

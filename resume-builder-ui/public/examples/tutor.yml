@@ -8,6 +8,89 @@ meta:
   metaDescription: "Tutor resume example highlighting subject expertise and student success metrics."
   category: education
   priority: 0.7
+  lastmod: '2026-09-23'
+
+answerBlock: >
+  A strong tutor resume is built on student outcomes, not just subjects taught — grade or
+  test-score improvement, session ratings, and retention. Name the specific subjects and
+  exam types (SAT, ACT, AP Calculus) and the age range served, since tutoring is a paid
+  role with real, measurable results rather than a no-experience placeholder.
+
+howToWrite:
+  - "Lead with your outcome track record in the summary — a percentage or count of students who improved, not just years of experience or subjects taught."
+  - "Name the specific subjects and exam types you tutor (Algebra II, AP Chemistry, SAT Math) rather than 'STEM subjects' — parents and learning centers search for the exact subject."
+  - "State the grade range or student level you work with (grades 6-12, undergraduate) so a learning center can match you to their caseload immediately."
+  - "Quantify session format and scale: one-on-one vs. group, typical group size, and sessions per week — it signals how much of a caseload you can realistically take on."
+  - "Include one platform or method detail (in-person, Zoom, a specific LMS) if you tutor online — remote tutoring roles screen for comfort with virtual whiteboard tools."
+  - "Add a rating or feedback metric if you have one (average session rating, percentage of students retained) — it's the single strongest signal a tutor resume can include."
+
+summaryExamples:
+  - level: entry
+    summary: >
+      New tutor with strong subject mastery in Algebra and Geometry from peer tutoring during
+      college, now offering one-on-one sessions for middle and high school students. Patient
+      communicator comfortable breaking down concepts for students who are struggling.
+  - level: mid
+    summary: >
+      Math and science tutor with 2+ years of experience helping grades 6-12 students improve
+      grades and test scores. Has helped 50+ students raise their grade by one letter or more
+      through personalized lesson plans and regular progress tracking with parents.
+  - level: senior
+    summary: >
+      Academic tutor with 4+ years across a learning center and private practice, specializing
+      in SAT/ACT and AP STEM prep. Maintains a 4.8/5.0 average student rating and has guided
+      multiple students from failing grades to A's within a single semester.
+
+skills:
+  hard:
+    - Subject-Specific Instruction (Math, Science)
+    - SAT/ACT/AP Test Preparation
+    - Lesson Plan Development
+    - Progress Tracking & Reporting
+    - Zoom / Virtual Whiteboard Tools
+    - Learning Management Systems
+  soft:
+    - Patience With Struggling Learners
+    - Adapting Explanations to Learning Style
+    - Parent Communication
+    - Building Student Confidence
+
+keywords:
+  - Academic Tutoring
+  - Test Preparation
+  - Lesson Planning
+  - Student Assessment
+  - One-on-One Instruction
+  - Online Tutoring
+  - Progress Reporting
+
+certifications:
+  - National Tutoring Association Certified Tutor
+  - College Board SAT/AP Prep Instructor
+
+mistakes:
+  - mistake: "Listing subjects taught with no outcome evidence"
+    fix: "Pair the subject list with a result: '50+ students improved by one letter grade or more' or 'average SAT Math score increase of 120 points.' Subjects alone don't differentiate one tutor from another."
+  - mistake: "Omitting the grade range or student level served"
+    fix: "State it explicitly (grades 6-12, undergraduate Calculus) — learning centers and parents filter tutors by student level before anything else."
+  - mistake: "Not mentioning session format or platform"
+    fix: "Note in-person vs. online and any specific tool (Zoom, virtual whiteboard) — many current openings are online-only and screen for comfort with the format."
+  - mistake: "No rating, retention, or parent-feedback metric anywhere"
+    fix: "Add one if available: average session rating, percentage of students retained, or a specific parent testimonial theme. It's the strongest trust signal a tutor resume can include."
+
+bulletRewrites:
+  - weak: "Tutored students in math and science"
+    improved: "Provided one-on-one and small-group tutoring in Algebra, Geometry, Chemistry, and Physics for students grades 6-12, helping 50+ students improve grades by one letter or more"
+    reason: "Names the exact subjects, the student range, and a measurable outcome across a defined student count."
+  - weak: "Made lesson plans for students"
+    improved: "Developed customized lesson plans addressing individual learning gaps for [number] active students, tracking progress and reporting to parents on a [weekly/biweekly] basis"
+    reason: "Turns a generic planning task into a structured, recurring process with a caseload size and a reporting cadence."
+  - weak: "Helped students prepare for tests"
+    improved: "Prepared 30+ students for SAT Math with an average score increase of 120 points through weekly targeted practice tests and error-pattern analysis"
+    reason: "Adds the specific exam, a student count, and a quantified score result — the exact evidence a test-prep client screens for."
+  - weak: "Built a private tutoring business"
+    improved: "Built a private tutoring practice serving 15+ regular students, managing scheduling, billing, and parent communications independently using [scheduling/invoicing tool]"
+    reason: "Frames self-employment as a real operating practice with client volume and named operational responsibilities."
 
 resume:
   template: minimal

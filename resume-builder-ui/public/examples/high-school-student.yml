@@ -8,6 +8,80 @@ meta:
   metaDescription: "High school student resume example for part-time jobs and volunteer experience."
   category: entry-level
   priority: 0.7
+  lastmod: '2026-09-23'
+
+answerBlock: >
+  A first high school resume proves reliability, not job history — attendance, coursework,
+  a part-time job or volunteer role, and one adult reference who can vouch for you.
+  Name specific responsibilities (cash handling, tutoring younger students, event setup)
+  instead of "hardworking and responsible," since anyone can claim those traits.
+
+howToWrite:
+  - "Skip the objective statement and write a 2-3 sentence summary naming your grade, GPA if 3.0+, and the type of role you want — employers hiring teens screen for reliability signals fast."
+  - "List volunteer work, babysitting, lawn care, or any self-employed work the same way you'd list a job — title, dates, and what you actually did. Unpaid counts."
+  - "Add school clubs and sports with a real responsibility, not just membership: team captain, club founder, event organizer. 'Member of X club' says nothing an employer can use."
+  - "Include one reference-worthy adult relationship (teacher, coach, volunteer coordinator) even if you don't list contact info directly — mention 'available upon request' so an employer knows references exist."
+  - "State your availability explicitly (weekends, after 3pm weekdays, summers) — for part-time teen hiring, schedule fit often matters as much as the resume content itself."
+  - "Keep it to one page with generous white space. A packed page of filler bullets reads worse than a clean half-page with 3-4 strong ones."
+
+summaryExamples:
+  - level: entry
+    summary: >
+      High school sophomore with strong academic standing and no formal work experience yet,
+      seeking a first part-time role. Reliable and available after school and weekends.
+      Active in student council and comfortable with basic Microsoft Office and Canva.
+  - level: mid
+    summary: >
+      High school junior with over a year of volunteer and self-employed experience, including
+      a lawn care business with 8 regular clients and weekly library volunteering. Elected
+      student council representative for 400+ classmates. Seeking part-time retail or food
+      service work with flexible weekend availability.
+
+skills:
+  hard:
+    - Microsoft Office (Word, Excel, PowerPoint)
+    - Google Workspace
+    - Canva
+    - Basic Cash Handling
+    - Social Media Basics
+  soft:
+    - Reliability & Punctuality
+    - Following Instructions Under Supervision
+    - Communication With Adults and Peers
+    - Time Management Around a School Schedule
+
+keywords:
+  - Customer Service
+  - Reliability
+  - Teamwork
+  - Communication
+  - Time Management
+  - Volunteer Experience
+  - Entry Level
+
+mistakes:
+  - mistake: "Writing a full 'work history' style resume with padded phrases"
+    fix: "Keep it short and specific: what you did, for whom, and for how long. A first resume doesn't need to look like a 10-year-career resume — half a page of real detail beats a full page of filler."
+  - mistake: "Leaving off unpaid work like babysitting, lawn care, or volunteering"
+    fix: "List it exactly like a job — title, dates, responsibilities. Employers hiring teens for a first job care that you showed up reliably, not whether you were paid."
+  - mistake: "No mention of availability or schedule constraints"
+    fix: "State it directly: 'available weekends and after 3pm weekdays.' For part-time and seasonal hiring, this is often the first thing a manager checks."
+  - mistake: "Listing 'hardworking' and 'team player' with nothing to back it up"
+    fix: "Replace the adjective with the evidence: a specific responsibility, a number, or a role title that demonstrates it instead of claiming it."
+
+bulletRewrites:
+  - weak: "Helped at the library"
+    improved: "Volunteered as a Library Assistant, shelving 100+ books daily and supporting a children's reading program serving 20+ kids weekly during summer months"
+    reason: "Turns a vague 'helped' into a named role with a daily task volume and a specific program served."
+  - weak: "Part of student council"
+    improved: "Elected as Junior Class Representative for 400+ students; organized a homecoming dance attended by 500 students in coordination with school administration"
+    reason: "Adds the election, the scale represented, and one concrete event with attendance — evidence of trust and follow-through, not just membership."
+  - weak: "Did lawn care for neighbors"
+    improved: "Built a self-employed lawn care client base of 8 regular customers, managing scheduling and billing independently using Square invoicing"
+    reason: "Frames informal work as a small business with real operational responsibilities (scheduling, billing), which reads as initiative to an employer."
+  - weak: "Started an environmental club"
+    improved: "Founded a school environmental club, growing membership to 25 students and organizing a campus recycling drive that collected 500+ pounds of recyclable materials"
+    reason: "Shows founding initiative plus a measurable outcome (25 members, 500+ pounds), not just that a club exists."
 
 resume:
   template: minimal

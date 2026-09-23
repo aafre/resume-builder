@@ -134,6 +134,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     priority: 0.7,
     metaDescription: 'Tutor resume example highlighting subject expertise and student success metrics.',
     careerOutlook: 'The tutoring industry has been transformed by EdTech, with platforms like Wyzant, Varsity Tutors, and Chegg creating flexible online opportunities that pay $25-$80 per hour depending on subject expertise. Demand is especially strong for STEM and test-prep tutors, and the global online tutoring market is expected to exceed $25 billion by 2028.',
+    lastmod: '2026-09-23',
   },
 
   // Tier 5: Technology
@@ -185,6 +186,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     category: 'entry-level',
     priority: 0.8,
     metaDescription: 'Free college student resume example with ATS-friendly formatting. Includes coursework, projects, and extracurricular examples. No experience needed.',
+    lastmod: '2026-09-23',
   },
   {
     slug: 'high-school-student',
@@ -193,6 +195,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     priority: 0.7,
     metaDescription: 'High school student resume example for part-time jobs and volunteer experience.',
     careerOutlook: 'A well-crafted first resume can make all the difference when applying for part-time jobs, internships, and volunteer positions. Retail, food service, and tutoring roles actively seek high school students, and early work experience builds skills and references that strengthen future college and career applications.',
+    lastmod: '2026-09-23',
   },
   {
     slug: 'internship',
@@ -200,6 +203,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     category: 'entry-level',
     priority: 0.7,
     metaDescription: 'Internship resume example highlighting academic projects and relevant coursework.',
+    lastmod: '2026-09-23',
   },
   {
     slug: 'entry-level-marketing',
