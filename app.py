@@ -1560,6 +1560,8 @@ PRERENDER_DIR = os.path.join(app.static_folder, "prerendered")
 # Path form is slash-stripped, matching `path.strip("/")` in serve().
 NOINDEX_ROUTES = {
     "blog/ai-cover-letter-prompts",
+    "resume-keywords/data-analyst",
+    "resume-keywords/registered-nurse",
 }
 
 # ponytail: explicit allowlist — expand only after per-route dev/field CWV validation
