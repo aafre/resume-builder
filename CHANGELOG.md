@@ -2,6 +2,262 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.30.0] - 2026-09-24
+
+### 🚀 Features
+
+- **nav:** Give anonymous visitors navigation on every breakpoint
+- **a11y:** Add ModalShell, the shared overlay primitive
+- **editor:** Show the resume as a document, not just a form
+- **editor:** Make every delete recoverable, and teach the empty states
+- **editor:** A real skeleton, one h1, and a tab you can find again
+- **landing:** Deal real resumes in the hero instead of a wireframe
+- **seo:** Restructure no-experience guide as 7-step how-to
+- **seo:** Add ATS cluster internal links to de-orphan free-ats-resume-check
+- **analytics:** Add PostHog with heatmaps only, no session recording
+- **analytics:** Wire funnel events across auth, routing, and templates
+- **analytics:** Instrument PDF download and the AI-import funnel
+- **templates:** Add full-screen template reader with view-transition morph
+- **editor:** Expose the real phase of a PDF build
+- **editor:** Say what the workshop is doing during a PDF build
+- **preview:** Rebuild the PDF preview as a sheet on a studio ground
+- **my-resumes:** Morph the card thumbnail into the preview sheet
+- **header:** Give the top nav a travelling rail and a scrolled state
+- **header:** Choreograph the nav's transient states
+- **scanner:** Show each keyword's evidence in the resume itself
+- **blog:** Give every post a reading spine and a gutter contents rail
+- **blog:** Make the index a front page you can navigate
+- **examples:** Show the resumes on the hub, and morph a card into its sheet
+- **seo:** Give the landing pages a tonal spine and a product-led hero
+- **seo:** Wire the fifteen landing pages to the band system
+- **templates:** Give the template sub-pages a spine and one authored moment
+- **legal:** Migrate the legal and static pages, and give the policies a rail
+- **examples:** Extend job-example schema with usefulness fields
+- **examples:** Wire sitemap lastmod to A5 pilot meta.lastmod
+- **blog:** Rewrite three thin-tail posts with answer-first differentiation
+- **blog:** Rewrite returnship hub with verified programs + new career-break guide
+- **seo:** Add Person author entity for Amit
+- **examples:** B3 usefulness content for data-analyst, graphic-designer, marketing-coordinator, entry-level-marketing
+- **examples,blog:** No-experience example page + teenager first-job guide
+- **examples:** Usefulness fields for office/business example roles
+- **examples:** Apply A5 usefulness schema to 4 entry-level roles
+- **examples:** Populate A5 usefulness schema for 5 service/trade roles
+- **seo:** Flag 6 keywords-cluster pages as consolidated (B5)
+- **landing:** Mechanical odometer stats band
+- **landing:** Derive resume count from build date
+- **landing:** Set resume count rate to 520/day
+- **landing:** Advance resume count to today's date after hydration
+- **landing:** Live resume count, current on first view, ticks per minute
+
+### 🐛 Bug Fixes
+
+- **a11y:** Darken stone-warm and mist to clear WCAG AA
+- **a11y:** Move focus rings from Signal Green to Deep Signal
+- **a11y:** Pair warm greys by surface polarity; collapse mist
+- **a11y:** Add skip link and drop the nested banner landmark
+- **chrome:** Let the footer surface show through
+- **a11y:** Give UserMenu expanded state, Escape, and focus return
+- **nav:** Portal the drawer out of the backdrop-filtered header
+- **a11y:** Drop ARIA menu roles UserMenu does not implement
+- **editor:** Make the conversion action the loudest thing in the sidebar
+- **editor:** Stop onboarding opening and closing with a sign-in push
+- **a11y:** Give the editor's destructive and drag controls real targets
+- **a11y:** Make the shared scroll lock actually lock, and use it in the editor
+- **editor:** Bring the mobile drawer onto the system and stop it leaking
+- **css:** Stop animate-pulse moving geometry
+- **a11y:** Move landing accent text onto Deep Signal
+- **a11y:** Keep the hero H1 visible in forced-colors mode
+- **landing:** Let the H1 reach the system's display scale
+- **landing:** Stop the fold cutting the mobile primary CTA in half
+- **a11y:** Accent-text sweep — app shell
+- **a11y:** Point blog prose links at accent-text (#007a48)
+- **a11y:** Sweep blog components onto accent-text + tokens
+- **a11y:** Move seo-page accent text onto Deep Signal
+- **ui:** Replace the non-existent mist token with stone-warm
+- **seo:** Fix pronoun agreement after anchor text change
+- **seo:** Add inbound internal links to reddit page
+- **seo:** Reposition reddit links to preserve content flow
+- **seo:** Restore plural anchor text on ATS templates link
+- **a11y:** Clear sticky header on step anchor jumps
+- **analytics:** Categorise error types instead of sending raw messages
+- **analytics:** Handle blocked posthog load without unhandled rejection
+- **analytics:** Address independent review findings on PR #689
+- **analytics:** Close heatmap URL leak and correct privacy disclosure
+- **analytics:** Stop prerender firing phantom pageviews; don't log posthog key
+- **a11y:** Don't override anchor jumps on direct or cross-route loads
+- **security:** Verify possession of old session before migrating resumes
+- **auth:** Store anonymous access token for migration proof
+- **security:** Revoke public EXECUTE on migrate_user_preferences
+- **security:** Bound the migration compat fallback by account age
+- **security:** Rate limit anonymous resume migration per caller
+- **api:** Make migration log lines identify caller, source and auth path
+- **auth:** Keep orphaned anonymous work recoverable on migration denial
+- **security:** Expire the no-token compat fallback on a wall clock
+- **editor:** Stop the drag grip from spending 44px of dead layout
+- **editor:** Bound the desktop measure
+- **editor:** One source of truth for chrome heights
+- **editor:** Centre the bounded column instead of shoving it at the rail
+- **editor:** True up the mobile action bar reservation
+- **design-system:** Neutralise the chalk-dark surface
+- **my-resumes:** Make the ghost card reachable and put it on tokens
+- **preview:** Fit the sheet to the printed page and hold the last print
+- **scanner:** Make the evidence layer announce itself
+- **blog:** Drop the duplicate reading spine
+- **blog:** Align the card footers and thin the callout spine
+- **examples:** Stop the skeleton wiping the prerendered resume
+- **blog:** Remove the duplicate contents blocks and de-tint the keyword guide
+- **ui:** Four defects found in the browser pass
+- **templates:** Put the spec-sheet label on the documented mono step
+- **blog:** Keep the contents rail sticky through the whole article
+- **ads:** Keep side rails above full-bleed content sections
+- **examples:** Bracket invented outcome metrics in A5 pilots
+- **examples:** Stop double-prefixing salary outlook growth text
+- **examples:** Gate relatedJobs curation on A5 schema, not a slug list
+- **examples:** Refetch when navigating back to the prerendered slug
+- **templates:** Never render noindex ErrorPage on /api/templates failure
+- **seo:** Read every robots meta in the noindex audit
+- **seo:** Match ClaudeBot and OAI-SearchBot for prerendered HTML
+- **seo:** Stop stamping /examples build date, source /blog lastmod honestly
+- **seo:** Keep curated blog lastmod when lastUpdated is unset
+- **seo:** Repair stale llms.txt and blog index links, correct examples count
+- **seo:** Restore 100% free claim, fix stale 24+ job titles count
+- **blog:** Retry cut returnship rows with UA-bypass fetch, restore 5
+- **seo:** Extend Person-author exclusion to the full MIRAGE blog tier
+- **blog:** Keep legacy author bio on protected pages
+- **blog:** Correct PayPal returnship region
+- **blog:** Drop unsourced city detail from PayPal locations
+- **seo:** Sitemap blog lastmod must never move backward
+- **examples:** Retired MS cert name + fabrication-nudging FAQ copy
+- **examples:** Quote data-analyst YAML item so the colon doesn't make it a map
+- **blog:** Correct callout class + working-papers wording in teenager guide
+- **examples:** Quote no-experience YAML item so the colon doesn't make it a map
+- **examples:** Stop preview image retry loop when the webp is missing
+- **examples:** Bracket invented outcome metrics in office/business roles
+- **examples:** Bracket outcome metrics in entry-level role content
+- **examples:** Bracket outcome/achievement metrics above resume: block
+- **examples:** Bracket remaining electrician mistakes[].fix metric
+- **seo:** Narrow B5 noindex set to data-analyst, registered-nurse
+- **blog:** Repoint internal links off retired keywords post
+- **blog:** Drop self-links left by keywords post retirement
+- **analytics:** Strip query/hash from every url/referrer property
+- **analytics:** Strip URLs in root-level $set/$set_once too
+- **blog:** Hide inline contents blocks behind the article rail
+- **blog:** Keep linkless ATS-check outline out of nav landmark
+- **editor:** Guard concurrent resume creates with a ref
+- **editor:** Cancel pending auto-import on manual choice or close
+- **legal:** Skip section rail observer when IntersectionObserver missing
+- **templates:** Lock all start CTAs during resume lookup
+- **sitemap:** Always emit canonical prod host, not build VITE_APP_URL
+- **ui:** AA contrast, breadcrumb wrap, on-palette 404 numeral
+
+### 🚜 Refactor
+
+- **a11y:** Extract the drawer focus trap into a shared hook
+- **chrome:** Drop dead chrome-height variables
+- **a11y:** Move three more overlays onto ModalShell
+- **a11y:** Move LinkInsertion and TemplateStart onto ModalShell
+- **a11y:** Finish the overlay migration - all 15 on ModalShell
+- **editor:** Give resume section cards one on-system definition
+- **editor:** Give the workbench a type spine and stop help repeating
+- **landing:** Drop the accent sheen from the H1
+- **resume-card:** Put the resume card on the design system
+- **my-resumes:** Put the dashboard on the design system
+- **ui:** Put the app shell and auth neutrals on tokens
+- **ui:** Put the modal and dialog neutrals on tokens
+- **ui:** Put the editor surface neutrals on tokens
+- **ui:** Put the scanner and jobs neutrals on tokens
+- **ui:** Put the remaining shared neutrals on tokens
+- **404:** Put NotFound on the design tokens
+- **design-system:** Replace stone-warm tokens with ink/white opacity
+- **templates:** Drop the select-then-start two-click on template cards
+- **templates:** Bring the page body onto the 2026 design system
+- **editor:** Declare the workbench density scale
+- **editor:** Put the section header gap on the block step
+- **editor:** Collapse the nested item containers
+- **editor:** Put the document column on the density scale
+- **editor:** Remove the document-length spine from the side rail
+- **blog:** Put the article callouts on the design system
+- **blog:** Retire the read progress bar, fix the rail's scroll-spy
+- **examples:** Make the resume one document instead of two
+- **templates:** Put the selection modal on the design system
+- **seo:** Put the shared sections on the band system
+- **templates:** One-click start modal on design-system tokens
+
+### 📚 Documentation
+
+- **design:** Capture durable product truth in PRODUCT.md
+- **design:** Add DESIGN.md and sidecar from incumbent system
+- **design:** Sync design authority with the measured contrast pass
+- Move the design system out of CLAUDE.md into DESIGN.md
+- **privacy:** Disclose PostHog analytics and the no-recording stance
+- **design-system:** Document stone-warm -> ink/white opacity swap
+- **seo:** Scope the brand-first title rule to landing and product pages
+- **claude:** Fix Blog Page Update Checklist for new lastmod resolution
+
+### ⚡ Performance
+
+- **landing:** Pause the hero's ambient loops once it scrolls away
+- **landing:** Speed up hero deal loop from 15s to 9s
+
+### 🎨 Styling
+
+- **landing:** Alternate section grounds so the scroll has rhythm
+
+### 🧪 Testing
+
+- **landing:** Guard the hero sheet assets and their byte budget
+- Cover migrate-anonymous-resumes authorization
+- Cover the compat cutoff and migration rate limit
+- Cover the compat window closing
+- **templates:** Cover TemplateCarousel with /api/templates blocked
+- **e2e:** Add noindex regression audit for all sitemap routes
+- **seo:** Standalone noindex-audit config with no auth setup
+- **seo:** Fix noindex-audit networkidle trap, add prerender+env guards
+- **seo:** Wait for the blocked /api/* round trip before reading robots
+- **seo:** Guard sitemap lastmod honesty and NOINDEX_ROUTES leakage
+- Match revamped ErrorPage and LegalDocument copy
+
+### ⚙️ Miscellaneous Tasks
+
+- **chrome:** Delete the unrendered AnnouncementBar
+- **editor:** Delete three unreferenced components and their test
+- **css:** Delete the dead Toastify rules
+- **sitemap:** Bump lastmod for resume-no-experience
+- **sitemap:** Bump lastmod to deploy date for modified pages
+- **build:** Pass VITE_POSTHOG_KEY through docker, CI, and dev scripts
+- **seo:** Apply Wave 1 registry requests (B6, B8a, A4)
+- **seo:** Register first-job-resume-teenager blog route
+- **seo:** Add lastmod to 9 job example entries
+- **sitemap:** Exclude noindexed job-keyword pages from sitemap
+- **seo:** Noindex 2 consolidated keyword pages
+- **seo:** 301 resume-keywords-by-industry to resume-keywords-guide
+
+### Content
+
+- **examples:** Pilot the usefulness fields on 3 roles
+
+### Merge
+
+- Impeccable/foundation into integration/impeccable-ui ([#702](https://github.com/aafre/resume-builder/pull/702))
+- Impeccable/a11y-contrast into integration/impeccable-ui ([#703](https://github.com/aafre/resume-builder/pull/703))
+- Impeccable/global-chrome into integration/impeccable-ui ([#704](https://github.com/aafre/resume-builder/pull/704))
+- Impeccable/modals into integration/impeccable-ui ([#731](https://github.com/aafre/resume-builder/pull/731))
+- Impeccable/editor into integration/impeccable-ui ([#732](https://github.com/aafre/resume-builder/pull/732))
+- Impeccable/landing into integration/impeccable-ui ([#733](https://github.com/aafre/resume-builder/pull/733))
+- Impeccable/hero-overdrive into integration/impeccable-ui ([#734](https://github.com/aafre/resume-builder/pull/734))
+- Impeccable/app-shell-contrast into integration/impeccable-ui ([#741](https://github.com/aafre/resume-builder/pull/741))
+- Impeccable/blog-contrast into integration/impeccable-ui ([#742](https://github.com/aafre/resume-builder/pull/742))
+- Impeccable/seo-contrast into integration/impeccable-ui (PR-B)
+- Impeccable/my-resumes into integration/impeccable-ui (PR-D, WS2)
+- Impeccable/neutral-tokens into integration/impeccable-ui (PR-G)
+- Impeccable/cleanup into integration/impeccable-ui (PR-F)
+- Seo/no-experience-howto-steps into integration/release-2026-08-01
+- Seo/ats-cluster-internal-links into integration/release-2026-08-01
+- Seo/reddit-inbound-links into integration/release-2026-08-01
+- Feat/posthog-analytics into integration/release-2026-08-01
+- Fix/migrate-auth-guard into integration/release-2026-08-01 ([#722](https://github.com/aafre/resume-builder/pull/722))
+- Release-2026-08-01 into integration/impeccable-ui
+
 ## [3.29.1] - 2026-07-14
 
 ### 🐛 Bug Fixes
@@ -16,12 +272,6 @@ All notable changes to this project will be documented in this file.
 
 ## [3.28.2] - 2026-07-12
 
-### 📚 Documentation
-
-- Add robots.txt GCS update gotchas (private ACL, cache purge) ([#640](https://github.com/aafre/resume-builder/pull/640))
-
-## [3.28.1] - 2026-07-12
-
 ### 🚀 Features
 
 - **seo:** Emit HowTo schema on the how-to-write-a-resume guide
@@ -29,15 +279,18 @@ All notable changes to this project will be documented in this file.
 ### 📚 Documentation
 
 - Note robots.txt is served from GCS bucket, not the repo
-
-### ⚡ Performance
-
-- **seo:** Unwrap ATS templates intro from scroll-reveal to fix desktop LCP
+- Add robots.txt GCS update gotchas (private ACL, cache purge) ([#640](https://github.com/aafre/resume-builder/pull/640))
 
 ### ⚙️ Miscellaneous Tasks
 
 - **seo:** Allow ClaudeBot and Applebot-Extended in robots.txt
 - **seo:** Trim llms.txt to high-value links, lead with key facts
+
+## [3.28.1] - 2026-07-12
+
+### ⚡ Performance
+
+- **seo:** Unwrap ATS templates intro from scroll-reveal to fix desktop LCP
 
 ## [3.28.0] - 2026-07-05
 
@@ -1084,6 +1337,7 @@ All notable changes to this project will be documented in this file.
 
 ### 🐛 Bug Fixes
 
+- **editor:** Resolve TypeScript errors in item DnD integration
 - **editor:** Address PR review comments for drag-and-drop
 - **editor:** Scroll to correct position after adding section
 - **editor:** Address PR review feedback
@@ -1128,10 +1382,6 @@ All notable changes to this project will be documented in this file.
 - **EducationSection:** Add item-level drag-and-drop reordering
 - **IconListSection:** Add item-level drag-and-drop reordering
 - **GenericSection:** Add item-level drag-and-drop for list types
-
-### 🐛 Bug Fixes
-
-- **editor:** Resolve TypeScript errors in item DnD integration
 
 ### 🚜 Refactor
 
@@ -1641,6 +1891,7 @@ All notable changes to this project will be documented in this file.
 ### 🚀 Features
 
 - V2 release with OAuth, cloud storage, and resume import [**BREAKING**]
+- V2 release with OAuth, cloud storage, and resume import [**BREAKING**]
 
 ## [0.6.0] - 2025-12-31
 
@@ -1746,7 +1997,6 @@ All notable changes to this project will be documented in this file.
 - **ui:** Add news ticker animation for mobile announcement bar
 - **resume-parser:** Allow users to import their existing resumes (pdf / docx) ([#130](https://github.com/aafre/resume-builder/pull/130))
 - **auth:** Configure OAuth to use custom domain for authentication
-- V2 release with OAuth, cloud storage, and resume import [**BREAKING**]
 
 ### 🐛 Bug Fixes
 
@@ -2089,28 +2339,25 @@ All notable changes to this project will be documented in this file.
 
 ### 🚀 Features
 
+- **ci:** Release after testing
+- Implement automated release management with git-cliff and enforce conventional commits
 - Disable lint for frontend
 - Implement automated release management with git-cliff
 - Implement automated release management with git-cliff
 
 ### 🐛 Bug Fixes
 
-- Update CI pipeline with reusable workflows ([#74](https://github.com/aafre/resume-builder/pull/74))
-
-## [0.1.0] - 2025-07-29
-
-### 🚀 Features
-
-- **ci:** Release after testing
-- Implement automated release management with git-cliff and enforce conventional commits
-
-### 🐛 Bug Fixes
-
-- Fixes text wrap on screen size
 - Update Terms of Service link and unstage package-lock.json
+- Update CI pipeline with reusable workflows ([#74](https://github.com/aafre/resume-builder/pull/74))
 
 ### Fix
 
 - Scroll to top when clicking on footer links to navigate pages
+
+## [0.1.0] - 2025-07-29
+
+### 🐛 Bug Fixes
+
+- Fixes text wrap on screen size
 
 <!-- generated by git-cliff -->
