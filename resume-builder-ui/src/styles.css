@@ -247,10 +247,18 @@
 }
 
 @keyframes odo-roll {
-  from { transform: translateY(calc(var(--n) * -1 * var(--h))); }
+  /* --p: previous digit on a live tick (Odometer `from`); reveal starts on --n */
+  from { transform: translateY(calc(var(--p, var(--n)) * -1 * var(--h))); }
   45%  { filter: blur(0.04em); } /* motion blur at top speed */
   to   { transform: translateY(calc((var(--n) + var(--t) * 10) * -1 * var(--h))); }
 }
+/* Live count: the prerendered digits are the build-date value. With JS on,
+   keep them invisible (box kept, so no CLS) until hydration swaps in the
+   current value and drops [data-stale]; 4s fallback if the bundle fails. */
+@media (scripting: enabled) {
+  .odo[data-stale] { visibility: hidden; animation: odo-unhide 0s 4s forwards; }
+}
+@keyframes odo-unhide { to { visibility: visible; } }
 @keyframes odo-drop {
   from { opacity: 0; transform: translateY(-0.35em); }
 }
