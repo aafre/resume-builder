@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import SEOHead from "./SEOHead";
 import { generateSoftwareApplicationSchema, generateWebSiteSchema, generateFAQPageSchema, generateVideoObjectSchema, wrapInGraph } from "../utils/schemaGenerators";
@@ -13,7 +13,7 @@ import {
   ChevronDownIcon,
 } from "@heroicons/react/24/solid";
 import { TUTORIAL_VIDEO } from "../config/videoContent";
-import { getResumeCount } from "../config/resumeCount";
+import { Odometer, ResumeCount } from "./Odometer";
 
 // Animation-delay for the hero build sequence (consumed by hero-* classes in styles.css).
 // Static values only — the landing route must prerender/hydrate byte-identical.
@@ -25,29 +25,6 @@ const d = (delay: string) => ({ "--d": delay }) as React.CSSProperties;
 // and read as duplicates at this size, so only one is in the stack. Order is
 // the resting front-to-back order; .hero-sheet[data-i] keys off the index.
 const HERO_SHEETS = ["alex_rivera", "jane_doe", "modern-with-icons"] as const;
-
-// Mechanical-counter numerals. Each digit keeps its own glyph as DOM text and
-// the rolling drum is a ::before (.odo-d in styles.css) that starts and ends on
-// that same glyph — so prerender, no-JS, reduced motion and the settled roll
-// all render identically, with nothing to hydrate. Right-hand columns spin more
-// turns; left-hand columns land first, like a real odometer.
-const Odometer = ({ value }: { value: string }) => {
-  const count = value.replace(/\D/g, "").length;
-  let k = 0;
-  const cols = [...value].map((ch, i) => {
-    if (!/\d/.test(ch)) return <span key={i} className="odo-s">{ch}</span>;
-    const fromRight = count - 1 - k;
-    const style = { "--n": ch, "--t": 3 - Math.min(2, fromRight >> 1), "--k": k++ } as React.CSSProperties;
-    return <span key={i} className="odo-d" style={style}>{ch}</span>;
-  });
-  // The columns are separate boxes, so AT would read "1 5 0…"; role="img"
-  // names the whole value once and keeps the DOM text single for crawlers.
-  return (
-    <span role="img" aria-label={value} className="odo" style={{ "--cols": count } as React.CSSProperties}>
-      {cols}
-    </span>
-  );
-};
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -78,14 +55,6 @@ const LandingPage: React.FC = () => {
 
     // No auto-redirect for authenticated users - let them see landing page
   }, [searchParams, navigate]);
-
-  // First render uses the BUILD date so the prerendered HTML and the first
-  // client render are byte-identical (clean hydrateRoot); the effect then
-  // advances it to today's date so the count moves daily between deploys.
-  const [resumeCountValue, setResumeCountValue] = useState(() => getResumeCount(__BUILD_DATE__));
-  useEffect(() => {
-    setResumeCountValue(getResumeCount(new Date().toISOString().slice(0, 10)));
-  }, []);
 
   // Starts the hero build sequence when the card scrolls into view (mobile:
   // the card sits below the CTAs, so a load-triggered run would finish unseen)
@@ -359,7 +328,7 @@ const LandingPage: React.FC = () => {
         <div ref={statsRef} className="odo-band max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-12 sm:gap-0 sm:divide-x sm:divide-ink/10">
           <div className="text-center sm:px-16">
             <p className="font-mono text-5xl md:text-7xl font-normal text-ink tracking-tight">
-              <Odometer value={`${resumeCountValue.toLocaleString("en-US")}+`} />
+              <ResumeCount bandRef={statsRef} />
             </p>
             <p className="mt-5 font-mono text-xs tracking-[0.15em] uppercase text-ink/60">Resumes Created</p>
           </div>
