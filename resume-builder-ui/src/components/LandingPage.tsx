@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import SEOHead from "./SEOHead";
 import { generateSoftwareApplicationSchema, generateWebSiteSchema, generateFAQPageSchema, generateVideoObjectSchema, wrapInGraph } from "../utils/schemaGenerators";
@@ -79,10 +79,13 @@ const LandingPage: React.FC = () => {
     // No auto-redirect for authenticated users - let them see landing page
   }, [searchParams, navigate]);
 
-  // Derived from the BUILD date, not the render date (no new Date()), so the
-  // prerendered HTML and the first client render are byte-identical. This is
-  // what lets the landing route hydrate cleanly under hydrateRoot.
-  const resumeCountValue = getResumeCount(__BUILD_DATE__);
+  // First render uses the BUILD date so the prerendered HTML and the first
+  // client render are byte-identical (clean hydrateRoot); the effect then
+  // advances it to today's date so the count moves daily between deploys.
+  const [resumeCountValue, setResumeCountValue] = useState(() => getResumeCount(__BUILD_DATE__));
+  useEffect(() => {
+    setResumeCountValue(getResumeCount(new Date().toISOString().slice(0, 10)));
+  }, []);
 
   // Starts the hero build sequence when the card scrolls into view (mobile:
   // the card sits below the CTAs, so a load-triggered run would finish unseen)
