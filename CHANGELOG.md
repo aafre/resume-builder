@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.30.1] - 2026-09-24
+
+### 🐛 Bug Fixes
+
+- **seo:** Serve prerendered HTML to facebookexternalhit
+
 ## [3.30.0] - 2026-09-24
 
 ### 🚀 Features
