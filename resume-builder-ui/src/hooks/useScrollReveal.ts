@@ -10,6 +10,11 @@ interface ScrollRevealOptions {
  * Lightweight IntersectionObserver hook that adds a 'revealed' class
  * when the element enters the viewport. Pure DOM class toggle — no
  * React state, no re-renders.
+ *
+ * With `once: false` the observer keeps watching and also maintains an
+ * 'offscreen' class while the element is out of view, so infinite CSS
+ * animations can be paused via animation-play-state instead of burning
+ * main-thread paint forever. 'revealed' is never removed.
  */
 export function useScrollReveal<T extends HTMLElement = HTMLDivElement>({
   threshold = 0,
@@ -42,7 +47,13 @@ export function useScrollReveal<T extends HTMLElement = HTMLDivElement>({
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('revealed');
+            entry.target.classList.remove('offscreen');
             if (once) observer.unobserve(entry.target);
+          } else if (!once) {
+            // Keeps 'revealed' — a one-shot entrance must not replay on every
+            // scroll-back. 'offscreen' is the hook for pausing ambient loops
+            // (animation-play-state) while the element cannot be seen.
+            entry.target.classList.add('offscreen');
           }
         });
       },

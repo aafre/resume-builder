@@ -20,18 +20,18 @@ export default function AIResumeReview() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Before submitting your resume, get a second opinion. AI can catch errors you've missed,
           suggest improvements, and identify issues that might cause your application to be rejected.
           Here's how to use AI effectively for resume review.
         </p>
 
         {/* Quick Answer Box */}
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-green-800 mb-3">
+        <div className="callout callout-do rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-do mb-3">
             🎯 What AI Can Check in Your Resume
           </h3>
-          <ul className="space-y-2 text-accent">
+          <ul className="space-y-2 text-accent-text">
             <li><strong>Grammar & Spelling:</strong> Catch typos and errors</li>
             <li><strong>Consistency:</strong> Tense, punctuation, formatting</li>
             <li><strong>Impact:</strong> Weak vs. strong language</li>
@@ -45,7 +45,7 @@ export default function AIResumeReview() {
           The Complete Resume Review Prompt
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-4">
+        <p className="text-lg leading-relaxed text-ink/60 mb-4">
           Use this comprehensive prompt for a full review:
         </p>
 
@@ -150,36 +150,36 @@ export default function AIResumeReview() {
           Review Checklist
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-4">
+        <p className="text-lg leading-relaxed text-ink/60 mb-4">
           Before submitting, make sure you've checked these areas:
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h3 className="text-lg font-bold text-ink mb-4">Technical Check</h3>
-            <ul className="space-y-2 text-stone-warm">
+            <ul className="space-y-2 text-ink/60">
               <li className="flex items-start gap-2">
-                <span className="text-gray-400">□</span>
+                <span className="text-ink/60">□</span>
                 <span>No spelling errors</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-gray-400">□</span>
+                <span className="text-ink/60">□</span>
                 <span>No grammar errors</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-gray-400">□</span>
+                <span className="text-ink/60">□</span>
                 <span>Consistent tense usage</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-gray-400">□</span>
+                <span className="text-ink/60">□</span>
                 <span>Consistent punctuation</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-gray-400">□</span>
+                <span className="text-ink/60">□</span>
                 <span>Consistent date formats</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-gray-400">□</span>
+                <span className="text-ink/60">□</span>
                 <span>Contact info is correct</span>
               </li>
             </ul>
@@ -187,29 +187,29 @@ export default function AIResumeReview() {
 
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h3 className="text-lg font-bold text-ink mb-4">Content Check</h3>
-            <ul className="space-y-2 text-stone-warm">
+            <ul className="space-y-2 text-ink/60">
               <li className="flex items-start gap-2">
-                <span className="text-gray-400">□</span>
+                <span className="text-ink/60">□</span>
                 <span>Achievements, not just duties</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-gray-400">□</span>
+                <span className="text-ink/60">□</span>
                 <span>Quantified where possible</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-gray-400">□</span>
+                <span className="text-ink/60">□</span>
                 <span>Strong action verbs</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-gray-400">□</span>
+                <span className="text-ink/60">□</span>
                 <span>Relevant keywords included</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-gray-400">□</span>
+                <span className="text-ink/60">□</span>
                 <span>No clichés or buzzwords</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-gray-400">□</span>
+                <span className="text-ink/60">□</span>
                 <span>Tailored to target job</span>
               </li>
             </ul>
@@ -232,52 +232,52 @@ export default function AIResumeReview() {
             <tbody className="divide-y divide-black/[0.06]">
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Weak Verbs</td>
-                <td className="px-4 py-4 text-stone-warm">"Helped with customer issues"</td>
-                <td className="px-4 py-4 text-accent">"Resolved 50+ customer issues daily"</td>
+                <td className="px-4 py-4 text-ink/60">"Helped with customer issues"</td>
+                <td className="px-4 py-4 text-accent-text">"Resolved 50+ customer issues daily"</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">No Metrics</td>
-                <td className="px-4 py-4 text-stone-warm">"Increased sales significantly"</td>
-                <td className="px-4 py-4 text-accent">"Increased sales by 35% in Q2 2025"</td>
+                <td className="px-4 py-4 text-ink/60">"Increased sales significantly"</td>
+                <td className="px-4 py-4 text-accent-text">"Increased sales by 35% in Q2 2025"</td>
               </tr>
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Duty-Focused</td>
-                <td className="px-4 py-4 text-stone-warm">"Responsible for managing team"</td>
-                <td className="px-4 py-4 text-accent">"Led 8-person team that delivered $2M project on time"</td>
+                <td className="px-4 py-4 text-ink/60">"Responsible for managing team"</td>
+                <td className="px-4 py-4 text-accent-text">"Led 8-person team that delivered $2M project on time"</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Vague Claims</td>
-                <td className="px-4 py-4 text-stone-warm">"Excellent communication skills"</td>
-                <td className="px-4 py-4 text-accent">"Presented quarterly results to 200+ stakeholders"</td>
+                <td className="px-4 py-4 text-ink/60">"Excellent communication skills"</td>
+                <td className="px-4 py-4 text-accent-text">"Presented quarterly results to 200+ stakeholders"</td>
               </tr>
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Tense Issues</td>
-                <td className="px-4 py-4 text-stone-warm">"Manage team" (past job)</td>
-                <td className="px-4 py-4 text-accent">"Managed team" (past tense for past roles)</td>
+                <td className="px-4 py-4 text-ink/60">"Manage team" (past job)</td>
+                <td className="px-4 py-4 text-accent-text">"Managed team" (past tense for past roles)</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-yellow-800 mb-3">
+        <div className="callout callout-note rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-note mb-3">
             ⚠️ AI Review Limitations
           </h3>
-          <p className="text-yellow-700 mb-4">
+          <p className="tone-note mb-4">
             Remember that AI review has limits:
           </p>
-          <ul className="list-disc list-inside space-y-2 text-yellow-700">
+          <ul className="list-disc list-inside space-y-2 tone-note">
             <li>Can't verify your claims are truthful</li>
             <li>Doesn't know industry-specific expectations deeply</li>
             <li>May miss context-dependent issues</li>
             <li>Can give inconsistent advice across sessions</li>
           </ul>
-          <p className="text-yellow-700 mt-4">
+          <p className="tone-note mt-4">
             Use AI as one input, not the final word. A human review is still valuable.
           </p>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
+        <div className="my-12 bg-gradient-to-r to-teal-600 text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Ready to Create a Polished Resume?
           </h3>
@@ -286,7 +286,7 @@ export default function AIResumeReview() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Free
           </Link>
@@ -296,19 +296,19 @@ export default function AIResumeReview() {
           Related Resources
         </h2>
 
-        <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
+        <ul className="list-disc list-inside space-y-2 text-lg text-ink/60">
           <li>
-            <Link to="/blog/ai-resume-prompts-hub" className="text-accent hover:underline">
+            <Link to="/blog/ai-resume-prompts-hub" className="text-accent-text hover:underline">
               AI Resume Prompts Hub — Compare All Tools
             </Link>
           </li>
           <li>
-            <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">
+            <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline">
               AI Resume Writing: The Complete Guide
             </Link>
           </li>
           <li>
-            <Link to="/blog/resume-mistakes-to-avoid" className="text-accent hover:underline">
+            <Link to="/blog/resume-mistakes-to-avoid" className="text-accent-text hover:underline">
               10 Critical Resume Mistakes to Avoid
             </Link>
           </li>

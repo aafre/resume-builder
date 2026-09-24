@@ -15,6 +15,21 @@ vi.mock('react-hot-toast', () => ({
 
 import { toast } from 'react-hot-toast';
 
+// Mock the undo toast so the restore closure it is handed can be invoked
+// directly — this is what makes undo testable without rendering a Toaster.
+vi.mock('../../../utils/undoToast', () => ({
+  toastUndo: vi.fn(),
+  UNDO_TOAST_MS: 5000,
+}));
+
+import { toastUndo } from '../../../utils/undoToast';
+
+/** Apply every queued setSections updater in order to a starting array. */
+const applyUpdaters = (
+  calls: ReturnType<typeof vi.fn>['mock']['calls'],
+  start: Section[]
+): Section[] => calls.reduce((acc, [updater]) => updater(acc), start);
+
 describe('useSectionManagement', () => {
   // Test fixtures
   const createMockSections = (): Section[] => [
@@ -433,7 +448,20 @@ describe('useSectionManagement', () => {
   });
 
   describe('handleDeleteEntry', () => {
-    it('should open delete confirmation with entry target', () => {
+    it('should delete immediately without a confirmation dialog', () => {
+      const sections = createMockSections();
+      const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+      act(() => {
+        result.current.handleDeleteEntry(2, 1);
+      });
+
+      expect(mockOpenDeleteConfirm).not.toHaveBeenCalled();
+      const afterDelete = applyUpdaters(mockSetSections.mock.calls, createMockSections());
+      expect(afterDelete[2].content).toEqual(['JavaScript', 'TypeScript']);
+    });
+
+    it('should name what was removed in the undo toast', () => {
       const sections = createMockSections();
       const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
 
@@ -441,13 +469,76 @@ describe('useSectionManagement', () => {
         result.current.handleDeleteEntry(1, 0);
       });
 
-      expect(mockOpenDeleteConfirm).toHaveBeenCalledTimes(1);
-      expect(mockOpenDeleteConfirm).toHaveBeenCalledWith({
-        type: 'entry',
-        sectionIndex: 1,
-        entryIndex: 0,
-        sectionName: 'Experience',
+      expect(toastUndo).toHaveBeenCalledWith('Experience entry removed', expect.any(Function));
+    });
+
+    it('should fall back to the section name for plain list items', () => {
+      const sections = createMockSections();
+      const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+      act(() => {
+        result.current.handleDeleteEntry(2, 0);
       });
+
+      expect(toastUndo).toHaveBeenCalledWith('Item removed from "Skills"', expect.any(Function));
+    });
+
+    // The undo path. If this breaks, a mis-tap is unrecoverable.
+    it('should restore the removed entry at its original index when undone', () => {
+      const sections = createMockSections();
+      const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+      act(() => {
+        result.current.handleDeleteEntry(2, 1); // remove 'React'
+      });
+
+      const [, onUndo] = vi.mocked(toastUndo).mock.calls[0];
+      act(() => {
+        onUndo();
+      });
+
+      const restored = applyUpdaters(mockSetSections.mock.calls, createMockSections());
+      expect(restored[2].content).toEqual(['JavaScript', 'React', 'TypeScript']);
+    });
+
+    it('should keep a sibling edit made inside the undo window', () => {
+      const sections = createMockSections();
+      const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+      act(() => {
+        result.current.handleDeleteEntry(2, 1); // remove 'React'
+      });
+
+      const [, onUndo] = vi.mocked(toastUndo).mock.calls[0];
+      const deleteUpdater = mockSetSections.mock.calls[0][0];
+      let state = deleteUpdater(createMockSections());
+      // User renames a surviving item before pressing Undo
+      state = state.map((section: Section, i: number) =>
+        i === 2 ? { ...section, content: ['JavaScript ES2024', 'TypeScript'] } : section
+      );
+
+      act(() => {
+        onUndo();
+      });
+
+      const undoUpdater = mockSetSections.mock.calls[1][0];
+      expect(undoUpdater(state)[2].content).toEqual([
+        'JavaScript ES2024',
+        'React',
+        'TypeScript',
+      ]);
+    });
+
+    it('should do nothing for an out-of-range entry index', () => {
+      const sections = createMockSections();
+      const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+      act(() => {
+        result.current.handleDeleteEntry(2, 99);
+      });
+
+      expect(mockSetSections).not.toHaveBeenCalled();
+      expect(toastUndo).not.toHaveBeenCalled();
     });
   });
 
@@ -487,8 +578,36 @@ describe('useSectionManagement', () => {
         expect(newSections).toHaveLength(2);
         expect(newSections.find((s: Section) => s.name === 'Experience')).toBeUndefined();
 
-        expect(toast.success).toHaveBeenCalledWith('Section "Experience" deleted');
+        expect(toastUndo).toHaveBeenCalledWith('Section "Experience" removed', expect.any(Function));
         expect(mockCloseDeleteConfirm).toHaveBeenCalledTimes(1);
+      });
+
+      it('should restore the section at its original index when undone', () => {
+        const deleteTarget: DeleteTarget = {
+          type: 'section',
+          sectionIndex: 1,
+          sectionName: 'Experience',
+        };
+
+        const { result } = renderHook(() =>
+          useSectionManagement(createDefaultProps({ deleteTarget }))
+        );
+
+        act(() => {
+          result.current.confirmDelete();
+        });
+
+        const [, onUndo] = vi.mocked(toastUndo).mock.calls[0];
+        act(() => {
+          onUndo();
+        });
+
+        const restored = applyUpdaters(mockSetSections.mock.calls, createMockSections());
+        expect(restored.map((s: Section) => s.name)).toEqual([
+          'Summary',
+          'Experience',
+          'Skills',
+        ]);
       });
 
       it('should delete first section', () => {
@@ -572,7 +691,7 @@ describe('useSectionManagement', () => {
         expect(newSections[0].content).toHaveLength(1);
         expect((newSections[0].content as any[])[0].company).toBe('Company B');
 
-        expect(toast.success).toHaveBeenCalledWith('Entry deleted from "Experience"');
+        expect(toastUndo).toHaveBeenCalledWith('Experience entry removed', expect.any(Function));
         expect(mockCloseDeleteConfirm).toHaveBeenCalledTimes(1);
       });
 
@@ -612,10 +731,10 @@ describe('useSectionManagement', () => {
           result.current.confirmDelete();
         });
 
-        const updater = mockSetSections.mock.calls[0][0];
-        const originalSections = createMockSections();
-        const newSections = updater(originalSections);
-        expect(newSections).toBe(originalSections);
+        // Bails out before touching state — nothing to delete, nothing to undo.
+        expect(mockSetSections).not.toHaveBeenCalled();
+        expect(toastUndo).not.toHaveBeenCalled();
+        expect(mockCloseDeleteConfirm).toHaveBeenCalledTimes(1);
       });
     });
   });

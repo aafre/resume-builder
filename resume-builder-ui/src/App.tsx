@@ -5,11 +5,13 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
+import { initAnalytics, identifyUser } from "./lib/analytics";
 
 // Critical components - loaded immediately
 import Header from "./components/Header";
+import SEOHead from "./components/SEOHead";
 import Footer from "./components/Footer";
 import EnvironmentBanner from "./components/EnvironmentBanner";
 import ScrollToTop from "./components/ScrollToTop";
@@ -91,6 +93,7 @@ const ATSOptimization = lazy(() => import("./components/blog/ATSOptimization"));
 const ATSFormattingRules = lazy(() => import("./components/blog/ATSFormattingRules"));
 const FreeATSResumeCheck = lazy(() => import("./components/blog/FreeATSResumeCheck"));
 const ResumeNoExperience = lazy(() => import("./components/blog/ResumeNoExperience"));
+const FirstJobResumeTeenager = lazy(() => import("./components/blog/FirstJobResumeTeenager"));
 const ProfessionalSummaryExamples = lazy(() => import("./components/blog/ProfessionalSummaryExamples"));
 const ResumeKeywordsGuide = lazy(() => import("./components/blog/ResumeKeywordsGuide"));
 const HumanizeAIResume = lazy(() => import("./components/blog/HumanizeAIResume"));
@@ -122,11 +125,12 @@ const GeminiResumePrompts = lazy(() => import("./components/blog/GeminiResumePro
 const AICoverLetterPrompts = lazy(() => import("./components/blog/AICoverLetterPrompts"));
 const CareerChangeResumeGuide = lazy(() => import("./components/blog/CareerChangeResumeGuide"));
 const ResumeEmploymentGaps = lazy(() => import("./components/blog/ResumeEmploymentGaps"));
+const ResumeAfterCareerBreak = lazy(() => import("./components/blog/ResumeAfterCareerBreak"));
 const ReturnToWorkPrograms = lazy(() => import("./components/blog/ReturnToWorkPrograms"));
 const AIJobDescriptionAnalyzer = lazy(() => import("./components/blog/AIJobDescriptionAnalyzer"));
 const AIResumeReview = lazy(() => import("./components/blog/AIResumeReview"));
 const CustomerServiceResumeKeywordsGuide = lazy(() => import("./components/blog/CustomerServiceResumeKeywordsGuide"));
-const ResumeKeywordsByIndustry = lazy(() => import("./components/blog/ResumeKeywordsByIndustry"));
+// ResumeKeywordsByIndustry removed - route now redirects to /blog/resume-keywords-guide
 
 // Competitor comparison blog posts
 const ResumeIOVsEasyFreeResume = lazy(() => import("./components/blog/ResumeIOVsEasyFreeResume"));
@@ -164,24 +168,80 @@ const LoadingSpinner = () => (
 const BlogLoadingSkeleton = () => (
   <div className="max-w-4xl mx-auto px-4 py-8 min-h-screen">
     <div className="animate-pulse">
-      <div className="h-8 bg-gray-200 rounded-md mb-4"></div>
-      <div className="h-4 bg-gray-200 rounded-md mb-2"></div>
-      <div className="h-4 bg-gray-200 rounded-md mb-2 w-3/4"></div>
-      <div className="h-4 bg-gray-200 rounded-md mb-8 w-1/2"></div>
+      {/* Mirrors the article header: title, dek, then body lines. */}
+      <div className="h-8 bg-ink/[0.07] rounded-md mb-4"></div>
+      <div className="h-4 bg-ink/[0.07] rounded-md mb-2"></div>
+      <div className="h-4 bg-ink/[0.07] rounded-md mb-2 w-3/4"></div>
+      <div className="h-4 bg-ink/[0.07] rounded-md mb-8 w-1/2"></div>
       <div className="space-y-3">
-        <div className="h-4 bg-gray-200 rounded-md"></div>
-        <div className="h-4 bg-gray-200 rounded-md"></div>
-        <div className="h-4 bg-gray-200 rounded-md w-5/6"></div>
+        <div className="h-4 bg-ink/[0.07] rounded-md"></div>
+        <div className="h-4 bg-ink/[0.07] rounded-md"></div>
+        <div className="h-4 bg-ink/[0.07] rounded-md w-5/6"></div>
       </div>
     </div>
   </div>
 );
 
+// Editor route fallback. Mirrors the editor's own layout (section cards +
+// right rail) on the editor's own ground so the Suspense swap doesn't flash a
+// cooler grey or shift anything. `animate-pulse` sits on the individual
+// placeholder bars, never on the layout container: styles.css overrides
+// @keyframes pulse with a scaleY(0.8), which on a full-height wrapper drags the
+// whole column down. It is already neutralised by the global
+// prefers-reduced-motion block in styles.css.
+// ponytail: duplicated in Editor.tsx on purpose — this fallback lives in the
+// main bundle and must not import from the lazy editor chunk.
 const EditorLoadingSkeleton = () => (
-  <div className="h-screen flex items-center justify-center bg-gray-50">
-    <div className="text-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
-      <p className="text-gray-600">Loading Resume Editor...</p>
+  <div className="min-h-screen bg-chalk" role="status" aria-live="polite">
+    <span className="sr-only">Loading your resume editor…</span>
+    <div
+      aria-hidden="true"
+      className="mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8 max-w-4xl lg:max-w-[calc(64rem+296px)] lg:pr-[296px]"
+    >
+      {/* Page heading */}
+      <div className="h-8 w-64 rounded-lg bg-chalk-dark animate-pulse mb-4"></div>
+
+      {/* Contact information card */}
+      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-edit-section">
+        <div className="h-5 w-44 rounded-md bg-chalk-dark animate-pulse mb-4"></div>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div className="h-11 rounded-lg bg-chalk-dark animate-pulse"></div>
+          <div className="h-11 rounded-lg bg-chalk-dark animate-pulse"></div>
+          <div className="h-11 rounded-lg bg-chalk-dark animate-pulse"></div>
+          <div className="h-11 rounded-lg bg-chalk-dark animate-pulse"></div>
+        </div>
+      </div>
+
+      {/* Formatting help strip */}
+      <div className="h-12 rounded-xl border border-gray-200 bg-white mb-edit-section"></div>
+
+      {/* Section cards */}
+      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-edit-section">
+        <div className="h-5 w-40 rounded-md bg-chalk-dark animate-pulse mb-4"></div>
+        <div className="h-24 rounded-lg bg-chalk-dark animate-pulse"></div>
+      </div>
+      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-edit-section">
+        <div className="h-5 w-32 rounded-md bg-chalk-dark animate-pulse mb-4"></div>
+        <div className="h-40 rounded-lg bg-chalk-dark animate-pulse"></div>
+      </div>
+      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-edit-section">
+        <div className="h-5 w-36 rounded-md bg-chalk-dark animate-pulse mb-4"></div>
+        <div className="h-24 rounded-lg bg-chalk-dark animate-pulse"></div>
+      </div>
+    </div>
+
+    {/* Desktop section navigator rail — fixed, exactly as the real one is */}
+    <div
+      aria-hidden="true"
+      className="hidden lg:block fixed right-0 top-header-desktop bottom-0 w-[280px] border-l border-gray-200 bg-white"
+    >
+      <div className="p-3 space-y-2">
+        <div className="h-5 w-24 rounded-md bg-chalk-dark animate-pulse mb-4"></div>
+        <div className="h-11 rounded-lg bg-chalk-dark animate-pulse"></div>
+        <div className="h-11 rounded-lg bg-chalk-dark animate-pulse"></div>
+        <div className="h-11 rounded-lg bg-chalk-dark animate-pulse"></div>
+        <div className="h-11 rounded-lg bg-chalk-dark animate-pulse"></div>
+      </div>
     </div>
   </div>
 );
@@ -219,16 +279,22 @@ function AppContent() {
   return (
   <>
    <ScrollToTop/>
-    <div className="flex flex-col min-h-screen bg-gray-50">
+    <div className="flex flex-col min-h-screen bg-chalk">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-ink focus:px-4 focus:py-3 focus:text-sm focus:font-semibold focus:text-white"
+      >
+        Skip to content
+      </a>
       <EnvironmentBanner />
-      {/* Header */}
-      <header className="bg-white sticky top-0 z-50">
-        <Header />
-      </header>
+      {/* Header — the only banner landmark; it carries its own sticky/glass treatment */}
+      <Header />
 
       {/* Main Content */}
       <main
-        className={`flex-grow ${
+        id="main-content"
+        tabIndex={-1}
+        className={`flex-grow focus:outline-none ${
           isEditorPage ? "px-0" : "px-4 sm:px-6 md:px-8"
         }`}
       >
@@ -521,9 +587,20 @@ function AppContent() {
           <Route
             path="/editor/:resumeId"
             element={
-              <Suspense fallback={<EditorLoadingSkeleton />}>
-                <Editor />
-              </Suspense>
+              <>
+                {/* Client-side entry here otherwise leaves the tab reading
+                    whatever the previous route set. Set at the route so it
+                    also covers the lazy-chunk window. Brand first; noindex
+                    because this is an app route behind a resume id. */}
+                <SEOHead
+                  title="EasyFreeResume — Resume Editor"
+                  description="Edit your resume and download it as a free PDF."
+                  robots="noindex, follow"
+                />
+                <Suspense fallback={<EditorLoadingSkeleton />}>
+                  <Editor />
+                </Suspense>
+              </>
             }
           />
           <Route
@@ -585,6 +662,14 @@ function AppContent() {
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <ResumeNoExperience />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/first-job-resume-teenager"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <FirstJobResumeTeenager />
               </Suspense>
             }
           />
@@ -729,6 +814,7 @@ function AppContent() {
           {/* Client-side redirect fallbacks — server-side 301s in app.py are primary */}
           {[
             { from: "/blog/software-engineer-resume-keywords", to: "/resume-keywords/software-engineer" },
+            { from: "/blog/resume-keywords-by-industry", to: "/blog/resume-keywords-guide" },
             { from: "/blog/customer-service-resume-keywords", to: "/resume-keywords/customer-service" },
             { from: "/blog/how-to-use-resume-keywords-to-beat-ats", to: "/blog/how-to-use-resume-keywords" },
             { from: "/blog/how-to-list-skills-on-resume", to: "/blog/how-to-list-skills" },
@@ -846,6 +932,14 @@ function AppContent() {
             }
           />
           <Route
+            path="/blog/resume-after-career-break"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ResumeAfterCareerBreak />
+              </Suspense>
+            }
+          />
+          <Route
             path="/blog/return-to-work-programs"
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
@@ -874,14 +968,6 @@ function AppContent() {
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <CustomerServiceResumeKeywordsGuide />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/blog/resume-keywords-by-industry"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <ResumeKeywordsByIndustry />
               </Suspense>
             }
           />
@@ -1007,7 +1093,7 @@ function AppContent() {
       )}
 
       {/* Footer - Always visible, static positioning */}
-      <footer id="app-footer" data-nosnippet className="bg-chalk-dark text-stone-warm border-t border-black/[0.06] mt-auto">
+      <footer id="app-footer" data-nosnippet className="bg-chalk-dark text-ink/60 border-t border-black/[0.06] mt-auto">
         <Footer />
       </footer>
     </div>
@@ -1017,7 +1103,16 @@ function AppContent() {
 
 // Wrapper component to access auth context and provide preferences to ConversionProvider
 function AppWithProviders() {
-  const { session, loading: authLoading } = useAuth();
+  const { session, loading: authLoading, user, isAnonymous } = useAuth();
+
+  // Start loading PostHog in the background (lazy chunk, requestIdleCallback)
+  useEffect(() => { initAnalytics(); }, []);
+
+  // Identify authenticated users only — PostHog tracks anonymous users itself,
+  // and identifying them would inflate unique-user counts.
+  useEffect(() => {
+    if (user?.id && !isAnonymous) identifyUser(user.id);
+  }, [user?.id, isAnonymous]);
 
   const { preferences, setPreference } = usePreferencePersistence({
     session,

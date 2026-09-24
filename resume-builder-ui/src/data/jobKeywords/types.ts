@@ -16,6 +16,14 @@ export interface JobKeywordsData {
   priority: number; // Sitemap priority (0.7-0.9)
   lastmod?: string; // Last modified date (YYYY-MM-DD)
 
+  // Consolidation (B5, 2026-09): true when this role's keyword content has been
+  // migrated into a matching /examples/<role> page. The route stays live and
+  // internally linked; it is excluded from the generated sitemap here, and the
+  // actual index-time noindex directive is requested in app.py NOINDEX_ROUTES
+  // (X-Robots-Tag — survives non-JS crawlers, see Mistake #10/#11 in
+  // seo-tracking/mistakes-learned.md). Do not set this without matching evidence.
+  noindex?: boolean;
+
   // Override default H1 if needed
   h1?: string;
 

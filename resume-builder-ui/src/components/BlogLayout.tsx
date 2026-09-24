@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import SEOHead from './SEOHead';
@@ -7,7 +7,8 @@ import { blogPosts } from '../data/blogPosts';
 import AuthorBio from './blog/AuthorBio';
 import RelatedArticles from './blog/RelatedArticles';
 import RevealSection from './shared/RevealSection';
-import { generateFAQPageSchema, generateHowToSchema } from '../utils/schemaGenerators';
+import ArticleRail from './blog/ArticleRail';
+import { generateFAQPageSchema, generateHowToSchema, generatePersonSchema } from '../utils/schemaGenerators';
 import type { HowToStep } from '../types/seo';
 
 const dateFormatOptions: Intl.DateTimeFormatOptions = {
@@ -54,9 +55,23 @@ export default function BlogLayout({
 }: BlogLayoutProps) {
   // Use hardcoded BASE_URL (not window.location.origin) so prerendered HTML
   // gets production canonical URLs instead of http://localhost:4173
+  const bodyRef = useRef<HTMLDivElement>(null);
+
   const currentUrl = typeof window !== 'undefined'
     ? 'https://easyfreeresume.com' + (window.location.pathname.replace(/\/+$/, '') || '/')
     : '';
+
+  // Do-not-touch list (seo-tracking/protected-pages.md, context §5): schema on these
+  // pages must stay exactly as-is — body, meta, title, H1, schema, canonical, internal
+  // links. Two are the always-protected top-5 pages; three are the MIRAGE tier that
+  // also render via BlogLayout. Everything else gets the Person author entity.
+  const isProtectedAuthorPage = [
+    '/blog/resume-no-experience',
+    '/blog/how-why-easyfreeresume-completely-free',
+    '/blog/best-free-resume-builders-2026',
+    '/blog/resume-io-vs-easy-free-resume',
+    '/easyfreeresume-vs-indeed-resume-builder',
+  ].includes(typeof window !== 'undefined' ? window.location.pathname.replace(/\/+$/, '') : '');
 
   return (
     <>
@@ -80,15 +95,17 @@ export default function BlogLayout({
           "description": description,
           "datePublished": publishDate,
           ...(lastUpdated && { "dateModified": lastUpdated }),
-          "author": {
-            "@type": "Organization",
-            "name": "EasyFreeResume",
-            "url": "https://easyfreeresume.com",
-            "logo": {
-              "@type": "ImageObject",
-              "url": "https://easyfreeresume.com/android-chrome-512x512.png"
-            }
-          },
+          "author": isProtectedAuthorPage
+            ? {
+                "@type": "Organization",
+                "name": "EasyFreeResume",
+                "url": "https://easyfreeresume.com",
+                "logo": {
+                  "@type": "ImageObject",
+                  "url": "https://easyfreeresume.com/android-chrome-512x512.png"
+                }
+              }
+            : (({ '@context': _ctx, ...person }) => person)(generatePersonSchema()),
           "publisher": {
             "@type": "Organization",
             "name": "EasyFreeResume",
@@ -118,19 +135,19 @@ export default function BlogLayout({
           </script>
         </Helmet>
       )}
-      <article className="bg-chalk">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <article className="bg-chalk article-shell">
+      <div className="container relative mx-auto px-4 py-8 max-w-4xl">
         {showBreadcrumbs && (
           <nav className="mb-6" aria-label="breadcrumb">
-            <ol className="flex items-center space-x-2 text-sm text-stone-warm">
+            <ol className="flex items-center space-x-2 text-sm text-ink/60">
               <li>
-                <Link to="/" className="hover:text-accent transition-colors">Home</Link>
+                <Link to="/" className="hover:text-accent-text transition-colors">Home</Link>
               </li>
-              <li className="text-mist">/</li>
+              <li className="text-ink/60">/</li>
               <li>
-                <Link to="/blog" className="hover:text-accent transition-colors">Blog</Link>
+                <Link to="/blog" className="hover:text-accent-text transition-colors">Blog</Link>
               </li>
-              <li className="text-mist">/</li>
+              <li className="text-ink/60">/</li>
               <li className="text-ink font-semibold truncate max-w-[200px] sm:max-w-none" title={title}>{title}</li>
             </ol>
           </nav>
@@ -142,11 +159,11 @@ export default function BlogLayout({
             {title}
           </h1>
 
-          <p className="font-display text-lg md:text-xl font-extralight text-stone-warm leading-relaxed mb-6">
+          <p className="font-display text-lg md:text-xl font-extralight text-ink/60 leading-relaxed mb-6">
             {description}
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 text-sm text-stone-warm mb-6">
+          <div className="article-masthead flex flex-wrap items-center gap-4 text-sm text-ink/60 mb-6">
             <time dateTime={publishDate} className="flex items-center gap-1">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
@@ -155,7 +172,7 @@ export default function BlogLayout({
             </time>
 
             {lastUpdated && (
-              <time dateTime={lastUpdated} className="flex items-center gap-1 text-accent">
+              <time dateTime={lastUpdated} className="flex items-center gap-1 text-accent-text">
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
                 </svg>
@@ -175,20 +192,25 @@ export default function BlogLayout({
             {keywords.map((keyword, index) => (
               <span
                 key={index}
-                className={`px-3 py-1 bg-chalk-dark text-stone-warm font-mono text-[10px] tracking-[0.1em] uppercase rounded-full border border-transparent${index >= 5 ? ' hidden sm:inline-flex' : ''}`}
+                className={`px-3 py-1 bg-chalk-dark text-ink/60 font-mono text-[10px] tracking-[0.1em] uppercase rounded-full border border-transparent${index >= 5 ? ' hidden sm:inline-flex' : ''}`}
               >
                 {keyword}
               </span>
             ))}
             {keywords.length > 5 && (
-              <span className="px-3 py-1 text-mist font-mono text-[10px] tracking-[0.1em] sm:hidden">
+              <span className="px-3 py-1 text-ink/60 font-mono text-[10px] tracking-[0.1em] sm:hidden">
                 +{keywords.length - 5} more
               </span>
             )}
           </div>
         </header>
 
-        <div className="prose prose-lg max-w-none">
+        {/* Built from the article's own h2 elements at mount — see ArticleRail.
+            Left gutter, >=1360px, absolutely positioned: no post file changed
+            and the article column cannot shift. */}
+        <ArticleRail bodyRef={bodyRef} />
+
+        <div ref={bodyRef} className="prose prose-lg max-w-none article-body">
           <div className="bg-chalk-dark rounded-2xl p-4 sm:p-6 md:p-12 border border-black/[0.04]">
             {children}
           </div>
@@ -199,7 +221,7 @@ export default function BlogLayout({
         </RevealSection>
 
         <RevealSection variant="fade-up">
-          <AuthorBio />
+          <AuthorBio legacy={isProtectedAuthorPage} />
         </RevealSection>
 
         {(() => {
@@ -218,7 +240,7 @@ export default function BlogLayout({
         <nav className="mt-8 pt-6 border-t border-black/[0.06] flex justify-between items-center">
           <Link
             to="/blog"
-            className="inline-flex items-center gap-2 text-stone-warm hover:text-ink font-semibold transition-colors"
+            className="inline-flex items-center gap-2 text-ink/60 hover:text-ink font-semibold transition-colors"
           >
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />

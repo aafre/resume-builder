@@ -62,10 +62,10 @@ function FooterColumn({
   links: { path: string; label: string; external?: boolean }[];
   scrollToTop: (path: string) => () => void;
 }) {
-  const linkClass = "inline-flex min-h-11 items-center rounded-md text-gray-600 hover:text-accent font-medium transition-colors duration-200 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2";
+  const linkClass = "inline-flex min-h-11 items-center rounded-md text-ink/60 hover:text-accent-text font-medium transition-colors duration-200 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2";
   return (
     <nav aria-label={title}>
-      <h3 className="font-bold text-gray-900 mb-4 text-sm md:text-base">{title}</h3>
+      <h3 className="font-bold text-ink mb-4 text-sm md:text-base">{title}</h3>
       <ul className="flex flex-col gap-2">
         {links.map(({ path, label, external }) => (
           <li key={path}>
@@ -107,7 +107,7 @@ export default function Footer() {
   };
 
   return (
-    <div className="bg-white/70 border-t border-slate-200/70">
+    <div>
       <div className="container mx-auto px-4 py-10 md:py-12">
         {/* Main Footer Content - Responsive Grid Layout */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 mb-8">
@@ -139,14 +139,14 @@ export default function Footer() {
                 <span className="text-green-700 font-medium">GDPR</span>
               </div>
               <div className="flex items-center gap-2 bg-accent/[0.06] px-3 py-2 rounded-lg">
-                <FaLock className="text-accent" />
+                <FaLock className="text-accent-text" />
                 <span className="text-ink/80 font-medium">SSL</span>
               </div>
               <a
                 href="https://www.trustpilot.com/review/easyfreeresume.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-emerald-50 px-3 py-2 rounded-lg hover:bg-emerald-100 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                className="flex items-center gap-2 bg-emerald-50 px-3 py-2 rounded-lg hover:bg-emerald-100 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
               >
                 <FaStar className="text-emerald-600" />
                 <span className="text-emerald-700 font-medium">Trustpilot</span>

@@ -9,10 +9,6 @@ interface EditorContextType {
   saveError: boolean;
   setSaveError: (value: boolean) => void;
 
-  // Sidebar state
-  isSidebarCollapsed: boolean;
-  setIsSidebarCollapsed: (value: boolean) => void;
-
   // Preview state
   previewIsStale: boolean;
   setPreviewIsStale: (value: boolean) => void;
@@ -55,8 +51,6 @@ export const EditorProvider: React.FC<EditorProviderProps> = ({
   previewLastGenerated: externalPreviewLastGenerated,
   previewIsGenerating: externalPreviewIsGenerating,
 }) => {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-
   // Use external values if provided, otherwise use internal state (for backwards compatibility)
   const [internalLastSaved, setInternalLastSaved] = useState<Date | null>(null);
   const [internalIsSaving, setInternalIsSaving] = useState(false);
@@ -83,8 +77,6 @@ export const EditorProvider: React.FC<EditorProviderProps> = ({
       setIsSaving: setInternalIsSaving,
       saveError,
       setSaveError: setInternalSaveError,
-      isSidebarCollapsed,
-      setIsSidebarCollapsed,
       previewIsStale,
       setPreviewIsStale: setInternalPreviewIsStale,
       previewLastGenerated,

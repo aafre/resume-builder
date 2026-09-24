@@ -8,6 +8,121 @@ meta:
   metaDescription: "Professional software engineer resume example with technical skills and project achievements. ATS-optimized format."
   category: tech
   priority: 0.8
+  lastmod: "2026-09-22"
+
+answerBlock: >
+  A strong software engineer resume names the actual languages, frameworks, and scale of
+  each project (requests/day, users, latency) rather than a generic skills list, and shows
+  ownership of outcomes — what broke, what you shipped, what got faster — because
+  engineering interviews are built around exactly those specifics.
+
+howToWrite:
+  - "Lead each bullet with what you built, not what you were assigned — \"architected,\" \"built,\" \"led\" reads stronger than \"worked on\" or \"helped with.\""
+  - "Name the actual stack per project (React + Node.js + PostgreSQL, not \"full-stack development\") — recruiters and hiring managers keyword-match on specific technologies."
+  - "Attach a scale number to your biggest projects: requests/day, uptime percentage, latency, or user count. \"Built an API\" and \"built an API serving 5M+ requests/day at 99.99% uptime\" are different candidates on paper."
+  - "Separate individual contribution from leadership. If you led a migration or mentored engineers, say how many people and what the outcome was — engineering managers screen for this distinctly from IC work."
+  - "List languages by real proficiency, not alphabetically, and only include what you can defend in a live coding interview — a resume that oversells stack breadth gets caught in the first ten minutes."
+  - "Include your GitHub or a live project link if you have one with real activity — for engineers, a working link is worth more than another bullet point."
+
+summaryExamples:
+  - level: entry
+    summary: >
+      Junior software engineer with a B.S. in Computer Science and internship experience
+      building React and Node.js features for production applications. Comfortable with
+      Git, unit testing, and Agile workflows. Shipped [number] features during a 12-week
+      internship, with code reviewed and merged by a senior engineering team.
+  - level: mid
+    summary: >
+      Full-stack software engineer with 4+ years building and scaling web applications in
+      React, Node.js, and PostgreSQL. Reduced API response time by [X%] through caching and
+      query optimization, and built a component library adopted by 5 product teams.
+  - level: senior
+    summary: >
+      Senior software engineer with 8+ years leading microservices architecture serving
+      1M+ daily users at 99.9% uptime. Manages system design decisions across 3 product
+      teams, mentors junior engineers, and has driven infrastructure cost reductions
+      through containerization and auto-scaling.
+
+skills:
+  hard:
+    - JavaScript / TypeScript
+    - React & Node.js
+    - REST & GraphQL API Design
+    - PostgreSQL / MongoDB
+    - Docker & Kubernetes
+    - CI/CD Pipeline Design
+  soft:
+    - Code Review & Mentorship
+    - Cross-Functional Collaboration With Product/Design
+    - Incident Response & On-Call Ownership
+    - Technical Documentation
+
+keywords:
+  - Software Development
+  - System Design
+  - Algorithm Design
+  - Data Structures
+  - React
+  - Node.js
+  - Docker
+  - Kubernetes
+  - AWS
+  - REST APIs
+  - GraphQL
+  - PostgreSQL
+  - Microservices
+  - Agile/Scrum
+  - CI/CD
+
+certifications:
+  - AWS Certified Developer - Associate
+  - Certified Kubernetes Application Developer (CKAD)
+  - HashiCorp Terraform Associate
+
+mistakes:
+  - mistake: "Listing every language and framework you've ever touched"
+    fix: "Keep the skills section to what you can discuss confidently in a live coding round — an interviewer will pick the item you list and ask you to go deep on it."
+  - mistake: "Writing bullets that describe assigned tasks instead of outcomes"
+    fix: "Replace \"worked on the checkout flow\" with what changed because of your work: \"rebuilt the checkout flow, reducing cart abandonment by [X%].\""
+  - mistake: "No scale numbers anywhere on the resume"
+    fix: "Add at least one per major project: requests/day, uptime, latency, or user count — it's the fastest way to signal production experience versus tutorial-level work."
+  - mistake: "Burying the tech stack in a paragraph instead of the bullet"
+    fix: "State the stack inline in the achievement bullet (\"using React and Node.js\") so an ATS keyword scan and a human skim both catch it in the same sentence."
+  - mistake: "No GitHub, portfolio, or live project link"
+    fix: "Add one if you have active, presentable work — for engineers, a real repo is stronger evidence than another line of prose."
+
+bulletRewrites:
+  - weak: "Worked on the backend API"
+    improved: "Designed and implemented a RESTful API in Node.js and Express serving [number]+ daily requests with [X%] uptime, documented with OpenAPI/Swagger"
+    reason: "Names the stack, adds a scale placeholder, and shows the work was production-grade and documented — not a tutorial exercise."
+  - weak: "Helped improve site performance"
+    improved: "Reduced page load time by [X%] through code splitting, lazy loading, and CDN caching, measured via Lighthouse before and after"
+    reason: "Converts a vague claim into a specific technique plus a measurement method, which is exactly what a performance-focused interview question probes."
+  - weak: "Participated in code reviews"
+    improved: "Led code reviews for a [number]-person team, introducing a lint/type-check gate that reduced production bugs by [X%] over [timeframe]"
+    reason: "Shows initiative (introduced a process) and ties it to an outcome, distinguishing participation from ownership."
+  - weak: "Fixed bugs and maintained the application"
+    improved: "Resolved [number] production incidents during on-call rotation, reducing mean time to resolution from [X] to [Y] by building a shared runbook"
+    reason: "Reframes routine maintenance as measurable incident-response ownership, which senior and staff-level postings specifically screen for."
+
+salaryOutlook:
+  occupation: "Software Developers, Quality Assurance Analysts, and Testers"
+  median: "$134,040/year"
+  growth: "Projected to grow 10% from 2025 to 2035, much faster than average"
+  source: "https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm"
+  asOf: "2026-09-22"
+
+customFaqs:
+  - question: "Should a software engineer resume list every programming language I know?"
+    answer: "No. List the languages you can defend in a live coding interview, ordered by proficiency or by relevance to the job posting, not alphabetically. A resume padded with unfamiliar languages gets exposed in the first technical question."
+  - question: "How do I show project scale without real production metrics?"
+    answer: "Use bracketed placeholders like [X%] or [number] in your draft, then fill them in with your actual numbers before sending — pulling from monitoring dashboards, PR history, or team retros. Never invent a number you can't explain in an interview."
+  - question: "What's the difference between a software engineer and full-stack developer resume?"
+    answer: "A software engineer resume typically emphasizes system design, algorithms, and production-scale ownership across the stack. A full-stack developer resume leans more toward shipping features end-to-end — UI, API, and database — for a specific product. Match the framing to the job title in the posting."
+  - question: "Should I include a GitHub link on my software engineer resume?"
+    answer: "Yes, if it has real, recent activity — a personal project, open-source contributions, or work you can walk through. An inactive or empty GitHub profile is worse than no link at all, since a hiring manager who clicks through and finds nothing loses confidence."
+  - question: "How many bullet points should each job have on a software engineer resume?"
+    answer: "3-5 for recent, relevant roles; 1-2 for older or less relevant ones. Each bullet should earn its place with a specific technology and outcome — a long list of generic bullets is weaker than a short list of measurable ones."
 
 resume:
   template: modern

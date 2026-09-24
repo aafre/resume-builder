@@ -1,8 +1,13 @@
 import { render, screen, waitFor, cleanup } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import TemplateCarousel from '../components/TemplateCarousel';
 import { fetchTemplates } from '../services/templates';
+import { apiClient } from '../lib/api-client';
+
+// Mutable so a test can sign in; hoisted because vi.mock factories are.
+const auth = vi.hoisted(() => ({ session: null as unknown }));
 
 // Mock dependencies
 vi.mock('react-router-dom', async () => {
@@ -13,13 +18,22 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
-vi.mock('../services/templates', () => ({
-  fetchTemplates: vi.fn(),
-}));
+vi.mock('../services/templates', async () => {
+  const actual = await vi.importActual<typeof import('../services/templates')>(
+    '../services/templates'
+  );
+  return {
+    ...actual,
+    fetchTemplates: vi.fn(),
+    // Real STATIC_TEMPLATES: the "blocked API" describe block below asserts
+    // against it directly, and the other tests just see it get replaced by
+    // mockTemplates once the mocked fetchTemplates resolves.
+  };
+});
 
 vi.mock('../contexts/AuthContext', () => ({
   useAuth: () => ({
-    session: null,
+    session: auth.session,
     isAnonymous: true,
     isAuthenticated: false,
     anonMigrationInProgress: false,
@@ -66,6 +80,28 @@ describe('TemplateCarousel', () => {
 
   afterEach(() => {
     cleanup();
+    auth.session = null;
+  });
+
+  it('locks every start CTA while one existing-resume lookup is pending', async () => {
+    auth.session = { access_token: 'token' };
+    // Never resolves: the lookup stays in flight for the whole test.
+    (apiClient.get as ReturnType<typeof vi.fn>).mockReturnValue(new Promise(() => {}));
+    render(
+      <MemoryRouter>
+        <TemplateCarousel />
+      </MemoryRouter>
+    );
+    await waitFor(() => expect(screen.getByAltText('Template 1')).toBeInTheDocument());
+
+    const ctas = screen.getAllByRole('button', { name: /start with this template/i });
+    await userEvent.click(ctas[0]);
+
+    const all = screen.getAllByRole('button', { name: /start with this template|checking/i });
+    expect(all).toHaveLength(mockTemplates.length);
+    all.forEach((b) => expect(b).toBeDisabled());
+    await userEvent.click(all[1]);
+    expect(apiClient.get).toHaveBeenCalledTimes(1);
   });
 
   it('renders images with correct loading attributes', async () => {
@@ -96,5 +132,99 @@ describe('TemplateCarousel', () => {
     // All should have decoding="async"
     expect(img1).toHaveAttribute('decoding', 'async');
     expect(img3).toHaveAttribute('decoding', 'async');
+  });
+
+  it('offers a start CTA on every card, not just a selected one', async () => {
+    render(
+      <MemoryRouter>
+        <TemplateCarousel />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByAltText('Template 1')).toBeInTheDocument();
+    });
+
+    // The old design put the real CTA only on the "selected" card and gave the
+    // others a button that did nothing but select. Every card starts now.
+    expect(
+      screen.getAllByRole('button', { name: /start with this template/i })
+    ).toHaveLength(mockTemplates.length);
+  });
+
+  it('opens the reader from a card and steps through templates with the arrow keys', async () => {
+    const user = userEvent.setup();
+    render(
+      <MemoryRouter>
+        <TemplateCarousel />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByAltText('Template 1')).toBeInTheDocument();
+    });
+
+    await user.click(
+      screen.getByRole('button', { name: /read the template 2 template at full size/i })
+    );
+
+    const dialog = await screen.findByRole('dialog');
+    expect(dialog).toHaveTextContent('Template 2');
+    expect(screen.getByAltText('Template 2 resume template preview')).toBeInTheDocument();
+
+    // jsdom has no startViewTransition, so this exercises the plain-update
+    // fallback path — which is also what Firefox gets.
+    await user.keyboard('{ArrowRight}');
+    expect(
+      await screen.findByAltText('Template 3 resume template preview')
+    ).toBeInTheDocument();
+
+    await user.keyboard('{Escape}');
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+  });
+});
+
+describe('TemplateCarousel with /api/templates blocked', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    (fetchTemplates as ReturnType<typeof vi.fn>).mockRejectedValue(
+      new Error('net::ERR_FAILED')
+    );
+  });
+
+  afterEach(() => {
+    cleanup();
+  });
+
+  it('still renders the static template grid with working CTAs, not an error page', async () => {
+    render(
+      <MemoryRouter>
+        <TemplateCarousel />
+      </MemoryRouter>
+    );
+
+    // The static seed is on-screen from the very first render — no spinner,
+    // no ErrorPage, no NotFound gate to wait past.
+    expect(screen.getByAltText('Professional')).toBeInTheDocument();
+    expect(screen.getByAltText('Elegant')).toBeInTheDocument();
+    expect(screen.getByAltText('Minimalist')).toBeInTheDocument();
+    expect(screen.getByAltText('Modern')).toBeInTheDocument();
+
+    expect(
+      screen.getAllByRole('button', { name: /start with this template/i })
+    ).toHaveLength(4);
+
+    // The background refresh fails; the page says so inline instead of
+    // swapping to a full error/404 surface.
+    await waitFor(() => {
+      expect(
+        screen.getByText(/couldn't refresh live template previews/i)
+      ).toBeInTheDocument();
+    });
+
+    // Content is still there after the failed refresh settles.
+    expect(screen.getByAltText('Professional')).toBeInTheDocument();
   });
 });

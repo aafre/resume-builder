@@ -21,31 +21,31 @@ export default function DeepSeekResumePrompts() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           DeepSeek has emerged as one of the most capable AI models in 2026, rivaling GPT-4 and Claude
           for structured writing tasks. Its reasoning model (DeepSeek-R1) is particularly strong at
           analyzing job descriptions and tailoring resume content. These 20+ prompts are organized by
           task so you can copy, paste, and customize immediately. If you are new to using AI for resumes,
           start with our{' '}
-          <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">
+          <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline">
             comprehensive AI resume writing guide
           </Link>{' '}
           for foundational strategies.
         </p>
 
         {/* Table of Contents */}
-        <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
-          <h2 className="font-bold text-ink mb-4 text-lg">Table of Contents</h2>
+        <nav className="toc-inline bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8" aria-label="On this page">
+          <p className="font-mono text-xs tracking-[0.15em] uppercase text-ink/60 mb-4">Table of Contents</p>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#why-deepseek" className="text-accent hover:underline">Why DeepSeek for Resume Writing</a></li>
-            <li><a href="#professional-summary" className="text-accent hover:underline">Professional Summary Prompts (#1-3)</a></li>
-            <li><a href="#experience-bullets" className="text-accent hover:underline">Experience Bullet Prompts (#4-7)</a></li>
-            <li><a href="#ats-keywords" className="text-accent hover:underline">ATS Keyword Extraction (#8-10)</a></li>
-            <li><a href="#skills-section" className="text-accent hover:underline">Skills Section Prompts (#11-13)</a></li>
-            <li><a href="#cover-letters" className="text-accent hover:underline">Cover Letter Prompts (#14-16)</a></li>
-            <li><a href="#review-polish" className="text-accent hover:underline">Review &amp; Polish Prompts (#17-20)</a></li>
-            <li><a href="#deepseek-vs-others" className="text-accent hover:underline">DeepSeek vs Claude vs ChatGPT</a></li>
-            <li><a href="#tips" className="text-accent hover:underline">Tips for Better Results</a></li>
+            <li><a href="#why-deepseek" className="text-accent-text hover:underline">Why DeepSeek for Resume Writing</a></li>
+            <li><a href="#professional-summary" className="text-accent-text hover:underline">Professional Summary Prompts (#1-3)</a></li>
+            <li><a href="#experience-bullets" className="text-accent-text hover:underline">Experience Bullet Prompts (#4-7)</a></li>
+            <li><a href="#ats-keywords" className="text-accent-text hover:underline">ATS Keyword Extraction (#8-10)</a></li>
+            <li><a href="#skills-section" className="text-accent-text hover:underline">Skills Section Prompts (#11-13)</a></li>
+            <li><a href="#cover-letters" className="text-accent-text hover:underline">Cover Letter Prompts (#14-16)</a></li>
+            <li><a href="#review-polish" className="text-accent-text hover:underline">Review &amp; Polish Prompts (#17-20)</a></li>
+            <li><a href="#deepseek-vs-others" className="text-accent-text hover:underline">DeepSeek vs Claude vs ChatGPT</a></li>
+            <li><a href="#tips" className="text-accent-text hover:underline">Tips for Better Results</a></li>
           </ol>
         </nav>
 
@@ -60,15 +60,15 @@ export default function DeepSeekResumePrompts() {
           </ul>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-          <h3 className="text-xl font-bold text-yellow-800 mb-3">Which Model to Use</h3>
-          <p className="text-yellow-800">
+        <div className="callout callout-note rounded-xl p-6">
+          <h3 className="text-xl font-bold tone-note mb-3">Which Model to Use</h3>
+          <p className="tone-note">
             <strong>DeepSeek-V3:</strong> Best for general resume writing, bullet generation, and summaries. Fast and reliable.
             <br /><br />
             <strong>DeepSeek-R1 (Reasoning):</strong> Best for job description analysis, keyword extraction, and tailoring your resume to specific roles. Slower but more thorough.
             <br /><br />
             Use V3 for writing tasks and R1 for analysis tasks. Both are available at{' '}
-            <a href="https://chat.deepseek.com" className="text-yellow-900 underline" rel="noopener noreferrer" target="_blank">chat.deepseek.com</a>.
+            <a href="https://chat.deepseek.com" className="tone-note underline" rel="noopener noreferrer" target="_blank">chat.deepseek.com</a>.
           </p>
         </div>
 
@@ -77,11 +77,11 @@ export default function DeepSeekResumePrompts() {
           Professional Summary Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Your professional summary is the first thing recruiters read. These prompts produce focused,
           specific summaries without the generic filler that AI tools sometimes generate. For more
           examples, see our{' '}
-          <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+          <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
             professional summary examples guide
           </Link>.
         </p>
@@ -127,11 +127,11 @@ export default function DeepSeekResumePrompts() {
           Experience Bullet Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           The most common resume mistake is listing responsibilities instead of achievements. These prompts
           help DeepSeek transform &ldquo;managed X&rdquo; into &ldquo;achieved Y by doing X.&rdquo; For
           the framework behind this, read our{' '}
-          <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+          <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
             guide to quantifying accomplishments
           </Link>.
         </p>
@@ -189,10 +189,10 @@ export default function DeepSeekResumePrompts() {
           ATS Keyword Extraction Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           DeepSeek-R1&rsquo;s reasoning mode excels at extracting keywords from job descriptions. Use
           these prompts to identify exactly what an ATS is scanning for. You can also use our{' '}
-          <Link to="/resume-keyword-scanner" className="text-accent hover:underline">
+          <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">
             free ATS keyword scanner
           </Link>{' '}
           to check your match score against a specific job posting.
@@ -236,7 +236,7 @@ export default function DeepSeekResumePrompts() {
             4. Soft skills valued in this field (5-8)<br />
             5. Metrics and KPIs typical for this role (5-8)<br /><br />
             For a deeper list, see our{' '}
-            <Link to="/resume-keywords" className="text-accent hover:underline">resume keywords by job title</Link> pages.
+            <Link to="/resume-keywords" className="text-accent-text hover:underline">resume keywords by job title</Link> pages.
           </CopyablePrompt>
         </div>
 
@@ -245,11 +245,11 @@ export default function DeepSeekResumePrompts() {
           Skills Section Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           A well-organized skills section helps both ATS parsers and recruiters quickly assess your
           qualifications. These prompts help categorize and prioritize your skills. For more guidance,
           read our{' '}
-          <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+          <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
             guide to listing skills on your resume
           </Link>.
         </p>
@@ -289,11 +289,11 @@ export default function DeepSeekResumePrompts() {
           Cover Letter Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           DeepSeek writes natural-sounding cover letters when given enough context about the role and
           your background. The key is specificity &mdash; generic inputs produce generic output. For
           prompts that work across all AI tools, see our{' '}
-          <Link to="/blog/ai-cover-letter-prompts" className="text-accent hover:underline">
+          <Link to="/blog/ai-cover-letter-prompts" className="text-accent-text hover:underline">
             AI cover letter prompts guide
           </Link>.
         </p>
@@ -340,7 +340,7 @@ export default function DeepSeekResumePrompts() {
           Review &amp; Polish Prompts
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Use DeepSeek-R1 for review tasks &mdash; the reasoning model catches issues that
           faster models miss.
         </p>
@@ -414,54 +414,54 @@ export default function DeepSeekResumePrompts() {
             <tbody className="divide-y divide-black/[0.06]">
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Free tier</td>
-                <td className="px-4 py-4 text-center text-green-600">Generous</td>
-                <td className="px-4 py-4 text-center text-yellow-600">Limited</td>
-                <td className="px-4 py-4 text-center text-yellow-600">Limited</td>
+                <td className="px-4 py-4 text-center tone-do">Generous</td>
+                <td className="px-4 py-4 text-center tone-note">Limited</td>
+                <td className="px-4 py-4 text-center tone-note">Limited</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Reasoning/analysis</td>
-                <td className="px-4 py-4 text-center text-green-600">Excellent (R1)</td>
-                <td className="px-4 py-4 text-center text-green-600">Excellent</td>
-                <td className="px-4 py-4 text-center text-green-600">Good (o1)</td>
+                <td className="px-4 py-4 text-center tone-do">Excellent (R1)</td>
+                <td className="px-4 py-4 text-center tone-do">Excellent</td>
+                <td className="px-4 py-4 text-center tone-do">Good (o1)</td>
               </tr>
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Writing quality</td>
-                <td className="px-4 py-4 text-center text-green-600">Strong</td>
-                <td className="px-4 py-4 text-center text-green-600">Best</td>
-                <td className="px-4 py-4 text-center text-green-600">Strong</td>
+                <td className="px-4 py-4 text-center tone-do">Strong</td>
+                <td className="px-4 py-4 text-center tone-do">Best</td>
+                <td className="px-4 py-4 text-center tone-do">Strong</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Instruction following</td>
-                <td className="px-4 py-4 text-center text-green-600">Strong</td>
-                <td className="px-4 py-4 text-center text-green-600">Best</td>
-                <td className="px-4 py-4 text-center text-green-600">Good</td>
+                <td className="px-4 py-4 text-center tone-do">Strong</td>
+                <td className="px-4 py-4 text-center tone-do">Best</td>
+                <td className="px-4 py-4 text-center tone-do">Good</td>
               </tr>
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">JD keyword extraction</td>
-                <td className="px-4 py-4 text-center text-green-600">Excellent</td>
-                <td className="px-4 py-4 text-center text-green-600">Excellent</td>
-                <td className="px-4 py-4 text-center text-green-600">Good</td>
+                <td className="px-4 py-4 text-center tone-do">Excellent</td>
+                <td className="px-4 py-4 text-center tone-do">Excellent</td>
+                <td className="px-4 py-4 text-center tone-do">Good</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Best for</td>
-                <td className="px-4 py-4 text-center text-stone-warm text-sm">Analysis + free access</td>
-                <td className="px-4 py-4 text-center text-stone-warm text-sm">Professional writing</td>
-                <td className="px-4 py-4 text-center text-stone-warm text-sm">General purpose</td>
+                <td className="px-4 py-4 text-center text-ink/60 text-sm">Analysis + free access</td>
+                <td className="px-4 py-4 text-center text-ink/60 text-sm">Professional writing</td>
+                <td className="px-4 py-4 text-center text-ink/60 text-sm">General purpose</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           <strong>Our take:</strong> Use DeepSeek-R1 for job description analysis and keyword extraction
           (it&rsquo;s free and its reasoning is thorough), then use whichever model writes best for
           your style. Many people get the best results by using one AI for analysis and another for writing.
           See our guides for{' '}
-          <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">Claude resume prompts</Link>
+          <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">Claude resume prompts</Link>
           {' '}and{' '}
-          <Link to="/blog/gemini-resume-prompts" className="text-accent hover:underline">Gemini resume prompts</Link>
+          <Link to="/blog/gemini-resume-prompts" className="text-accent-text hover:underline">Gemini resume prompts</Link>
           {' '}for model-specific techniques. For a broader overview, read our{' '}
-          <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">complete AI resume writing guide</Link>.
+          <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline">complete AI resume writing guide</Link>.
         </p>
 
         {/* Tips */}
@@ -503,7 +503,7 @@ export default function DeepSeekResumePrompts() {
               </div>
               <div>
                 <h3 className="font-bold text-ink mb-1">{tip.title}</h3>
-                <p className="text-stone-warm">{tip.desc}</p>
+                <p className="text-ink/60">{tip.desc}</p>
               </div>
             </div>
           ))}
@@ -512,27 +512,27 @@ export default function DeepSeekResumePrompts() {
         {/* AI Resume Tools */}
         <div className="my-12">
           <h2 className="text-2xl font-bold text-ink mb-2">Explore Other AI Resume Tools</h2>
-          <p className="text-stone-warm font-extralight mb-6">Each AI has different strengths for resume writing. Try multiple tools to find what works best for you.</p>
+          <p className="text-ink/60 font-extralight mb-6">Each AI has different strengths for resume writing. Try multiple tools to find what works best for you.</p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             <Link to="/blog/chatgpt-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">ChatGPT Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for creative writing and natural language</p>
+              <p className="text-sm text-ink/60">Best for creative writing and natural language</p>
             </Link>
             <Link to="/blog/claude-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Claude Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for analysis, structured output, and nuance</p>
+              <p className="text-sm text-ink/60">Best for analysis, structured output, and nuance</p>
             </Link>
             <Link to="/blog/gemini-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Gemini Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for research and Google ecosystem integration</p>
+              <p className="text-sm text-ink/60">Best for research and Google ecosystem integration</p>
             </Link>
             <Link to="/blog/grok-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Grok Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for conversational iteration and real-time feedback</p>
+              <p className="text-sm text-ink/60">Best for conversational iteration and real-time feedback</p>
             </Link>
             <Link to="/blog/copilot-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Copilot Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for Microsoft 365 integration and Word users</p>
+              <p className="text-sm text-ink/60">Best for Microsoft 365 integration and Word users</p>
             </Link>
           </div>
         </div>
@@ -567,7 +567,7 @@ export default function DeepSeekResumePrompts() {
           ].map((faq, i) => (
             <div key={i} className="bg-chalk-dark rounded-xl p-5">
               <h3 className="font-bold text-ink mb-2">{faq.q}</h3>
-              <p className="text-stone-warm">{faq.a}</p>
+              <p className="text-ink/60">{faq.a}</p>
             </div>
           ))}
         </div>

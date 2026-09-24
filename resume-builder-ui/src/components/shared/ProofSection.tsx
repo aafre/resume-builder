@@ -27,7 +27,7 @@ export default function ProofSection({ metrics, className = '' }: ProofSectionPr
           )}
 
           {/* Value */}
-          <div className="text-3xl md:text-4xl font-bold text-accent mb-2">
+          <div className="text-3xl md:text-4xl font-bold text-accent-text mb-2">
             {metric.value}
             {metric.suffix && (
               <span className="text-2xl">{metric.suffix}</span>
@@ -35,7 +35,7 @@ export default function ProofSection({ metrics, className = '' }: ProofSectionPr
           </div>
 
           {/* Label */}
-          <div className="text-sm text-stone-warm font-medium">
+          <div className="text-sm text-ink/60 font-medium">
             {metric.label}
           </div>
         </div>

@@ -8,6 +8,95 @@ meta:
   metaDescription: "Internship resume example highlighting academic projects and relevant coursework."
   category: entry-level
   priority: 0.7
+  lastmod: '2026-09-23'
+
+answerBlock: >
+  An internship resume is applying FOR experience, not documenting it — so it needs a clear
+  target function (which team, which kind of work) up front, then coursework projects and
+  campus technical roles as evidence you can contribute from day one. Name the languages and
+  tools you'd actually use on the team, not a generic "fast learner" summary.
+
+howToWrite:
+  - "State the specific team or function you're targeting in the summary (software engineering intern, data intern) — a generic 'seeking opportunities' summary makes a recruiter guess which req to route you to."
+  - "Lead with 2-3 substantial class or personal projects, each with the stack used and what the project actually does — for a candidate with no professional experience, projects ARE the evidence of skill."
+  - "List every relevant course by name where it maps to the role (Data Structures, Algorithms, Database Systems), not just 'completed core CS coursework' — recruiters and ATS filters match on the specific course title."
+  - "Add any campus technical role (TA, help desk, research assistant) even if unpaid or part-time — it shows you can apply skills in a structured, accountable setting."
+  - "Include a GitHub link if you have real, browsable code — for a technical internship, a working repo is stronger evidence than another bullet point."
+  - "Keep it to one page with Education first, then Projects, then Experience — for a first internship, projects usually outweigh work history."
+
+summaryExamples:
+  - level: entry
+    summary: >
+      Sophomore computer science student seeking a first summer software engineering
+      internship. Built two personal projects using Python and JavaScript and completed
+      coursework in data structures and algorithms. Comfortable with Git and eager to
+      contribute to a team codebase.
+  - level: mid
+    summary: >
+      Junior computer science student targeting a second software engineering internship
+      after a prior internship building full-stack features in React and Node.js.
+      Teaching assistant for Intro to Programming, mentoring 30 students weekly.
+      Proficient in Python, Java, and JavaScript with active open-source contributions.
+  - level: senior
+    summary: >
+      Graduating senior seeking a final internship before full-time software engineering
+      roles. One completed internship plus a semester-long capstone project shipped as a
+      production-style full-stack application. Strong in Python, React, and SQL with
+      hands-on debugging and code review experience from a TA role.
+
+skills:
+  hard:
+    - Python
+    - Java / JavaScript
+    - Git & GitHub
+    - Data Structures & Algorithms
+    - SQL / Databases
+    - REST APIs
+  soft:
+    - Asking for Feedback and Iterating
+    - Explaining Technical Work to Non-Technical Stakeholders
+    - Working Within an Existing Codebase
+    - Meeting Deadlines Across Coursework and Projects
+
+keywords:
+  - Software Engineering Intern
+  - Full-Stack Development
+  - Data Structures
+  - Algorithms
+  - Version Control
+  - Agile
+  - Python
+  - JavaScript
+  - Problem Solving
+
+certifications:
+  - AWS Cloud Practitioner
+  - Google IT Support Professional Certificate
+  - freeCodeCamp Responsive Web Design
+
+mistakes:
+  - mistake: "Writing a generic 'seeking opportunities to grow' summary"
+    fix: "Name the specific function (software engineering intern, data intern) and the type of company or stack you're targeting — it tells the recruiter which team to route your resume to."
+  - mistake: "Treating class projects as less legitimate than work experience"
+    fix: "List projects with the same structure as a job: name, stack, and what it does. For a candidate with no internship history, a well-described project is the primary evidence of ability."
+  - mistake: "Listing 'completed relevant coursework' with no course names"
+    fix: "Name the actual courses (Data Structures, Database Systems, Operating Systems) — recruiters and resume screeners look for the specific title, not the category."
+  - mistake: "No GitHub or portfolio link despite having real projects"
+    fix: "Add the link if the repo is active and browsable. A recruiter clicking through to real code is stronger evidence than another resume bullet."
+
+bulletRewrites:
+  - weak: "Built some projects for class"
+    improved: "Built a full-stack task management app using React, Node.js, and MongoDB, implementing user authentication and a REST API consumed by [number]+ test users"
+    reason: "Names the exact stack, the feature set, and a usage scale — turning a vague 'built projects' claim into a specific, defensible piece of work."
+  - weak: "Helped students with programming"
+    improved: "Served as Teaching Assistant for Intro to Programming, leading weekly labs for 30 students and creating supplemental study guides that improved average exam scores by [X%]"
+    reason: "Converts informal helping into a titled, recurring responsibility with a measurable outcome (exam score improvement)."
+  - weak: "Did IT support on campus"
+    improved: "Provided technical support to 500+ students and faculty, documenting solutions in a knowledge base that reduced repeat tickets by [X%]"
+    reason: "Adds scale (500+ users) and a process improvement with a measured result, not just a task description."
+  - weak: "Fixed a website for a nonprofit"
+    improved: "Redesigned a nonprofit's website on WordPress, building a new donation page that increased online contributions by [X%] in the first quarter"
+    reason: "Names the platform, the specific deliverable (donation page), and a business outcome the work directly caused."
 
 resume:
   template: minimal

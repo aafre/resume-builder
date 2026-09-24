@@ -1,46 +1,38 @@
 /**
  * Tour Steps Configuration
  *
- * Defines the 5-step onboarding tour with auth-aware content branching.
- * Each step has separate content for authenticated and anonymous users.
- * Now supports conditional visibility and simplified single-message format.
+ * The onboarding tour's content, branched by auth state.
+ *
+ * Voice: reassurance first. An anonymous visitor arrived here because a
+ * competitor let them do the work and then asked for money, so the tour never
+ * opens or closes on sign-in pressure. The account is offered as the additive
+ * thing it is (see `AnonymousStorageBadge`, which sets the register), and the
+ * finish line named at the end is the download, not the login.
+ *
+ * `anonymous` is optional on both `title` and `content`: omit it and the
+ * authenticated copy is used for everyone.
  */
 
-export interface TourStepSimpleContent {
-  icon: string;
-  description: string;
-}
-
-export interface TourStepItem {
-  icon: string;
-  heading: string;
-  description: string;
-}
+import { ArrowUpDown, Check, Cloud, Download, Library, Sparkles } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 export interface TourStepContent {
-  items?: TourStepItem[];           // Legacy multi-item format (optional)
-  simpleContent?: TourStepSimpleContent;  // Simple single-message format
-}
-
-export interface TourStepBadge {
-  text: string;
-  type: 'info' | 'warning' | 'success';
-  showForAnonymousOnly?: boolean;
+  icon: LucideIcon;
+  description: string;
 }
 
 export interface TourStep {
   id: string;
-  targetElementId: string | null; // DOM ID to highlight, null = center modal
-  visibleFor?: 'all' | 'authenticated' | 'anonymous';  // Controls step visibility based on auth state
+  /** Controls step visibility based on auth state. Defaults to 'all'. */
+  visibleFor?: 'all' | 'authenticated' | 'anonymous';
   title: {
     authenticated: string;
-    anonymous: string;
+    anonymous?: string;
   };
   content: {
     authenticated: TourStepContent;
-    anonymous: TourStepContent;
+    anonymous?: TourStepContent;
   };
-  badge?: TourStepBadge;
   ctaButton?: {
     text: string;
     action: 'sign-in';
@@ -48,135 +40,100 @@ export interface TourStep {
   };
 }
 
-// Shared content for steps with identical auth/anonymous messaging
-const reorderStepContent: TourStepSimpleContent = {
-  icon: '↕️',
-  description: 'Add and reorder sections, entries, and bullet points.\n\n🖱️ Desktop: Hover to reveal the ••• handle, then drag.\n👆 Mobile: Press & hold any item, then drag to reorder.'
-};
-
 export const TOUR_STEPS: TourStep[] = [
-  // Step 1: Status & Safety - Warn/reassure users about data persistence
+  // Step 1: Where the work lives. States that it IS saved; offers the account.
   {
     id: 'status-safety',
-    targetElementId: 'header-auth-status',
     visibleFor: 'all',
     title: {
       authenticated: 'Cloud Saving Active',
-      anonymous: 'Your work is unsaved'
+      anonymous: 'Your resume is saved',
     },
     content: {
       authenticated: {
-        simpleContent: {
-          icon: '☁️',
-          description: 'Your resume automatically saves to the cloud as you work. Access your resume from the My Resumes page anytime.',          
-        }
+        icon: Cloud,
+        description:
+          'Your resume automatically saves to the cloud as you work. Access your resume from the My Resumes page anytime.',
       },
       anonymous: {
-        simpleContent: {
-          icon: '⚠️',
-          description: 'Sign In to keep your resume safe with free cloud backup and access it from any device. Your work is only saved locally in this browser until you sign in.'
-        }
+        icon: Check,
+        description:
+          'Your resume is saved on this device as you type, and stays there — you can close this tab and pick up where you left off. A free account also keeps it in the cloud, so you can open it on another device.',
       },
     },
-    badge: {
-      text: 'Free cloud backup available',
-      type: 'info',
-      showForAnonymousOnly: true
-    },
     ctaButton: {
-      text: 'Sign In to Save',
+      text: 'Sign In to sync across devices',
       action: 'sign-in',
-      showForAnonymousOnly: true
-    }
+      showForAnonymousOnly: true,
+    },
   },
 
   // Step 2: My Resumes Dashboard - Authenticated users only
   {
     id: 'my-resumes',
-    targetElementId: 'tour-my-resumes-link',
     visibleFor: 'authenticated',
     title: {
       authenticated: 'Your Dashboard',
-      anonymous: 'Your Dashboard'
     },
     content: {
       authenticated: {
-        simpleContent: {
-          icon: '📚',
-          description: 'Access all your resume versions here. Create tailored resumes for different jobs - we save up to 5 versions.'
-        }
+        icon: Library,
+        description:
+          'Access all your resume versions here. Create tailored resumes for different jobs - we save up to 5 versions.',
       },
-      anonymous: {
-        simpleContent: {
-          icon: '📚',
-          description: 'N/A'
-        }
-      }
-    }
+    },
   },
 
   // Step 3: Navigation - Section organization and reordering
   {
     id: 'navigation',
-    targetElementId: 'tour-section-navigator',
     visibleFor: 'all',
     title: {
       authenticated: 'Organize & Reorder',
-      anonymous: 'Organize & Reorder'
     },
     content: {
-      authenticated: { simpleContent: reorderStepContent },
-      anonymous: { simpleContent: reorderStepContent }
-    }
+      authenticated: {
+        icon: ArrowUpDown,
+        description:
+          'Add and reorder sections, entries, and bullet points.\n\nOn desktop, hover an item to reveal the ••• handle, then drag.\nOn mobile, press and hold an item, then drag to reorder.',
+      },
+    },
   },
 
   // Step 4: Formatting - Bubble menu for text formatting
   {
     id: 'formatting',
-    targetElementId: 'tour-bubble-menu',
     visibleFor: 'all',
     title: {
       authenticated: 'Quick Formatting',
-      anonymous: 'Quick Formatting'
     },
     content: {
       authenticated: {
-        simpleContent: {
-          icon: '✨',
-          description: 'Select any text to reveal formatting options. Make text bold, italic, underlined, or add hyperlinks anywhere.'
-        }
+        icon: Sparkles,
+        description:
+          'Select any text to reveal formatting options. Make text bold, italic, underlined, or add hyperlinks anywhere.',
       },
-      anonymous: {
-        simpleContent: {
-          icon: '✨',
-          description: 'Select any text to reveal formatting options. Make text bold, italic, underlined, or add hyperlinks anywhere.'
-        }
-      }
-    }
+    },
   },
 
-  // Step 5: Export - Download PDF
+  // Step 5: Export - the finish line. Anonymous copy names the differentiator.
   {
     id: 'export',
-    targetElementId: 'tour-download-button',
     visibleFor: 'all',
     title: {
       authenticated: 'Download PDF',
-      anonymous: 'Download PDF'
     },
     content: {
       authenticated: {
-        simpleContent: {
-          icon: '📥',
-          description: 'Ready to apply? Click Download Resume to export a professional PDF. Your formatting and styling transfer perfectly.'
-        }
+        icon: Download,
+        description:
+          'Ready to apply? Click Download Resume to export a professional PDF. Your formatting and styling transfer perfectly.',
       },
       anonymous: {
-        simpleContent: {
-          icon: '📥',
-          description: 'Ready to apply? Click Download Resume to export a professional PDF. Please Login to save your resume for future edits.'
-        }
-      }
-    }
-  }
+        icon: Download,
+        description:
+          'Ready to apply? Click Download Resume to export a professional PDF — no payment, and no account needed to download it. Signing in is optional: it keeps up to 5 resumes in your account so you can come back and edit them.',
+      },
+    },
+  },
 ];

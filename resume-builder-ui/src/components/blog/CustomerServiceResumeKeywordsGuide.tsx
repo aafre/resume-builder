@@ -19,7 +19,7 @@ export default function CustomerServiceResumeKeywordsGuide() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Customer service roles receive more applications than almost any other job category — and most companies use ATS software to filter them. If your resume doesn't include the right keywords, it gets rejected automatically. This guide covers every keyword category you need, with real examples showing how to use them naturally in your resume.
         </p>
 
@@ -54,8 +54,8 @@ export default function CustomerServiceResumeKeywordsGuide() {
               <p>20. Time Management</p>
             </div>
           </div>
-          <p className="text-sm text-stone-warm mt-4">
-            For a quick-reference keyword list, see our <Link to="/resume-keywords/customer-service" className="text-accent hover:underline">customer service keyword scanner page</Link>. This guide explains how and where to use each keyword category.
+          <p className="text-sm text-ink/60 mt-4">
+            For a quick-reference keyword list, see our <Link to="/resume-keywords/customer-service" className="text-accent-text hover:underline">customer service keyword scanner page</Link>. This guide explains how and where to use each keyword category.
           </p>
         </div>
 
@@ -63,7 +63,7 @@ export default function CustomerServiceResumeKeywordsGuide() {
           CRM and Software Keywords
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Nearly every customer service job posting mentions specific software. Including the exact platform names is critical — ATS systems match on exact terms, not synonyms. If the job says "Salesforce," writing "CRM software" alone won't match.
         </p>
 
@@ -96,9 +96,9 @@ export default function CustomerServiceResumeKeywordsGuide() {
           </div>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-yellow-800 mb-2">ATS Tip</h4>
-          <p className="text-yellow-700">
+        <div className="callout callout-note rounded-xl p-6 my-6">
+          <h4 className="font-bold tone-note mb-2">ATS Tip</h4>
+          <p className="tone-note">
             Always include both the abbreviation and the full term the first time you use it: "Customer Relationship Management (CRM)" and "Salesforce Service Cloud." Some ATS systems search for "CRM" while others search for "Customer Relationship Management."
           </p>
         </div>
@@ -107,12 +107,12 @@ export default function CustomerServiceResumeKeywordsGuide() {
           Soft Skills Keywords (That ATS Actually Scans For)
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Soft skills matter more in customer service than almost any other field. But simply listing "good communicator" won't help — you need specific, measurable phrases that both ATS systems and hiring managers value.
         </p>
 
         <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-6">
-          <div className="grid md:grid-cols-3 gap-6 text-stone-warm">
+          <div className="grid md:grid-cols-3 gap-6 text-ink/60">
             <div>
               <h4 className="font-bold text-ink mb-3">Communication:</h4>
               <ul className="list-disc pl-5 text-sm space-y-1">
@@ -153,13 +153,13 @@ export default function CustomerServiceResumeKeywordsGuide() {
           Performance Metrics Keywords
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Hiring managers want to see that you understand — and can improve — the metrics that matter. Including these terms signals that you think about customer service as a measurable business function, not just "being nice on the phone."
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h3 className="font-bold text-green-800 mb-4">Key Metrics to Include:</h3>
-          <div className="grid md:grid-cols-2 gap-4 text-green-800">
+        <div className="callout callout-do rounded-xl p-6 my-6">
+          <h3 className="font-bold tone-do mb-4">Key Metrics to Include:</h3>
+          <div className="grid md:grid-cols-2 gap-4 tone-do">
             <ul className="list-disc pl-5 text-sm space-y-2">
               <li><strong>CSAT (Customer Satisfaction Score)</strong> — Overall satisfaction rating</li>
               <li><strong>NPS (Net Promoter Score)</strong> — Customer loyalty measure</li>
@@ -181,7 +181,7 @@ export default function CustomerServiceResumeKeywordsGuide() {
           Industry-Specific Customer Service Keywords
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Customer service keywords vary by industry. Here are the additional terms to include depending on where you're applying:
         </p>
 
@@ -263,41 +263,41 @@ export default function CustomerServiceResumeKeywordsGuide() {
           How to Use Keywords in Your Resume (With Examples)
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           The most common mistake is dumping keywords into a skills list without context. ATS systems rank resumes higher when keywords appear in your experience bullets — not just the skills section. Here's how to do it right:
         </p>
 
         <div className="space-y-6 mt-6">
           <div className="space-y-3">
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-              <p className="font-medium text-red-800 mb-1">Weak (keyword dumping):</p>
-              <p className="text-red-700 text-sm italic">"Skills: CRM, conflict resolution, active listening, problem solving, Zendesk, customer satisfaction, time management"</p>
+            <div className="callout callout-dont p-4 rounded-r-lg">
+              <p className="font-medium tone-dont mb-1">Weak (keyword dumping):</p>
+              <p className="tone-dont text-sm italic">"Skills: CRM, conflict resolution, active listening, problem solving, Zendesk, customer satisfaction, time management"</p>
             </div>
-            <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
-              <p className="font-medium text-green-800 mb-1">Strong (keywords in context):</p>
-              <p className="text-green-700 text-sm italic">"Resolved an average of 45 customer tickets daily through Zendesk, maintaining a 96% CSAT score by applying active listening and de-escalation techniques to reduce complaint escalation rate by 30%."</p>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-              <p className="font-medium text-red-800 mb-1">Weak:</p>
-              <p className="text-red-700 text-sm italic">"Handled customer calls and resolved issues."</p>
-            </div>
-            <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
-              <p className="font-medium text-green-800 mb-1">Strong:</p>
-              <p className="text-green-700 text-sm italic">"Managed 60+ inbound calls daily, achieving 88% first call resolution (FCR) rate and exceeding SLA targets by 15% through efficient troubleshooting and customer relationship management."</p>
+            <div className="callout callout-do p-4 rounded-r-lg">
+              <p className="font-medium tone-do mb-1">Strong (keywords in context):</p>
+              <p className="tone-do text-sm italic">"Resolved an average of 45 customer tickets daily through Zendesk, maintaining a 96% CSAT score by applying active listening and de-escalation techniques to reduce complaint escalation rate by 30%."</p>
             </div>
           </div>
 
           <div className="space-y-3">
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-              <p className="font-medium text-red-800 mb-1">Weak:</p>
-              <p className="text-red-700 text-sm italic">"Improved customer satisfaction."</p>
+            <div className="callout callout-dont p-4 rounded-r-lg">
+              <p className="font-medium tone-dont mb-1">Weak:</p>
+              <p className="tone-dont text-sm italic">"Handled customer calls and resolved issues."</p>
             </div>
-            <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
-              <p className="font-medium text-green-800 mb-1">Strong:</p>
-              <p className="text-green-700 text-sm italic">"Improved team NPS from 42 to 67 within 6 months by implementing a customer feedback loop, redesigning the onboarding workflow, and coaching 12 team members on empathy-driven communication."</p>
+            <div className="callout callout-do p-4 rounded-r-lg">
+              <p className="font-medium tone-do mb-1">Strong:</p>
+              <p className="tone-do text-sm italic">"Managed 60+ inbound calls daily, achieving 88% first call resolution (FCR) rate and exceeding SLA targets by 15% through efficient troubleshooting and customer relationship management."</p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <div className="callout callout-dont p-4 rounded-r-lg">
+              <p className="font-medium tone-dont mb-1">Weak:</p>
+              <p className="tone-dont text-sm italic">"Improved customer satisfaction."</p>
+            </div>
+            <div className="callout callout-do p-4 rounded-r-lg">
+              <p className="font-medium tone-do mb-1">Strong:</p>
+              <p className="tone-do text-sm italic">"Improved team NPS from 42 to 67 within 6 months by implementing a customer feedback loop, redesigning the onboarding workflow, and coaching 12 team members on empathy-driven communication."</p>
             </div>
           </div>
         </div>
@@ -306,7 +306,7 @@ export default function CustomerServiceResumeKeywordsGuide() {
           Keywords by Experience Level
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           The keywords you emphasize should match your experience level. Here's what to focus on at each stage:
         </p>
 
@@ -374,7 +374,7 @@ export default function CustomerServiceResumeKeywordsGuide() {
               <strong>Use standard section headers.</strong> "Experience," "Skills," "Education" — not "My Story" or "What I've Done."
             </li>
             <li>
-              <strong>Scan before submitting.</strong> Use our <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">free ATS keyword scanner</Link> to check your match rate against the specific job posting.
+              <strong>Scan before submitting.</strong> Use our <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">free ATS keyword scanner</Link> to check your match rate against the specific job posting.
             </li>
           </ol>
         </div>
@@ -388,7 +388,7 @@ export default function CustomerServiceResumeKeywordsGuide() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Free
           </Link>
@@ -398,29 +398,29 @@ export default function CustomerServiceResumeKeywordsGuide() {
           Related Resources
         </h2>
 
-        <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
+        <ul className="list-disc list-inside space-y-2 text-lg text-ink/60">
           <li>
-            <Link to="/resume-keywords/customer-service" className="text-accent hover:underline">
+            <Link to="/resume-keywords/customer-service" className="text-accent-text hover:underline">
               Customer Service Keywords Quick Reference List
             </Link>
           </li>
           <li>
-            <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">
+            <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">
               How to Use Resume Keywords to Beat the ATS
             </Link>
           </li>
           <li>
-            <Link to="/resume-keyword-scanner" className="text-accent hover:underline">
+            <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">
               Free ATS Keyword Scanner
             </Link>
           </li>
           <li>
-            <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+            <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
               Professional Summary Examples
             </Link>
           </li>
           <li>
-            <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+            <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
               How to List Skills on a Resume
             </Link>
           </li>

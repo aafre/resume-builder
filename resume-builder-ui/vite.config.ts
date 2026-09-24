@@ -5,6 +5,11 @@ import tailwindcss from "tailwindcss";
 import viteCompression from 'vite-plugin-compression';
 
 export default defineConfig({
+  // Build date (UTC) — feeds the landing resume count as a build constant, so
+  // prerender and hydration see the same value. Tests get it too (same config).
+  define: {
+    __BUILD_DATE__: JSON.stringify(new Date().toISOString().slice(0, 10)),
+  },
   plugins: [
     react(),
     viteCompression({ algorithm: 'gzip' }),

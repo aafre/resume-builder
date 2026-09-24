@@ -118,7 +118,8 @@ export type SchemaType =
   | 'Product'
   | 'VideoObject'
   | 'ImageObject'
-  | 'AboutPage';
+  | 'AboutPage'
+  | 'Person';
 
 export interface StructuredDataConfig {
   '@context': string;

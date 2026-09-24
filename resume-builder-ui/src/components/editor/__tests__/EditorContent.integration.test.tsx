@@ -603,7 +603,7 @@ describe('EditorContent Integration Tests', () => {
       );
 
       const mainContainer = container.firstChild;
-      expect(mainContainer).toHaveClass('lg:mr-[296px]');
+      expect(mainContainer).toHaveClass('lg:pr-[296px]');
     });
 
     it('should have correct margins when sidebar is collapsed', () => {
@@ -621,7 +621,7 @@ describe('EditorContent Integration Tests', () => {
       );
 
       const mainContainer = container.firstChild;
-      expect(mainContainer).toHaveClass('lg:mr-[88px]');
+      expect(mainContainer).toHaveClass('lg:pr-[88px]');
     });
   });
 

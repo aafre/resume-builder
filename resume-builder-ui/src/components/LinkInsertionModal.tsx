@@ -2,7 +2,8 @@
  * Modal component for inserting markdown-style links in a user-friendly way
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useId } from 'react';
+import ModalShell from './shared/ModalShell';
 
 interface LinkInsertionModalProps {
   isOpen: boolean;
@@ -27,6 +28,7 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
   initialUrl = '',
   isEditMode = false,
 }) => {
+  const titleId = useId();
   const [linkText, setLinkText] = useState(initialText);
   const [url, setUrl] = useState(initialUrl);
   const [urlError, setUrlError] = useState('');
@@ -75,16 +77,14 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
     onClose();
   };
 
+  // Enter only. Escape is owned by ModalShell's focus trap - handling it here
+  // too would fire onClose twice for one keypress.
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       handleInsert();
-    } else if (e.key === 'Escape') {
-      onClose();
     }
   };
-
-  if (!isOpen) return null;
 
   // Preview markdown
   const previewMarkdown = linkText.trim() && url.trim()
@@ -92,28 +92,23 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
     : '';
 
   return (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-      onClick={onClose}
+    <ModalShell
+      isOpen={isOpen}
+      onClose={onClose}
+      labelledBy={titleId}
+      panelClassName="bg-white p-6 rounded-xl shadow-2xl max-w-md w-full"
     >
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="modal-title"
-        className="bg-white p-6 rounded-xl shadow-2xl max-w-md w-full"
-        onClick={(e) => e.stopPropagation()}
-        onKeyDown={handleKeyDown}
-      >
-        <h3 id="modal-title" className="text-xl font-semibold mb-4 text-gray-800">
+      <div onKeyDown={handleKeyDown}>
+        <h3 id={titleId} className="text-xl font-semibold mb-4 text-ink">
           {isEditMode ? 'Edit Link' : 'Insert Link'}
         </h3>
 
         <div className="space-y-4">
           {/* Link Text Input */}
           <div>
-            <label htmlFor="link-text" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="link-text" className="block text-sm font-medium text-ink mb-1">
               Link Text
-              <span className="text-gray-500 font-normal ml-1">(what users will see)</span>
+              <span className="text-ink/60 font-normal ml-1">(what users will see)</span>
             </label>
             <input
               id="link-text"
@@ -121,14 +116,14 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
               value={linkText}
               onChange={(e) => setLinkText(e.target.value)}
               placeholder="e.g., Visit our website"
-              className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+              className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-accent-text focus:border-accent transition-all"
               autoFocus
             />
           </div>
 
           {/* URL Input */}
           <div>
-            <label htmlFor="link-url" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="link-url" className="block text-sm font-medium text-ink mb-1">
               URL
               <span className="text-red-500">*</span>
             </label>
@@ -143,7 +138,7 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
               placeholder="e.g., https://example.com"
               className={`w-full border ${
                 urlError ? 'border-red-500' : 'border-gray-300'
-              } rounded-lg p-3 focus:ring-2 focus:ring-accent focus:border-accent transition-all`}
+              } rounded-lg p-3 focus:ring-2 focus:ring-accent-text focus:border-accent transition-all`}
               aria-invalid={!!urlError}
               aria-describedby={urlError ? "url-error" : undefined}
             />
@@ -154,9 +149,9 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
 
           {/* Preview */}
           {previewMarkdown && (
-            <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+            <div className="bg-chalk rounded-lg p-3 border border-gray-200">
               <p className="text-xs text-gray-600 mb-1">Preview (markdown):</p>
-              <code className="text-sm text-gray-800 break-all">
+              <code className="text-sm text-ink break-all">
                 {previewMarkdown}
               </code>
             </div>
@@ -185,12 +180,12 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
           )}
           <button
             onClick={onClose}
-            className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200"
+            className="px-6 py-3 border border-gray-300 rounded-lg text-ink hover:bg-chalk transition-all duration-200"
           >
             Cancel
           </button>
         </div>
       </div>
-    </div>
+    </ModalShell>
   );
 };

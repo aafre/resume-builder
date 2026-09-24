@@ -4,6 +4,56 @@ import { apiClient, ApiError } from '../lib/api-client';
 const API_BASE_URL = "/api";
 const API_URL = `${API_BASE_URL}/templates`;
 
+export interface Template {
+  id: string;
+  name: string;
+  description: string;
+  image_url: string;
+}
+
+/**
+ * Static mirror of the `/api/templates` payload (app.py:1827-1870).
+ *
+ * The four templates never change without a code deploy — the endpoint has
+ * no DB, no CMS, it's a hardcoded list in app.py — so the frontend does not
+ * need a network round trip to render them. Googlebot's renderer can't reach
+ * `/api/*` (see `resume-builder-ui/src/components/TemplateCarousel.tsx`
+ * top-of-file comment), and every indexable page that gated its first paint
+ * on that fetch was rendering `noindex` on failure. This list is the fix:
+ * the page renders immediately from here, and `fetchTemplates()` below is
+ * now an optional background refresh, not a blocking dependency.
+ *
+ * ponytail: keep this in sync with app.py by hand — 4 rows, deploys rarely.
+ * Upgrade path if that stops being true: generate this file from app.py at
+ * build time instead of hand-syncing.
+ */
+export const STATIC_TEMPLATES: Template[] = [
+  {
+    id: "classic-alex-rivera",
+    name: "Professional",
+    description: "Clean, structured layout with traditional formatting and excellent space utilization.",
+    image_url: "/docs/templates/alex_rivera.png",
+  },
+  {
+    id: "classic-jane-doe",
+    name: "Elegant",
+    description: "Refined design with sophisticated typography and organized section layout.",
+    image_url: "/docs/templates/jane_doe.png",
+  },
+  {
+    id: "modern-no-icons",
+    name: "Minimalist",
+    description: "Clean and simple design focused on content clarity and easy readability.",
+    image_url: "/docs/templates/modern-no-icons.png",
+  },
+  {
+    id: "modern-with-icons",
+    name: "Modern",
+    description: "Contemporary design enhanced with visual icons and dynamic styling elements.",
+    image_url: "/docs/templates/modern-with-icons.png",
+  },
+];
+
 /**
  * Fetch available templates.
  * @returns {Promise<any[]>} List of templates with metadata.

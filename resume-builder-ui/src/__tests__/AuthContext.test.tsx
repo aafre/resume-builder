@@ -10,6 +10,7 @@ const mockSignOut = vi.fn();
 const mockSignInAnonymously = vi.fn();
 const mockGetUser = vi.fn();
 const mockRefreshSession = vi.fn();
+const mockGetSession = vi.fn(async () => ({ data: { session: mockInitialSession }, error: null }));
 const mockOnAuthStateChange = vi.fn();
 
 // Session to simulate in onAuthStateChange - can be overridden per test
@@ -24,6 +25,7 @@ vi.mock('../lib/supabase', () => ({
       signInAnonymously: (...args: any[]) => mockSignInAnonymously(...args),
       getUser: (...args: any[]) => mockGetUser(...args),
       refreshSession: (...args: any[]) => mockRefreshSession(...args),
+      getSession: () => mockGetSession(),
       onAuthStateChange: (callback: (event: AuthChangeEvent, session: Session | null) => void) => {
         mockOnAuthStateChange(callback);
         // Use mockInitialSession which can be set per-test

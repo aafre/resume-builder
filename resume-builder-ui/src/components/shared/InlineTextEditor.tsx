@@ -127,7 +127,7 @@ export const InlineTextEditor: React.FC<InlineTextEditorProps> = ({
         placeholder={placeholder}
         className={`
           bg-white border border-accent/70 rounded px-2 py-1
-          focus:outline-none focus:ring-2 focus:ring-accent
+          focus:outline-none focus:ring-2 focus:ring-accent-text
           ${textClassName}
           ${inputClassName}
           ${className}
@@ -152,11 +152,11 @@ export const InlineTextEditor: React.FC<InlineTextEditorProps> = ({
       className={`
         cursor-pointer rounded px-2 py-1 -mx-2 -my-1
         border border-transparent
-        hover:border-gray-300 hover:bg-gray-50
-        focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent
+        hover:border-gray-300 hover:bg-chalk
+        focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent
         transition-colors duration-150
         ${disabled ? 'cursor-default hover:border-transparent hover:bg-transparent' : ''}
-        ${!value ? 'text-gray-400 italic' : ''}
+        ${!value ? 'text-ink/60 italic' : ''}
         ${textClassName}
         ${className}
       `.trim().replace(/\s+/g, ' ')}

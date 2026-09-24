@@ -5,7 +5,7 @@ interface TemplateSelectorProps {
 const TemplateSelector: React.FC<TemplateSelectorProps> = ({ onSelect }) => {
   return (
     <div className="container mx-auto my-10">
-      <h2 className="text-2xl font-semibold text-gray-800 text-center">
+      <h2 className="text-2xl font-semibold text-ink text-center">
         Select a Resume Template to Get Started
       </h2>
       <div className="flex justify-center gap-6 mt-6">

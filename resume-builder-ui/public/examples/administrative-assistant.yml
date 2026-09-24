@@ -8,6 +8,109 @@ meta:
   metaDescription: "Administrative assistant resume example with office skills and experience. Free template ready to customize."
   category: operations
   priority: 0.8
+  lastmod: "2026-09-23"
+
+answerBlock: >
+  A strong administrative assistant resume names the specific executives or team size you
+  support, the calendar and expense tools you use daily (Outlook, Concur, SAP), and a dollar
+  or hour figure tied to what you kept running — not just "organized and detail-oriented."
+
+howToWrite:
+  - "Lead with who you supported and at what scale — 1 executive vs. 5, or a 50-person office vs. a 12-attorney firm — because the skill set for each is different and hiring managers filter on it."
+  - "Name the calendar, expense, and travel tools by product (Outlook, Concur, SAP, Google Workspace), not the generic category — ATS keyword filters and recruiters both scan for the tool."
+  - "Quantify the volume you managed: meetings scheduled weekly, expense dollars processed monthly, or documents filed — a number is what separates 'kept the office organized' from a verifiable track record."
+  - "Separate executive support duties (calendar, travel, board prep) from general office admin (supplies, filing, phones) so the resume shows the actual mix of responsibility you held."
+  - "If you handled confidential material — HR files, board documents, patient records — say so explicitly; discretion is a named qualification for this role, not an assumed trait."
+  - "Keep it to one page unless you're at the executive assistant level with 10+ years; admin hiring managers screen fast and reward a resume that's easy to scan."
+
+summaryExamples:
+  - level: entry
+    summary: >
+      Organized administrative professional with strong Microsoft Office skills and experience
+      coordinating schedules and correspondence in a fast-paced office. Comfortable managing
+      calendars, data entry, and day-to-day administrative requests with accuracy and discretion.
+  - level: mid
+    summary: >
+      Administrative assistant with 4+ years supporting department managers and office
+      operations. Manages calendars, travel coordination, and expense reporting for a 20-person
+      team using Outlook and Concur. Known for anticipating needs before they're asked.
+  - level: senior
+    summary: >
+      Executive administrative assistant with 8+ years supporting C-level leadership across
+      finance and professional services. Manages calendars, travel, and $200K+ in monthly
+      expense processing for a 15-person leadership team with [zero compliance incidents].
+
+skills:
+  hard:
+    - Calendar & Scheduling Software (Outlook, Google Calendar)
+    - Travel Coordination Platforms (Concur)
+    - Expense Reporting & Reconciliation
+    - Document Management & Filing Systems
+    - Presentation Software (PowerPoint)
+    - Advanced Excel (Pivot Tables, Formulas)
+  soft:
+    - Confidentiality & Discretion
+    - Prioritization Under Competing Deadlines
+    - Executive-Level Communication
+    - Anticipating Needs Proactively
+
+keywords:
+  - Administrative Support
+  - Office Management
+  - Calendar Management
+  - Travel Coordination
+  - Expense Reporting
+  - Meeting Coordination
+  - Document Management
+  - Filing Systems
+  - Data Entry
+  - Confidentiality
+
+certifications:
+  - Certified Administrative Professional (CAP)
+  - Microsoft Office Specialist (MOS)
+  - Notary Public (state-issued, where applicable)
+
+mistakes:
+  - mistake: "Writing \"managed calendars\" with no scale"
+    fix: "State who and how many: \"Managed calendars for 3 C-level executives, scheduling 50+ meetings weekly.\" The scale is what tells a hiring manager whether you've handled their volume."
+  - mistake: "Listing software categories instead of product names"
+    fix: "Say Outlook and Concur, not \"scheduling and expense software\" — ATS filters and recruiters both search on the named tool."
+  - mistake: "Treating executive support and general office admin as the same skill"
+    fix: "Separate them: board-meeting prep and travel booking for executives is a different (and more senior) skill set than answering phones and ordering supplies — show both if you did both."
+  - mistake: "Omitting confidentiality experience"
+    fix: "If you handled HR files, legal documents, or board materials, say so directly — discretion with sensitive information is a screened-for qualification, not something to imply."
+
+bulletRewrites:
+  - weak: "Managed executive calendars and scheduling"
+    improved: "Managed calendars for 3 C-level executives, scheduling 50+ meetings weekly across conflicting time zones"
+    reason: "Names the number of executives and weekly volume, turning a duty into evidence of scale you can repeat for a new employer."
+  - weak: "Handled travel arrangements"
+    improved: "Coordinated domestic and international travel for a 15-person leadership team using [travel platform], booking [number]+ trips per quarter with [zero missed connections]"
+    reason: "Names the tool and frequency; placeholders mark where the candidate fills in their real trip count."
+  - weak: "Processed expense reports"
+    improved: "Processed $200K+ in monthly expense reports with [X%] accuracy, reconciling against budget before month-end close"
+    reason: "Converts a routine task into a dollar figure and an accuracy standard an employer can compare against their own volume."
+  - weak: "Responsible for office supplies and filing"
+    improved: "Reduced office supply costs [X%] by renegotiating vendor contracts, while maintaining a document retrieval system rated [X%] faster by staff surveys"
+    reason: "Ties two routine tasks to measurable outcomes (cost, speed) instead of listing them as bare responsibilities."
+
+salaryOutlook:
+  occupation: "Secretaries and Administrative Assistants"
+  median: "$48,310/year ($23.23/hour)"
+  growth: "Projected to decline 2% from 2025 to 2035"
+  source: "https://www.bls.gov/ooh/office-and-administrative-support/secretaries-and-administrative-assistants.htm"
+  asOf: "2026-09-23"
+
+customFaqs:
+  - question: "What's the difference between an administrative assistant and an executive assistant on a resume?"
+    answer: "An administrative assistant resume typically shows support for a department or general office operations — scheduling, filing, phones. An executive assistant resume shows support for one or a few senior leaders — calendar gatekeeping, board meeting prep, travel for executives, and expense authority. If you did both, show the progression."
+  - question: "Should I list every software program I've used as an admin?"
+    answer: "List the ones the job posting or your target employer actually uses — Outlook and Concur for corporate roles, an EHR system for medical offices, SAP for larger enterprises. A long generic list of every tool you've ever touched reads as padding rather than fit."
+  - question: "How do I quantify admin work that doesn't have obvious numbers?"
+    answer: "Almost every admin task has a countable unit: meetings scheduled per week, calls handled per day, documents filed per month, dollars processed, or percentage improvement in a process you touched. Reconstruct a conservative estimate from memory rather than leaving the bullet as a bare task."
+  - question: "Is a one-page resume enough for an administrative assistant with 10+ years of experience?"
+    answer: "Usually, yes, unless you're applying at the executive assistant or office manager level with progressively more responsibility to show. Compress early-career admin roles into one or two lines and give full detail only to the most recent, most relevant positions."
 
 resume:
   template: classic

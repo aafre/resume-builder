@@ -2,8 +2,8 @@ const ResumePreview: React.FC<{ fields: Record<string, string> }> = ({
   fields,
 }) => {
   return (
-    <div className="bg-gray-100 p-6 rounded-lg shadow-md">
-      <h3 className="text-xl font-semibold text-gray-800">Resume Preview</h3>
+    <div className="bg-chalk-dark p-6 rounded-lg shadow-md">
+      <h3 className="text-xl font-semibold text-ink">Resume Preview</h3>
       <div className="mt-4">
         <p>
           <strong>Name:</strong> {fields.name}

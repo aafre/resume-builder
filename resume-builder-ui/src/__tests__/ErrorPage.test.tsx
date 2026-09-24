@@ -15,7 +15,7 @@ describe("ErrorPage", () => {
     render(<HelmetProvider><ErrorPage /></HelmetProvider>);
 
     // Verify the header is rendered.
-    expect(screen.getByText("5XX")).toBeInTheDocument();
+    expect(screen.getByText("Error 5XX")).toBeInTheDocument();
 
     // Verify that the default message is rendered.
     expect(

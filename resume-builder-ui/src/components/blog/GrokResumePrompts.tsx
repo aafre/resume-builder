@@ -21,22 +21,22 @@ export default function GrokResumePrompts() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Grok, developed by xAI, brings a conversational and fast approach to
           AI interactions. Its speed and willingness to iterate quickly make it
           useful for brainstorming and rapid resume refinement. For a broader look at
           using AI for resumes, see our{" "}
-          <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">
+          <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline">
             complete AI resume writing guide
           </Link>.
         </p>
 
         {/* Quick Answer Box */}
-        <div className="bg-orange-50 border border-orange-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-orange-800 mb-3">
+        <div className="callout callout-note rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-note mb-3">
             🎯 Grok's Strengths for Resume Writing
           </h3>
-          <ul className="space-y-2 text-orange-700">
+          <ul className="space-y-2 tone-note">
             <li>
               <strong>Speed:</strong> Fast responses for quick iterations
             </li>
@@ -190,9 +190,9 @@ export default function GrokResumePrompts() {
             Bullets: [PASTE]
           </CopyablePrompt>
 
-          <p className="text-stone-warm text-lg leading-relaxed">
+          <p className="text-ink/60 text-lg leading-relaxed">
             After injecting keywords, verify your optimization with our free{" "}
-            <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">
+            <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">
               Resume Keyword Scanner
             </Link>
             {" "}to see how well your resume matches the job description.
@@ -207,18 +207,18 @@ export default function GrokResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-8">
-          <h4 className="font-bold text-yellow-800 mb-3">⚡ Speed Tip</h4>
-          <p className="text-yellow-700">
+        <div className="callout callout-note rounded-xl p-6 my-8">
+          <h4 className="font-bold tone-note mb-3">⚡ Speed Tip</h4>
+          <p className="tone-note">
             Grok's strength is rapid iteration. Use short prompts, get quick
             responses, and keep refining. It's great for brainstorming sessions
             where you want to explore multiple directions quickly.
           </p>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Once your resume is polished, don't forget the cover letter. Check out our{" "}
-          <Link to="/blog/ai-cover-letter-prompts" className="text-accent hover:underline font-medium">
+          <Link to="/blog/ai-cover-letter-prompts" className="text-accent-text hover:underline font-medium">
             AI cover letter prompts
           </Link>
           {" "}to create a matching, personalized cover letter with any AI tool.
@@ -227,27 +227,27 @@ export default function GrokResumePrompts() {
         {/* AI Resume Tools */}
         <div className="my-12">
           <h2 className="text-2xl font-bold text-ink mb-2">Explore Other AI Resume Tools</h2>
-          <p className="text-stone-warm font-extralight mb-6">Each AI has different strengths for resume writing. Try multiple tools to find what works best for you.</p>
+          <p className="text-ink/60 font-extralight mb-6">Each AI has different strengths for resume writing. Try multiple tools to find what works best for you.</p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             <Link to="/blog/chatgpt-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">ChatGPT Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for creative writing and natural language</p>
+              <p className="text-sm text-ink/60">Best for creative writing and natural language</p>
             </Link>
             <Link to="/blog/claude-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Claude Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for analysis, structured output, and nuance</p>
+              <p className="text-sm text-ink/60">Best for analysis, structured output, and nuance</p>
             </Link>
             <Link to="/blog/gemini-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Gemini Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for research and Google ecosystem integration</p>
+              <p className="text-sm text-ink/60">Best for research and Google ecosystem integration</p>
             </Link>
             <Link to="/blog/deepseek-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">DeepSeek Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for technical roles and coding resumes</p>
+              <p className="text-sm text-ink/60">Best for technical roles and coding resumes</p>
             </Link>
             <Link to="/blog/copilot-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Copilot Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for Microsoft 365 integration and Word users</p>
+              <p className="text-sm text-ink/60">Best for Microsoft 365 integration and Word users</p>
             </Link>
           </div>
         </div>
@@ -271,11 +271,11 @@ export default function GrokResumePrompts() {
           Related Resources
         </h2>
 
-        <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
+        <ul className="list-disc list-inside space-y-2 text-lg text-ink/60">
           <li>
             <Link
               to="/blog/chatgpt-resume-prompts"
-              className="text-accent hover:underline"
+              className="text-accent-text hover:underline"
             >
               25+ ChatGPT Prompts for Resume Writing
             </Link>
@@ -283,7 +283,7 @@ export default function GrokResumePrompts() {
           <li>
             <Link
               to="/blog/ai-resume-writing-guide"
-              className="text-accent hover:underline"
+              className="text-accent-text hover:underline"
             >
               AI Resume Writing: The Complete Guide
             </Link>

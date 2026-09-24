@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useId } from 'react';
+import ModalShell from './shared/ModalShell';
 import { MdVerticalAlignTop, MdVerticalAlignBottom } from 'react-icons/md';
 import { SectionType } from '../services/sectionService';
 import {
@@ -39,6 +40,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
   supportsIcons = true,
   sections = [],
 }) => {
+  const titleId = useId();
   const [selectedPosition, setSelectedPosition] = useState<InsertPosition>('bottom');
   const [showAfterSection, setShowAfterSection] = useState(false);
   const [selectedType, setSelectedType] = useState<SectionType | null>(null);
@@ -115,14 +117,14 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
   const isTopOrBottom = selectedPosition === 'top' || selectedPosition === 'bottom';
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div
-        className="bg-white p-4 sm:p-6 rounded-lg max-w-sm sm:max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="section-type-modal-title"
-      >
-        <h2 id="section-type-modal-title" className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
+    <ModalShell
+      // No isOpen prop: the parent (EditorModals) conditionally renders this.
+      isOpen
+      onClose={onClose}
+      labelledBy={titleId}
+      panelClassName="bg-white p-4 sm:p-6 rounded-lg max-w-sm sm:max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+    >
+        <h2 id={titleId} className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
           Select Section Type
         </h2>
 
@@ -137,7 +139,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
             <button
               type="button"
               onClick={() => handleTopBottomSelect('top')}
-              className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-md text-sm font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent
+              className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-md text-sm font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text
                 ${selectedPosition === 'top'
                   ? 'bg-accent text-ink shadow-sm'
                   : 'text-gray-600 hover:bg-accent/[0.06] hover:text-ink/80'
@@ -149,7 +151,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
             <button
               type="button"
               onClick={() => handleTopBottomSelect('bottom')}
-              className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-md text-sm font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent
+              className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-md text-sm font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text
                 ${selectedPosition === 'bottom'
                   ? 'bg-accent text-ink shadow-sm'
                   : 'text-gray-600 hover:bg-accent/[0.06] hover:text-ink/80'
@@ -166,10 +168,10 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
               <button
                 type="button"
                 onClick={() => setShowAfterSection(!showAfterSection)}
-                className={`text-xs font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded ${
+                className={`text-xs font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text rounded ${
                   showAfterSection || !isTopOrBottom
                     ? 'text-ink/80'
-                    : 'text-accent hover:text-ink/80'
+                    : 'text-accent-text hover:text-ink/80'
                 }`}
               >
                 {showAfterSection ? '− Hide options' : '+ Insert after a specific section'}
@@ -182,7 +184,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
                       key={`${section.name}-${index}`}
                       type="button"
                       onClick={() => handleAfterSectionSelect(index + 1)}
-                      className={`px-3 py-1.5 text-xs rounded-full border transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent
+                      className={`px-3 py-1.5 text-xs rounded-full border transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text
                         ${selectedPosition === index + 1
                           ? 'bg-accent text-ink border-accent'
                           : 'bg-white text-gray-600 border-gray-300 hover:border-accent/40 hover:text-ink/80'
@@ -206,7 +208,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
                 type="button"
                 onClick={() => handleTypeSelect(section.type)}
                 className={`group flex flex-col text-left bg-white rounded-xl border
-                           overflow-hidden shadow-sm transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent
+                           overflow-hidden shadow-sm transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text
                            ${isSelected
                              ? 'border-accent ring-2 ring-accent/30 shadow-md'
                              : 'border-gray-200 hover:shadow-md hover:border-accent/70 hover:ring-2 hover:ring-accent/20'
@@ -214,17 +216,17 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
               >
                 {/* Visual Area */}
                 <div className={`h-28 sm:h-32 p-4 flex items-center justify-center transition-colors
-                                ${isSelected ? 'bg-accent/[0.06]' : 'bg-gray-50 group-hover:bg-accent/[0.06]'}`}>
+                                ${isSelected ? 'bg-accent/[0.06]' : 'bg-chalk group-hover:bg-accent/[0.06]'}`}>
                   <section.Visual className="w-full h-full" />
                 </div>
 
                 {/* Content Area */}
                 <div className="p-4">
                   <h3 className={`font-semibold mb-1 transition-colors
-                                 ${isSelected ? 'text-ink/80' : 'text-gray-900 group-hover:text-ink/80'}`}>
+                                 ${isSelected ? 'text-ink/80' : 'text-ink group-hover:text-ink/80'}`}>
                     {section.title}
                   </h3>
-                  <p className="text-xs text-gray-500 line-clamp-2">{section.description}</p>
+                  <p className="text-xs text-ink/60 line-clamp-2">{section.description}</p>
                 </div>
               </button>
             );
@@ -234,7 +236,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
         <div className="mt-4 sm:mt-6 flex gap-3">
           <button
             type="button"
-            className="flex-1 bg-gray-100 text-gray-700 px-4 py-2.5 rounded-lg font-medium hover:bg-gray-200 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="flex-1 bg-chalk-dark text-ink px-4 py-2.5 rounded-lg font-medium hover:bg-gray-200 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text"
             onClick={onClose}
           >
             Cancel
@@ -243,17 +245,16 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
             type="button"
             onClick={handleConfirm}
             disabled={!selectedType}
-            className={`flex-1 px-4 py-2.5 rounded-lg font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent
+            className={`flex-1 px-4 py-2.5 rounded-lg font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text
                        ${selectedType
                          ? 'bg-accent text-ink hover:bg-accent/90'
-                         : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                         : 'bg-gray-200 text-ink/60 cursor-not-allowed'
                        }`}
           >
             Add Section
           </button>
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
 };
 

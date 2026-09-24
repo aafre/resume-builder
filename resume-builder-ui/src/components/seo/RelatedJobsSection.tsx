@@ -28,7 +28,7 @@ export default function RelatedJobsSection({ job, limit = 6 }: RelatedJobsSectio
         <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-4 text-center">
           Related Resume Keywords
         </h2>
-        <p className="text-lg text-stone-warm font-extralight mb-8 text-center max-w-3xl mx-auto">
+        <p className="text-lg text-ink/60 font-extralight mb-8 text-center max-w-3xl mx-auto">
           Explore keywords for other roles in your field to discover transferable skills and broaden your job search.
         </p>
 
@@ -42,17 +42,17 @@ export default function RelatedJobsSection({ job, limit = 6 }: RelatedJobsSectio
                 to={`/resume-keywords/${relatedJob.slug}`}
                 className="block bg-white rounded-2xl p-6 border border-black/[0.06] shadow-sm hover:shadow-premium hover:-translate-y-1 transition-all duration-300 group"
               >
-                <h3 className="text-xl font-bold text-ink group-hover:text-accent transition-colors mb-3">
+                <h3 className="text-xl font-bold text-ink group-hover:text-accent-text transition-colors mb-3">
                   {relatedJob.title}
                 </h3>
 
-                <p className="text-sm text-stone-warm mb-4">
+                <p className="text-sm text-ink/60 mb-4">
                   {keywordCount}+ ATS-optimized keywords
                   {relatedJob.keywords.technical.length > 0 &&
                     ` including ${relatedJob.keywords.technical.slice(0, 2).join(', ')}${relatedJob.keywords.technical.length > 2 ? ', and more' : ''}`}
                 </p>
 
-                <div className="flex items-center text-accent font-medium text-sm group-hover:text-ink/80">
+                <div className="flex items-center text-accent-text font-medium text-sm group-hover:text-ink/80">
                   View Keywords
                   <svg
                     className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"

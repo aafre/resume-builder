@@ -76,7 +76,7 @@ export default function CompanyMarquee({
                 const container = target.parentElement;
                 if (container) {
                   container.innerHTML = `
-                    <div class="text-sm font-semibold text-stone-warm group-hover:text-ink transition-colors px-3 text-center leading-tight font-display">
+                    <div class="text-sm font-semibold text-ink/60 group-hover:text-ink transition-colors px-3 text-center leading-tight font-display">
                       ${company.name}
                     </div>
                   `;

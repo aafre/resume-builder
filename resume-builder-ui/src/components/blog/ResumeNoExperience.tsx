@@ -7,7 +7,7 @@ export default function ResumeNoExperience() {
       title="How to Write a Resume With No Experience (2026 Guide)"
       description="Step-by-step guide to writing a resume with no work experience. 5+ copy-paste examples, ATS-friendly template, and what to put instead of job history."
       publishDate="2026-01-20"
-      lastUpdated="2026-02-10"
+      lastUpdated="2026-07-25"
       readTime="14–18 min"
       keywords={[
         "entry level resume",
@@ -23,19 +23,20 @@ export default function ResumeNoExperience() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Updated for 2026: Starting your career without "official" experience
           can feel intimidating – but employers continue to hire for potential
           as much as for history. If you show the right skills, projects, and
           results, you can win interviews even with a blank work history.
         </p>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
-          This guide gives you copy-paste examples, role-specific keywords, and
-          a free ATS-friendly template you can use with our{" "}
+        <p className="text-lg leading-relaxed text-ink/60">
+          This guide walks through how to build a resume with no experience,
+          step by step, with copy-paste examples, role-specific keywords, and a
+          free ATS-friendly template you can use with our{" "}
           <a
             href="/actual-free-resume-builder"
-            className="text-accent hover:underline font-semibold"
+            className="text-accent-text hover:underline font-semibold"
           >
             actual free resume builder
           </a>{" "}
@@ -51,11 +52,66 @@ export default function ResumeNoExperience() {
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
-          The Best Resume Format When You Have No Experience
+        {/* Step index — MUST stay in sync with the "Step 1-7" H2 ids below. */}
+        <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
+          <h2 className="text-xl font-bold text-ink mb-3">
+            How to Make a Resume With No Experience (7 Steps)
+          </h2>
+          <p className="text-ink/80 mb-4">
+            To create a resume with no work experience, lead with skills and
+            projects instead of job history. Pick a hybrid format, write a 2–3
+            sentence summary aimed at one specific role, then fill the page with
+            coursework, projects, volunteering, and part-time work – each
+            written as an action plus a measurable outcome. Here is the full
+            process, in order:
+          </p>
+          <ol className="space-y-2 text-ink/80 list-decimal list-inside">
+            <li>
+              <a href="#step-format" className="text-accent hover:underline">
+                Choose a format that leads with skills
+              </a>
+            </li>
+            <li>
+              <a href="#step-ats" className="text-accent hover:underline">
+                Make it ATS-friendly
+              </a>
+            </li>
+            <li>
+              <a href="#step-summary" className="text-accent hover:underline">
+                Write your professional summary
+              </a>
+            </li>
+            <li>
+              <a href="#step-bullets" className="text-accent hover:underline">
+                Write bullets with the action + outcome formula
+              </a>
+            </li>
+            <li>
+              <a href="#step-projects" className="text-accent hover:underline">
+                Use projects as your experience section
+              </a>
+            </li>
+            <li>
+              <a href="#step-skills" className="text-accent hover:underline">
+                Group the skills employers screen for
+              </a>
+            </li>
+            <li>
+              <a href="#step-keywords" className="text-accent hover:underline">
+                Mirror keywords from the job post
+              </a>
+            </li>
+          </ol>
+        </nav>
+
+        <h2
+          id="step-format"
+          className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6"
+        >
+          Step 1: Choose the Best Resume Format When You Have No Experience
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Use a <strong>Hybrid (Combination) format</strong> – not purely
           functional. A hybrid resume puts skills & projects near the top while
           still showing experience chronologically (part-time, internships,
@@ -64,7 +120,7 @@ export default function ResumeNoExperience() {
 
         <div className="bg-chalk-dark border-l-4 border-accent p-6">
           <h4 className="font-bold text-ink mb-3">Recommended order:</h4>
-          <ol className="list-decimal pl-6 space-y-2 text-stone-warm">
+          <ol className="list-decimal pl-6 space-y-2 text-ink/60">
             <li>
               <strong>Contact info</strong>
             </li>
@@ -89,16 +145,16 @@ export default function ResumeNoExperience() {
           </ol>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
-          Make It ATS-Friendly (So You Get Seen)
+        <h2 id="step-ats" className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6">
+          Step 2: Make It ATS-Friendly (So You Get Seen)
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-800 mb-3">
+          <div className="callout callout-do rounded-xl p-6">
+            <h4 className="font-bold tone-do mb-3">
               ✅ ATS Best Practices
             </h4>
-            <ul className="list-disc pl-6 space-y-1 text-accent text-sm">
+            <ul className="list-disc pl-6 space-y-1 text-accent-text text-sm">
               <li>
                 Use standard headings: Summary, Skills, Projects, Education,
                 Experience
@@ -112,9 +168,9 @@ export default function ResumeNoExperience() {
               <li>Dates & locations: consistent format</li>
             </ul>
           </div>
-          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-            <h4 className="font-bold text-yellow-800 mb-3">💡 Pro Tips</h4>
-            <ul className="list-disc pl-6 space-y-1 text-yellow-700 text-sm">
+          <div className="callout callout-note rounded-xl p-6">
+            <h4 className="font-bold tone-note mb-3">💡 Pro Tips</h4>
+            <ul className="list-disc pl-6 space-y-1 tone-note text-sm">
               <li>Use keywords naturally throughout sections</li>
               <li>Include both acronyms and full terms</li>
               <li>Match job posting's exact phrasing</li>
@@ -124,11 +180,11 @@ export default function ResumeNoExperience() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
-          Professional Summary Examples (Copy-Paste)
+        <h2 id="step-summary" className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6">
+          Step 3: Write Your Professional Summary (Copy-Paste Examples)
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Use 2–3 sentences: who you are, target role, 2–3 strengths, and the
           value you'll bring.
         </p>
@@ -205,8 +261,8 @@ export default function ResumeNoExperience() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
-          Bullet Formula (So Your Points Stand Out)
+        <h2 id="step-bullets" className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6">
+          Step 4: Write Bullets With the Action + Outcome Formula
         </h2>
 
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
@@ -247,11 +303,11 @@ export default function ResumeNoExperience() {
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
-          Projects: Your Fastest Path to Credibility
+        <h2 id="step-projects" className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6">
+          Step 5: Use Projects as Your Experience Section
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Show 2–4 relevant projects with results and tools.
         </p>
 
@@ -275,7 +331,7 @@ export default function ResumeNoExperience() {
               Local Charity Social Campaign – Increased engagement by 38% in 4
               weeks
             </h4>
-            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
+            <ul className="list-disc pl-6 space-y-1 text-ink/60 text-sm">
               <li>
                 Designed content calendar, wrote posts, and tracked analytics in
                 Meta Business Suite
@@ -292,7 +348,7 @@ export default function ResumeNoExperience() {
               Campus Food Finder (React/Node) – Deployed MVP used by 80+
               students
             </h4>
-            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
+            <ul className="list-disc pl-6 space-y-1 text-ink/60 text-sm">
               <li>
                 Implemented JWT auth, MongoDB CRUD, and mobile-responsive UI;
                 GitHub link available
@@ -305,7 +361,7 @@ export default function ResumeNoExperience() {
               Retail Stock Optimization (Excel) – Reduced out-of-stock items by
               18%
             </h4>
-            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
+            <ul className="list-disc pl-6 space-y-1 text-ink/60 text-sm">
               <li>
                 Built a forecast with seasonality; created dashboard for the
                 shift lead
@@ -314,18 +370,18 @@ export default function ResumeNoExperience() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
-          Skills That Win Entry-Level Interviews
+        <h2 id="step-skills" className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6">
+          Step 6: Group the Skills That Win Entry-Level Interviews
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Group skills so they're easy to scan.
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">Technical / Tools</h4>
-            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
+            <ul className="list-disc pl-6 space-y-1 text-ink/60 text-sm">
               <li>Excel (PivotTables, LOOKUP), Google Sheets, PowerPoint</li>
               <li>Python, JavaScript, SQL (beginner–intermediate)</li>
               <li>Canva, Figma, Google Analytics, Meta Ads (basic)</li>
@@ -334,7 +390,7 @@ export default function ResumeNoExperience() {
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">Transferable</h4>
-            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
+            <ul className="list-disc pl-6 space-y-1 text-ink/60 text-sm">
               <li>Communication, teamwork, customer service</li>
               <li>Problem-solving, organization, time management</li>
               <li>Attention to detail, initiative, adaptability</li>
@@ -343,11 +399,11 @@ export default function ResumeNoExperience() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
-          Role-Specific Keywords (Use Naturally)
+        <h2 id="step-keywords" className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6">
+          Step 7: Mirror Role-Specific Keywords From the Job Post
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Mirror the job post's language. Don't stuff – weave into Summary,
           Projects, Experience, and Skills.
         </p>
@@ -373,27 +429,27 @@ export default function ResumeNoExperience() {
             </p>
           </div>
 
-          <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-900 mb-2">
+          <div className="callout callout-do rounded-xl p-6">
+            <h4 className="font-bold tone-do mb-2">
               Customer Service / Retail Keywords
             </h4>
-            <p className="text-green-800 text-sm">
+            <p className="tone-do text-sm">
               POS, cash handling, returns, merchandising, inventory, upselling,
               complaints resolution, CRM, shift lead
             </p>
           </div>
 
-          <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-xl p-6">
-            <h4 className="font-bold text-orange-900 mb-2">
+          <div className="callout callout-note rounded-xl p-6">
+            <h4 className="font-bold tone-note mb-2">
               Admin / Ops Assistant Keywords
             </h4>
-            <p className="text-orange-800 text-sm">
+            <p className="tone-note text-sm">
               Google Workspace / Microsoft 365, scheduling, calendar management,
               data entry, documentation, spreadsheets, vendor coordination
             </p>
           </div>
 
-          <div className="bg-gradient-to-r from-gray-50 to-slate-50 border border-black/[0.06] rounded-xl p-6">
+          <div className="bg-gradient-to-r from-chalk to-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h4 className="font-bold text-ink mb-2">
               Finance / Analyst Intern Keywords
             </h4>
@@ -405,7 +461,7 @@ export default function ResumeNoExperience() {
         </div>
 
         {/* CTA before examples */}
-        <div className="my-10 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-2xl shadow-xl p-6 md:p-8 text-center">
+        <div className="my-10 bg-ink text-white rounded-2xl shadow-xl p-6 md:p-8 text-center">
           <h3 className="text-xl md:text-2xl font-bold mb-3">
             Ready to Build Your Resume?
           </h3>
@@ -415,7 +471,7 @@ export default function ResumeNoExperience() {
           </p>
           <a
             href="/templates"
-            className="inline-block bg-white text-accent px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Free
           </a>
@@ -433,7 +489,7 @@ export default function ResumeNoExperience() {
             <div className="bg-chalk-dark p-6 rounded-lg font-mono text-sm space-y-3">
               <div className="text-center">
                 <p className="font-bold text-lg text-ink">Ava Patel</p>
-                <p className="text-stone-warm">
+                <p className="text-ink/60">
                   London, UK · ava.patel@email · 07xxx · linkedin.com/in/ava ·
                   portfolio.link
                 </p>
@@ -468,11 +524,11 @@ export default function ResumeNoExperience() {
                     <strong>Local Charity Social Campaign</strong> – +38%
                     engagement in 4 weeks (Feb–Mar 2025)
                   </p>
-                  <p className="text-stone-warm">
+                  <p className="text-ink/60">
                     • Built a content calendar, wrote posts, and coordinated
                     with 2 volunteers; tracked KPIs in GA/Meta
                   </p>
-                  <p className="text-stone-warm">
+                  <p className="text-ink/60">
                     • Created a simple UTM tracker in Sheets; weekly reporting
                     to the coordinator
                   </p>
@@ -484,7 +540,7 @@ export default function ResumeNoExperience() {
                 <p className="text-ink">
                   BA Marketing, University of Westminster (2021–2025) · GPA 3.6
                 </p>
-                <p className="text-stone-warm">
+                <p className="text-ink/60">
                   Coursework: Digital Marketing, Consumer Behavior, Market
                   Research, Analytics
                 </p>
@@ -497,7 +553,7 @@ export default function ResumeNoExperience() {
                     <strong>Volunteer Coordinator</strong> – Community Market,
                     London (Sep 2024–Mar 2025)
                   </p>
-                  <p className="text-stone-warm">
+                  <p className="text-ink/60">
                     • Scheduled 15 volunteers; standardized brief; reduced late
                     start incidents by 25%
                   </p>
@@ -513,7 +569,7 @@ export default function ResumeNoExperience() {
             <div className="bg-chalk-dark p-6 rounded-lg font-mono text-sm space-y-3">
               <div className="text-center">
                 <p className="font-bold text-lg text-ink">Liam Chen</p>
-                <p className="text-stone-warm">
+                <p className="text-ink/60">
                   Manchester, UK · liamc@email · 07xxx · linkedin.com/in/liamc ·
                   github.com/liamc
                 </p>
@@ -548,11 +604,11 @@ export default function ResumeNoExperience() {
                     <strong>Campus Food Finder (React/Node)</strong> – MVP used
                     by 80+ students (Jan–Apr 2025)
                   </p>
-                  <p className="text-stone-warm">
+                  <p className="text-ink/60">
                     • Implemented auth, favorites, and search; REST API with
                     Express; MongoDB persistence
                   </p>
-                  <p className="text-stone-warm">
+                  <p className="text-ink/60">
                     • Wrote unit tests with Jest; deployed preview on Render;
                     repo on GitHub
                   </p>
@@ -564,7 +620,7 @@ export default function ResumeNoExperience() {
                 <p className="text-ink">
                   BSc Computer Science, University of Manchester (2023–2026)
                 </p>
-                <p className="text-stone-warm">
+                <p className="text-ink/60">
                   Coursework: Data Structures, Web Dev, Databases, Algorithms
                 </p>
               </div>
@@ -576,7 +632,7 @@ export default function ResumeNoExperience() {
                     <strong>IT Support Volunteer</strong> – Local Community
                     Centre (Jun–Aug 2024)
                   </p>
-                  <p className="text-stone-warm">
+                  <p className="text-ink/60">
                     • Resolved basic tech issues (Wi-Fi, printer drivers);
                     documented fixes in shared Google Doc
                   </p>
@@ -593,7 +649,7 @@ export default function ResumeNoExperience() {
             <div className="bg-chalk-dark p-6 rounded-lg font-mono text-sm space-y-3">
               <div className="text-center">
                 <p className="font-bold text-lg text-ink">Sarah Mitchell</p>
-                <p className="text-stone-warm">
+                <p className="text-ink/60">
                   Birmingham, UK · sarah.mitchell@email · 07xxx ·
                   linkedin.com/in/sarahm
                 </p>
@@ -630,7 +686,7 @@ export default function ResumeNoExperience() {
                       <strong>Senior Sales Associate</strong> – Retail Store,
                       Birmingham (Jun 2022–Present)
                     </p>
-                    <ul className="list-disc pl-5 text-stone-warm space-y-1">
+                    <ul className="list-disc pl-5 text-ink/60 space-y-1">
                       <li>
                         Processed 80–100 transactions daily with 99.8% accuracy;
                         handled cash reconciliation
@@ -657,7 +713,7 @@ export default function ResumeNoExperience() {
                 <p className="text-ink">
                   A-Levels, Birmingham College (2019–2021)
                 </p>
-                <p className="text-stone-warm">
+                <p className="text-ink/60">
                   Subjects: Business Studies (B), English (B), Mathematics (C)
                 </p>
               </div>
@@ -666,7 +722,7 @@ export default function ResumeNoExperience() {
                 <p className="font-bold text-ink mb-2">
                   CERTIFICATIONS & TRAINING
                 </p>
-                <ul className="list-disc pl-5 text-stone-warm space-y-1">
+                <ul className="list-disc pl-5 text-ink/60 space-y-1">
                   <li>Microsoft Office Specialist – Excel (2025)</li>
                   <li>First Aid Certified (2024)</li>
                 </ul>
@@ -694,7 +750,7 @@ export default function ResumeNoExperience() {
           </p>
           <a
             href="/templates"
-            className="inline-block bg-white text-accent px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Choose a Template
           </a>
@@ -705,34 +761,34 @@ export default function ResumeNoExperience() {
         </h2>
 
         <div className="space-y-4">
-          <div className="bg-red-50 border-l-4 border-red-500 p-4">
+          <div className="callout callout-dont p-4">
             <h4 className="font-bold text-ink mb-1">
               ❌ Apologizing for no experience
             </h4>
-            <p className="text-accent text-sm">
+            <p className="text-accent-text text-sm">
               → Replace with proof of potential (projects, results, learning)
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 p-4">
+          <div className="callout callout-dont p-4">
             <h4 className="font-bold text-ink mb-1">
               ❌ Generic objectives
             </h4>
-            <p className="text-accent text-sm">
+            <p className="text-accent-text text-sm">
               → Use a Summary that states value, skills, and target role
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 p-4">
+          <div className="callout callout-dont p-4">
             <h4 className="font-bold text-ink mb-1">❌ Wall of text</h4>
-            <p className="text-accent text-sm">
+            <p className="text-accent-text text-sm">
               → Short bullets with numbers
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 p-4">
+          <div className="callout callout-dont p-4">
             <h4 className="font-bold text-ink mb-1">❌ Irrelevant info</h4>
-            <p className="text-accent text-sm">
+            <p className="text-accent-text text-sm">
               → Prioritize relevant projects/skills to the job post
             </p>
           </div>
@@ -747,7 +803,7 @@ export default function ResumeNoExperience() {
             <h4 className="font-bold text-ink mb-2">
               Should I use a resume objective or summary with no experience?
             </h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Use a summary that states your target role, 2–3 strengths, and 1
               proof point. Objectives are often vague.
             </p>
@@ -757,7 +813,7 @@ export default function ResumeNoExperience() {
             <h4 className="font-bold text-ink mb-2">
               How long should my resume be?
             </h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               One page is ideal for entry-level candidates.
             </p>
           </div>
@@ -766,7 +822,7 @@ export default function ResumeNoExperience() {
             <h4 className="font-bold text-ink mb-2">
               Should I include GPA?
             </h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Include if ≥ 3.5/4.0 (or equivalent). Otherwise, skip it.
             </p>
           </div>
@@ -775,7 +831,7 @@ export default function ResumeNoExperience() {
             <h4 className="font-bold text-ink mb-2">
               What if I truly have zero to list?
             </h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Create two quick projects aligned to the role (e.g., simple
               website, data analysis, community event). Show outcome and tools.
             </p>
@@ -786,7 +842,7 @@ export default function ResumeNoExperience() {
           What to Put on a Resume With No Work Experience
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           The biggest mistake entry-level candidates make is thinking "no work
           experience" means "nothing to put on a resume." In reality, employers
           hiring for entry-level roles expect candidates to draw from a range of
@@ -796,7 +852,7 @@ export default function ResumeNoExperience() {
         <div className="space-y-4">
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-2">Academic Projects & Coursework</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Capstone projects, research papers, lab work, and relevant
               coursework all count. Format them like work experience: what
               you did, what tools you used, and what the outcome was.
@@ -807,7 +863,7 @@ export default function ResumeNoExperience() {
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-2">Volunteering & Community Work</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Volunteer roles demonstrate initiative, reliability, and
               real-world skills. Organizing events, managing social media
               for a charity, tutoring, or leading a team of volunteers —
@@ -816,7 +872,7 @@ export default function ResumeNoExperience() {
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-2">Personal Projects & Freelance Work</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Built a website? Started a blog? Created an app? Sold items
               online? These demonstrate self-motivation and practical
               skills. Include metrics where possible: "Grew Etsy shop to
@@ -826,7 +882,7 @@ export default function ResumeNoExperience() {
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-2">Clubs, Societies & Leadership Roles</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Holding a position in a student club (treasurer, president,
               event coordinator) shows leadership and organizational skills.
               Even membership in relevant societies signals genuine interest
@@ -835,7 +891,7 @@ export default function ResumeNoExperience() {
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-2">Certifications & Online Courses</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Google Analytics Certification, HubSpot Inbound Marketing,
               AWS Cloud Practitioner, Microsoft Office Specialist — free or
               low-cost certifications prove you can learn independently and
@@ -848,15 +904,15 @@ export default function ResumeNoExperience() {
           Recommended Templates for Entry-Level Resumes
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Not all resume templates work well when you have limited experience.
           Look for templates that emphasize skills and projects over long work
           histories. For inspiration, see our{" "}
-          <Link to="/examples/college-student" className="text-accent hover:underline font-semibold">
+          <Link to="/examples/college-student" className="text-accent-text hover:underline font-semibold">
             college student resume example
           </Link>{" "}
           and{" "}
-          <Link to="/examples/internship" className="text-accent hover:underline font-semibold">
+          <Link to="/examples/internship" className="text-accent-text hover:underline font-semibold">
             internship resume example
           </Link>
           . Here are our top template picks:
@@ -868,7 +924,7 @@ export default function ResumeNoExperience() {
             className="bg-accent/[0.04] border border-accent/20 rounded-xl p-6 hover:shadow-lg transition-all duration-300 block"
           >
             <h4 className="font-bold text-ink mb-2">Student Resume Templates</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Designed with prominent skills and projects sections.
               ATS-friendly layouts that work great with limited work history.
             </p>
@@ -878,7 +934,7 @@ export default function ResumeNoExperience() {
             className="bg-accent/[0.04] border border-accent/20 rounded-xl p-6 hover:shadow-lg transition-all duration-300 block"
           >
             <h4 className="font-bold text-ink mb-2">ATS-Friendly Templates</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Clean, machine-readable formats that ensure your resume passes
               automated screening — critical for entry-level candidates competing
               against experienced applicants.
@@ -886,12 +942,12 @@ export default function ResumeNoExperience() {
           </a>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           All templates are 100% free to use and download — no sign-up required.
           Start building with our{' '}
           <a
             href="/free-resume-builder-for-students"
-            className="text-accent hover:underline font-semibold"
+            className="text-accent-text hover:underline font-semibold"
           >
             free resume builder for students
           </a>{' '}

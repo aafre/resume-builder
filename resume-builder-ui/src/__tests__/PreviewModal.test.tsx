@@ -40,9 +40,8 @@ describe("PreviewModal", () => {
     expect(screen.getByText(/generating pdf preview/i)).toBeInTheDocument();
     expect(screen.getByText(/this usually takes 2-5 seconds/i)).toBeInTheDocument();
 
-    // Should show spinner
-    const spinner = document.querySelector(".animate-spin");
-    expect(spinner).toBeInTheDocument();
+    // The paper is already on screen; the print head is what says "working".
+    expect(document.querySelector(".sheet-scan")).toBeInTheDocument();
   });
 
   it("shows error message when error is provided", () => {
@@ -139,9 +138,8 @@ describe("PreviewModal", () => {
     // Banner should be visible with warning text
     expect(screen.getByText(/your edits aren't reflected yet/i)).toBeInTheDocument();
 
-    // Banner parent should have amber background styling
-    const bannerContainer = screen.getByText(/your edits aren't reflected yet/i).closest(".bg-amber-50");
-    expect(bannerContainer).toBeInTheDocument();
+    // Staleness is carried by the chip in the top strip, on the ink ground.
+    expect(screen.getByText(/outdated/i)).toBeInTheDocument();
 
     // Should have refresh button in banner
     const refreshButtons = screen.getAllByRole("button", { name: /refresh/i });
@@ -177,7 +175,7 @@ describe("PreviewModal", () => {
     const onClose = vi.fn();
     render(<PreviewModal {...defaultProps} onClose={onClose} />);
 
-    fireEvent.keyDown(window, { key: "Escape" });
+    fireEvent.keyDown(document, { key: "Escape" });
 
     expect(onClose).toHaveBeenCalledTimes(1);
   });
@@ -187,22 +185,23 @@ describe("PreviewModal", () => {
     render(<PreviewModal {...defaultProps} onClose={onClose} />);
 
     fireEvent.keyDown(window, { key: "Enter" });
-    fireEvent.keyDown(window, { key: "Space" });
+    fireEvent.keyDown(document, { key: "Space" });
 
     expect(onClose).not.toHaveBeenCalled();
   });
 
   it("calls onClose when backdrop is clicked", () => {
     const onClose = vi.fn();
-    const { container } = render(<PreviewModal {...defaultProps} onClose={onClose} />);
+    render(<PreviewModal {...defaultProps} onClose={onClose} />);
 
-    const backdrop = container.querySelector(".fixed.inset-0.bg-black\\/60");
-    expect(backdrop).toBeInTheDocument();
+    // Was a class-based lookup against a separate backdrop div, wrapped in an
+    // `if (backdrop)` guard that let the real assertion silently not run.
+    // ModalShell merges backdrop and overlay, so target the overlay testid.
+    const backdrop = screen.getByTestId("preview-modal-container");
 
-    if (backdrop) {
-      fireEvent.click(backdrop);
-      expect(onClose).toHaveBeenCalledTimes(1);
-    }
+    // mousedown, not click: a drag starting inside the panel must not dismiss.
+    fireEvent.mouseDown(backdrop);
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 
   it("does not close when modal content is clicked", () => {
@@ -292,29 +291,33 @@ describe("PreviewModal", () => {
     );
 
     const refreshButtons = screen.getAllByRole("button", { name: /refresh|regenerate/i });
-    // Button should contain spinner
-    const buttonWithSpinner = refreshButtons.find((btn) => {
-      const spinner = btn.querySelector(".animate-spin");
-      return spinner !== null;
-    });
+    // Button swaps its icon for the indeterminate working rail
+    const buttonWithRail = refreshButtons.find(
+      (btn) => btn.querySelector(".phase-rail") !== null
+    );
 
-    expect(buttonWithSpinner).toBeDefined();
+    expect(buttonWithRail).toBeDefined();
   });
 
-  it("prevents body scroll when modal is open", () => {
+  // The lock pins a fixed body at a negative offset instead of setting
+  // `body { overflow: hidden }`, which does nothing in this app -- styles.css
+  // sets `html, body { height: 100%; display: flex }` and the scrolling element
+  // is `html`, so body's overflow never reaches the viewport. See
+  // hooks/useScrollLock.ts.
+  it("prevents scrolling when modal is open", () => {
     const { rerender } = render(<PreviewModal {...defaultProps} isOpen={true} />);
-    expect(document.body.style.overflow).toBe("hidden");
+    expect(document.body.style.position).toBe("fixed");
 
     rerender(<PreviewModal {...defaultProps} isOpen={false} />);
-    expect(document.body.style.overflow).toBe("");
+    expect(document.body.style.position).toBe("");
   });
 
-  it("restores body scroll on unmount", () => {
+  it("restores scrolling on unmount", () => {
     const { unmount } = render(<PreviewModal {...defaultProps} isOpen={true} />);
-    expect(document.body.style.overflow).toBe("hidden");
+    expect(document.body.style.position).toBe("fixed");
 
     unmount();
-    expect(document.body.style.overflow).toBe("");
+    expect(document.body.style.position).toBe("");
   });
 
   it("shows empty state when no preview URL and not generating", () => {
@@ -396,8 +399,9 @@ describe("PreviewModal", () => {
       />
     );
 
-    // Should have warning icon
-    const warningIcon = container.querySelector("svg");
+    // Should have warning icon. ModalShell portals to document.body, so the
+    // render container is empty.
+    const warningIcon = document.body.querySelector("svg");
     expect(warningIcon).toBeInTheDocument();
   });
 

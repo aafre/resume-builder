@@ -4,6 +4,7 @@ import { flushSync } from "react-dom";
 import { HelmetProvider } from 'react-helmet-async';
 import { onCLS } from 'web-vitals/attribution';
 import App from "./App.tsx";
+import { capturePrerenderPayloads } from "./utils/prerenderPayload";
 
 import "./styles.css";
 
@@ -20,6 +21,12 @@ onCLS((metric) => {
 });
 
 const rootEl = document.getElementById("root")!;
+
+// Must run before React touches the DOM: a lazy route's Suspense fallback
+// replaces #root's children while its chunk downloads, taking any prerendered
+// payload tag with it. See utils/prerenderPayload.ts.
+capturePrerenderPayloads();
+
 const app = (
   <StrictMode>
     <HelmetProvider>

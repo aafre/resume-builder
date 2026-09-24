@@ -1,4 +1,6 @@
+import { useId } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ModalShell from './shared/ModalShell';
 
 interface StorageLimitModalProps {
   isOpen: boolean;
@@ -7,8 +9,7 @@ interface StorageLimitModalProps {
 
 export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
   const navigate = useNavigate();
-
-  if (!isOpen) return null;
+  const titleId = useId();
 
   const handleManageResumes = () => {
     onClose();
@@ -16,8 +17,12 @@ export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-2xl shadow-xl max-w-md w-full mx-4">
+    <ModalShell
+      isOpen={isOpen}
+      onClose={onClose}
+      labelledBy={titleId}
+      panelClassName="bg-white rounded-2xl shadow-xl max-w-md w-full"
+    >
         <div className="p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="flex-shrink-0">
@@ -36,12 +41,12 @@ export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
               </svg>
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Storage Full</h2>
-              <p className="text-sm text-gray-500 mt-1">You've reached the 5-resume limit</p>
+              <h2 id={titleId} className="text-xl font-bold text-ink">Storage Full</h2>
+              <p className="text-sm text-ink/60 mt-1">You've reached the 5-resume limit</p>
             </div>
           </div>
 
-          <p className="text-gray-700 mb-6">
+          <p className="text-ink/60 mb-6">
             You've reached the 5-resume limit for free accounts.
             Delete an old resume to create a new one.
           </p>
@@ -55,13 +60,12 @@ export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
             </button>
             <button
               onClick={onClose}
-              className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors"
+              className="flex-1 bg-gray-200 hover:bg-gray-300 text-ink font-medium py-2 px-4 rounded-lg transition-colors"
             >
               Cancel
             </button>
           </div>
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
 }

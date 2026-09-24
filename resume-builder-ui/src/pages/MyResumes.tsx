@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { flushSync } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { ResumeListItem } from '../types';
-import { ResumeCard } from '../components/ResumeCard';
+import { ResumeCard, getThumbnailUrl } from '../components/ResumeCard';
 import { GhostCard } from '../components/GhostCard';
 import { DeleteResumeModal } from '../components/DeleteResumeModal';
 import { DuplicateResumeModal } from '../components/DuplicateResumeModal';
@@ -15,6 +16,9 @@ import { useResumes } from '../hooks/useResumes';
 import { useAuth } from '../contexts/AuthContext';
 import { usePreview } from '../hooks/usePreview';
 import { InContentAd, AD_CONFIG } from '../components/ads';
+import { SectionEmptyState } from '../components/shared/SectionEmptyState';
+import { trackPdfDownloaded, trackPdfDownloadFailed } from '../lib/analytics';
+import { withViewTransition } from '../lib/viewTransition';
 
 export default function MyResumes() {
   const navigate = useNavigate();
@@ -34,6 +38,14 @@ export default function MyResumes() {
   const [previewResumeId, setPreviewResumeId] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [previewingId, setPreviewingId] = useState<string | null>(null);
+  /**
+   * Id of the card thumbnail currently carrying `view-transition-name:
+   * resume-sheet`. Exactly one element in the document may hold that name, so
+   * it moves in lockstep with the preview modal opening and closing — the card
+   * hands it to the modal's sheet on the way in, and takes it back on the way
+   * out.
+   */
+  const [morphId, setMorphId] = useState<string | null>(null);
   const downloadPromiseRef = useRef<Promise<void> | null>(null);
 
   // Preview hook - database mode for fetching pre-generated PDFs
@@ -229,8 +241,17 @@ export default function MyResumes() {
         document.body.removeChild(a);
 
         toast.success('Resume downloaded successfully');
+        trackPdfDownloaded({
+          template_id: resumes.find(r => r.id === id)?.template_id || 'unknown',
+          source: 'my_resumes',
+        });
       } catch (err) {
         console.error('Error downloading resume:', err);
+        trackPdfDownloadFailed({
+          template_id: resumes.find(r => r.id === id)?.template_id || 'unknown',
+          source: 'my_resumes',
+          error_type: err instanceof ApiError && err.data?.missing_icons ? 'missing_icons' : 'unknown',
+        });
 
         // Special handling for missing icons error
         if (err instanceof ApiError && err.data?.missing_icons) {
@@ -257,10 +278,18 @@ export default function MyResumes() {
   const handlePreview = (id: string) => {
     if (!session) return;
 
+    // Name the thumbnail before the snapshot: startViewTransition captures the
+    // DOM as it stands when its callback returns, so the outgoing element has
+    // to already carry the name.
+    flushSync(() => setMorphId(id));
+
     // Set loading state and resume ID, open modal (effect will handle generation)
-    setPreviewingId(id);
-    setPreviewResumeId(id);
-    setShowPreviewModal(true);
+    withViewTransition(() => {
+      setMorphId(null);
+      setPreviewingId(id);
+      setPreviewResumeId(id);
+      setShowPreviewModal(true);
+    });
   };
 
   // Trigger preview generation when modal opens with a resume ID.
@@ -272,9 +301,14 @@ export default function MyResumes() {
     }
   }, [showPreviewModal, previewResumeId, checkAndRefreshIfStale]);
 
+  // Morph back into the card that opened the sheet, then release the name.
   const handleClosePreview = () => {
-    setShowPreviewModal(false);
-    setPreviewingId(null);
+    const returningTo = previewResumeId;
+    withViewTransition(() => {
+      setShowPreviewModal(false);
+      setPreviewingId(null);
+      setMorphId(returningTo);
+    }).then(() => setMorphId(null));
   };
 
   const handleRefreshPreview = async () => {
@@ -298,16 +332,16 @@ export default function MyResumes() {
 
   if (authLoading || isLoading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
-        <div className="text-center rounded-lg border border-slate-200 bg-white p-8 shadow-sm">
-          <div className="mx-auto mb-4 h-2 w-24 overflow-hidden rounded-full bg-slate-200">
+      <div className="min-h-screen bg-chalk flex items-center justify-center px-4">
+        <div className="text-center rounded-2xl border border-black/[0.06] bg-white p-8 shadow-premium">
+          <div className="mx-auto mb-4 h-2 w-24 overflow-hidden rounded-full bg-chalk-dark">
             <div className="h-full w-1/2 animate-pulse rounded-full bg-accent" />
           </div>
-          <p className="text-gray-600">
+          <p className="font-display font-extralight text-ink/60">
             {authLoading ? 'Initializing authentication...' : 'Loading your resumes...'}
           </p>
           {authLoading && (
-            <p className="text-gray-500 text-sm mt-2">
+            <p className="text-ink/60 text-sm mt-2">
               If this takes more than 10 seconds, try refreshing the page
             </p>
           )}
@@ -323,13 +357,13 @@ export default function MyResumes() {
 
   if (isError) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
-        <div className="text-center max-w-md rounded-lg border border-red-100 bg-white p-8 shadow-sm">
+      <div className="min-h-screen bg-chalk flex items-center justify-center px-4">
+        <div className="text-center max-w-md rounded-2xl border border-red-100 bg-white p-8 shadow-premium">
           <svg className="w-16 h-16 text-red-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Error Loading Resumes</h2>
-          <p className="text-gray-600 mb-4">{error?.message || 'Failed to load resumes'}</p>
+          <h2 className="font-display text-2xl font-extrabold tracking-tight text-ink mb-2">Error Loading Resumes</h2>
+          <p className="font-display font-extralight text-ink/60 mb-4">{error?.message || 'Failed to load resumes'}</p>
           <button
             type="button"
             onClick={() => refetch()}
@@ -343,48 +377,58 @@ export default function MyResumes() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-chalk">
       <div className="container mx-auto px-4 py-8 md:py-10 max-w-[1200px]">
         <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
+            <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase">
               Dashboard
             </p>
-            <h1 className="mt-1 text-2xl md:text-3xl font-extrabold text-ink font-display">
+            <h1 className="mt-1 font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">
               My Resumes
             </h1>
           </div>
-          <p className="text-sm font-medium text-slate-600">
+          <p className="text-sm font-medium text-ink/60">
             {resumes.length} of 5 resumes used
           </p>
         </div>
 
         {/* Resume Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-          {/* Ghost Card - Always first */}
-          <GhostCard
-            isAtLimit={resumes.length >= 5}
-            resumeCount={resumes.length}
-            onCreateNew={handleCreateNew}
-            onUpgrade={() => toast('Pricing coming soon!')}
+        {resumes.length === 0 ? (
+          <SectionEmptyState
+            headline="No resumes yet."
+            hint="Pick a template and your first resume starts as a filled-in draft you edit, not a blank page. You can keep up to 5."
+            addLabel="Create your first resume"
+            onAdd={handleCreateNew}
           />
-
-          {/* Existing resume cards */}
-          {resumes.map(resume => (
-            <ResumeCard
-              key={resume.id}
-              resume={resume}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-              onDownload={handleDownload}
-              onPreview={handlePreview}
-              onDuplicate={handleDuplicate}
-              onRename={handleRename}
-              isEditButtonLoading={editingId === resume.id}
-              isPreviewLoading={previewingId === resume.id && isGeneratingPreview}
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+            {/* Ghost Card - Always first */}
+            <GhostCard
+              isAtLimit={resumes.length >= 5}
+              resumeCount={resumes.length}
+              onCreateNew={handleCreateNew}
+              onUpgrade={() => toast('Pricing coming soon!')}
             />
-          ))}
-        </div>
+
+            {/* Existing resume cards */}
+            {resumes.map(resume => (
+              <ResumeCard
+                key={resume.id}
+                resume={resume}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                onDownload={handleDownload}
+                onPreview={handlePreview}
+                onDuplicate={handleDuplicate}
+                onRename={handleRename}
+                isEditButtonLoading={editingId === resume.id}
+                isPreviewLoading={previewingId === resume.id && isGeneratingPreview}
+                isMorphing={morphId === resume.id}
+              />
+            ))}
+          </div>
+        )}
 
         {/* In-content ad below resume grid */}
         <InContentAd
@@ -427,6 +471,12 @@ export default function MyResumes() {
         isDownloading={isDownloadingFromPreview}
         isStale={false}
         error={previewError}
+        /* The same URL the card renders, so the morph does not swap images
+           mid-flight and the sheet is painted before the PDF arrives. */
+        posterUrl={(() => {
+          const r = resumes.find(x => x.id === previewResumeId);
+          return r ? getThumbnailUrl(r.thumbnail_url, r.pdf_generated_at) : null;
+        })()}
         onRefresh={handleRefreshPreview}
         onDownload={handleDownloadFromPreview}
       />
@@ -434,11 +484,11 @@ export default function MyResumes() {
       {/* Loading Overlays - only show for download now */}
       {downloadingId && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-sm mx-4">
-            <div className="mx-auto mb-4 h-2 w-24 overflow-hidden rounded-full bg-slate-200">
+          <div className="bg-white rounded-2xl p-6 max-w-sm mx-4 shadow-premium">
+            <div className="mx-auto mb-4 h-2 w-24 overflow-hidden rounded-full bg-chalk-dark">
               <div className="h-full w-1/2 animate-pulse rounded-full bg-accent" />
             </div>
-            <p className="text-center text-gray-700">
+            <p className="text-center font-display font-extralight text-ink/60">
               Generating PDF...
             </p>
           </div>

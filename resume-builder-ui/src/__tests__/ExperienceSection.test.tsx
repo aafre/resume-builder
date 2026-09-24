@@ -1,7 +1,16 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import React, { useState } from "react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import { DndContext } from "@dnd-kit/core";
 import ExperienceSection from "../components/ExperienceSection";
+import type { ExperienceItemData } from "../components/ExperienceItem";
+
+// Capture the undo closure the delete path hands to the toast.
+vi.mock("../utils/undoToast", () => ({
+  toastUndo: vi.fn(),
+  UNDO_TOAST_MS: 5000,
+}));
+import { toastUndo } from "../utils/undoToast";
 
 // Wrapper component to provide DndContext for testing
 const DndWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -194,7 +203,7 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
     render(<ExperienceSection {...props} />, { wrapper: DndWrapper });
 
     // For the first experience, click the Add Description Point button.
-    const addDescButton = screen.getAllByText("+ Add Description Point")[0];
+    const addDescButton = screen.getAllByText("Add Description Point")[0];
     fireEvent.click(addDescButton);
 
     expect(onUpdateMock).toHaveBeenCalledTimes(1);
@@ -223,6 +232,51 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
     const updatedExperiences = onUpdateMock.mock.calls[0][0];
     // Expect the new length to be the original length minus one.
     expect(updatedExperiences[0].description).toHaveLength(initialLength - 1);
+  });
+
+  // Bullet deletes do not route through useSectionManagement, so this is the
+  // other half of undo. If it breaks, the editor's most-pressed destructive
+  // control becomes unrecoverable again.
+  it("restores a removed description line when the undo toast is used", () => {
+    const initial: ExperienceItemData[] = JSON.parse(
+      JSON.stringify(baseMockExperiences)
+    );
+    const original = [...initial[0].description];
+
+    const Harness = () => {
+      const [experiences, setExperiences] = useState(initial);
+      return (
+        <ExperienceSection
+          {...createDefaultProps({ experiences, onUpdate: setExperiences })}
+        />
+      );
+    };
+
+    render(<Harness />, { wrapper: DndWrapper });
+    vi.mocked(toastUndo).mockClear();
+
+    const bulletsBefore = screen.getAllByTitle("Remove description point").length;
+    fireEvent.click(screen.getAllByTitle("Remove description point")[0]);
+    expect(toastUndo).toHaveBeenCalledWith(
+      "Bullet point removed",
+      expect.any(Function)
+    );
+    expect(screen.getAllByTitle("Remove description point")).toHaveLength(
+      bulletsBefore - 1
+    );
+
+    const [, onUndo] = vi.mocked(toastUndo).mock.calls[0];
+    act(() => {
+      onUndo();
+    });
+
+    expect(screen.getAllByTitle("Remove description point")).toHaveLength(
+      bulletsBefore
+    );
+    const values = screen
+      .getAllByTestId("rich-text-input")
+      .map((el) => (el as HTMLInputElement).value);
+    original.forEach((desc) => expect(values).toContain(desc));
   });
 
   it("renders the IconManager component when supportsIcons is true", () => {

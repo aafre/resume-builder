@@ -1,8 +1,12 @@
 /// <reference types="vitest" />
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { describe, it, expect, beforeAll } from 'vitest';
 import { STATIC_URLS } from '../data/sitemapUrls';
 import { JOBS_DATABASE } from '../data/jobKeywords';
 import { JOB_EXAMPLES_DATABASE } from '../data/jobExamples';
+import { blogPosts } from '../data/blogPosts';
 import {
   HREFLANG_PAIRS,
   CV_REGIONS,
@@ -10,6 +14,20 @@ import {
   DEFAULT_REGION,
 } from '../data/hreflangMappings';
 import { generateSitemap, escapeXml } from '../../scripts/generateSitemap';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+/** Pull the <lastmod> that sits inside the <url> block for a given loc. */
+function lastmodFor(xml: string, loc: string, baseUrl: string): string | null {
+  const locTag = `<loc>${baseUrl}${loc}</loc>`;
+  const blockStart = xml.indexOf(locTag);
+  if (blockStart === -1) return null;
+  const blockEnd = xml.indexOf('</url>', blockStart);
+  const block = xml.slice(blockStart, blockEnd);
+  const match = block.match(/<lastmod>([^<]+)<\/lastmod>/);
+  return match ? match[1] : null;
+}
 
 describe('Sitemap XML Generation', () => {
   const baseUrl = 'https://easyfreeresume.com';
@@ -186,15 +204,112 @@ describe('Sitemap XML Generation', () => {
       });
     });
 
-    it('should include all job keyword URLs', () => {
-      JOBS_DATABASE.forEach(job => {
+    it('should include all non-noindexed job keyword URLs', () => {
+      JOBS_DATABASE.filter(job => !job.noindex).forEach(job => {
         expect(xml).toContain(`<loc>${baseUrl}/resume-keywords/${job.slug}</loc>`);
+      });
+    });
+
+    it('should exclude noindexed job keyword URLs (B5 consolidation)', () => {
+      const noindexed = JOBS_DATABASE.filter(job => job.noindex);
+      expect(noindexed.length).toBeGreaterThan(0);
+      noindexed.forEach(job => {
+        expect(xml).not.toContain(`<loc>${baseUrl}/resume-keywords/${job.slug}</loc>`);
       });
     });
 
     it('should include all job example URLs', () => {
       JOB_EXAMPLES_DATABASE.forEach(job => {
         expect(xml).toContain(`<loc>${baseUrl}/examples/${job.slug}</loc>`);
+      });
+    });
+  });
+
+  describe('Lastmod honesty', () => {
+    it('derives /blog/* lastmod as the LATER of lastUpdated and curated sitemapUrls value, else publishDate, never the build date', () => {
+      const today = new Date().toISOString().split('T')[0];
+      let checked = 0;
+      blogPosts.forEach(post => {
+        const loc = `/blog/${post.slug}`;
+        const actual = lastmodFor(xml, loc, baseUrl);
+        if (actual === null) return; // post isn't in the sitemap (e.g. still comingSoon)
+        checked += 1;
+        const curated = STATIC_URLS.find(p => p.loc === loc)?.lastmod;
+        const candidates = [post.lastUpdated, curated].filter((d): d is string => !!d);
+        const expected = candidates.length > 0 ? candidates.sort().pop()! : post.publishDate;
+        expect(actual).toBe(expected);
+        // The later of the two curated dates must win — a stale/older lastUpdated
+        // must never regress an already-newer curated sitemapUrls value. That is the
+        // regression this test exists to catch.
+        if (post.lastUpdated && curated) {
+          expect(actual >= post.lastUpdated).toBe(true);
+          expect(actual >= curated).toBe(true);
+        }
+      });
+      // Sanity check the assertion actually ran against real data, and that at least
+      // one post's real date differs from "today" (proving we didn't just get lucky
+      // because the build date happens to match).
+      expect(checked).toBeGreaterThan(0);
+      expect(
+        blogPosts.some(p => {
+          const curated = STATIC_URLS.find(sp => sp.loc === `/blog/${p.slug}`)?.lastmod;
+          const candidates = [p.lastUpdated, curated].filter((d): d is string => !!d);
+          const expected = candidates.length > 0 ? candidates.sort().pop()! : p.publishDate;
+          return expected !== today;
+        })
+      ).toBe(true);
+    });
+
+    it('never regresses lastmod below either source date, even when lastUpdated predates the curated value', () => {
+      // Regression guard for the specific bug found on the current tip: several posts
+      // have a lastUpdated older than sitemapUrls' curated lastmod, which the old
+      // `lastUpdated ?? curated ?? publishDate` precedence silently discarded in
+      // favor of the older lastUpdated.
+      let checked = 0;
+      blogPosts.forEach(post => {
+        const loc = `/blog/${post.slug}`;
+        const actual = lastmodFor(xml, loc, baseUrl);
+        if (actual === null) return;
+        const curated = STATIC_URLS.find(p => p.loc === loc)?.lastmod;
+        if (!curated) return;
+        checked += 1;
+        expect(actual >= curated).toBe(true);
+        if (post.lastUpdated) {
+          expect(actual >= post.lastUpdated).toBe(true);
+        }
+      });
+      expect(checked).toBeGreaterThan(0);
+    });
+
+    it('produces identical lastmod values across two consecutive builds with no content change', () => {
+      const xmlSecondBuild = generateSitemap();
+      const extractAll = (doc: string) => {
+        const result: Record<string, string> = {};
+        const blocks = doc.split('<url>').slice(1);
+        blocks.forEach(block => {
+          const loc = block.match(/<loc>([^<]+)<\/loc>/)?.[1];
+          const lastmod = block.match(/<lastmod>([^<]+)<\/lastmod>/)?.[1];
+          if (loc && lastmod) result[loc] = lastmod;
+        });
+        return result;
+      };
+      expect(extractAll(xmlSecondBuild)).toEqual(extractAll(xml));
+    });
+  });
+
+  describe('NOINDEX_ROUTES consistency', () => {
+    it('has no path from app.py NOINDEX_ROUTES present in the generated sitemap', () => {
+      const appPyPath = path.resolve(__dirname, '../../../app.py');
+      const appPySource = fs.readFileSync(appPyPath, 'utf8');
+      const setMatch = appPySource.match(/NOINDEX_ROUTES\s*=\s*\{([\s\S]*?)\n\}/);
+      expect(setMatch).toBeTruthy();
+
+      const routes = [...(setMatch?.[1] ?? '').matchAll(/["']([^"']+)["']/g)].map(m => m[1]);
+      expect(routes.length).toBeGreaterThan(0);
+
+      routes.forEach(route => {
+        const loc = `/${route.replace(/^\/+|\/+$/g, '')}`;
+        expect(xml).not.toContain(`<loc>${baseUrl}${loc}</loc>`);
       });
     });
   });

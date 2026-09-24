@@ -27,6 +27,23 @@ const yamlCache = new Map<string, CacheEntry>();
 const CACHE_TTL_MS = 30 * 60 * 1000;
 
 /**
+ * Read a job example straight from the cache, without awaiting.
+ *
+ * A promise — even an already-resolved one — resolves a tick after render, so
+ * an async read still costs the page one frame of loading state. The hub warms
+ * this cache on hover/focus so the example page can render its sheet on the
+ * very first frame after a click, which is also what makes the card → sheet
+ * view transition have something to morph into.
+ *
+ * @returns The cached data, or null when absent or past its TTL.
+ */
+export function getCachedJobExample(slug: string): JobExampleData | null {
+  const cached = yamlCache.get(slug);
+  if (!cached || Date.now() - cached.timestamp >= CACHE_TTL_MS) return null;
+  return cached.data;
+}
+
+/**
  * Load a job example YAML file by slug
  * @param slug - The job example slug (e.g., "customer-service-representative")
  * @returns The parsed job example data

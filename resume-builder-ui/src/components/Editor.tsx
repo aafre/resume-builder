@@ -6,7 +6,6 @@ import { usePreview } from "../hooks/usePreview";
 import { useAuth } from "../contexts/AuthContext";
 import { useConversion } from "../contexts/ConversionContext";
 import { processSectionsForExport } from "../services/yamlService";
-import { useEditorContext } from "../contexts/EditorContext";
 import usePreferencePersistence from "../hooks/usePreferencePersistence";
 
 // Import extracted hooks
@@ -28,12 +27,67 @@ import { EditorHeader, EditorModals, EditorContent } from "./editor/index";
 const NotFound = lazy(() => import("./NotFound"));
 const ErrorPage = lazy(() => import("./ErrorPage"));
 
-// Loading component for Suspense fallback
+// Suspense fallback for the lazy error/404 chunks. No glass: this is a static
+// in-flow panel, not something overlaying content (DESIGN.md, Glass Restraint).
 const LoadingSpinner = () => (
-  <div className="min-h-screen bg-chalk flex items-center justify-center">
-    <div className="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+  <div className="min-h-screen bg-chalk flex items-center justify-center" role="status" aria-live="polite">
+    <div className="text-center">
       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
-      <p className="text-xl text-gray-600">Loading...</p>
+      <p className="text-xl text-ink/60">Loading…</p>
+    </div>
+  </div>
+);
+
+// Editor skeleton — same shape as App.tsx's route-level fallback, so the
+// hand-off from "chunk loading" to "resume loading" doesn't shift anything.
+// `animate-pulse` stays on the bars, not the container (see App.tsx note).
+// ponytail: the App.tsx copy lives in the main bundle and can't import this one.
+const EditorSkeleton = () => (
+  <div className="min-h-screen bg-chalk" role="status" aria-live="polite">
+    <span className="sr-only">Loading your resume…</span>
+    <div
+      aria-hidden="true"
+      className="mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8 max-w-4xl lg:max-w-[calc(64rem+296px)] lg:pr-[296px]"
+    >
+      <div className="h-8 w-64 rounded-lg bg-chalk-dark animate-pulse mb-4"></div>
+
+      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-edit-section">
+        <div className="h-5 w-44 rounded-md bg-chalk-dark animate-pulse mb-4"></div>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div className="h-11 rounded-lg bg-chalk-dark animate-pulse"></div>
+          <div className="h-11 rounded-lg bg-chalk-dark animate-pulse"></div>
+          <div className="h-11 rounded-lg bg-chalk-dark animate-pulse"></div>
+          <div className="h-11 rounded-lg bg-chalk-dark animate-pulse"></div>
+        </div>
+      </div>
+
+      <div className="h-12 rounded-xl border border-gray-200 bg-white mb-edit-section"></div>
+
+      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-edit-section">
+        <div className="h-5 w-40 rounded-md bg-chalk-dark animate-pulse mb-4"></div>
+        <div className="h-24 rounded-lg bg-chalk-dark animate-pulse"></div>
+      </div>
+      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-edit-section">
+        <div className="h-5 w-32 rounded-md bg-chalk-dark animate-pulse mb-4"></div>
+        <div className="h-40 rounded-lg bg-chalk-dark animate-pulse"></div>
+      </div>
+      <div className="rounded-xl border border-gray-200 bg-white p-4 mb-edit-section">
+        <div className="h-5 w-36 rounded-md bg-chalk-dark animate-pulse mb-4"></div>
+        <div className="h-24 rounded-lg bg-chalk-dark animate-pulse"></div>
+      </div>
+    </div>
+
+    <div
+      aria-hidden="true"
+      className="hidden lg:block fixed right-0 top-header-desktop bottom-0 w-[280px] border-l border-gray-200 bg-white"
+    >
+      <div className="p-3 space-y-2">
+        <div className="h-5 w-24 rounded-md bg-chalk-dark animate-pulse mb-4"></div>
+        <div className="h-11 rounded-lg bg-chalk-dark animate-pulse"></div>
+        <div className="h-11 rounded-lg bg-chalk-dark animate-pulse"></div>
+        <div className="h-11 rounded-lg bg-chalk-dark animate-pulse"></div>
+        <div className="h-11 rounded-lg bg-chalk-dark animate-pulse"></div>
+      </div>
     </div>
   </div>
 );
@@ -43,7 +97,6 @@ const Editor: React.FC = () => {
   const [searchParams] = useSearchParams();
 
   // Get context for footer integration
-  const { setIsSidebarCollapsed: setContextIsSidebarCollapsed } = useEditorContext();
 
   // ===== LAYER 1: Core State Hooks =====
   const modalManager = useModalManager();
@@ -106,7 +159,6 @@ const Editor: React.FC = () => {
     sections,
     contactInfoRef,
     sectionRefs,
-    setContextIsSidebarCollapsed,
   });
 
   // ===== LAYER 3: Complex Logic Hooks =====
@@ -293,15 +345,10 @@ const Editor: React.FC = () => {
   });
 
   // ===== Loading State =====
+  // (Tab title is set by the route element in App.tsx, which mounts inside
+  // HelmetProvider and covers the lazy-chunk window too.)
   if (loading) {
-    return (
-      <div className="min-h-screen bg-chalk flex items-center justify-center">
-        <div className="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
-          <p className="text-xl text-gray-600">Loading your resume builder...</p>
-        </div>
-      </div>
-    );
+    return <EditorSkeleton />;
   }
 
   // ===== Error State =====
@@ -402,9 +449,11 @@ const Editor: React.FC = () => {
           handleOpenPreview: editorActions.handleOpenPreview,
           handleStartFresh: editorActions.handleStartFresh,
           isDownloading: editorActions.isDownloading,
+          downloadPhase: editorActions.downloadPhase,
           isOpeningPreview: editorActions.isOpeningPreview,
         }}
         preview={{
+          previewUrl: preview.previewUrl,
           isGenerating: preview.isGenerating,
           isStale: preview.isStale,
         }}
@@ -441,6 +490,7 @@ const Editor: React.FC = () => {
           loadingStartFresh: editorActions.loadingStartFresh,
           loadingLoad: fileOperations.loadingLoad,
           isDownloading: editorActions.isDownloading,
+          downloadPhase: editorActions.downloadPhase,
         }}
         isAnonymous={isAnonymous}
         isAuthenticated={isAuthenticated}

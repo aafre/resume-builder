@@ -56,27 +56,22 @@ export default function ZetyFreeAlternative() {
 
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
-      <PageHero config={config.hero} />
+      <PageHero config={config.hero} showcase />
 
       {/* Switch in 3 minutes */}
-      <RevealSection variant="fade-up">
-        <div className="mb-16">
-          <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
-            Switch from Zety in 3 Minutes
-          </h2>
-          <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-10">
-            Already spent time building a resume on Zety? Do not pay their download fee. Here is how to switch:
-          </p>
-          {config.steps && <StepByStep steps={config.steps} />}
-        </div>
-      </RevealSection>
+      {config.steps && (
+        <StepByStep
+          steps={config.steps}
+          title="Switch from Zety in 3 Minutes"
+          intro="Already spent time building a resume on Zety? Do not pay their download fee. Here is how to switch:"
+        />
+      )}
 
       {/* Comparison Table */}
       {config.comparison && (
-        <RevealSection variant="fade-up">
-          <ComparisonTable
-            items={config.comparison}
-            headers={[
+        <ComparisonTable
+          items={config.comparison}
+          headers={[
               'Price',
               'PDF Download',
               'Sign-Up Required',
@@ -87,8 +82,7 @@ export default function ZetyFreeAlternative() {
               'ATS-Optimized',
             ]}
             title="EasyFreeResume vs Zety — Feature Comparison"
-          />
-        </RevealSection>
+        />
       )}
 
       {/* Everything Zety charges for */}
@@ -110,19 +104,19 @@ export default function ZetyFreeAlternative() {
                 <li key={item.zety} className="grid md:grid-cols-2 gap-3 py-3 border-b border-black/[0.04] last:border-0">
                   <div className="flex items-start gap-2">
                     <span className="text-red-500 font-bold mt-0.5">✗</span>
-                    <span className="text-stone-warm font-extralight text-sm">{item.zety}</span>
+                    <span className="text-ink/60 font-extralight text-sm">{item.zety}</span>
                   </div>
                   <div className="flex items-start gap-2">
-                    <span className="text-accent font-bold mt-0.5">✓</span>
-                    <span className="text-stone-warm font-extralight text-sm">{item.efr}</span>
+                    <span className="text-accent-text font-bold mt-0.5">✓</span>
+                    <span className="text-ink/60 font-extralight text-sm">{item.efr}</span>
                   </div>
                 </li>
               ))}
             </ul>
           </div>
-          <p className="text-center mt-6 text-stone-warm font-extralight">
+          <p className="text-center mt-6 text-ink/60 font-extralight">
             See the full breakdown in our{' '}
-            <Link to="/easyfreeresume-vs-zety" className="text-accent hover:underline font-medium">
+            <Link to="/easyfreeresume-vs-zety" className="text-accent-text hover:underline font-medium">
               detailed EasyFreeResume vs Zety comparison
             </Link>.
           </p>
@@ -137,7 +131,7 @@ export default function ZetyFreeAlternative() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             What Zety Users Say
           </h2>
-          <p className="text-lg font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-8">
+          <p className="text-lg font-extralight text-ink/60 max-w-4xl mx-auto text-center leading-relaxed mb-8">
             These are common frustrations from Zety users that led them to seek alternatives:
           </p>
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
@@ -148,13 +142,13 @@ export default function ZetyFreeAlternative() {
               '"I just needed a simple PDF. Should not have to pay monthly for that."',
             ].map((quote) => (
               <div key={quote} className="bg-chalk-dark rounded-2xl p-6 border border-black/[0.04]">
-                <p className="text-stone-warm font-extralight italic leading-relaxed">{quote}</p>
+                <p className="text-ink/60 font-extralight italic leading-relaxed">{quote}</p>
               </div>
             ))}
           </div>
-          <p className="text-center mt-8 text-stone-warm font-extralight">
+          <p className="text-center mt-8 text-ink/60 font-extralight">
             Read our detailed{' '}
-            <Link to="/easyfreeresume-vs-zety" className="text-accent hover:underline">
+            <Link to="/easyfreeresume-vs-zety" className="text-accent-text hover:underline">
               Zety vs EasyFreeResume comparison
             </Link>{' '}
             for a thorough, factual breakdown.
@@ -196,7 +190,7 @@ export default function ZetyFreeAlternative() {
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4 text-center">
             Compare More Resume Builders
           </h2>
-          <p className="text-lg font-extralight text-stone-warm max-w-3xl mx-auto text-center leading-relaxed mb-10">
+          <p className="text-lg font-extralight text-ink/60 max-w-3xl mx-auto text-center leading-relaxed mb-10">
             Zety is not the only paid builder. See how EasyFreeResume compares to other popular options.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -238,7 +232,7 @@ export default function ZetyFreeAlternative() {
                 className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300 hover:-translate-y-1 block"
               >
                 <h3 className="font-display text-lg font-bold text-ink mb-2">{guide.title}</h3>
-                <p className="text-stone-warm font-extralight text-sm leading-relaxed">{guide.desc}</p>
+                <p className="text-ink/60 font-extralight text-sm leading-relaxed">{guide.desc}</p>
               </Link>
             ))}
           </div>

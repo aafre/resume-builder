@@ -136,7 +136,7 @@ export default function JobFilters({ filters, onChange, hasLocation }: JobFilter
         <button
           type="button"
           onClick={() => setExpanded(!expanded)}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors ml-auto"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-ink hover:bg-chalk-dark rounded-lg transition-colors ml-auto"
         >
           <SlidersHorizontal className="w-3.5 h-3.5" />
           More
@@ -151,14 +151,14 @@ export default function JobFilters({ filters, onChange, hasLocation }: JobFilter
 
       {/* Expanded Filters Panel */}
       {expanded && (
-        <div className="border-t border-gray-100 p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="border-t border-gray-200 p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Distance (only when location selected) */}
           {hasLocation && (
             <FilterField label="Distance">
               <select
                 value={filters.distance}
                 onChange={(e) => updateFilter('distance', Number(e.target.value))}
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent-text"
               >
                 {DISTANCE_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value}>{o.label}</option>
@@ -174,7 +174,7 @@ export default function JobFilters({ filters, onChange, hasLocation }: JobFilter
               value={filters.company}
               onChange={(e) => updateFilter('company', e.target.value)}
               placeholder="e.g. Google"
-              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent-text"
             />
           </FilterField>
 
@@ -185,7 +185,7 @@ export default function JobFilters({ filters, onChange, hasLocation }: JobFilter
               value={filters.whatExclude}
               onChange={(e) => updateFilter('whatExclude', e.target.value)}
               placeholder="e.g. senior, manager"
-              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent-text"
             />
           </FilterField>
 
@@ -194,7 +194,7 @@ export default function JobFilters({ filters, onChange, hasLocation }: JobFilter
             <select
               value={filters.salaryMax}
               onChange={(e) => updateFilter('salaryMax', Number(e.target.value))}
-              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent-text"
             >
               <option value={0}>No max</option>
               {SALARY_PRESETS.map((p) => (
@@ -209,7 +209,7 @@ export default function JobFilters({ filters, onChange, hasLocation }: JobFilter
               <select
                 value={filters.sortDir}
                 onChange={(e) => updateFilter('sortDir', e.target.value as FilterState['sortDir'])}
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent-text"
               >
                 <option value="">Default</option>
                 <option value="down">Highest first</option>
@@ -226,7 +226,7 @@ export default function JobFilters({ filters, onChange, hasLocation }: JobFilter
 function FilterField({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-gray-500 mb-1">{label}</label>
+      <label className="block text-xs font-medium text-ink/60 mb-1">{label}</label>
       {children}
     </div>
   );
@@ -245,7 +245,7 @@ function QuickSelect({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="px-2.5 py-1.5 border border-gray-200 rounded-lg text-xs bg-white focus:outline-none focus:ring-2 focus:ring-accent appearance-none cursor-pointer hover:border-gray-300 transition-colors"
+      className="px-2.5 py-1.5 border border-gray-200 rounded-lg text-xs bg-white focus:outline-none focus:ring-2 focus:ring-accent-text appearance-none cursor-pointer hover:border-gray-300 transition-colors"
     >
       {options.map((o) => (
         <option key={o.value} value={o.value}>{o.label}</option>

@@ -7,8 +7,8 @@
  * Based on ResumeRecoveryModal pattern for consistency.
  */
 
-import React, { useEffect, useRef } from 'react';
-import { createPortal } from 'react-dom';
+import React, { useId } from 'react';
+import ModalShell from './shared/ModalShell';
 import { MdClose, MdSecurity, MdPerson, MdInfo } from 'react-icons/md';
 
 export interface ConversionPromptModalProps {
@@ -34,45 +34,25 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
   actionLabel,
   loading = false,
 }) => {
-  const modalRef = useRef<HTMLDivElement>(null);
+  // ModalShell owns focus-in, focus-restore and Escape. The hand-rolled
+  // versions here did focus-in but never restored focus to the opener.
+  const titleId = useId();
 
-  // Auto-focus modal on open
-  useEffect(() => {
-    if (isOpen && modalRef.current) {
-      modalRef.current.focus();
-    }
-  }, [isOpen]);
-
-  // Handle keyboard navigation
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape' && !loading) {
-      onClose();
-    }
-  };
-
-  if (!isOpen) return null;
-
-  const modalContent = (
-    <div
-      className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
-      onClick={loading ? undefined : onClose}
-      onKeyDown={handleKeyDown}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="conversion-modal-title"
+  return (
+    <ModalShell
+      isOpen={isOpen}
+      onClose={onClose}
+      labelledBy={titleId}
+      closeOnBackdrop={!loading}
+      overlayClassName="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+      panelClassName="bg-white rounded-2xl shadow-2xl max-w-lg w-full relative"
     >
-      <div
-        ref={modalRef}
-        className="bg-white rounded-2xl shadow-2xl max-w-lg w-full relative"
-        onClick={(e) => e.stopPropagation()}
-        tabIndex={-1}
-      >
         {/* Close button */}
         <button
           type="button"
           onClick={onClose}
           disabled={loading}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100 disabled:opacity-50"
+          className="absolute top-4 right-4 text-ink/60 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-chalk-dark disabled:opacity-50"
           aria-label="Close modal"
         >
           <MdClose size={24} />
@@ -82,9 +62,9 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
         <div className="bg-accent/10 px-6 py-4 rounded-t-2xl border-b border-accent/20">
           <div className="flex items-center gap-3">
             <div className="bg-accent/20 p-2 rounded-full">
-              <MdSecurity className="text-3xl text-accent" />
+              <MdSecurity className="text-3xl text-accent-text" />
             </div>
-            <h2 id="conversion-modal-title" className="text-2xl font-bold text-gray-800">
+            <h2 id={titleId} className="text-2xl font-bold text-ink">
               Save Your Work
             </h2>
           </div>
@@ -92,7 +72,7 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
 
         {/* Content */}
         <div className="p-6">
-          <p className="text-gray-700 text-lg mb-2">
+          <p className="text-ink/60 text-lg mb-2">
             You're about to <span className="font-semibold">{actionLabel}</span>.
           </p>
           <p className="text-gray-600 mb-4">
@@ -127,11 +107,11 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
               type="button"
               onClick={onContinueAsGuest}
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 border-2 border-gray-300 text-gray-700 font-semibold px-6 py-3 rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-2 border-2 border-gray-300 text-ink font-semibold px-6 py-3 rounded-xl hover:border-ink/60 hover:bg-chalk transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-700"></div>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-ink"></div>
                   Creating...
                 </>
               ) : (
@@ -144,15 +124,12 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
           </div>
 
           {/* Fine print */}
-          <p className="text-xs text-gray-500 text-center mt-4">
+          <p className="text-xs text-ink/60 text-center mt-4">
             Both options are free. Sign in uses Google, LinkedIn, or email.
           </p>
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
-
-  return createPortal(modalContent, document.body);
 };
 
 export default ConversionPromptModal;

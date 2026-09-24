@@ -8,6 +8,110 @@ meta:
   metaDescription: "Graphic designer resume example with design software skills and portfolio highlights."
   category: creative
   priority: 0.7
+  lastmod: "2026-09-23"
+
+answerBlock: >
+  A strong graphic designer resume leads with a portfolio link a reviewer can open in one
+  click, names the specific software (Adobe Creative Suite, Figma) and design category
+  (branding, packaging, UI) you work in, and lets 3-4 project results carry the case —
+  not a list of adjectives like "creative" and "detail-oriented."
+
+howToWrite:
+  - "Put the portfolio URL in the header next to your name and email — it's the first thing a reviewer clicks, before reading a single bullet."
+  - "Name your design category (branding, packaging, UI/UX, motion) in the summary — a designer resume that reads as generic 'graphic design' gets filtered against a specific opening."
+  - "List software by product name (Photoshop, Illustrator, Figma, After Effects), not 'Adobe products' — ATS keyword matching and hiring managers both search the specific tool."
+  - "Attach a measurable outcome to each project where one exists: client revenue, campaign reach, engagement lift — design work that shipped without a stated result reads as unfinished."
+  - "Keep the resume itself well-designed but restrained — one accent color, clear hierarchy, no more than two fonts. The resume is itself a design sample."
+  - "Order work samples in the portfolio to match the job posting's focus first (e.g. lead with branding work for a branding-agency opening) rather than chronologically."
+
+summaryExamples:
+  - level: entry
+    summary: >
+      Graphic design graduate with a portfolio spanning branding, social media, and print
+      projects from coursework and freelance work. Proficient in Adobe Creative Suite and
+      Figma. Comfortable taking a concept from mood board to final deliverable.
+  - level: mid
+    summary: >
+      Graphic designer with 4+ years across branding and digital design, delivering
+      campaigns for clients ranging from local startups to national retailers. Expert in
+      Adobe Creative Suite and Figma with strong typography and layout skills. Portfolio
+      at [website].
+  - level: senior
+    summary: >
+      Senior graphic designer with 8+ years leading brand identity systems for enterprise
+      clients, from concept through production-ready files. Mentors junior designers on
+      typography and layout, and has led design for [number] award-recognized campaigns.
+      Portfolio at [website].
+
+skills:
+  hard:
+    - Adobe Photoshop, Illustrator, InDesign
+    - Figma
+    - Typography & Layout
+    - Brand Identity Systems
+    - Print-Ready File Preparation
+    - After Effects (Motion Graphics)
+  soft:
+    - Translating Client Brief Into Concept
+    - Presenting Design Rationale to Stakeholders
+    - Meeting Print/Production Deadlines
+    - Incorporating Revision Feedback
+
+keywords:
+  - Brand Identity
+  - Typography
+  - Adobe Creative Suite
+  - Figma
+  - UI/UX Design
+  - Print Design
+  - Packaging Design
+  - Layout Design
+  - Motion Graphics
+  - Color Theory
+
+certifications:
+  - Adobe Certified Professional in Visual Design
+  - Google UX Design Certificate
+
+mistakes:
+  - mistake: "Burying or omitting the portfolio link"
+    fix: "Put it in the resume header next to contact info, not at the bottom of a summary paragraph — a reviewer who has to hunt for it often doesn't."
+  - mistake: "Describing design work with adjectives instead of specifics"
+    fix: "Replace \"creative and detail-oriented\" with the actual deliverable and outcome: \"Designed brand identity system adopted across 50+ touchpoints.\""
+  - mistake: "Listing \"Adobe products\" instead of naming each application"
+    fix: "Name them individually: Photoshop, Illustrator, InDesign, After Effects — ATS and hiring managers filter on the specific tool, not the suite."
+  - mistake: "No stated design category or specialization"
+    fix: "State whether the focus is branding, packaging, UI/UX, or motion — a generalist resume reads weaker than a resume matched to the opening's specific need."
+
+bulletRewrites:
+  - weak: "Designed marketing materials for clients"
+    improved: "Designed brand identity system for [industry] client generating $[amount] in first-year revenue, including logo, packaging, and 10+ marketing touchpoints"
+    reason: "Names the deliverable set and ties it to a client outcome instead of a vague design task."
+  - weak: "Created social media graphics"
+    improved: "Created social media campaign graphics reaching [X]M impressions monthly across Instagram and LinkedIn, increasing engagement rate by [X%]"
+    reason: "Adds channel, reach, and a measurable engagement outcome to a task that otherwise reads as routine production work."
+  - weak: "Worked with the marketing team on branding"
+    improved: "Partnered with marketing and copy teams to deliver a cohesive rebrand across web, print, and packaging for a [company size]-employee company"
+    reason: "Shows cross-functional scope and the breadth of deliverables rather than an unspecified collaboration."
+  - weak: "Responsible for print-ready files"
+    improved: "Prepared print-ready files meeting vendor specifications for [number]+ projects annually, cutting reprint errors due to file issues by [X%]"
+    reason: "Turns a production task into a reliability track record with a concrete, defensible metric."
+
+salaryOutlook:
+  median: "$62,960/year ($30.27/hour)"
+  growth: "Projected to decline 2% from 2025 to 2035"
+  source: "https://www.bls.gov/ooh/arts-and-design/graphic-designers.htm"
+  asOf: "2026-09-23"
+
+customFaqs:
+  - question: "Where should a graphic designer put their portfolio link on a resume?"
+    answer: "In the header, next to your name, email, and phone number — the same place a developer puts a GitHub link. A hiring reviewer for a design role typically opens the portfolio before reading the bullet points, so it needs to be the first thing they see, not buried in the summary."
+  - question: "Should I list every design software I've used?"
+    answer: "List the tools relevant to the role you're applying for, named individually — \"Photoshop, Illustrator, Figma\" rather than \"Adobe products.\" A long unfocused tool list reads as padding; a short, role-matched one reads as expertise."
+  - question: "How do I show design impact if I can't share exact client numbers?"
+    answer: "Use a bracketed placeholder for the real figure you can't disclose publicly (\"[X%] increase in engagement\") rather than a rounded number you can't defend, or describe the deliverable's scope instead: number of touchpoints, campaign channels, or team size supported."
+  - question: "What's the difference between a branding-focused and a UI/UX-focused designer resume?"
+    answer: "A branding resume should lead with identity systems, typography, and print/packaging work. A UI/UX-focused resume should lead with Figma, user flows, and product design collaboration with developers. Match the vocabulary and portfolio ordering to the specialization the job posting names."
 
 resume:
   template: modern

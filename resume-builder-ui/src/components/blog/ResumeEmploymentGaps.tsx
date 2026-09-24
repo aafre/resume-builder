@@ -19,7 +19,7 @@ export default function ResumeEmploymentGaps() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           Employment gaps are far more common than most job seekers realize. Layoffs, caregiving,
           health issues, education, travel &mdash; life happens. The good news: hiring managers in
           2026 are more understanding of gaps than ever. The key is how you frame them, not whether
@@ -27,16 +27,16 @@ export default function ResumeEmploymentGaps() {
         </p>
 
         {/* Table of Contents */}
-        <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
-          <h2 className="font-bold text-ink mb-4 text-lg">Table of Contents</h2>
+        <nav className="toc-inline bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8" aria-label="On this page">
+          <p className="font-mono text-xs tracking-[0.15em] uppercase text-ink/60 mb-4">Table of Contents</p>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#does-it-matter" className="text-accent hover:underline">Do Employment Gaps Actually Matter?</a></li>
-            <li><a href="#types" className="text-accent hover:underline">How to Explain Each Type of Gap</a></li>
-            <li><a href="#resume-vs-cover-letter" className="text-accent hover:underline">Resume vs Cover Letter: Where to Address Gaps</a></li>
-            <li><a href="#format-strategies" className="text-accent hover:underline">Format Strategies That Minimize Gaps</a></li>
-            <li><a href="#example-language" className="text-accent hover:underline">Example Language for Your Resume</a></li>
-            <li><a href="#mistakes" className="text-accent hover:underline">Common Mistakes to Avoid</a></li>
-            <li><a href="#faq" className="text-accent hover:underline">FAQ</a></li>
+            <li><a href="#does-it-matter" className="text-accent-text hover:underline">Do Employment Gaps Actually Matter?</a></li>
+            <li><a href="#types" className="text-accent-text hover:underline">How to Explain Each Type of Gap</a></li>
+            <li><a href="#resume-vs-cover-letter" className="text-accent-text hover:underline">Resume vs Cover Letter: Where to Address Gaps</a></li>
+            <li><a href="#format-strategies" className="text-accent-text hover:underline">Format Strategies That Minimize Gaps</a></li>
+            <li><a href="#example-language" className="text-accent-text hover:underline">Example Language for Your Resume</a></li>
+            <li><a href="#mistakes" className="text-accent-text hover:underline">Common Mistakes to Avoid</a></li>
+            <li><a href="#faq" className="text-accent-text hover:underline">FAQ</a></li>
           </ol>
         </nav>
 
@@ -45,7 +45,7 @@ export default function ResumeEmploymentGaps() {
           Do Employment Gaps Actually Matter?
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           Less than you think. A 2024 LinkedIn survey found that 62% of hiring managers said gaps
           are less of a concern than they were five years ago. The pandemic normalized career
           interruptions, and the rise of contract work, sabbaticals, and career pivots has made
@@ -62,9 +62,9 @@ export default function ResumeEmploymentGaps() {
           </ul>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mt-4">
-          <h3 className="text-xl font-bold text-yellow-800 mb-3">When Gaps Need Addressing</h3>
-          <ul className="space-y-2 text-yellow-700">
+        <div className="callout callout-note rounded-xl p-6 mt-4">
+          <h3 className="text-xl font-bold tone-note mb-3">When Gaps Need Addressing</h3>
+          <ul className="space-y-2 tone-note">
             <li><strong>Longer than 1 year</strong> without any explanation on the resume</li>
             <li><strong>Multiple gaps</strong> that create a pattern of short tenures</li>
             <li><strong>Very recent gap</strong> (last 6-12 months) with no current activity</li>
@@ -77,7 +77,7 @@ export default function ResumeEmploymentGaps() {
           How to Explain Each Type of Gap
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Different gaps call for different framing. Here is how to handle each one honestly
           without over-explaining.
         </p>
@@ -85,18 +85,18 @@ export default function ResumeEmploymentGaps() {
         <div className="space-y-6">
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Layoff or Company Closure</h3>
-            <p className="text-stone-warm mb-3">
+            <p className="text-ink/60 mb-3">
               Layoffs carry zero stigma in 2026. Mass layoffs at major tech companies, startups,
               and traditional industries have made this completely normal.
             </p>
-            <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-              <p className="font-medium text-green-800 mb-1">Example framing:</p>
-              <p className="text-green-700 text-sm italic">
+            <div className="callout callout-do p-4 rounded-r-lg">
+              <p className="font-medium tone-do mb-1">Example framing:</p>
+              <p className="tone-do text-sm italic">
                 &ldquo;Position eliminated during company-wide restructuring. Used transition period
                 to earn [CERTIFICATION] and complete [PROJECT/COURSE].&rdquo;
               </p>
             </div>
-            <p className="text-stone-warm text-sm mt-3">
+            <p className="text-ink/60 text-sm mt-3">
               <strong>Tip:</strong> You do not need to use the word &ldquo;layoff.&rdquo; &ldquo;Position
               eliminated&rdquo; or &ldquo;company restructuring&rdquo; is neutral and accurate.
             </p>
@@ -104,19 +104,19 @@ export default function ResumeEmploymentGaps() {
 
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Caregiving (Children, Elderly Parents, Family)</h3>
-            <p className="text-stone-warm mb-3">
+            <p className="text-ink/60 mb-3">
               Caregiving is a legitimate reason that most hiring managers respect. Keep it brief
               and pivot quickly to your readiness to return.
             </p>
-            <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-              <p className="font-medium text-green-800 mb-1">Example framing:</p>
-              <p className="text-green-700 text-sm italic">
+            <div className="callout callout-do p-4 rounded-r-lg">
+              <p className="font-medium tone-do mb-1">Example framing:</p>
+              <p className="tone-do text-sm italic">
                 &ldquo;Career pause for family caregiving. During this time, maintained industry
                 knowledge through [SPECIFIC ACTIVITY: online courses, professional association
                 membership, freelance projects].&rdquo;
               </p>
             </div>
-            <p className="text-stone-warm text-sm mt-3">
+            <p className="text-ink/60 text-sm mt-3">
               <strong>Tip:</strong> You are not required to specify what type of caregiving. &ldquo;Family
               caregiving&rdquo; is sufficient. Do not over-share personal details.
             </p>
@@ -124,18 +124,18 @@ export default function ResumeEmploymentGaps() {
 
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Health Issues (Personal or Family)</h3>
-            <p className="text-stone-warm mb-3">
+            <p className="text-ink/60 mb-3">
               You are under no obligation to disclose medical details. A brief, forward-looking
               statement is all you need.
             </p>
-            <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-              <p className="font-medium text-green-800 mb-1">Example framing:</p>
-              <p className="text-green-700 text-sm italic">
+            <div className="callout callout-do p-4 rounded-r-lg">
+              <p className="font-medium tone-do mb-1">Example framing:</p>
+              <p className="tone-do text-sm italic">
                 &ldquo;Personal leave, now fully resolved. Eager to apply [SKILL] experience to
                 [TARGET ROLE] opportunities.&rdquo;
               </p>
             </div>
-            <p className="text-stone-warm text-sm mt-3">
+            <p className="text-ink/60 text-sm mt-3">
               <strong>Tip:</strong> Never say &ldquo;medical leave&rdquo; on your resume &mdash; it can
               trigger unconscious bias. &ldquo;Personal leave&rdquo; is neutral and legally you owe
               no further explanation.
@@ -144,13 +144,13 @@ export default function ResumeEmploymentGaps() {
 
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Travel or Sabbatical</h3>
-            <p className="text-stone-warm mb-3">
+            <p className="text-ink/60 mb-3">
               Intentional time off for travel or personal development is increasingly respected,
               especially if you can connect it to professional growth.
             </p>
-            <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-              <p className="font-medium text-green-800 mb-1">Example framing:</p>
-              <p className="text-green-700 text-sm italic">
+            <div className="callout callout-do p-4 rounded-r-lg">
+              <p className="font-medium tone-do mb-1">Example framing:</p>
+              <p className="tone-do text-sm italic">
                 &ldquo;Professional sabbatical: completed language immersion program in [COUNTRY],
                 volunteered with [ORGANIZATION], developed [SKILL/PROJECT].&rdquo;
               </p>
@@ -159,20 +159,20 @@ export default function ResumeEmploymentGaps() {
 
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Career Change or Reskilling</h3>
-            <p className="text-stone-warm mb-3">
+            <p className="text-ink/60 mb-3">
               If your gap was spent preparing for a new career, that is not a gap &mdash; it is an
               investment. Frame it as intentional upskilling.
             </p>
-            <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-              <p className="font-medium text-green-800 mb-1">Example framing:</p>
-              <p className="text-green-700 text-sm italic">
+            <div className="callout callout-do p-4 rounded-r-lg">
+              <p className="font-medium tone-do mb-1">Example framing:</p>
+              <p className="tone-do text-sm italic">
                 &ldquo;Career transition period: completed [CERTIFICATION/DEGREE], built portfolio
                 of [X] projects, and contributed to [OPEN SOURCE/VOLUNTEER WORK] in [NEW FIELD].&rdquo;
               </p>
             </div>
-            <p className="text-stone-warm text-sm mt-3">
+            <p className="text-ink/60 text-sm mt-3">
               For a full guide on transitioning, see our{' '}
-              <Link to="/blog/career-change-resume-guide" className="text-accent hover:underline">
+              <Link to="/blog/career-change-resume-guide" className="text-accent-text hover:underline">
                 career change resume guide
               </Link>.
             </p>
@@ -180,13 +180,13 @@ export default function ResumeEmploymentGaps() {
 
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Entrepreneurship or Freelance</h3>
-            <p className="text-stone-warm mb-3">
+            <p className="text-ink/60 mb-3">
               Running a business or freelancing is not a gap &mdash; it is experience. List it as a
               role on your resume with achievements and metrics.
             </p>
-            <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-              <p className="font-medium text-green-800 mb-1">Example framing:</p>
-              <p className="text-green-700 text-sm italic">
+            <div className="callout callout-do p-4 rounded-r-lg">
+              <p className="font-medium tone-do mb-1">Example framing:</p>
+              <p className="tone-do text-sm italic">
                 &ldquo;Freelance [TITLE] (2024-2025): Delivered [X] projects for clients including
                 [NOTABLE CLIENT/INDUSTRY]. Managed all business operations, client relationships,
                 and project delivery.&rdquo;
@@ -212,38 +212,38 @@ export default function ResumeEmploymentGaps() {
             <tbody className="divide-y divide-black/[0.06]">
               <tr>
                 <td className="px-6 py-4 font-medium text-ink">Gap &lt; 6 months</td>
-                <td className="px-6 py-4 text-stone-warm">Use years only (not months) to hide it</td>
-                <td className="px-6 py-4 text-stone-warm">Do not mention it</td>
+                <td className="px-6 py-4 text-ink/60">Use years only (not months) to hide it</td>
+                <td className="px-6 py-4 text-ink/60">Do not mention it</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-6 py-4 font-medium text-ink">Gap 6-12 months</td>
-                <td className="px-6 py-4 text-stone-warm">Brief one-line entry if productive</td>
-                <td className="px-6 py-4 text-stone-warm">One sentence if directly relevant</td>
+                <td className="px-6 py-4 text-ink/60">Brief one-line entry if productive</td>
+                <td className="px-6 py-4 text-ink/60">One sentence if directly relevant</td>
               </tr>
               <tr>
                 <td className="px-6 py-4 font-medium text-ink">Gap &gt; 1 year</td>
-                <td className="px-6 py-4 text-stone-warm">List as an entry with activities</td>
-                <td className="px-6 py-4 text-stone-warm">Brief explanation + forward focus</td>
+                <td className="px-6 py-4 text-ink/60">List as an entry with activities</td>
+                <td className="px-6 py-4 text-ink/60">Brief explanation + forward focus</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-6 py-4 font-medium text-ink">Career change gap</td>
-                <td className="px-6 py-4 text-stone-warm">List certifications/training as experience</td>
-                <td className="px-6 py-4 text-stone-warm">Explain the &ldquo;why&rdquo; of the transition</td>
+                <td className="px-6 py-4 text-ink/60">List certifications/training as experience</td>
+                <td className="px-6 py-4 text-ink/60">Explain the &ldquo;why&rdquo; of the transition</td>
               </tr>
               <tr>
                 <td className="px-6 py-4 font-medium text-ink">Caregiving/health</td>
-                <td className="px-6 py-4 text-stone-warm">One-line entry, no details needed</td>
-                <td className="px-6 py-4 text-stone-warm">Brief mention + readiness to return</td>
+                <td className="px-6 py-4 text-ink/60">One-line entry, no details needed</td>
+                <td className="px-6 py-4 text-ink/60">Brief mention + readiness to return</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           <strong>The rule of thumb:</strong> your resume states what happened (briefly). Your cover
           letter explains why it makes you a better candidate. Never apologize on either document.
           For resume structure guidance, see our{' '}
-          <Link to="/blog/how-to-write-a-resume-guide" className="text-accent hover:underline">
+          <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
             complete resume writing guide
           </Link>.
         </p>
@@ -287,15 +287,15 @@ export default function ResumeEmploymentGaps() {
               </div>
               <div>
                 <h3 className="font-bold text-ink mb-1">{step.title}</h3>
-                <p className="text-stone-warm">{step.desc}</p>
+                <p className="text-ink/60">{step.desc}</p>
               </div>
             </div>
           ))}
         </div>
 
-        <p className="text-lg leading-relaxed text-stone-warm mt-6">
+        <p className="text-lg leading-relaxed text-ink/60 mt-6">
           For professional summary examples that address career gaps, see our{' '}
-          <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+          <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
             professional summary examples guide
           </Link>.
         </p>
@@ -305,7 +305,7 @@ export default function ResumeEmploymentGaps() {
           Example Language for Your Resume
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+        <p className="text-lg leading-relaxed text-ink/60 mb-6">
           Here is how to list gap periods directly on your resume. These are actual entries you can
           adapt, placed in your experience section where the gap falls chronologically.
         </p>
@@ -314,9 +314,9 @@ export default function ResumeEmploymentGaps() {
           <div className="bg-white border border-black/[0.06] rounded-xl p-5 shadow-sm">
             <div className="flex justify-between items-start mb-2">
               <p className="font-bold text-ink">Professional Development</p>
-              <p className="text-stone-warm text-sm">2024 &ndash; 2025</p>
+              <p className="text-ink/60 text-sm">2024 &ndash; 2025</p>
             </div>
-            <ul className="text-stone-warm text-sm space-y-1">
+            <ul className="text-ink/60 text-sm space-y-1">
               <li>&bull; Completed Google Data Analytics Professional Certificate</li>
               <li>&bull; Built 3 portfolio projects using Python, SQL, and Tableau</li>
               <li>&bull; Contributed to open-source data visualization library (200+ GitHub stars)</li>
@@ -326,9 +326,9 @@ export default function ResumeEmploymentGaps() {
           <div className="bg-white border border-black/[0.06] rounded-xl p-5 shadow-sm">
             <div className="flex justify-between items-start mb-2">
               <p className="font-bold text-ink">Family Caregiving</p>
-              <p className="text-stone-warm text-sm">2023 &ndash; 2024</p>
+              <p className="text-ink/60 text-sm">2023 &ndash; 2024</p>
             </div>
-            <ul className="text-stone-warm text-sm space-y-1">
+            <ul className="text-ink/60 text-sm space-y-1">
               <li>&bull; Managed full-time caregiving responsibilities for family member</li>
               <li>&bull; Maintained professional certifications and industry knowledge</li>
             </ul>
@@ -337,9 +337,9 @@ export default function ResumeEmploymentGaps() {
           <div className="bg-white border border-black/[0.06] rounded-xl p-5 shadow-sm">
             <div className="flex justify-between items-start mb-2">
               <p className="font-bold text-ink">Independent Consultant</p>
-              <p className="text-stone-warm text-sm">2024 &ndash; Present</p>
+              <p className="text-ink/60 text-sm">2024 &ndash; Present</p>
             </div>
-            <ul className="text-stone-warm text-sm space-y-1">
+            <ul className="text-ink/60 text-sm space-y-1">
               <li>&bull; Delivered marketing strategy projects for 4 small business clients</li>
               <li>&bull; Managed client relationships, project timelines, and deliverables independently</li>
             </ul>
@@ -352,9 +352,9 @@ export default function ResumeEmploymentGaps() {
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-red-800 mb-4">Do Not</h3>
-            <ul className="space-y-2 text-red-700">
+          <div className="callout callout-dont rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-dont mb-4">Do Not</h3>
+            <ul className="space-y-2 tone-dont">
               <li>&#x2717; Lie about dates or fabricate employment</li>
               <li>&#x2717; Over-explain with a paragraph of justification</li>
               <li>&#x2717; Use apologetic language (&ldquo;Unfortunately...&rdquo;)</li>
@@ -363,9 +363,9 @@ export default function ResumeEmploymentGaps() {
               <li>&#x2717; Leave the gap completely unaddressed if it is longer than a year</li>
             </ul>
           </div>
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-green-800 mb-4">Do</h3>
-            <ul className="space-y-2 text-green-700">
+          <div className="callout callout-do rounded-xl p-6">
+            <h3 className="text-xl font-bold tone-do mb-4">Do</h3>
+            <ul className="space-y-2 tone-do">
               <li>&#x2713; Be honest but brief (one line is usually enough)</li>
               <li>&#x2713; Focus on what you did during the gap</li>
               <li>&#x2713; Use neutral, professional language</li>
@@ -414,7 +414,7 @@ export default function ResumeEmploymentGaps() {
           ].map((faq, i) => (
             <div key={i} className="bg-chalk-dark rounded-xl p-5">
               <h3 className="font-bold text-ink mb-2">{faq.q}</h3>
-              <p className="text-stone-warm">{faq.a}</p>
+              <p className="text-ink/60">{faq.a}</p>
             </div>
           ))}
         </div>
@@ -424,13 +424,19 @@ export default function ResumeEmploymentGaps() {
           <h3 className="font-bold text-ink mb-3">Related Guides</h3>
           <ul className="space-y-2 text-ink/80">
             <li>
-              <Link to="/blog/return-to-work-programs" className="text-accent hover:underline">
+              <Link to="/blog/return-to-work-programs" className="text-accent-text hover:underline">
                 Return to Work Programs Guide
               </Link>{' '}
               &mdash; paid returnships at top companies for career returners
             </li>
             <li>
-              <Link to="/blog/career-change-resume-guide" className="text-accent hover:underline">
+              <Link to="/blog/resume-after-career-break" className="text-accent-text hover:underline">
+                How to Write a Resume After a Career Break
+              </Link>{' '}
+              &mdash; format strategy and returnship-specific advice for multi-year gaps
+            </li>
+            <li>
+              <Link to="/blog/career-change-resume-guide" className="text-accent-text hover:underline">
                 Career Change Resume Guide
               </Link>{' '}
               &mdash; how to rewrite your resume for a new industry

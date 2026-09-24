@@ -11,6 +11,7 @@ import { getSessionId } from '../../utils/session';
 import { extractReferencedIconFilenames } from '../../utils/iconExtractor';
 import { isExperienceSection, isEducationSection } from '../../utils/sectionTypeChecker';
 import { validateLinkedInUrl } from '../../services/validationService';
+import { trackPdfDownloaded, trackPdfDownloadFailed, categorizeError } from '../../lib/analytics';
 
 /**
  * Icon validation result from usePreview
@@ -120,6 +121,9 @@ export const useEditorActions = ({
 }: UseEditorActionsProps): UseEditorActionsReturn => {
   // Loading states
   const [isDownloading, setIsDownloading] = useState(false);
+  // What the build is actually doing right now. Set only at real boundaries in
+  // handleGenerateResume — never on a timer — so the label is always true.
+  const [downloadPhase, setDownloadPhase] = useState<string | null>(null);
   const [isOpeningPreview, setIsOpeningPreview] = useState(false);
   const [loadingStartFresh, setLoadingStartFresh] = useState(false);
 
@@ -206,7 +210,11 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
 
     const promise = (async () => {
       try {
-        // Save first to ensure PDF has latest changes
+        // Save first to ensure PDF has latest changes. The button goes into its
+        // working state here, not after validation — the save is a real wait and
+        // used to happen behind an idle-looking button.
+        setIsDownloading(true);
+        setDownloadPhase('Saving your latest edits');
         const canProceed = await saveBeforeAction('download PDF');
         if (!canProceed) return;
 
@@ -225,7 +233,6 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
           }
         }
 
-        setIsDownloading(true);
         const processedSections = processSections(sections);
 
         const yamlData = yaml.dump({
@@ -254,8 +261,17 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
           }
         }
 
+        // Server-side render: Jinja lays the sections into the template, then
+        // pdfkit prints them. We can't observe the split, so it's one honest
+        // phase named after what the user handed over, not a fake percentage.
+        setDownloadPhase(
+          `Typesetting ${processedSections.length} ${
+            processedSections.length === 1 ? 'section' : 'sections'
+          }`
+        );
         const { pdfBlob, fileName } = await generateResume(formData);
 
+        setDownloadPhase('Your PDF is ready');
         const pdfUrl = URL.createObjectURL(pdfBlob);
         const link = document.createElement('a');
         link.href = pdfUrl;
@@ -266,6 +282,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
         URL.revokeObjectURL(pdfUrl);
 
         toast.success('Resume downloaded successfully!');
+        trackPdfDownloaded({ template_id: templateId || 'unknown', source: 'editor' });
 
         // Show celebration modal on first download (all users)
         if (!hasShownDownloadToast) {
@@ -279,8 +296,14 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
         console.error('Error generating resume:', error);
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         toast.error(`Resume generation failed: ${errorMessage}`);
+        trackPdfDownloadFailed({
+          template_id: templateId || 'unknown',
+          source: 'editor',
+          error_type: categorizeError(errorMessage),
+        });
       } finally {
         setIsDownloading(false);
+        setDownloadPhase(null);
         downloadPromiseRef.current = null;
       }
     })();
@@ -440,6 +463,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
     () => ({
       // Download
       isDownloading,
+      downloadPhase,
       handleGenerateResume,
 
       // Preview
@@ -454,6 +478,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
     }),
     [
       isDownloading,
+      downloadPhase,
       handleGenerateResume,
       isOpeningPreview,
       handleOpenPreview,

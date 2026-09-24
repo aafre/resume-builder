@@ -100,6 +100,58 @@ export interface BulletCategory {
 }
 
 /**
+ * Entry/mid/senior professional-summary variant, showing how the same role's
+ * summary changes with experience level.
+ */
+export interface SummaryExample {
+  level: 'entry' | 'mid' | 'senior';
+  summary: string;
+}
+
+/**
+ * Role-specific hard and soft skills, distinct from `resume.skills` (which is
+ * the flat list printed on the example resume itself).
+ */
+export interface RoleSkills {
+  hard: string[];
+  soft: string[];
+}
+
+/**
+ * A specific, role-scoped failure mode — not generic resume advice.
+ */
+export interface RoleMistake {
+  mistake: string;
+  fix: string;
+}
+
+/**
+ * A weak resume bullet rewritten stronger, with the reason the rewrite works.
+ * No invented achievements: numbers the source resume doesn't support use
+ * bracketed placeholders (`[X%]`, `[number]`).
+ */
+export interface BulletRewrite {
+  weak: string;
+  improved: string;
+  reason: string;
+}
+
+/**
+ * US-only BLS Occupational Outlook Handbook data for this role. Optional —
+ * only populate when a real OOH occupation maps to this role. `occupation`
+ * names the mapped OOH page title when it differs from the role title (e.g.
+ * "software-engineer" maps to OOH's "Software Developers, Quality Assurance
+ * Analysts, and Testers"), so the mapping is never ambiguous.
+ */
+export interface SalaryOutlook {
+  occupation?: string;
+  median: string;
+  growth: string;
+  source: string;             // OOH URL
+  asOf: string;                // YYYY-MM-DD, date the figures were verified
+}
+
+/**
  * Complete job example data structure (matches YAML file format)
  */
 export interface JobExampleData {
@@ -108,6 +160,19 @@ export interface JobExampleData {
   bulletBank: BulletCategory[];
   relatedJobs: string[];           // Slugs of related job examples
   customFaqs?: FAQConfig[];        // Optional custom FAQs
+
+  // A5 — example-page template upgrade (2026-09). All optional; a section
+  // renders only when its data exists. See Wave 2 handoff (PR body) for the
+  // full contract these fields form for B1–B4/B7.
+  answerBlock?: string;             // <=60 words, rendered directly under the H1
+  howToWrite?: string[];            // 4-6 role-specific steps
+  summaryExamples?: SummaryExample[]; // entry / mid / senior
+  skills?: RoleSkills;              // role-specific hard/soft skills (not resume.skills)
+  keywords?: string[];              // imported from jobKeywords/jobs/<role>.ts where one exists
+  certifications?: string[];        // only where the role genuinely has them
+  mistakes?: RoleMistake[];
+  bulletRewrites?: BulletRewrite[]; // minimum 3
+  salaryOutlook?: SalaryOutlook;    // omit rather than guess a mapping
 }
 
 /**
@@ -120,6 +185,8 @@ export interface JobExampleInfo {
   priority: number;
   metaDescription: string;
   careerOutlook?: string;          // 1-2 sentence career outlook intro for SEO differentiation
+  lastmod?: string;                // YYYY-MM-DD, mirrors this role's YAML meta.lastmod; sitemap
+                                    // falls back to today's date when absent (pre-A5 behavior)
 }
 
 /**

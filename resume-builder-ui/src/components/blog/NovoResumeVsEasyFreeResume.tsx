@@ -11,12 +11,12 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
       {Array.from({ length: max }, (_, i) => (
         <span
           key={i}
-          className={`text-xl ${i < rating ? "text-yellow-400" : "text-gray-300"}`}
+          className={`text-xl ${i < rating ? "text-accent-text" : "text-ink/20"}`}
         >
           ★
         </span>
       ))}
-      <span className="ml-2 text-sm font-medium text-stone-warm">
+      <span className="ml-2 text-sm font-medium text-ink/60">
         {rating}/{max}
       </span>
     </div>
@@ -25,7 +25,7 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
 
 function WinnerBadge() {
   return (
-    <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-800">
+    <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-bold callout callout-do tone-do">
       WINNER
     </span>
   );
@@ -63,30 +63,30 @@ export default function NovoResumeVsEasyFreeResume() {
     >
       <div className="space-y-8">
         {/* Quick Verdict Box */}
-        <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-2xl p-6 my-8 shadow-lg">
-          <h3 className="font-bold text-green-800 text-xl mb-4">
+        <div className="callout callout-do rounded-2xl p-6 my-8 shadow-lg">
+          <h3 className="font-bold tone-do text-xl mb-4">
             ⚡ Quick Verdict
           </h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-              <p className="font-bold text-accent text-lg mb-2">EasyFreeResume</p>
+              <p className="font-bold text-accent-text text-lg mb-2">EasyFreeResume</p>
               <StarRating rating={5} />
-              <p className="text-3xl font-bold text-accent mt-2">$0</p>
-              <p className="text-sm text-stone-warm">All features free</p>
+              <p className="text-3xl font-bold text-accent-text mt-2">$0</p>
+              <p className="text-sm text-ink/60">All features free</p>
             </div>
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-              <p className="font-bold text-stone-warm text-lg mb-2">NovoResume</p>
+              <p className="font-bold text-ink/60 text-lg mb-2">NovoResume</p>
               <StarRating rating={4} />
-              <p className="text-3xl font-bold text-red-600 mt-2">$99</p>
-              <p className="text-sm text-stone-warm">Per year (Premium)</p>
+              <p className="text-3xl font-bold tone-dont mt-2">$99</p>
+              <p className="text-sm text-ink/60">Per year (Premium)</p>
             </div>
           </div>
-          <p className="text-green-800 mt-4 text-center font-medium">
+          <p className="tone-do mt-4 text-center font-medium">
             Winner: EasyFreeResume — Professional templates without the premium price
           </p>
         </div>
 
-        <p className="text-xl leading-relaxed text-stone-warm font-medium">
+        <p className="text-xl leading-relaxed text-ink/60 font-medium">
           NovoResume has gained popularity for its clean, modern templates—especially among
           European job seekers. But the best templates require a premium subscription.
           Here's how it compares to a completely free alternative.
@@ -101,74 +101,74 @@ export default function NovoResumeVsEasyFreeResume() {
             <thead>
               <tr className="bg-chalk-dark">
                 <th className="px-6 py-4 text-left font-bold text-ink">Feature</th>
-                <th className="px-6 py-4 text-center font-bold text-accent">EasyFreeResume</th>
-                <th className="px-6 py-4 text-center font-bold text-accent">NovoResume</th>
-                <th className="px-6 py-4 text-center font-bold text-stone-warm">Winner</th>
+                <th className="px-6 py-4 text-center font-bold text-accent-text">EasyFreeResume</th>
+                <th className="px-6 py-4 text-center font-bold text-accent-text">NovoResume</th>
+                <th className="px-6 py-4 text-center font-bold text-ink/60">Winner</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-black/[0.06]">
-              <tr className="bg-green-50">
+              <tr className="callout callout-do">
                 <td className="px-6 py-4 font-medium text-ink">Cost</td>
-                <td className="px-6 py-4 text-center text-accent font-bold">100% Free</td>
-                <td className="px-6 py-4 text-center text-red-600">Free tier / $16-$99/yr premium</td>
+                <td className="px-6 py-4 text-center text-accent-text font-bold">100% Free</td>
+                <td className="px-6 py-4 text-center tone-dont">Free tier / $16-$99/yr premium</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">EasyFreeResume</span>
                 </td>
               </tr>
               <tr>
                 <td className="px-6 py-4 font-medium text-ink">PDF Downloads</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Unlimited, Free</td>
-                <td className="px-6 py-4 text-center text-yellow-600">⚠️ Limited free, unlimited premium</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Unlimited, Free</td>
+                <td className="px-6 py-4 text-center tone-note">⚠️ Limited free, unlimited premium</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">EasyFreeResume</span>
                 </td>
               </tr>
-              <tr className="bg-green-50">
+              <tr className="callout callout-do">
                 <td className="px-6 py-4 font-medium text-ink">Premium Templates</td>
-                <td className="px-6 py-4 text-center text-accent">✅ All templates free</td>
-                <td className="px-6 py-4 text-center text-red-600">❌ Best locked behind paywall</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ All templates free</td>
+                <td className="px-6 py-4 text-center tone-dont">❌ Best locked behind paywall</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">EasyFreeResume</span>
                 </td>
               </tr>
               <tr>
                 <td className="px-6 py-4 font-medium text-ink">ATS Compatibility</td>
-                <td className="px-6 py-4 text-center text-accent">✅ All templates</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Yes</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ All templates</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Yes</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-gray-400 text-white">Tie</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-ink/60 text-white">Tie</span>
                 </td>
               </tr>
-              <tr className="bg-green-50">
+              <tr className="callout callout-do">
                 <td className="px-6 py-4 font-medium text-ink">Account Required</td>
-                <td className="px-6 py-4 text-center text-accent">✅ No</td>
-                <td className="px-6 py-4 text-center text-red-600">❌ Yes</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ No</td>
+                <td className="px-6 py-4 text-center tone-dont">❌ Yes</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">EasyFreeResume</span>
                 </td>
               </tr>
               <tr>
                 <td className="px-6 py-4 font-medium text-ink">Privacy</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Local storage</td>
-                <td className="px-6 py-4 text-center text-red-600">❌ Cloud storage</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Local storage</td>
+                <td className="px-6 py-4 text-center tone-dont">❌ Cloud storage</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-white">EasyFreeResume</span>
                 </td>
               </tr>
-              <tr className="bg-green-50">
+              <tr className="callout callout-do">
                 <td className="px-6 py-4 font-medium text-ink">European CV Format</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Supported</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Specialized</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Supported</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Specialized</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-gray-400 text-white">Tie</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-ink/60 text-white">Tie</span>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <div className="bg-green-100 border border-green-300 rounded-xl p-4 text-center">
-          <p className="font-bold text-green-800">
+        <div className="callout callout-do rounded-xl p-4 text-center">
+          <p className="font-bold tone-do">
             Score: EasyFreeResume 5 — NovoResume 0 — Ties 2
             <WinnerBadge />
           </p>
@@ -178,18 +178,18 @@ export default function NovoResumeVsEasyFreeResume() {
           NovoResume Pricing Breakdown
         </h2>
 
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-red-800 mb-4">💰 NovoResume 2026 Pricing</h3>
+        <div className="callout callout-dont rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-dont mb-4">💰 NovoResume 2026 Pricing</h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-red-200">
+                <tr className="border-b callout callout-dont">
                   <th className="text-left py-2 font-bold">Plan</th>
                   <th className="text-left py-2 font-bold">Price</th>
                   <th className="text-left py-2 font-bold">Features</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-red-100 text-red-700">
+              <tbody className="divide-y divide-ink/10 tone-dont">
                 <tr>
                   <td className="py-2">Free</td>
                   <td className="py-2">$0</td>
@@ -213,17 +213,17 @@ export default function NovoResumeVsEasyFreeResume() {
               </tbody>
             </table>
           </div>
-          <p className="text-red-600 text-sm mt-4">
+          <p className="tone-dont text-sm mt-4">
             ⚠️ Free tier has NovoResume branding on PDF and limits customization options.
           </p>
         </div>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-green-800 mb-4">
+        <div className="callout callout-do rounded-xl p-6 my-8">
+          <h3 className="font-bold tone-do mb-4">
             💚 EasyFreeResume Cost
             <WinnerBadge />
           </h3>
-          <div className="text-accent text-center">
+          <div className="text-accent-text text-center">
             <p className="text-6xl font-bold mb-2">$0</p>
             <p className="text-xl">All templates. No branding. No limits.</p>
           </div>
@@ -233,18 +233,18 @@ export default function NovoResumeVsEasyFreeResume() {
           What NovoResume Does Well
         </h2>
 
-        <p className="text-lg leading-relaxed text-stone-warm mb-4">
+        <p className="text-lg leading-relaxed text-ink/60 mb-4">
           To be fair, NovoResume has some strengths:
         </p>
 
-        <ul className="list-disc list-inside space-y-2 text-stone-warm mb-8">
+        <ul className="list-disc list-inside space-y-2 text-ink/60 mb-8">
           <li>Clean, modern template designs</li>
           <li>Good support for European CV formats (Europass)</li>
           <li>Cover letter builder included</li>
           <li>Website builder for online portfolios</li>
         </ul>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
+        <p className="text-lg leading-relaxed text-ink/60">
           However, these extra features come at a cost. If you just need a professional,
           ATS-friendly resume, you can get that for free elsewhere.
         </p>
@@ -286,7 +286,7 @@ export default function NovoResumeVsEasyFreeResume() {
           </ol>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
+        <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Premium Templates Without the Premium Price
           </h3>
@@ -295,7 +295,7 @@ export default function NovoResumeVsEasyFreeResume() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Free
           </Link>
@@ -308,19 +308,19 @@ export default function NovoResumeVsEasyFreeResume() {
         <div className="space-y-4 my-8">
           <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
             <h4 className="font-bold text-ink mb-2">Is NovoResume actually free?</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               NovoResume offers a limited free tier with basic templates and restricted downloads. The best templates, full customization, and unlimited PDF exports require a premium plan starting at $16/month or $99/year. EasyFreeResume offers all templates and unlimited downloads for free.
             </p>
           </div>
           <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
             <h4 className="font-bold text-ink mb-2">Does NovoResume put a watermark on free resumes?</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               NovoResume's free tier includes NovoResume branding on exported PDFs. To remove the branding and get a clean, professional PDF, you need a premium subscription. EasyFreeResume never adds watermarks or branding to your downloads.
             </p>
           </div>
           <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
             <h4 className="font-bold text-ink mb-2">Is NovoResume good for ATS?</h4>
-            <p className="text-stone-warm text-sm">
+            <p className="text-ink/60 text-sm">
               Yes, NovoResume templates are generally ATS-compatible. Their templates use clean formatting that most ATS systems can parse correctly. However, some of the more design-heavy premium templates may have minor ATS issues. Both NovoResume and EasyFreeResume produce ATS-friendly output.
             </p>
           </div>
@@ -333,7 +333,7 @@ export default function NovoResumeVsEasyFreeResume() {
       <div className="h-16 md:hidden" aria-hidden="true" />
 
       {/* Sticky CTA Banner */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 px-4 shadow-lg z-50 md:hidden">
+      <div className="fixed bottom-0 left-0 right-0 bg-ink text-white py-3 px-4 shadow-lg z-50 md:hidden">
         <div className="flex items-center justify-between max-w-4xl mx-auto">
           <div>
             <p className="font-bold text-sm">Skip the Premium</p>
@@ -341,7 +341,7 @@ export default function NovoResumeVsEasyFreeResume() {
           </div>
           <Link
             to="/templates"
-            className="bg-white text-accent px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
+            className="bg-white text-accent-text px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
           >
             Try Free
           </Link>

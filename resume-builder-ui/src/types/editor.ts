@@ -224,6 +224,8 @@ export interface UseFileOperationsReturn {
 export interface UseEditorActionsReturn {
   // Download
   isDownloading: boolean;
+  /** What the download is doing right now; null when idle */
+  downloadPhase: string | null;
   handleGenerateResume: () => Promise<void>;
 
   // Preview
