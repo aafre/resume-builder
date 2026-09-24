@@ -1549,7 +1549,7 @@ VALID_SPA_ROUTES = {
 # When a bot requests a page, serve the prerendered HTML if available
 BOT_USER_AGENTS = re.compile(
     r"googlebot|bingbot|yandexbot|duckduckbot|baiduspider|"
-    r"slurp|facebot|ia_archiver|semrushbot|ahrefsbot|"
+    r"slurp|facebot|facebookexternalhit|ia_archiver|semrushbot|ahrefsbot|"
     r"gptbot|claude-web|claudebot|oai-searchbot|perplexitybot|amazonbot|bytespider|ccbot|"
     r"google-extended|applebot|"
     r"twitterbot|linkedinbot|whatsapp|telegrambot|slackbot",
