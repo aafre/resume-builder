@@ -111,6 +111,7 @@ ENV PYTHONUNBUFFERED=1
 #   - SUPABASE_DB_PASSWORD
 #   - ADZUNA_APP_ID (required for Jobs feature)
 #   - ADZUNA_APP_KEY (required for Jobs feature)
+#   - JOBS_PSEO_ENABLED (off by default, see ADR-0001)
 
 # Add security labels
 LABEL security.non-root=true
