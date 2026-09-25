@@ -13,6 +13,8 @@ interface ImportMetaEnv {
   readonly VITE_POSTHOG_KEY?: string;
   /** PostHog API host. Defaults to https://us.i.posthog.com */
   readonly VITE_POSTHOG_HOST?: string;
+  /** Cloudflare Turnstile site key. Leave empty to disable entirely (no-op: no script, no token). */
+  readonly VITE_TURNSTILE_SITE_KEY?: string;
 }
 
 interface ImportMeta {
@@ -22,4 +24,10 @@ interface ImportMeta {
 interface Window {
   /** Trustpilot widget global, injected on-demand by utils/trustpilot.ts */
   Trustpilot?: { loadFromElement: (node: HTMLElement) => void };
+  /** Cloudflare Turnstile global, injected on-demand by utils/turnstile.ts */
+  turnstile?: {
+    render: (container: HTMLElement, options: Record<string, unknown>) => string;
+    remove: (widgetId: string) => void;
+    reset: (widgetId: string) => void;
+  };
 }

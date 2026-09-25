@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { trackResumeUploadStarted, trackResumeParseCompleted, categorizeError } from '../lib/analytics';
 import type { ParseSource } from '../lib/analytics';
+import { getTurnstileToken } from '../utils/turnstile';
 
 interface ParseResponse {
   success: boolean;
@@ -148,9 +149,16 @@ export function useResumeParser(options?: { source?: ParseSource }) {
       // Start continuous progress animation (0% → 90% over 1200ms)
       startProgressAnimation(90);
 
+      // Single-use bot-check token; resolves null (no-op) when Turnstile
+      // isn't configured, so the request is unchanged in that case.
+      const turnstileToken = await getTurnstileToken();
+
       // Create FormData
       const formData = new FormData();
       formData.append('file', file);
+      if (turnstileToken) {
+        formData.append('turnstile_token', turnstileToken);
+      }
 
       // Bracket the parse so abandonment during the ~12s median wait is measurable.
       // Set only once the request is actually attempted, so validation/auth
