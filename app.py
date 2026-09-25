@@ -3154,29 +3154,36 @@ MIGRATE_COMPAT_EXPIRES = datetime(2026, 11, 1, tzinfo=timezone.utc)
 # if we ever run enough workers that a per-process budget stops meaning anything.
 MIGRATE_RATE_LIMIT = 5
 MIGRATE_RATE_WINDOW_SECONDS = 300
-_migrate_attempts: dict[str, list[float]] = {}
+
+# Generic per-bucket fixed-window limiter, shared by the migrate endpoint above
+# and the jobs endpoints below. Each bucket gets its own {key: [timestamps]} dict.
+# ponytail: in-process, per worker, no lock, resets on restart — the Cloudflare
+# edge rule (separate human issue) covers all instances; move to Redis only if a
+# per-process budget stops meaning anything.
+_rate_limit_buckets: dict[str, dict[str, list[float]]] = {}
+# Kept as a name so existing tests can clear it directly without knowing about
+# the generic bucket dict underneath (same dict object, bucket="migrate").
+# Other tests that reset rate-limit state should clear each bucket's contents
+# in place (`for v in _rate_limit_buckets.values(): v.clear()`), not replace
+# _rate_limit_buckets itself — that would orphan this alias.
+_migrate_attempts: dict[str, list[float]] = _rate_limit_buckets.setdefault("migrate", {})
 
 
-def _migrate_rate_limited(caller_uid: str) -> bool:
-    """Record an attempt for caller_uid; True if it exceeds the window budget."""
-    global _migrate_attempts
+def _rate_limited(bucket: str, key: str, limit: int, window_s: int) -> bool:
+    """Record an attempt for key in bucket; True if it exceeds the window budget."""
+    store = _rate_limit_buckets.setdefault(bucket, {})
     now = time.monotonic()
 
-    if len(_migrate_attempts) > 10000:  # bound memory; entries expire anyway
-        _migrate_attempts = {
-            uid: stamps
-            for uid, stamps in _migrate_attempts.items()
-            if stamps and now - stamps[-1] < MIGRATE_RATE_WINDOW_SECONDS
-        }
+    if len(store) > 10000:  # bound memory; entries expire anyway
+        for stale_key in [
+            k for k, stamps in store.items() if not stamps or now - stamps[-1] >= window_s
+        ]:
+            del store[stale_key]
 
-    recent = [
-        t
-        for t in _migrate_attempts.get(caller_uid, [])
-        if now - t < MIGRATE_RATE_WINDOW_SECONDS
-    ]
+    recent = [t for t in store.get(key, []) if now - t < window_s]
     recent.append(now)
-    _migrate_attempts[caller_uid] = recent
-    return len(recent) > MIGRATE_RATE_LIMIT
+    store[key] = recent
+    return len(recent) > limit
 
 
 @app.route("/api/migrate-anonymous-resumes", methods=["POST"])
@@ -3216,7 +3223,7 @@ def migrate_anonymous_resumes():
         if not old_user_id:
             return jsonify({"error": "old_user_id is required"}), 400
 
-        if _migrate_rate_limited(new_user_id):
+        if _rate_limited("migrate", new_user_id, MIGRATE_RATE_LIMIT, MIGRATE_RATE_WINDOW_SECONDS):
             logging.warning(
                 f"Migration rate limited | caller={new_user_id} | source={old_user_id}"
             )
