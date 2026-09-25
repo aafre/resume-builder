@@ -328,3 +328,12 @@ it('/jobs refreshing copy names the searched title, not the edited input', async
   expect(screen.getByText(/roles\s+in Leeds are on their way/)).toHaveTextContent('Registered Nurse');
   expect(screen.getByRole('link', { name: /search registered nurse on adzuna/i })).toBeInTheDocument();
 });
+
+it('/jobs results count names the searched title, not the edited input', async () => {
+  searchJobs.mockResolvedValue(result([job(1)]));
+  renderJobsPage('/jobs?q=Registered%20Nurse&l=Leeds&c=gb');
+  await screen.findByText('Staff Nurse 1');
+  fireEvent.change(screen.getByRole('textbox', { name: /job title/i }), { target: { value: '' } });
+  fireEvent.change(screen.getByRole('textbox', { name: /city or region/i }), { target: { value: 'York' } });
+  expect(screen.getByText(/for .Registered Nurse. in Leeds/)).toBeInTheDocument();
+});

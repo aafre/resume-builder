@@ -447,8 +447,8 @@ export default function JobsPage() {
     }
   }, [handleResumeDrop]);
 
-  const dynamicTitle = hasSearched && titleInput.trim()
-    ? `${titleInput.trim()} Jobs${locationInput.trim() ? ` in ${locationInput.trim()}` : ''} | EasyFreeResume`
+  const dynamicTitle = hasSearched && searched.title
+    ? `${searched.title} Jobs${searched.location ? ` in ${searched.location}` : ''} | EasyFreeResume`
     : null;
 
   return (
@@ -641,7 +641,7 @@ export default function JobsPage() {
                 {totalCount.toLocaleString()} jobs found
               </h2>
               <span className="text-sm text-ink/60">
-                for &ldquo;{titleInput}&rdquo;{locationInput ? ` in ${locationInput}` : ''}
+                for &ldquo;{searched.title}&rdquo;{searched.location ? ` in ${searched.location}` : ''}
               </span>
               {resultStatus === 'stale' && <StaleLabel fetchedAt={fetchedAt} className="sm:ml-auto" />}
             </div>
