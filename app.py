@@ -1687,6 +1687,9 @@ def jobs_main():
 @app.route("/api/jobs/page/<path:subpath>", methods=["GET"])
 def jobs_pseo_data(subpath):
     """JSON data for React client-side navigation and pagination."""
+    limited = _jobs_rate_limited("jobs_page", JOBS_PAGE_RATE_LIMIT)
+    if limited:
+        return limited
     renderer = _get_pseo_renderer()
     if not renderer:
         return jsonify({"success": False, "error": "pSEO not configured"}), 503
@@ -4193,6 +4196,34 @@ _RESUME_CONTEXT_FIELDS = {"skills", "seniority_level", "years_experience"}
 _adzuna_cache = {}
 _ADZUNA_CACHE_TTL = 900  # seconds
 
+# Per-IP rate limits so scripted callers can't burn the Adzuna daily quota or
+# the OpenAI tier-3 fallback. Uses the generic _rate_limited() bucket limiter.
+JOBS_SEARCH_RATE_LIMIT = 60
+JOBS_SUGGEST_ROLES_RATE_LIMIT = 20
+JOBS_PAGE_RATE_LIMIT = 60
+JOBS_RATE_WINDOW_SECONDS = 600
+_JOBS_RATE_LIMIT_ERROR = "Too many searches — try again in a few minutes"
+
+
+def _client_ip() -> str:
+    """Cloudflare's client IP header, else the socket address (local dev)."""
+    return request.headers.get("CF-Connecting-IP") or request.remote_addr or "unknown"
+
+
+def _jobs_rate_limited(bucket: str, limit: int):
+    """None if under budget, else the 429 response to return."""
+    if _rate_limited(bucket, _client_ip(), limit, JOBS_RATE_WINDOW_SECONDS):
+        return jsonify({"success": False, "error": _JOBS_RATE_LIMIT_ERROR}), 429
+    return None
+
+
+def _capped_str(value, max_len: int = 100) -> str:
+    return (value or "")[:max_len]
+
+
+def _clamped_int(value: int, low: int, high: int) -> int:
+    return max(low, min(high, value))
+
 
 @app.route("/api/jobs/availability", methods=["GET"])
 def jobs_availability():
@@ -4217,6 +4248,9 @@ def search_jobs():
     GET: Legacy passthrough (backward compat, no re-ranking)
     POST: 3-tier search with scoring via JobMatchEngine
     """
+    limited = _jobs_rate_limited("jobs_search", JOBS_SEARCH_RATE_LIMIT)
+    if limited:
+        return limited
     if request.method == "POST":
         return _search_jobs_post()
     return _search_jobs_get()
@@ -4227,7 +4261,7 @@ def _search_jobs_post():
     from job_engine import JobMatchEngine, MatchContext
 
     body = request.get_json(silent=True) or {}
-    query = (body.get("query") or "").strip()
+    query = _capped_str((body.get("query") or "").strip())
     if not query:
         return jsonify({"success": False, "error": "query is required"}), 400
 
@@ -4247,10 +4281,10 @@ def _search_jobs_post():
     try:
         context = MatchContext(
             query=query,
-            location=(body.get("location") or "").strip(),
+            location=_capped_str((body.get("location") or "").strip()),
             country=country,
             category=(body.get("category") or "").strip().lower(),
-            skills=body.get("skills") or [],
+            skills=(body.get("skills") or [])[:30],
             seniority_level=(body.get("seniority_level") or "").strip(),
             years_experience=int(body.get("years_experience") or 0),
             salary_min=int(body.get("salary_min") or 0),
@@ -4260,15 +4294,15 @@ def _search_jobs_post():
             permanent=bool(body.get("permanent")),
             sort_by=sort_by,
             # Advanced filters
-            distance=int(body.get("distance") or 0),
+            distance=_clamped_int(int(body.get("distance") or 0), 0, 200),
             contract=bool(body.get("contract")),
             part_time=bool(body.get("part_time")),
             salary_max=int(body.get("salary_max") or 0),
             sort_dir=(body.get("sort_dir") or "").strip(),
-            what_exclude=(body.get("what_exclude") or "").strip(),
-            company=(body.get("company") or "").strip(),
+            what_exclude=_capped_str((body.get("what_exclude") or "").strip()),
+            company=_capped_str((body.get("company") or "").strip()),
             what_phrase=(body.get("what_phrase") or "").strip(),
-            page=int(body.get("page") or 1),
+            page=_clamped_int(int(body.get("page") or 1), 1, 10),
             results_per_page=min(max(int(body.get("results_per_page") or 20), 1), 50),
         )
     except (ValueError, TypeError) as e:
@@ -4309,7 +4343,7 @@ def _search_jobs_get():
     """GET handler: legacy passthrough (backward compat, no re-ranking)."""
     from job_engine import MatchContext
 
-    query = request.args.get("query", "").strip()
+    query = _capped_str(request.args.get("query", "").strip())
     if not query:
         return jsonify({"success": False, "error": "query parameter is required"}), 400
 
@@ -4327,7 +4361,7 @@ def _search_jobs_get():
     try:
         context = MatchContext(
             query=query,
-            location=arg("location"),
+            location=_capped_str(arg("location")),
             country=country,
             category=arg("category").lower(),
             what_or=arg("what_or"),
@@ -4389,6 +4423,9 @@ def suggest_roles():
     Calls the suggest-roles Supabase Edge Function with 15-min in-memory cache.
     Gracefully returns the original title on any failure.
     """
+    limited = _jobs_rate_limited("jobs_suggest_roles", JOBS_SUGGEST_ROLES_RATE_LIMIT)
+    if limited:
+        return limited
     body = request.get_json(silent=True) or {}
     title = (body.get("title") or "").strip()
     if not title:
