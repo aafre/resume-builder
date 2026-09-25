@@ -1,0 +1,252 @@
+# Staff Software Engineer Resume Example
+# Category: Technology (Role batch R1, R1-3)
+# Sources: research brief #3 + R1 posting evidence ledger (S1-S3), both in seo-tracking/.
+# Example resume: fictional person and fictional employers. Real employers appear only in postingEvidence.
+
+meta:
+  slug: staff-software-engineer
+  title: Staff Software Engineer
+  metaTitle: "Free Staff Software Engineer Resume Example & Template (2026)"
+  metaDescription: "Staff software engineer resume example showing cross-team architecture, a migration and mentoring, plus senior vs staff bullet rewrites. Edit it free."
+  category: tech
+  priority: 0.7
+  lastmod: "2026-09-25"
+
+answerBlock: >
+  A staff software engineer resume shows technical decisions that reached past your own
+  team: the architecture you chose, the teams you aligned, the migration you sequenced, and
+  what stayed in use after you moved on. Senior feature work with bigger numbers doesn't
+  read as staff, and people management is a different job: mentoring counts, line
+  management doesn't.
+
+howToWrite:
+  - "Open each role with the widest scope you owned: which teams or services your decision touched, and what state the system was in when you picked it up."
+  - "Write the decision, not the meeting. Name the trade-off you chose (\"moved order state to events instead of a shared database\") and the constraint that forced it."
+  - "Show seniority through reach and durability: how many teams adopted the thing you built, and whether it was still in use after you handed it over. The years-of-experience number doesn't prove staff scope, because each company draws the line differently."
+  - "Say which part was yours. On a staff resume most results are team results, so write \"I designed the cut-over plan\" rather than claiming the whole migration."
+  - "Describe mentoring as design ownership you handed over (\"coached two engineers to lead their own cross-team designs\"), not as reports. If you never had line reports, don't imply them."
+  - "Keep the stack short and specific to the posting: the languages and systems you'd defend in a system design interview, not every tool you've touched."
+
+summaryExamples:
+  - level: entry
+    summary: >
+      Senior backend engineer targeting a first staff role, with [number] years in Go and
+      Java on distributed systems. Led the design for [cross-team project] across [number]
+      teams and ran its design review. Mentors [number] engineers through their first
+      design docs.
+  - level: mid
+    summary: >
+      Staff software engineer working across [number] product teams on a
+      [domain] platform. Set the architecture for [system], sequenced the retirement of
+      [legacy system] without breaking [SLO], and built a shared service template that
+      [number] teams adopted.
+  - level: senior
+    summary: >
+      Senior staff engineer who sets technical direction for [organization or domain].
+      Turns ambiguous business problems into multi-quarter technical programs, aligns
+      non-adjacent teams on shared contracts, and grows technical leaders who now own
+      [number] cross-team systems.
+
+skills:
+  hard:
+    - Architecture Across Teams and Services
+    - Distributed Systems & System Design
+    - Java, Go, C# or Python (whichever the posting names)
+    - Relational & NoSQL Databases
+    - Kubernetes & Infrastructure
+    - Data Pipelines
+    - Observability & Reliability
+  soft:
+    - Aligning Non-Adjacent Teams on One Technical Decision
+    - Mentoring Engineers Across Teams
+    - Growing Technical Leaders
+    - Turning Ambiguity Into a Plan
+
+keywords:
+  - Architecture
+  - System Design
+  - Distributed Systems
+  - Cross-Team Alignment
+  - Mentoring
+  - Technical Leaders
+  - Infrastructure
+  - Kubernetes
+  - Data Pipelines
+  - Observability
+  - Reliability
+  - Java
+  - Go
+  - C#
+  - Python
+  - Relational Databases
+  - NoSQL
+
+mistakes:
+  - mistake: "Rebranding senior feature work as staff work"
+    fix: "If every bullet stays inside one team's backlog, the title won't carry it. Lead with the work that crossed a team or service boundary, and cut feature bullets that don't show wider scope."
+  - mistake: "Describing meetings instead of decisions"
+    fix: "\"Attended architecture reviews\" says you were in the room. Write what you proposed, which alternative you rejected, and what shipped because of it."
+  - mistake: "Taking sole credit for team results"
+    fix: "Staff results are nearly always shared. Name your part (the design, the sequencing, the review you ran) and let the team own the rest. Interviewers probe this."
+  - mistake: "Presenting mentoring as line management"
+    fix: "Mentoring engineers across teams is staff work. Hiring, performance reviews and direct reports belong on an engineering manager resume, so claim them only if you actually held them."
+  - mistake: "Big scale numbers with no baseline or personal contribution"
+    fix: "\"Platform serving [number] requests a day\" says nothing about you. Give the before and after, the timeframe, and what you changed: \"cut p99 latency from [X] to [Y] by [change]\"."
+
+bulletRewrites:
+  - weak: "Migrated the dispatch service from the PHP monolith to Go microservices, improving response times"
+    improved: "Sequenced the retirement of the dispatch monolith across [number] dependent services owned by [number] teams, agreeing the cut-over order with each owner and holding the [availability SLO] throughout"
+    reason: "Same project, two scopes. The first line is senior work: you built the new service. The staff version shows the dependencies you untangled, the teams you aligned, and the constraint you protected."
+  - weak: "Designed an event-driven order pipeline in Go handling [number] events a day"
+    improved: "Wrote the design doc that moved [number] teams off a shared order database onto events, settled the ownership dispute over [shared state], and cut p99 checkout latency from [X] to [Y]"
+    reason: "Same system again. The senior line proves you can build it; the staff line proves you chose the architecture, resolved a cross-team conflict, and moved a measured outcome."
+  - weak: "Mentored junior engineers on the team"
+    improved: "Coached [number] senior engineers through owning their first cross-team designs; [number] now lead design reviews for their own areas"
+    reason: "Shows mentoring as growing technical leaders, with a result you can check, and doesn't imply you were anyone's line manager."
+  - weak: "Took part in architecture discussions with other teams"
+    improved: "Proposed and got sign-off on [technical standard] across [scope], replacing [number] incompatible approaches and cutting [defect escape or lead time] by [X]"
+    reason: "Turns attendance into a decision you owned, names what it replaced, and ties it to a measure a hiring manager can ask about."
+
+customFaqs:
+  - question: "How is a staff software engineer resume different from a senior engineer or engineering manager resume?"
+    answer: "A senior engineer resume shows strong delivery inside a team: features shipped, systems built, incidents fixed. A staff resume shows decisions that crossed teams, such as the architecture you set, the migration you sequenced and the engineers you grew into technical leaders. An engineering manager resume adds formal people management like hiring, performance reviews and direct reports. If you've never held those, keep your staff resume on the individual-contributor side."
+  - question: "How do I show influence without authority on a staff engineer resume?"
+    answer: "Write the decision and who adopted it. \"Wrote the design doc that four teams agreed to\" or \"built a service template nine teams now use\" shows influence without a reporting line. Add what changed after adoption, because influence that moved nothing is hard to defend in an interview."
+  - question: "What is the difference between senior and staff engineer resume bullets?"
+    answer: "A senior bullet shows what you built and how well it works. A staff bullet about the same project shows the decision behind it, the teams it touched and what you protected along the way, such as an SLO held through a migration. The rewrites above show the same project written both ways."
+  - question: "Should a staff engineer resume be one or two pages?"
+    answer: "Two pages is normal at staff level, provided the second page earns its space with cross-team work rather than old feature lists. Cut early-career bullets to one or two lines each. If everything important fits on one page, one page is fine."
+  - question: "How much coding detail belongs on a staff software engineer resume?"
+    answer: "Enough to show you still build: name the languages and systems per role, and keep one or two bullets on hands-on work. Most of the space should go to design, sequencing and cross-team outcomes, since that's what separates staff from senior. Leave out framework lists you couldn't discuss in a system design interview."
+  - question: "Am I targeting the right level for staff software engineer roles?"
+    answer: "Check your last two years against what the staff postings on this page ask for: architecture decisions beyond your team, mentoring engineers toward technical leadership, and, in one of them, aligning teams that don't normally work together. If most of your strongest bullets stay inside one team, senior roles may fit better for now. Companies draw the line differently, so read each posting's scope rather than relying on the title alone."
+  - question: "Does solutions architect experience count as staff-level on a resume?"
+    answer: "It can, if your bullets show engineering decisions you owned and systems that stayed in production. Architecture work that stopped at the proposal stage reads as advisory. Translate it into staff terms: what you designed, which teams built on it, and what it changed."
+
+postingEvidence:
+  asOf: "2026-09"
+  postings:
+    - employer: Deliveroo
+      title: "Staff Software Engineer - Full-Stack"
+      location: London
+      asks: "Acts as a technical authority who aligns non-adjacent teams on architecture, mentors engineers and works through ambiguity."
+      skills:
+        - Architecture
+        - Cross-team alignment
+        - Mentoring
+        - Ambiguity
+    - employer: Axon
+      title: "Staff Software Engineer"
+      location: London
+      asks: "Owns architecture and system design for distributed systems, and mentors engineers across teams to grow technical leaders."
+      skills:
+        - Architecture
+        - System design
+        - Distributed systems
+        - Mentoring
+        - Java / Go / C# / Python
+        - Relational + NoSQL databases
+    - employer: Anthropic
+      title: "Staff Software Engineer, Infrastructure (Distributed Systems)"
+      location: London
+      asks: "Builds and runs distributed-systems infrastructure, covering Kubernetes, data pipelines, observability and reliability."
+      skills:
+        - Distributed systems
+        - Infrastructure
+        - Kubernetes
+        - Data pipelines
+        - Observability
+        - Reliability
+
+resume:
+  template: modern
+  contact:
+    name: Hannah Marsh
+    title: Staff Software Engineer
+    email: hannah.marsh@email.com
+    phone: "07700 900 482"
+    location: London, UK
+    linkedin: linkedin.com/in/hannahmarsh
+
+  summary: >
+    Staff software engineer with 11 years building distributed systems in Go and Java.
+    Sets architecture across four product teams at a logistics marketplace, led the
+    retirement of a legacy dispatch monolith without downtime, and mentors senior
+    engineers into technical leads. Hands-on in design reviews and production code.
+
+  experience:
+    - company: Fernhill Logistics
+      title: Staff Software Engineer
+      dates: Mar 2022 - Present
+      location: London, UK
+      bullets:
+        - Designed the move from a shared order database to event-driven services across 4 teams (orders, pricing, dispatch, billing), cutting p99 checkout latency from 1.8s to 420ms at 30M events a day
+        - Wrote the design doc that settled which team owns delivery state, ending a year of duplicated fixes between dispatch and billing; both teams shipped on the agreed contract within one quarter
+        - Sequenced the retirement of the PHP dispatch monolith across 11 dependent services over 14 months, with no customer-facing downtime and the 99.9% availability SLO held throughout
+        - Built a shared Go service template with logging, metrics and deploy config, adopted by 9 of 12 backend teams; new services now reach production in 2 days instead of 3 weeks
+        - Diagnosed a recurring class of cascading timeouts to inconsistent retry logic and set a company-wide retry and timeout standard; incidents of that class fell from 7 a quarter to 1
+        - Mentored 3 senior engineers through owning cross-team designs; 2 now run design reviews for their own areas (no line reports)
+
+    - company: Quayside Payments
+      title: Senior Software Engineer
+      dates: Jun 2018 - Feb 2022
+      location: London, UK
+      bullets:
+        - Built an idempotent payment retry service in Java handling 4M transactions a day, cutting failed payouts from 0.8% to 0.1%
+        - Moved nightly reconciliation batch jobs to a streaming data pipeline, bringing settlement reports from next-day to within 15 minutes
+        - Ran the backend design review for the payments group, reviewing 40+ designs across 5 teams
+        - Led the team's move to Kubernetes, including on-call runbooks and alerting on the new cluster
+
+    - company: Brackenbury Software
+      title: Software Engineer
+      dates: Sep 2014 - May 2018
+      location: Manchester, UK
+      bullets:
+        - Built Python APIs and PostgreSQL schemas for a B2B scheduling product used by 1,200 customer sites
+        - Cut the main search endpoint from 900ms to 150ms by reworking indexes and query plans
+        - Wrote the integration test suite that gated every release, catching regressions before customer rollout
+
+  education:
+    - school: University of Leeds
+      degree: BSc Computer Science
+      year: "2014"
+
+  skills:
+    - Go
+    - Java
+    - Python
+    - Distributed Systems
+    - System Design
+    - Event-Driven Architecture
+    - Kubernetes
+    - PostgreSQL
+    - Cassandra
+    - Data Pipelines
+    - Observability
+    - Reliability Engineering
+
+bulletBank:
+  - category: Architecture & Technical Decisions
+    bullets:
+      - "Led [architecture change] across [teams/services], improving [reliability, latency or cost] at [system scale]"
+      - "Authored and secured agreement on [technical decision], resolving [cross-team constraint] and enabling [delivery outcome]"
+
+  - category: Migrations & Shared Systems
+    bullets:
+      - "Sequenced [legacy migration] across [dependencies], retiring [systems] while maintaining [compatibility/SLO]"
+      - "Built [shared capability], adopted by [teams/products], reducing [duplicated engineering effort]"
+
+  - category: Reliability & Standards
+    bullets:
+      - "Diagnosed [systemic incident class] and changed [architecture/operating practice], reducing [recurrence or recovery time]"
+      - "Established [technical standard], improving [measured adoption, defect escape or lead time] across [scope]"
+
+  - category: Mentoring & Ambiguity
+    bullets:
+      - "Mentored [engineers/technical leads] through [design ownership], resulting in [documented independent ownership or progression]"
+      - "Reframed [ambiguous business problem] into [technical program], avoiding [verified wasted work] or enabling [business capability]"
+
+relatedJobs:
+  - software-engineer
+  - forward-deployed-engineer
+  - project-manager

@@ -178,6 +178,14 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     metaDescription: 'Forward deployed engineer resume example that takes a customer problem from discovery to production, with skills and keywords from real FDE postings.',
     lastmod: '2026-09-25',
   },
+  {
+    slug: 'staff-software-engineer',
+    title: 'Staff Software Engineer',
+    category: 'tech',
+    priority: 0.7,
+    metaDescription: 'Staff software engineer resume example showing cross-team architecture, a migration and mentoring, plus senior vs staff bullet rewrites. Edit it free.',
+    lastmod: '2026-09-25',
+  },
 
   // Tier 6: Creative
   {
