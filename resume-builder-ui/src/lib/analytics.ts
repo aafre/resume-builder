@@ -320,3 +320,11 @@ export function trackJobClick(props: {
 }): void {
   run((ph) => ph.capture('job_click', props));
 }
+
+/** A job search came back stale or refreshing because the job feeds are out of quota or failing. */
+export function trackJobQuotaExhausted(props: {
+  context: JobContext;
+  status: 'stale' | 'refreshing';
+}): void {
+  run((ph) => ph.capture('job_quota_exhausted', props));
+}

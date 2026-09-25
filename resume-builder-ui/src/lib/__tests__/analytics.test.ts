@@ -108,8 +108,8 @@ describe('analytics', () => {
       window.requestIdleCallback = originalRIC;
     });
 
-    it('trackJobImpression and trackJobClick capture job events', async () => {
-      const { trackJobImpression, trackJobClick, initAnalytics } = await import('../analytics');
+    it('job listing events capture with their properties', async () => {
+      const { trackJobImpression, trackJobClick, trackJobQuotaExhausted, initAnalytics } = await import('../analytics');
 
       const originalRIC = window.requestIdleCallback;
       window.requestIdleCallback = vi.fn((cb: any) => { cb(); return 1; }) as any;
@@ -118,6 +118,7 @@ describe('analytics', () => {
 
       trackJobImpression({ context: 'post_download', count: 3, feed_mix: { adzuna: 3 } });
       trackJobClick({ context: 'jobs_page', feed: 'adzuna', position: 2, match_score: 71.5 });
+      trackJobQuotaExhausted({ context: 'jobs_page', status: 'stale' });
 
       expect(mockCapture).toHaveBeenCalledWith('job_impression', {
         context: 'post_download',
@@ -129,6 +130,10 @@ describe('analytics', () => {
         feed: 'adzuna',
         position: 2,
         match_score: 71.5,
+      });
+      expect(mockCapture).toHaveBeenCalledWith('job_quota_exhausted', {
+        context: 'jobs_page',
+        status: 'stale',
       });
 
       window.requestIdleCallback = originalRIC;
