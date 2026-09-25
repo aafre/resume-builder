@@ -5,6 +5,7 @@ Outbound job feed HTTP is always faked: `requests.get` is patched with FakeAdzun
 which answers from canned results keyed by the `what` query param.
 """
 import json
+from urllib.parse import urlencode
 import os
 from datetime import datetime, timedelta, timezone
 from unittest.mock import patch
@@ -45,7 +46,8 @@ class FakeAdzuna:
         results = self.by_query.get((params or {}).get("what"), [])
         resp = requests.Response()
         resp.status_code = self.status
-        resp.url = url
+        # Like requests: the full URL, credentials and all
+        resp.url = f"{url}?{urlencode(params or {})}"
         resp._content = json.dumps({"count": len(results) * 10, "results": results}).encode()
         return resp
 
@@ -350,3 +352,18 @@ def test_job_caches_prune_expired_and_stay_bounded(jobs_client, monkeypatch):
         post_search(client, query="nurse", location="Fresh Town")
     assert len(flask_app._adzuna_cache) == 1
     assert len(flask_app._saved_job_results) == 1
+
+
+@pytest.mark.parametrize("failure", ["http", "network"])
+def test_feed_errors_never_log_credentials(jobs_client, caplog, failure):
+    client, _ = jobs_client
+    if failure == "http":
+        fake = FakeAdzuna(NURSES, status=500)
+    else:
+        def fake(url, params=None, timeout=None):
+            raise requests.ConnectionError(f"Max retries exceeded with url: {url}?{urlencode(params)}")
+    with patch("requests.get", fake):
+        post_search(client, query="nurse")
+    assert "adzuna" in caplog.text.lower()
+    assert "test-key" not in caplog.text
+    assert "test-id" not in caplog.text

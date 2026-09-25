@@ -20,6 +20,7 @@ salary_max, salary_is_predicted, url, created, feed, plus the internal
 
 import logging
 import os
+import re
 from datetime import datetime, timezone
 from typing import Protocol
 from urllib.parse import urlencode
@@ -64,6 +65,14 @@ def is_exhausted(feed_name: str) -> bool:
 def mark_exhausted(feed_name: str) -> None:
     _exhausted_on[feed_name] = _utc_today()
     logging.warning(f"job_quota_exhausted feed={feed_name}: skipped until next UTC day")
+
+
+_CREDENTIAL_PARAMS = re.compile(r"(app_id|app_key|api_key|key)=[^&\s'\"]+", re.IGNORECASE)
+
+
+def _redact(message: object) -> str:
+    """Error text from requests carries the full URL; strip credentials before it reaches logs."""
+    return _CREDENTIAL_PARAMS.sub(lambda m: f"{m.group(1)}=[redacted]", str(message))
 
 
 ADZUNA_COUNTRIES = frozenset({
@@ -150,7 +159,8 @@ class AdzunaFeed:
                 timeout=5,
             )
         except http_requests.RequestException as e:
-            raise FeedError(f"adzuna request failed: {e}") from e
+            # from None: the chained exception's message holds the unredacted URL
+            raise FeedError(f"adzuna request failed: {_redact(e)}") from None
 
         # ponytail: Adzuna documents no quota error code; 429 is the standard one.
         if resp.status_code == 429:
@@ -159,7 +169,7 @@ class AdzunaFeed:
             resp.raise_for_status()
             raw = resp.json()
         except (http_requests.RequestException, ValueError) as e:
-            raise FeedError(f"adzuna error: {e}") from e
+            raise FeedError(f"adzuna error: {_redact(e)}") from None
 
         listings = [
             {
