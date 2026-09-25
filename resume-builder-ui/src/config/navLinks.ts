@@ -1,5 +1,3 @@
-import { affiliateConfig } from "./affiliate";
-
 export interface NavLink {
   path: string;
   label: string;
@@ -17,7 +15,8 @@ export interface NavLink {
  * before committing to the funnel. Only account-scoped destinations branch on
  * authentication.
  */
-export function getNavLinks(isAuthenticated: boolean): NavLink[] {
+/** jobsAvailable: from useJobsAvailable() — master flag on and the visitor's country is served. */
+export function getNavLinks(isAuthenticated: boolean, jobsAvailable: boolean): NavLink[] {
   return [
     ...(isAuthenticated
       ? [{ path: "/my-resumes", label: "My Resumes", countBadge: true, id: "tour-my-resumes-link" }]
@@ -25,8 +24,6 @@ export function getNavLinks(isAuthenticated: boolean): NavLink[] {
     { path: "/templates", label: "Templates" },
     { path: "/examples", label: "Examples" },
     { path: "/resume-keyword-scanner", label: "ATS Scanner" },
-    ...(isAuthenticated && affiliateConfig.jobSearch.enabled
-      ? [{ path: "/jobs", label: "Jobs" }]
-      : []),
+    ...(jobsAvailable ? [{ path: "/jobs", label: "Jobs" }] : []),
   ];
 }

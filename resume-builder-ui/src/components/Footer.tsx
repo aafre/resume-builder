@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaShieldAlt, FaLock, FaStar } from "react-icons/fa";
-import { affiliateConfig } from "../config/affiliate";
+import { useJobsAvailable } from "../hooks/useJobsAvailable";
 
 // Footer link definitions for maintainability
 const footerLinks = {
@@ -30,9 +30,7 @@ const footerLinks = {
   resources: [
     { path: '/resume-keywords', label: 'Resume Keywords' },
     { path: '/resume-keyword-scanner', label: 'ATS Keyword Scanner' },
-    ...(affiliateConfig.jobSearch.enabled
-      ? [{ path: '/jobs', label: 'Job Search' }]
-      : []),
+    { path: '/jobs', label: 'Job Search' },
     { path: '/blog', label: 'Career Blog' },
     { path: '/blog/ai-resume-prompts-hub', label: 'AI Resume Prompts' },
     { path: '/blog/ats-resume-optimization', label: 'ATS Optimization Guide' },
@@ -95,6 +93,7 @@ function FooterColumn({
 }
 
 export default function Footer() {
+  const jobsAvailable = useJobsAvailable() === true;
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -114,7 +113,11 @@ export default function Footer() {
           <FooterColumn title="Resume Builder" links={footerLinks.resumeBuilder} scrollToTop={scrollToTop} />
           <FooterColumn title="Resume Templates" links={footerLinks.resumeTemplates} scrollToTop={scrollToTop} />
           <FooterColumn title="Resume Examples" links={footerLinks.resumeExamples} scrollToTop={scrollToTop} />
-          <FooterColumn title="Resources" links={footerLinks.resources} scrollToTop={scrollToTop} />
+          <FooterColumn
+            title="Resources"
+            links={jobsAvailable ? footerLinks.resources : footerLinks.resources.filter((l) => l.path !== '/jobs')}
+            scrollToTop={scrollToTop}
+          />
           <FooterColumn title="Company" links={footerLinks.company} scrollToTop={scrollToTop} />
         </div>
 
