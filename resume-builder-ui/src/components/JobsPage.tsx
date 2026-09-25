@@ -4,12 +4,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Briefcase, MapPin, Search, ExternalLink, ChevronDown, Clock, FileText, BookOpen, Target, Upload, Sparkles, Info, X } from 'lucide-react';
+import { Briefcase, MapPin, Search, ChevronDown, FileText, BookOpen, Target, Upload, Sparkles, Info, X } from 'lucide-react';
 import { searchJobs, suggestRoles, AdzunaJob } from '../services/jobs';
 import type { RoleSuggestion } from '../services/jobs';
 import { normalizeJobTitle } from '../utils/jobTitleNormalizer';
 import { detectCountryCode, sanitizeLocationForSearch } from '../utils/countryDetector';
-import { formatSalary } from '../utils/currencyFormat';
 import { getSalaryFloor } from '../utils/salaryFloor';
 import { extractSearchParamsFromYAML } from '../utils/resumeDataExtractor';
 import type { SeniorityLevel } from '../utils/resumeDataExtractor';
@@ -25,6 +24,7 @@ import FAQSection from './shared/FAQSection';
 import RevealSection from './shared/RevealSection';
 import JobFilters, { FilterState, DEFAULT_FILTERS } from './jobs/JobFilters';
 import FilterChips from './jobs/FilterChips';
+import JobCard, { useJobImpression } from './jobs/JobCard';
 import type { ActiveFilter } from './jobs/FilterChips';
 
 interface ResumeContext {
@@ -72,25 +72,6 @@ const POPULAR_SEARCHES = [
   'Customer Service',
 ];
 
-const timeAgo = (dateStr: string): string => {
-  if (!dateStr) return '';
-  const now = Date.now();
-  const date = new Date(dateStr).getTime();
-  const diffMs = now - date;
-  if (diffMs < 0) return '';
-
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-  if (diffDays === 0) return 'Today';
-  if (diffDays === 1) return '1 day ago';
-  if (diffDays < 7) return `${diffDays} days ago`;
-  const diffWeeks = Math.floor(diffDays / 7);
-  if (diffWeeks === 1) return '1 week ago';
-  if (diffWeeks < 5) return `${diffWeeks} weeks ago`;
-  const diffMonths = Math.floor(diffDays / 30);
-  if (diffMonths === 1) return '1 month ago';
-  return `${diffMonths} months ago`;
-};
-
 export default function JobsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [titleInput, setTitleInput] = useState(searchParams.get('q') || '');
@@ -129,6 +110,7 @@ export default function JobsPage() {
   // Persistent resume context — survives across manual searches and drives UI visibility
   const [resumeContext, setResumeContext] = useState<ResumeContext | null>(null);
   const { session } = useAuth();
+  useJobImpression(jobs, 'jobs_page', 10);
   const { parseResume, parsing: parserBusy, progress: parserProgress, progressMessage } = useResumeParser({ source: 'job_search' });
 
   const schemas = usePageSchema({
@@ -712,73 +694,19 @@ export default function JobsPage() {
         {/* Job Cards Grid */}
         {!loading && jobs.length > 0 && (
           <>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {jobs.slice(0, visibleCount).map((job, i) => {
-                const salary = formatSalary(job.salary_min, job.salary_max, searchedCountry);
-                const posted = timeAgo(job.created);
-                const initial = (job.company || job.title || '?')[0].toUpperCase();
-                return (
-                  <a
-                    key={i}
-                    href={job.url}
-                    target="_blank"
-                    rel="noopener noreferrer nofollow"
-                    onClick={() => console.log('[affiliate] click: job-search', { title: job.title, company: job.company })}
-                    className="bg-white rounded-2xl card-gradient-border shadow-premium shadow-premium-hover hover:-translate-y-1 transition-all duration-300 overflow-hidden group flex flex-col"
-                  >
-                    <div className="p-5 flex flex-col flex-1">
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="w-9 h-9 rounded-xl bg-chalk-dark flex items-center justify-center flex-shrink-0">
-                          <span className="text-ink text-sm font-bold">{initial}</span>
-                        </div>
-                        <div className="min-w-0">
-                          <h3 className="text-base font-display font-bold text-ink group-hover:text-accent-text transition-colors line-clamp-2">
-                            {job.title}
-                          </h3>
-                        </div>
-                      </div>
-                      <p className="text-sm text-ink/60 mb-2">
-                        {[job.company, job.location].filter(Boolean).join(' · ')}
-                      </p>
-                      <div className="flex items-center gap-2 flex-wrap mb-3">
-                        {job.match_score != null && resumeContext && (
-                          <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${
-                            job.match_score >= 70
-                              ? 'bg-accent/10 text-accent-text'
-                              : job.match_score >= 40
-                                ? 'bg-amber-50 text-amber-600'
-                                : 'bg-chalk-dark text-ink/60'
-                          }`}>
-                            {Math.round(job.match_score)}% match
-                          </span>
-                        )}
-                        {salary && (
-                          <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${
-                            job.salary_is_predicted
-                              ? 'bg-amber-50 text-amber-600'
-                              : 'bg-accent/10 text-accent-text'
-                          }`}>
-                            {salary}{job.salary_is_predicted ? ' est.' : ''}
-                          </span>
-                        )}
-                        {posted && (
-                          <span className="text-xs text-ink/60 flex items-center gap-1">
-                            <Clock className="w-3 h-3" />
-                            {posted}
-                          </span>
-                        )}
-                      </div>
-                      <div className="mt-auto pt-2">
-                        <span className="flex items-center justify-center gap-2 w-full py-2.5 bg-chalk-dark text-ink rounded-xl text-sm font-semibold group-hover:bg-accent group-hover:text-white transition-colors">
-                          Apply Now
-                          <ExternalLink className="w-3.5 h-3.5" />
-                        </span>
-                      </div>
-                    </div>
-                  </a>
-                );
-              })}
-            </div>
+            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {jobs.slice(0, visibleCount).map((job, i) => (
+                <li key={job.url || i} className="min-w-0">
+                  <JobCard
+                    job={job}
+                    position={i + 1}
+                    context="jobs_page"
+                    country={searchedCountry}
+                    showMatch={!!resumeContext}
+                  />
+                </li>
+              ))}
+            </ul>
 
             {/* Load More */}
             {visibleCount < jobs.length && (

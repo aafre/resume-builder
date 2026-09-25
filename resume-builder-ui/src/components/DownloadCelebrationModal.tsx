@@ -5,7 +5,7 @@ import { affiliateConfig, hasAnyAffiliate } from "../config/affiliate";
 import { ContactInfo, Section } from "../types";
 import { extractJobSearchParams, JobSearchParams } from "../utils/resumeDataExtractor";
 import { searchJobs, AdzunaJob } from "../services/jobs";
-import { formatSalary } from "../utils/currencyFormat";
+import JobCard, { useJobImpression } from "./jobs/JobCard";
 import { getSalaryFloor } from "../utils/salaryFloor";
 import { ensureTrustpilotLoaded } from "../utils/trustpilot";
 
@@ -33,6 +33,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
   const [jobs, setJobs] = useState<AdzunaJob[]>([]);
   const [jobsLoading, setJobsLoading] = useState(false);
   const [jobSearchParams, setJobSearchParams] = useState<JobSearchParams | null>(null);
+  useJobImpression(jobs, "post_download");
 
 
   // Fetch jobs when modal opens
@@ -251,39 +252,19 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
 
                   {/* Job cards */}
                   {!jobsLoading && jobs.length > 0 && (
-                    <div className="space-y-2">
-                      {jobs.map((job, i) => {
-                        const salary = formatSalary(job.salary_min, job.salary_max, jobSearchParams?.country);
-                        return (
-                          <a
-                            key={i}
-                            href={job.url}
-                            target="_blank"
-                            rel="noopener noreferrer nofollow"
-                            className="flex items-center gap-3 bg-chalk-dark border border-black/[0.06] rounded-xl p-3 cursor-pointer hover:bg-white hover:shadow-lg hover:border-accent/20 hover:-translate-y-0.5 transition-all duration-200"
-                          >
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-semibold text-ink truncate">
-                                {job.title}
-                              </p>
-                              <p className="text-xs text-ink/60 truncate">
-                                {[job.company, job.location]
-                                  .filter(Boolean)
-                                  .join(" · ")}
-                              </p>
-                              {salary && (
-                                <p className={`text-xs font-medium mt-0.5 ${
-                                  job.salary_is_predicted ? 'text-amber-600' : 'text-emerald-600'
-                                }`}>
-                                  {salary}{job.salary_is_predicted ? ' (est.)' : ''}
-                                </p>
-                              )}
-                            </div>
-                            <ExternalLink className="w-4 h-4 text-ink/60 flex-shrink-0" />
-                          </a>
-                        );
-                      })}
-                    </div>
+                    <ul className="space-y-2">
+                      {jobs.map((job, i) => (
+                        <li key={job.url || i}>
+                          <JobCard
+                            job={job}
+                            position={i + 1}
+                            context="post_download"
+                            country={jobSearchParams?.country}
+                            compact
+                          />
+                        </li>
+                      ))}
+                    </ul>
                   )}
                 </div>
               )}

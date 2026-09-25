@@ -12,6 +12,8 @@ export interface AdzunaJob {
   url: string;
   created: string;
   match_score?: number;
+  /** Job feed the listing came from, e.g. "adzuna". */
+  feed: string;
 }
 
 export interface JobSearchResult {
