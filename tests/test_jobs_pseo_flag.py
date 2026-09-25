@@ -86,3 +86,17 @@ def test_humans_get_app_shell_either_way(pseo_app, flag, path):
     with patch.dict(os.environ, env(flag)):
         resp = pseo_app.get(path, headers=HUMAN)
     assert resp.get_data(as_text=True) == SHELL
+
+
+@pytest.mark.parametrize("flag", ["false", "true"])
+@pytest.mark.parametrize("headers", [CRAWLER, HUMAN])
+@pytest.mark.parametrize("path", ["/jobs", "/jobs/software-engineer/london"])
+def test_app_shell_on_jobs_routes_is_noindex_by_header(pseo_app, flag, headers, path):
+    # The shell's own <meta robots> says index; the header is what non-JS crawlers see.
+    with patch.dict(os.environ, env(flag)):
+        resp = pseo_app.get(path, headers=headers)
+    if resp.get_data(as_text=True) == SHELL:
+        assert resp.headers.get("X-Robots-Tag") == "noindex, follow"
+    else:  # flag on + crawler: server-rendered page, unchanged
+        assert flag == "true" and headers is CRAWLER
+        assert "X-Robots-Tag" not in resp.headers

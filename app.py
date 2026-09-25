@@ -25,6 +25,7 @@ from dotenv import load_dotenv
 from flask import (
     Flask,
     jsonify,
+    make_response,
     redirect,
     request,
     send_file,
@@ -1620,6 +1621,19 @@ def _get_prerendered_path(route_path: str) -> str | None:
 # =============================================================================
 
 
+def _jobs_shell(dev_body: str, status: int = 200):
+    """
+    SPA shell for /jobs*. The shell's own <meta robots> says index, so the
+    noindex travels in the header, which non-JS crawlers also see (ADR-0001).
+    """
+    if FLASK_ENV == "production" and app.static_folder:
+        resp = make_response(send_from_directory(app.static_folder, "index.html"), status)
+    else:
+        resp = make_response(dev_body, status)
+    resp.headers["X-Robots-Tag"] = "noindex, follow"
+    return resp
+
+
 @app.route("/jobs/<path:subpath>", methods=["GET"])
 def jobs_pseo(subpath):
     """
@@ -1630,34 +1644,24 @@ def jobs_pseo(subpath):
 
     # Only serve SSR HTML to bots — humans get the React SPA
     if not _is_bot(user_agent):
-        if FLASK_ENV == "production" and app.static_folder:
-            return send_from_directory(app.static_folder, "index.html")
-        # Dev mode: let Vite handle it
-        return "<!-- dev mode: use Vite -->", 200
+        return _jobs_shell("<!-- dev mode: use Vite -->")
 
     renderer = _get_pseo_renderer()
     if not renderer:
-        # pSEO not configured — serve SPA shell
-        if FLASK_ENV == "production" and app.static_folder:
-            return send_from_directory(app.static_folder, "index.html")
-        return "<!-- pSEO not configured -->", 200
+        return _jobs_shell("<!-- pSEO not configured -->")
 
     segments = [s for s in subpath.strip("/").split("/") if s]
     page_type, params = renderer.resolve_url(segments)
 
     if page_type is None:
-        # Invalid URL — return 404 with SPA shell so React can show 404 page
-        if FLASK_ENV == "production" and app.static_folder:
-            return send_from_directory(app.static_folder, "index.html"), 404
-        return "<!-- 404 -->", 404
+        # Invalid URL — 404 with SPA shell so React can show its 404 page
+        return _jobs_shell("<!-- 404 -->", 404)
 
     page_num = request.args.get("page", 1, type=int)
     html = renderer.get_page(page_type, page=page_num, **params)
 
     if html is None:
-        if FLASK_ENV == "production" and app.static_folder:
-            return send_from_directory(app.static_folder, "index.html"), 404
-        return "<!-- no data -->", 404
+        return _jobs_shell("<!-- no data -->", 404)
 
     return html, 200, {"Content-Type": "text/html; charset=utf-8"}
 
@@ -1667,23 +1671,17 @@ def jobs_main():
     """Serve /jobs main hub page."""
     user_agent = request.headers.get("User-Agent", "")
     if not _is_bot(user_agent):
-        if FLASK_ENV == "production" and app.static_folder:
-            return send_from_directory(app.static_folder, "index.html")
-        return "<!-- dev mode: use Vite -->", 200
+        return _jobs_shell("<!-- dev mode: use Vite -->")
 
     renderer = _get_pseo_renderer()
     if not renderer:
-        if FLASK_ENV == "production" and app.static_folder:
-            return send_from_directory(app.static_folder, "index.html")
-        return "<!-- pSEO not configured -->", 200
+        return _jobs_shell("<!-- pSEO not configured -->")
 
     html = renderer.get_page(PageType.MAIN_HUB)
     if html:
         return html, 200, {"Content-Type": "text/html; charset=utf-8"}
 
-    if FLASK_ENV == "production" and app.static_folder:
-        return send_from_directory(app.static_folder, "index.html")
-    return "<!-- no data -->", 200
+    return _jobs_shell("<!-- no data -->")
 
 
 @app.route("/api/jobs/page/<path:subpath>", methods=["GET"])
