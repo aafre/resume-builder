@@ -5,7 +5,7 @@ import { affiliateConfig, hasAnyAffiliate } from "../config/affiliate";
 import { ContactInfo, Section } from "../types";
 import { extractJobSearchParams, JobSearchParams } from "../utils/resumeDataExtractor";
 import { searchJobs, AdzunaJob } from "../services/jobs";
-import JobCard, { useJobImpression } from "./jobs/JobCard";
+import JobCard, { StaleLabel, reportJobStatus, useJobImpression } from "./jobs/JobCard";
 import { getSalaryFloor } from "../utils/salaryFloor";
 import { ensureTrustpilotLoaded } from "../utils/trustpilot";
 
@@ -31,6 +31,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
   const primaryButtonRef = useRef<HTMLButtonElement>(null);
 
   const [jobs, setJobs] = useState<AdzunaJob[]>([]);
+  const [staleSince, setStaleSince] = useState<string | undefined>();
   const [jobsLoading, setJobsLoading] = useState(false);
   const [jobSearchParams, setJobSearchParams] = useState<JobSearchParams | null>(null);
   useJobImpression(jobs, "post_download");
@@ -55,7 +56,12 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
       maxDaysOld: 30,
       salaryMin: getSalaryFloor(params.country, params.seniorityLevel),
     })
-      .then((result) => setJobs(result.jobs))
+      .then((result) => {
+        reportJobStatus(result, "post_download");
+        // refreshing has no jobs, so the section stays hidden
+        setJobs(result.jobs);
+        setStaleSince(result.status === "stale" ? result.fetchedAt : undefined);
+      })
       .catch(() => {
         // Silently fail — hide section on error
       })
@@ -229,22 +235,28 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                 <div className="mt-4">
                   {/* Section header */}
                   {jobSearchParams && (
-                    <p className="text-xs font-medium text-ink/60 mb-2">
-                      Jobs matching &ldquo;{jobSearchParams.displayTitle}&rdquo;
-                      {jobSearchParams.location && ` near ${jobSearchParams.location}`}
-                    </p>
+                    <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 mb-2">
+                      <p className="text-xs font-medium text-ink/60">
+                        Jobs matching &ldquo;{jobSearchParams.displayTitle}&rdquo;
+                        {jobSearchParams.location && ` near ${jobSearchParams.location}`}
+                      </p>
+                      {!jobsLoading && <StaleLabel fetchedAt={staleSince} />}
+                    </div>
                   )}
 
                   {/* Loading skeleton */}
                   {jobsLoading && (
-                    <div className="space-y-2">
+                    <div className="space-y-2" aria-busy="true" aria-label="Loading matching jobs">
                       {[0, 1, 2].map((i) => (
                         <div
                           key={i}
-                          className="bg-chalk-dark border border-black/[0.06] rounded-xl p-3 animate-pulse"
+                          className="bg-white border border-black/[0.08] rounded-xl p-4 flex flex-col gap-1 animate-pulse"
                         >
-                          <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
-                          <div className="h-3 bg-gray-200 rounded w-1/2" />
+                          {/* mirrors the compact JobCard: title, meta, meta, source row */}
+                          <div className="h-6 flex items-center"><div className="h-4 bg-ink/[0.08] rounded w-3/4" /></div>
+                          <div className="h-5 flex items-center"><div className="h-3 bg-ink/[0.06] rounded w-1/2" /></div>
+                          <div className="h-5 flex items-center"><div className="h-3 bg-ink/[0.06] rounded w-1/3" /></div>
+                          <div className="h-5 pt-1 flex items-center"><div className="h-2.5 bg-ink/[0.06] rounded w-1/4" /></div>
                         </div>
                       ))}
                     </div>

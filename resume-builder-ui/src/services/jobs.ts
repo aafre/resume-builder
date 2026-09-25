@@ -16,11 +16,21 @@ export interface AdzunaJob {
   feed: string;
 }
 
+/**
+ * fresh: live results. stale: every feed is out of quota or failing, these are
+ * the last saved results (fetchedAt says when). refreshing: nothing saved
+ * either; searchUrl is the feed's own search page for the same query.
+ */
+export type JobResultStatus = 'fresh' | 'stale' | 'refreshing';
+
 export interface JobSearchResult {
   count: number;
   jobs: AdzunaJob[];
   ai_terms_used?: string[];
   total_available?: number;
+  status?: JobResultStatus;
+  fetchedAt?: string;
+  searchUrl?: string;
 }
 
 export interface RoleSuggestion {

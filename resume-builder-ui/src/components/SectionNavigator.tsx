@@ -706,6 +706,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                         skills: params.skills,
                         seniorityLevel: params.seniorityLevel,
                         yearsExperience: params.yearsExperience,
+                        returnTo: window.location.pathname,
                       }));
                     } catch { /* ignore */ }
                   }
@@ -732,6 +733,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                         skills: params.skills,
                         seniorityLevel: params.seniorityLevel,
                         yearsExperience: params.yearsExperience,
+                        returnTo: window.location.pathname,
                       }));
                     } catch { /* ignore */ }
                   }

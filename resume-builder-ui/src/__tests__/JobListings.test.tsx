@@ -15,10 +15,12 @@ vi.mock('../services/jobs', async (orig) => ({
 
 const trackJobImpression = vi.fn();
 const trackJobClick = vi.fn();
+const trackJobQuotaExhausted = vi.fn();
 vi.mock('../lib/analytics', async (orig) => ({
   ...(await orig<typeof import('../lib/analytics')>()),
   trackJobImpression: (p: unknown) => trackJobImpression(p),
   trackJobClick: (p: unknown) => trackJobClick(p),
+  trackJobQuotaExhausted: (p: unknown) => trackJobQuotaExhausted(p),
 }));
 
 vi.mock('../config/affiliate', () => ({
@@ -94,6 +96,8 @@ beforeEach(() => {
   searchJobs.mockReset();
   trackJobImpression.mockReset();
   trackJobClick.mockReset();
+  trackJobQuotaExhausted.mockReset();
+  sessionStorage.clear();
 });
 
 describe.each([
@@ -146,4 +150,72 @@ it('/jobs impression counts only the first page of cards shown', async () => {
   await screen.findByText('Staff Nurse 10');
   await waitFor(() => expect(trackJobImpression).toHaveBeenCalledTimes(1));
   expect(trackJobImpression.mock.calls[0][0]).toMatchObject({ count: 10, feed_mix: { adzuna: 10 } });
+});
+
+const hoursAgo = (h: number) => new Date(Date.now() - h * 3_600_000).toISOString();
+const stale = (jobs: AdzunaJob[]): JobSearchResult => ({ ...result(jobs), status: 'stale', fetchedAt: hoursAgo(5) });
+const refreshing: JobSearchResult = {
+  count: 0,
+  jobs: [],
+  status: 'refreshing',
+  searchUrl: 'https://www.adzuna.co.uk/search?q=Registered+Nurse&w=Leeds',
+};
+
+describe.each([
+  ['post_download', renderModal],
+  ['jobs_page', () => renderJobsPage()],
+] as const)('degraded job results (%s)', (context, renderSurface) => {
+  it('labels stale results with their age and reports the quota event', async () => {
+    searchJobs.mockResolvedValue(stale([job(1)]));
+    renderSurface();
+
+    expect(await screen.findByText('Updated 5h ago')).toBeInTheDocument();
+    expect(screen.getByText('Staff Nurse 1')).toBeInTheDocument();
+    expect(trackJobQuotaExhausted).toHaveBeenCalledWith({ context, status: 'stale' });
+  });
+
+  it('reports the quota event on refreshing', async () => {
+    searchJobs.mockResolvedValue(refreshing);
+    renderSurface();
+    await waitFor(() =>
+      expect(trackJobQuotaExhausted).toHaveBeenCalledWith({ context, status: 'refreshing' }),
+    );
+  });
+
+  it('fresh results carry no age label and no quota event', async () => {
+    searchJobs.mockResolvedValue({ ...result([job(1)]), status: 'fresh' });
+    renderSurface();
+    await screen.findByText('Staff Nurse 1');
+    expect(screen.queryByText(/^Updated /)).not.toBeInTheDocument();
+    expect(trackJobQuotaExhausted).not.toHaveBeenCalled();
+  });
+});
+
+it('post-download section renders nothing when refreshing', async () => {
+  searchJobs.mockResolvedValue(refreshing);
+  renderModal();
+  await waitFor(() => expect(trackJobQuotaExhausted).toHaveBeenCalled());
+  expect(screen.queryByText(/Jobs matching/)).not.toBeInTheDocument();
+  expect(screen.queryByText(/refreshing/i)).not.toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: /adzuna/i })).not.toBeInTheDocument();
+});
+
+it('/jobs refreshing state offers the outbound search and a way back to the resume', async () => {
+  sessionStorage.setItem('jobSearchPrefill', JSON.stringify({ title: 'Registered Nurse', returnTo: '/editor/abc123' }));
+  searchJobs.mockResolvedValue(refreshing);
+  renderJobsPage('/jobs');
+
+  expect(await screen.findByRole('heading', { name: /fresh listings are refreshing/i })).toBeInTheDocument();
+  const outbound = screen.getByRole('link', { name: /search .*adzuna/i });
+  expect(outbound).toHaveAttribute('href', refreshing.searchUrl);
+  expect(outbound).toHaveAttribute('target', '_blank');
+  expect(screen.getByRole('link', { name: /tailor your resume/i })).toHaveAttribute('href', '/editor/abc123');
+  expect(screen.queryByText(/no jobs found/i)).not.toBeInTheDocument();
+  expect(screen.queryByText(/coming soon|error/i)).not.toBeInTheDocument();
+});
+
+it('/jobs refreshing without an editor to return to links to saved resumes', async () => {
+  searchJobs.mockResolvedValue(refreshing);
+  renderJobsPage();
+  expect(await screen.findByRole('link', { name: /tailor your resume/i })).toHaveAttribute('href', '/my-resumes');
 });

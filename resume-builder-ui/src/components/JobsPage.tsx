@@ -4,9 +4,9 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Briefcase, MapPin, Search, ChevronDown, FileText, BookOpen, Target, Upload, Sparkles, Info, X } from 'lucide-react';
+import { ArrowUpRight, Briefcase, MapPin, Search, ChevronDown, FileText, BookOpen, Target, Upload, Sparkles, Info, X } from 'lucide-react';
 import { searchJobs, suggestRoles, AdzunaJob } from '../services/jobs';
-import type { RoleSuggestion } from '../services/jobs';
+import type { JobResultStatus, RoleSuggestion } from '../services/jobs';
 import { normalizeJobTitle } from '../utils/jobTitleNormalizer';
 import { detectCountryCode, sanitizeLocationForSearch } from '../utils/countryDetector';
 import { getSalaryFloor } from '../utils/salaryFloor';
@@ -24,7 +24,7 @@ import FAQSection from './shared/FAQSection';
 import RevealSection from './shared/RevealSection';
 import JobFilters, { FilterState, DEFAULT_FILTERS } from './jobs/JobFilters';
 import FilterChips from './jobs/FilterChips';
-import JobCard, { useJobImpression } from './jobs/JobCard';
+import JobCard, { StaleLabel, reportJobStatus, useJobImpression } from './jobs/JobCard';
 import type { ActiveFilter } from './jobs/FilterChips';
 
 interface ResumeContext {
@@ -88,6 +88,11 @@ export default function JobsPage() {
   const [suggestions, setSuggestions] = useState<RoleSuggestion | null>(null);
   const [resumeParsing, setResumeParsing] = useState(false);
   const [aiTermsUsed, setAiTermsUsed] = useState<string[]>([]);
+  const [resultStatus, setResultStatus] = useState<JobResultStatus>('fresh');
+  const [fetchedAt, setFetchedAt] = useState<string | undefined>();
+  const [outboundSearchUrl, setOutboundSearchUrl] = useState<string | undefined>();
+  // Where "Tailor your resume" goes: the editor the user came from, else their saved resumes
+  const [returnTo, setReturnTo] = useState('/my-resumes');
   const formRef = useRef<HTMLFormElement>(null);
   const shouldAutoSearch = useRef(false);
   const prefillSkillsRef = useRef<string[]>([]);
@@ -139,6 +144,7 @@ export default function JobsPage() {
         if (Array.isArray(data.skills)) prefillSkillsRef.current = data.skills;
         if (data.seniorityLevel) prefillSeniorityRef.current = data.seniorityLevel;
         if (data.yearsExperience) prefillYearsExpRef.current = data.yearsExperience;
+        if (typeof data.returnTo === 'string' && data.returnTo.startsWith('/editor/')) setReturnTo(data.returnTo);
         // Restore resume context for UI display
         if (Array.isArray(data.skills) && data.skills.length > 0) {
           setResumeContext({
@@ -218,6 +224,10 @@ export default function JobsPage() {
         sortBy: filters.sortBy || undefined,
         sortDir: filters.sortDir || undefined,
       });
+      reportJobStatus(result, 'jobs_page');
+      setResultStatus(result.status ?? 'fresh');
+      setFetchedAt(result.fetchedAt);
+      setOutboundSearchUrl(result.searchUrl);
       setJobs(result.jobs);
       setTotalCount(result.count);
       setSearchedCountry(searchCountry);
@@ -594,13 +604,14 @@ export default function JobsPage() {
 
         {/* Results Count */}
         {hasSearched && !loading && !error && jobs.length > 0 && (
-          <div className="flex items-baseline gap-2 mb-4">
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 mb-4">
             <h2 className="text-lg font-display font-bold text-ink">
               {totalCount.toLocaleString()} jobs found
             </h2>
             <span className="text-sm text-ink/60">
               for &ldquo;{titleInput}&rdquo;{locationInput ? ` in ${locationInput}` : ''}
             </span>
+            {resultStatus === 'stale' && <StaleLabel fetchedAt={fetchedAt} className="sm:ml-auto" />}
           </div>
         )}
 
@@ -672,19 +683,20 @@ export default function JobsPage() {
           </div>
         )}
 
-        {/* Loading Skeletons */}
+        {/* Loading Skeletons — mirror JobCard's rows so results land without a jump */}
         {loading && (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label="Loading jobs">
             {Array.from({ length: 6 }).map((_, i) => (
               <div
                 key={i}
-                className="bg-white rounded-2xl border border-black/[0.06] overflow-hidden animate-pulse"
+                className="bg-white rounded-xl border border-black/[0.08] p-5 flex flex-col gap-1.5 animate-pulse"
               >
-                <div className="p-5">
-                  <div className="h-5 bg-gray-200 rounded w-3/4 mb-3" />
-                  <div className="h-4 bg-gray-200 rounded w-1/2 mb-2" />
-                  <div className="h-4 bg-gray-200 rounded w-1/3 mb-3" />
-                  <div className="h-9 bg-gray-200 rounded-xl" />
+                <div className="h-7 flex items-center"><div className="h-5 bg-ink/[0.08] rounded w-3/4" /></div>
+                <div className="h-5 flex items-center"><div className="h-3.5 bg-ink/[0.06] rounded w-1/2" /></div>
+                <div className="h-5 flex items-center"><div className="h-3.5 bg-ink/[0.06] rounded w-1/3" /></div>
+                <div className="h-4 mt-3 flex items-center justify-between">
+                  <div className="h-3 bg-ink/[0.06] rounded w-1/5" />
+                  <div className="h-3 bg-ink/[0.06] rounded w-1/6" />
                 </div>
               </div>
             ))}
@@ -723,8 +735,46 @@ export default function JobsPage() {
           </>
         )}
 
+        {/* Refreshing: every job feed is out of quota and nothing is saved for this search */}
+        {hasSearched && !loading && !error && resultStatus === 'refreshing' && (
+          <section
+            aria-labelledby="jobs-refreshing-heading"
+            className="bg-white border border-black/[0.08] rounded-2xl px-6 py-10 sm:px-12 sm:py-14 text-center"
+          >
+            <span className="relative mx-auto mb-6 flex w-3 h-3" aria-hidden="true">
+              <span className="absolute inset-0 rounded-full bg-accent/40 motion-safe:animate-ping" />
+              <span className="relative w-3 h-3 rounded-full bg-accent" />
+            </span>
+            <h2 id="jobs-refreshing-heading" className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-ink mb-3">
+              Fresh listings are refreshing
+            </h2>
+            <p className="font-display text-lg font-extralight leading-relaxed text-ink/60 max-w-xl mx-auto mb-8">
+              New {titleInput.trim() ? <>&ldquo;{titleInput.trim()}&rdquo; </> : ''}roles
+              {locationInput.trim() ? ` in ${locationInput.trim()}` : ''} are on their way.
+              Search the same roles on Adzuna right now, or sharpen your resume while they land.
+            </p>
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
+              {outboundSearchUrl && (
+                <a
+                  href={outboundSearchUrl}
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                  className="btn-primary inline-flex items-center justify-center gap-2 py-3.5 px-8"
+                >
+                  Search {titleInput.trim() || 'jobs'} on Adzuna
+                  <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+                  <span className="sr-only">(opens in a new tab)</span>
+                </a>
+              )}
+              <Link to={returnTo} className="btn-secondary inline-flex items-center justify-center py-3.5 px-8">
+                Tailor your resume
+              </Link>
+            </div>
+          </section>
+        )}
+
         {/* No Results State */}
-        {hasSearched && !loading && !error && jobs.length === 0 && (
+        {hasSearched && !loading && !error && jobs.length === 0 && resultStatus !== 'refreshing' && (
           <div className="text-center py-12 bg-white rounded-2xl card-gradient-border shadow-premium">
             <Search className="w-12 h-12 mx-auto mb-3 text-ink/60" />
             <h3 className="text-lg font-display font-bold text-ink mb-2">No jobs found</h3>

@@ -156,6 +156,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
           skills: params.skills,
           seniorityLevel: params.seniorityLevel,
           yearsExperience: params.yearsExperience,
+          returnTo: window.location.pathname,
         }));
       } catch { /* ignore */ }
     }

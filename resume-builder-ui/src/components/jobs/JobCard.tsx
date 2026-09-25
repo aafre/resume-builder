@@ -3,9 +3,14 @@
 // (no stripes, no image, no "Ad" chrome, no blue link title).
 import { useEffect } from 'react';
 import { ArrowUpRight } from 'lucide-react';
-import type { AdzunaJob } from '../../services/jobs';
+import type { AdzunaJob, JobSearchResult } from '../../services/jobs';
 import { formatSalary } from '../../utils/currencyFormat';
-import { trackJobClick, trackJobImpression, type JobContext } from '../../lib/analytics';
+import {
+  trackJobClick,
+  trackJobImpression,
+  trackJobQuotaExhausted,
+  type JobContext,
+} from '../../lib/analytics';
 
 const FEED_NAMES: Record<string, string> = { adzuna: 'Adzuna' };
 
@@ -39,6 +44,27 @@ export function useJobImpression(jobs: AdzunaJob[], context: JobContext, shown =
     for (const j of visible) feed_mix[j.feed] = (feed_mix[j.feed] ?? 0) + 1;
     trackJobImpression({ context, count: visible.length, feed_mix });
   }, [jobs]); // eslint-disable-line react-hooks/exhaustive-deps
+}
+
+/** Report degraded (stale/refreshing) results; call once per search response. */
+export function reportJobStatus(result: JobSearchResult, context: JobContext) {
+  if (result.status === 'stale' || result.status === 'refreshing') {
+    trackJobQuotaExhausted({ context, status: result.status });
+  }
+}
+
+/** "Updated 5h ago" for results served from the saved copy. */
+export function StaleLabel({ fetchedAt, className = '' }: { fetchedAt?: string; className?: string }) {
+  const ms = fetchedAt ? Date.now() - new Date(fetchedAt).getTime() : NaN;
+  if (!(ms >= 0)) return null;
+  const minutes = Math.max(1, Math.round(ms / 60_000));
+  const age = minutes < 60 ? `${minutes}m` : `${Math.round(minutes / 60)}h`;
+  return (
+    <p className={`inline-flex items-center gap-2 text-xs text-ink/60 ${className}`}>
+      <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-ink/30" />
+      <span title={new Date(fetchedAt!).toLocaleString()}>Updated {age} ago</span>
+    </p>
+  );
 }
 
 interface JobCardProps {
