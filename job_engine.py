@@ -1,7 +1,7 @@
 """
 Job Matching Engine — 3-tier search with backend re-ranking.
 
-Tier 1: Primary title query (exact Adzuna search)
+Tier 1: Primary title query (every configured job feed)
 Tier 2: Static synonym expansion (catches standard variations)
 Tier 3: AI fallback via Supabase Edge Function (eliminates zero-results for niche titles)
 
@@ -15,7 +15,7 @@ import math
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 
-import requests as http_requests
+from job_feeds import FeedError, FeedQuotaExceeded, is_exhausted, mark_exhausted
 
 
 # =============================================================================
@@ -229,6 +229,7 @@ class MatchContext:
     what_exclude: str = ""         # excluded keywords
     company: str = ""              # company name filter
     what_phrase: str = ""          # exact phrase search (multi-word titles)
+    what_or: str = ""              # any-of keywords (legacy GET passthrough)
     page: int = 1                  # pagination page number
     results_per_page: int = 20     # results per page
 
@@ -457,41 +458,41 @@ class JobMatchEngine:
 
     TIER1_THRESHOLD = 5
     TIER2_THRESHOLD = 5
-    RESULTS_PER_QUERY = 20
 
-    def __init__(self, adzuna_app_id: str, adzuna_app_key: str, supabase=None):
-        self.app_id = adzuna_app_id
-        self.app_key = adzuna_app_key
+    def __init__(self, feeds: list, supabase=None):
+        self.feeds = feeds
         self.supabase = supabase
+        # False when every usable feed was exhausted or failed: an empty result
+        # then means "no data", not "no jobs".
+        self.feed_answered = False
 
     def search_and_rank(self, context: MatchContext, keep_description: bool = False) -> dict:
         """
-        Execute 3-tier search and return scored results.
-        Returns: { "count": int, "jobs": [...], "total_available": int }
+        Execute 3-tier search across every usable job feed and return scored results.
+        Returns: { "count": int, "jobs": [...], "total_available": int, "ai_terms_used": [...] }
 
         Args:
             keep_description: If True, preserve _description field (for pSEO skill aggregation).
         """
-        self._last_total = 0
+        return self.rank(self.fetch(context), context, keep_description=keep_description)
 
+    def fetch(self, context: MatchContext) -> dict:
+        """
+        The 3 tiers, unscored: { "jobs": [...with _description], "total_available", "ai_terms_used" }.
+        Depends only on the feed query fields, so callers can cache it and rank per resume.
+        """
         # Smart title_only: skill queries need full-text search
         if context.title_only and _is_skill_query(context.query):
             context.title_only = False
 
-        scorer = JobScorer(context)
         seen_urls: set[str] = set()
         all_jobs: list[dict] = []
 
         # --- Tier 1: Primary query ---
-        tier1 = self._fetch_adzuna(context, context.query)
-        total_available = self._last_total
+        tier1, total_available = self._fetch(context, context.query)
         all_jobs = self._merge(all_jobs, tier1, seen_urls)
-
         if len(all_jobs) >= self.TIER1_THRESHOLD:
-            result = self._finalize(all_jobs, scorer, keep_description=keep_description)
-            result["ai_terms_used"] = []
-            result["total_available"] = total_available
-            return result
+            return {"jobs": all_jobs, "total_available": total_available, "ai_terms_used": []}
 
         # Tier 1 insufficient — relax title_only for broader fallback searches
         context.title_only = False
@@ -501,111 +502,45 @@ class JobMatchEngine:
         synonyms = TITLE_SYNONYMS.get(query_key) or TITLE_SYNONYMS.get(_strip_seniority(query_key), [])
         if synonyms:
             # Fetch first synonym only to limit API calls
-            tier2 = self._fetch_adzuna(context, synonyms[0])
+            tier2, _ = self._fetch(context, synonyms[0])
             all_jobs = self._merge(all_jobs, tier2, seen_urls)
-
         if len(all_jobs) >= self.TIER2_THRESHOLD:
-            result = self._finalize(all_jobs, scorer, keep_description=keep_description)
-            result["ai_terms_used"] = []
-            result["total_available"] = total_available
-            return result
+            return {"jobs": all_jobs, "total_available": total_available, "ai_terms_used": []}
 
         # --- Tier 3: AI fallback ---
         ai_terms = get_ai_search_terms(context.query, self.supabase)
         for term in ai_terms:
-            tier3 = self._fetch_adzuna(context, term)
+            tier3, _ = self._fetch(context, term)
             all_jobs = self._merge(all_jobs, tier3, seen_urls)
+        return {"jobs": all_jobs, "total_available": total_available, "ai_terms_used": ai_terms}
 
-        result = self._finalize(all_jobs, scorer, keep_description=keep_description)
-        result["ai_terms_used"] = ai_terms
-        result["total_available"] = total_available
+    def rank(self, fetched: dict, context: MatchContext, keep_description: bool = False) -> dict:
+        """Score fetched jobs against the resume context. Doesn't modify `fetched`."""
+        jobs = [dict(j) for j in fetched["jobs"]]
+        result = self._finalize(jobs, JobScorer(context), keep_description=keep_description)
+        result["ai_terms_used"] = list(fetched["ai_terms_used"])
+        result["total_available"] = fetched["total_available"]
         return result
 
-    def _build_adzuna_params(self, context: MatchContext, query: str) -> dict:
-        """Build Adzuna API query params from MatchContext."""
-        # Use what_phrase for multi-word exact match, what for single-word/skill
-        if context.what_phrase:
-            params = {
-                "app_id": self.app_id,
-                "app_key": self.app_key,
-                "what_phrase": context.what_phrase,
-                "results_per_page": context.results_per_page or self.RESULTS_PER_QUERY,
-                "sort_by": context.sort_by if context.sort_by in ("relevance", "salary", "date") else "relevance",
-                "salary_include_unknown": "1",
-            }
-        else:
-            params = {
-                "app_id": self.app_id,
-                "app_key": self.app_key,
-                "what": query,
-                "results_per_page": context.results_per_page or self.RESULTS_PER_QUERY,
-                "sort_by": context.sort_by if context.sort_by in ("relevance", "salary", "date") else "relevance",
-                "salary_include_unknown": "1",
-            }
-        if context.location:
-            params["where"] = context.location
-        if context.category:
-            params["category"] = context.category
-        if context.title_only:
-            params["title_only"] = "1"
-        if context.max_days_old:
-            params["max_days_old"] = str(context.max_days_old)
-        if context.salary_min:
-            params["salary_min"] = str(context.salary_min)
-        if context.salary_max:
-            params["salary_max"] = str(context.salary_max)
-        if context.full_time:
-            params["full_time"] = "1"
-        if context.permanent:
-            params["permanent"] = "1"
-        if context.contract:
-            params["contract"] = "1"
-        if context.part_time:
-            params["part_time"] = "1"
-        if context.distance:
-            params["distance"] = str(context.distance)
-        if context.sort_dir and context.sort_dir in ("up", "down"):
-            params["sort_dir"] = context.sort_dir
-        if context.what_exclude:
-            params["what_exclude"] = context.what_exclude
-        if context.company:
-            params["company"] = context.company
-        return params
-
-    def _fetch_adzuna(self, context: MatchContext, query: str) -> list[dict]:
-        """Fetch raw results from Adzuna API."""
-        try:
-            params = self._build_adzuna_params(context, query)
-            page = max(context.page, 1)
-
-            resp = http_requests.get(
-                f"https://api.adzuna.com/v1/api/jobs/{context.country}/search/{page}",
-                params=params,
-                timeout=5,
-            )
-            resp.raise_for_status()
-            raw = resp.json()
-
-            self._last_total = raw.get("count", 0)
-
-            jobs = []
-            for r in raw.get("results", []):
-                jobs.append({
-                    "title": r.get("title", ""),
-                    "company": (r.get("company", {}) or {}).get("display_name", ""),
-                    "location": (r.get("location", {}) or {}).get("display_name", ""),
-                    "salary_min": r.get("salary_min"),
-                    "salary_max": r.get("salary_max"),
-                    "salary_is_predicted": bool(r.get("salary_is_predicted")),
-                    "url": r.get("redirect_url", ""),
-                    "created": r.get("created", ""),
-                    "_description": r.get("description", ""),  # used for scoring, stripped before response
-                })
-            return jobs
-
-        except http_requests.RequestException as e:
-            logging.error(f"Adzuna API error for query '{query}': {e}")
-            return []
+    def _fetch(self, context: MatchContext, query: str) -> tuple[list[dict], int]:
+        """Query every usable feed for the country; exhausted or failing feeds are skipped."""
+        jobs: list[dict] = []
+        total = 0
+        for feed in self.feeds:
+            if not feed.configured or context.country not in feed.countries or is_exhausted(feed.name):
+                continue
+            try:
+                found, count = feed.search(context, query)
+            except FeedQuotaExceeded:
+                mark_exhausted(feed.name)
+                continue
+            except FeedError as e:
+                logging.error(f"Job feed {feed.name} failed for query '{query}': {e}")
+                continue
+            self.feed_answered = True
+            jobs.extend(found)
+            total += count
+        return jobs, total
 
     def _merge(self, existing: list[dict], new: list[dict], seen_urls: set[str]) -> list[dict]:
         """Merge new results, dedup by URL."""

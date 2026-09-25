@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState, useCallback, useId } from "react";
 import ModalShell from "./shared/ModalShell";
 import { ClipboardCheck, ExternalLink, ShieldAlert } from "lucide-react";
-import { affiliateConfig, hasAnyAffiliate } from "../config/affiliate";
+import { affiliateConfig } from "../config/affiliate";
+import { useJobsAvailable } from "../hooks/useJobsAvailable";
 import { ContactInfo, Section } from "../types";
 import { extractJobSearchParams, JobSearchParams } from "../utils/resumeDataExtractor";
 import { searchJobs, AdzunaJob } from "../services/jobs";
-import { formatSalary } from "../utils/currencyFormat";
+import JobCard, { StaleLabel, reportJobStatus, useJobImpression } from "./jobs/JobCard";
 import { getSalaryFloor } from "../utils/salaryFloor";
 import { ensureTrustpilotLoaded } from "../utils/trustpilot";
 
@@ -31,13 +32,17 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
   const primaryButtonRef = useRef<HTMLButtonElement>(null);
 
   const [jobs, setJobs] = useState<AdzunaJob[]>([]);
+  const [staleSince, setStaleSince] = useState<string | undefined>();
   const [jobsLoading, setJobsLoading] = useState(false);
   const [jobSearchParams, setJobSearchParams] = useState<JobSearchParams | null>(null);
+  useJobImpression(jobs, "post_download");
+  // Master flag + visitor's country served by a job feed; null until known
+  const jobsAvailable = useJobsAvailable();
 
 
   // Fetch jobs when modal opens
   useEffect(() => {
-    if (!isOpen || !affiliateConfig.jobSearch.enabled) return;
+    if (!isOpen || jobsAvailable !== true) return;
 
     const params = extractJobSearchParams(contactInfo, sections);
     if (!params) return;
@@ -54,12 +59,17 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
       maxDaysOld: 30,
       salaryMin: getSalaryFloor(params.country, params.seniorityLevel),
     })
-      .then((result) => setJobs(result.jobs))
+      .then((result) => {
+        reportJobStatus(result, "post_download");
+        // refreshing has no jobs, so the section stays hidden
+        setJobs(result.jobs);
+        setStaleSince(result.status === "stale" ? result.fetchedAt : undefined);
+      })
       .catch(() => {
         // Silently fail — hide section on error
       })
       .finally(() => setJobsLoading(false));
-  }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isOpen, jobsAvailable]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Ref callback to initialize the TrustBox widget when mounted.
   // The Trustpilot bootstrap script is loaded on-demand here (not globally in
@@ -73,8 +83,10 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
 
   if (!isOpen) return null;
 
-  const showAffiliate = hasAnyAffiliate();
-  const showJobSection = affiliateConfig.jobSearch.enabled && (jobsLoading || jobs.length > 0);
+  const hasResumeReview = affiliateConfig.resumeReview.enabled && !!affiliateConfig.resumeReview.url;
+  const showJobSection = jobsAvailable === true && (jobsLoading || jobs.length > 0);
+  // Only when something will sit under the "What's Next?" divider
+  const showAffiliate = hasResumeReview || showJobSection;
 
   return (
     <ModalShell
@@ -228,22 +240,28 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                 <div className="mt-4">
                   {/* Section header */}
                   {jobSearchParams && (
-                    <p className="text-xs font-medium text-ink/60 mb-2">
-                      Jobs matching &ldquo;{jobSearchParams.displayTitle}&rdquo;
-                      {jobSearchParams.location && ` near ${jobSearchParams.location}`}
-                    </p>
+                    <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 mb-2">
+                      <p className="text-xs font-medium text-ink/60">
+                        Jobs matching &ldquo;{jobSearchParams.displayTitle}&rdquo;
+                        {jobSearchParams.location && ` near ${jobSearchParams.location}`}
+                      </p>
+                      {!jobsLoading && <StaleLabel fetchedAt={staleSince} />}
+                    </div>
                   )}
 
                   {/* Loading skeleton */}
                   {jobsLoading && (
-                    <div className="space-y-2">
+                    <div className="space-y-2" aria-busy="true" aria-label="Loading matching jobs">
                       {[0, 1, 2].map((i) => (
                         <div
                           key={i}
-                          className="bg-chalk-dark border border-black/[0.06] rounded-xl p-3 animate-pulse"
+                          className="bg-white border border-black/[0.08] rounded-xl p-4 flex flex-col gap-1 animate-pulse"
                         >
-                          <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
-                          <div className="h-3 bg-gray-200 rounded w-1/2" />
+                          {/* mirrors the compact JobCard: title, meta, meta, source row */}
+                          <div className="h-6 flex items-center"><div className="h-4 bg-ink/[0.08] rounded w-3/4" /></div>
+                          <div className="h-5 flex items-center"><div className="h-3 bg-ink/[0.06] rounded w-1/2" /></div>
+                          <div className="h-5 flex items-center"><div className="h-3 bg-ink/[0.06] rounded w-1/3" /></div>
+                          <div className="h-5 pt-1 flex items-center"><div className="h-2.5 bg-ink/[0.06] rounded w-1/4" /></div>
                         </div>
                       ))}
                     </div>
@@ -251,39 +269,19 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
 
                   {/* Job cards */}
                   {!jobsLoading && jobs.length > 0 && (
-                    <div className="space-y-2">
-                      {jobs.map((job, i) => {
-                        const salary = formatSalary(job.salary_min, job.salary_max, jobSearchParams?.country);
-                        return (
-                          <a
-                            key={i}
-                            href={job.url}
-                            target="_blank"
-                            rel="noopener noreferrer nofollow"
-                            className="flex items-center gap-3 bg-chalk-dark border border-black/[0.06] rounded-xl p-3 cursor-pointer hover:bg-white hover:shadow-lg hover:border-accent/20 hover:-translate-y-0.5 transition-all duration-200"
-                          >
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-semibold text-ink truncate">
-                                {job.title}
-                              </p>
-                              <p className="text-xs text-ink/60 truncate">
-                                {[job.company, job.location]
-                                  .filter(Boolean)
-                                  .join(" · ")}
-                              </p>
-                              {salary && (
-                                <p className={`text-xs font-medium mt-0.5 ${
-                                  job.salary_is_predicted ? 'text-amber-600' : 'text-emerald-600'
-                                }`}>
-                                  {salary}{job.salary_is_predicted ? ' (est.)' : ''}
-                                </p>
-                              )}
-                            </div>
-                            <ExternalLink className="w-4 h-4 text-ink/60 flex-shrink-0" />
-                          </a>
-                        );
-                      })}
-                    </div>
+                    <ul className="space-y-2">
+                      {jobs.map((job, i) => (
+                        <li key={job.url || i}>
+                          <JobCard
+                            job={job}
+                            position={i + 1}
+                            context="post_download"
+                            country={jobSearchParams?.country}
+                            compact
+                          />
+                        </li>
+                      ))}
+                    </ul>
                   )}
                 </div>
               )}

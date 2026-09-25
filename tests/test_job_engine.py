@@ -26,6 +26,7 @@ from job_engine import (
     _ALIAS_LOOKUP,
     _is_skill_query,
 )
+from job_feeds import AdzunaFeed
 
 
 # =============================================================================
@@ -361,7 +362,7 @@ class TestJobMatchEngine:
     """Tests for JobMatchEngine.search_and_rank()."""
 
     def _make_engine(self, supabase=None):
-        return JobMatchEngine("test_id", "test_key", supabase=supabase)
+        return JobMatchEngine([AdzunaFeed("test_id", "test_key")], supabase=supabase)
 
     def _make_jobs(self, n, url_prefix="http://job"):
         """Create n fake job dicts."""
@@ -381,10 +382,10 @@ class TestJobMatchEngine:
             for i in range(n)
         ]
 
-    @patch.object(JobMatchEngine, "_fetch_adzuna")
+    @patch.object(AdzunaFeed, "search")
     def test_tier1_sufficient_skips_tier2_and_3(self, mock_fetch):
         """When Tier 1 returns >= 5 results, Tiers 2 and 3 are skipped."""
-        mock_fetch.return_value = self._make_jobs(6)
+        mock_fetch.return_value = (self._make_jobs(6), 0)
         engine = self._make_engine()
 
         ctx = MatchContext(query="software engineer", skills=["python"])
@@ -394,12 +395,12 @@ class TestJobMatchEngine:
         assert len(result["jobs"]) == 6
         assert all("match_score" in j for j in result["jobs"])
 
-    @patch.object(JobMatchEngine, "_fetch_adzuna")
+    @patch.object(AdzunaFeed, "search")
     def test_tier2_triggered_when_tier1_insufficient(self, mock_fetch):
         """When Tier 1 returns < 5 results, Tier 2 is triggered."""
         tier1_jobs = self._make_jobs(3, url_prefix="http://tier1")
         tier2_jobs = self._make_jobs(3, url_prefix="http://tier2")
-        mock_fetch.side_effect = [tier1_jobs, tier2_jobs]
+        mock_fetch.side_effect = [(tier1_jobs, 0), (tier2_jobs, 0)]
 
         engine = self._make_engine()
         ctx = MatchContext(query="software engineer")
@@ -409,14 +410,14 @@ class TestJobMatchEngine:
         assert len(result["jobs"]) == 6
 
     @patch("job_engine.get_ai_search_terms")
-    @patch.object(JobMatchEngine, "_fetch_adzuna")
+    @patch.object(AdzunaFeed, "search")
     def test_tier3_triggered_when_tier2_insufficient(self, mock_fetch, mock_ai):
         """When Tier 1 + Tier 2 yield < 5 results, Tier 3 is triggered."""
         mock_fetch.side_effect = [
-            self._make_jobs(1, "http://t1"),  # Tier 1: 1 result
-            self._make_jobs(1, "http://t2"),  # Tier 2: 1 result
-            self._make_jobs(2, "http://t3a"),  # Tier 3 term 1
-            self._make_jobs(2, "http://t3b"),  # Tier 3 term 2
+            (self._make_jobs(1, "http://t1"), 0),  # Tier 1: 1 result
+            (self._make_jobs(1, "http://t2"), 0),  # Tier 2: 1 result
+            (self._make_jobs(2, "http://t3a"), 0),  # Tier 3 term 1
+            (self._make_jobs(2, "http://t3b"), 0),  # Tier 3 term 2
         ]
         mock_ai.return_value = ["Developer", "Programmer"]
 
@@ -428,13 +429,13 @@ class TestJobMatchEngine:
         assert len(result["jobs"]) == 6
 
     @patch("job_engine.get_ai_search_terms")
-    @patch.object(JobMatchEngine, "_fetch_adzuna")
+    @patch.object(AdzunaFeed, "search")
     def test_tier3_triggered_with_4_results_after_tier2(self, mock_fetch, mock_ai):
         """3-4 results after Tier 2 should still trigger Tier 3 (threshold=5)."""
         mock_fetch.side_effect = [
-            self._make_jobs(2, "http://t1"),  # Tier 1: 2 results
-            self._make_jobs(2, "http://t2"),  # Tier 2: 2 results (total=4)
-            self._make_jobs(3, "http://t3"),  # Tier 3
+            (self._make_jobs(2, "http://t1"), 0),  # Tier 1: 2 results
+            (self._make_jobs(2, "http://t2"), 0),  # Tier 2: 2 results (total=4)
+            (self._make_jobs(3, "http://t3"), 0),  # Tier 3
         ]
         mock_ai.return_value = ["Developer"]
 
@@ -445,11 +446,11 @@ class TestJobMatchEngine:
         assert mock_ai.called
         assert len(result["jobs"]) == 7
 
-    @patch.object(JobMatchEngine, "_fetch_adzuna")
+    @patch.object(AdzunaFeed, "search")
     def test_dedup_by_url(self, mock_fetch):
         """Duplicate URLs should be removed."""
         jobs = self._make_jobs(3, url_prefix="http://same")
-        mock_fetch.side_effect = [jobs, jobs]  # Same URLs both tiers
+        mock_fetch.side_effect = [(jobs, 0), (jobs, 0)]  # Same URLs both tiers
 
         engine = self._make_engine()
         ctx = MatchContext(query="software engineer")
@@ -457,7 +458,7 @@ class TestJobMatchEngine:
 
         assert len(result["jobs"]) == 3
 
-    @patch.object(JobMatchEngine, "_fetch_adzuna")
+    @patch.object(AdzunaFeed, "search")
     def test_results_sorted_by_score_desc(self, mock_fetch):
         """Jobs should be sorted by match_score descending."""
         from datetime import datetime, timezone, timedelta
@@ -485,7 +486,7 @@ class TestJobMatchEngine:
                 "_description": "python react",
             },
         ]
-        mock_fetch.return_value = jobs + self._make_jobs(4, "http://b")
+        mock_fetch.return_value = (jobs + self._make_jobs(4, "http://b"), 0)
 
         engine = self._make_engine()
         ctx = MatchContext(query="software engineer", skills=["python", "react"])
@@ -494,10 +495,10 @@ class TestJobMatchEngine:
         scores = [j["match_score"] for j in result["jobs"]]
         assert scores == sorted(scores, reverse=True)
 
-    @patch.object(JobMatchEngine, "_fetch_adzuna")
+    @patch.object(AdzunaFeed, "search")
     def test_description_stripped_from_response(self, mock_fetch):
         """Internal _description field should not appear in results."""
-        mock_fetch.return_value = self._make_jobs(6)
+        mock_fetch.return_value = (self._make_jobs(6), 0)
 
         engine = self._make_engine()
         ctx = MatchContext(query="software engineer")
@@ -508,7 +509,7 @@ class TestJobMatchEngine:
 
     @patch("requests.get")
     def test_fetch_adzuna_includes_unknown_salary(self, mock_get):
-        """_fetch_adzuna should send salary_include_unknown=1."""
+        """AdzunaFeed.search should send salary_include_unknown=1."""
         mock_resp = MagicMock()
         mock_resp.raise_for_status = MagicMock()
         mock_resp.json.return_value = {"results": []}
@@ -516,15 +517,15 @@ class TestJobMatchEngine:
 
         engine = self._make_engine()
         ctx = MatchContext(query="python", country="gb")
-        engine._fetch_adzuna(ctx, "python")
+        engine.feeds[0].search(ctx, "python")
 
         call_params = mock_get.call_args[1]["params"]
         assert call_params["salary_include_unknown"] == "1"
 
-    @patch.object(JobMatchEngine, "_fetch_adzuna")
+    @patch.object(AdzunaFeed, "search")
     def test_skill_query_disables_title_only(self, mock_fetch):
         """Skill queries should override title_only to False."""
-        mock_fetch.return_value = self._make_jobs(6)
+        mock_fetch.return_value = (self._make_jobs(6), 0)
         engine = self._make_engine()
 
         ctx = MatchContext(query="python", title_only=True)
@@ -533,10 +534,10 @@ class TestJobMatchEngine:
         # title_only should have been overridden to False
         assert ctx.title_only is False
 
-    @patch.object(JobMatchEngine, "_fetch_adzuna")
+    @patch.object(AdzunaFeed, "search")
     def test_non_skill_query_keeps_title_only(self, mock_fetch):
         """Non-skill queries should keep title_only as-is."""
-        mock_fetch.return_value = self._make_jobs(6)
+        mock_fetch.return_value = (self._make_jobs(6), 0)
         engine = self._make_engine()
 
         ctx = MatchContext(query="software engineer", title_only=True)
@@ -574,14 +575,13 @@ class TestJobMatchEngine:
 class TestSearchEndpoint:
     """Tests for the /api/jobs/search endpoint."""
 
-    @patch("job_engine.JobMatchEngine.search_and_rank")
+    @patch("job_engine.JobMatchEngine.fetch")
     @patch.dict(os.environ, {"ADZUNA_APP_ID": "test", "ADZUNA_APP_KEY": "test"})
-    def test_post_returns_match_score(self, mock_search, flask_test_client):
-        """POST should return jobs with match_score."""
+    def test_post_returns_match_score(self, mock_fetch, flask_test_client):
+        """POST should return jobs ranked with match_score."""
         client, mock_sb, flask_app = flask_test_client
 
-        mock_search.return_value = {
-            "count": 1,
+        mock_fetch.return_value = {
             "jobs": [
                 {
                     "title": "Software Engineer",
@@ -592,9 +592,12 @@ class TestSearchEndpoint:
                     "salary_is_predicted": False,
                     "url": "http://example.com/1",
                     "created": "2026-01-15T12:00:00Z",
-                    "match_score": 85.5,
+                    "feed": "adzuna",
+                    "_description": "python",
                 }
             ],
+            "total_available": 1,
+            "ai_terms_used": [],
         }
 
         resp = client.post(
@@ -606,7 +609,7 @@ class TestSearchEndpoint:
         assert resp.status_code == 200
         data = resp.get_json()
         assert data["success"] is True
-        assert data["data"]["jobs"][0]["match_score"] == 85.5
+        assert data["data"]["jobs"][0]["match_score"] > 0
 
     @patch.dict(os.environ, {"ADZUNA_APP_ID": "test", "ADZUNA_APP_KEY": "test"})
     def test_get_backward_compat(self, flask_test_client):
@@ -653,14 +656,13 @@ class TestSearchEndpoint:
 
         assert resp.status_code == 400
 
-    @patch("job_engine.JobMatchEngine.search_and_rank")
+    @patch("job_engine.JobMatchEngine.fetch")
     @patch.dict(os.environ, {"ADZUNA_APP_ID": "test", "ADZUNA_APP_KEY": "test"})
-    def test_post_description_not_in_response(self, mock_search, flask_test_client):
+    def test_post_description_not_in_response(self, mock_fetch, flask_test_client):
         """POST response should not include description field."""
         client, mock_sb, flask_app = flask_test_client
 
-        mock_search.return_value = {
-            "count": 1,
+        mock_fetch.return_value = {
             "jobs": [
                 {
                     "title": "Dev",
@@ -671,9 +673,12 @@ class TestSearchEndpoint:
                     "salary_is_predicted": False,
                     "url": "http://example.com/1",
                     "created": "2026-01-15T12:00:00Z",
-                    "match_score": 70,
+                    "feed": "adzuna",
+                    "_description": "secret description",
                 }
             ],
+            "total_available": 1,
+            "ai_terms_used": [],
         }
 
         resp = client.post(
@@ -683,6 +688,7 @@ class TestSearchEndpoint:
         )
 
         data = resp.get_json()
+        assert len(data["data"]["jobs"]) == 1
         for job in data["data"]["jobs"]:
             assert "_description" not in job
             assert "description" not in job
@@ -694,95 +700,95 @@ class TestSearchEndpoint:
 
 
 class TestAdvancedFilters:
-    """Tests for advanced filter fields on MatchContext and _build_adzuna_params."""
+    """Tests for advanced filter fields on MatchContext and AdzunaFeed.params."""
 
     def _make_engine(self):
-        return JobMatchEngine("test_id", "test_key")
+        return JobMatchEngine([AdzunaFeed("test_id", "test_key")])
 
     def test_contract_param(self):
         engine = self._make_engine()
         ctx = MatchContext(query="dev", contract=True)
-        params = engine._build_adzuna_params(ctx, "dev")
+        params = engine.feeds[0].params(ctx, "dev")
         assert params["contract"] == "1"
 
     def test_part_time_param(self):
         engine = self._make_engine()
         ctx = MatchContext(query="dev", part_time=True)
-        params = engine._build_adzuna_params(ctx, "dev")
+        params = engine.feeds[0].params(ctx, "dev")
         assert params["part_time"] == "1"
 
     def test_distance_param(self):
         engine = self._make_engine()
         ctx = MatchContext(query="dev", location="London", distance=25)
-        params = engine._build_adzuna_params(ctx, "dev")
+        params = engine.feeds[0].params(ctx, "dev")
         assert params["distance"] == "25"
 
     def test_salary_max_param(self):
         engine = self._make_engine()
         ctx = MatchContext(query="dev", salary_max=80000)
-        params = engine._build_adzuna_params(ctx, "dev")
+        params = engine.feeds[0].params(ctx, "dev")
         assert params["salary_max"] == "80000"
 
     def test_sort_dir_param(self):
         engine = self._make_engine()
         ctx = MatchContext(query="dev", sort_by="salary", sort_dir="down")
-        params = engine._build_adzuna_params(ctx, "dev")
+        params = engine.feeds[0].params(ctx, "dev")
         assert params["sort_dir"] == "down"
 
     def test_what_exclude_param(self):
         engine = self._make_engine()
         ctx = MatchContext(query="dev", what_exclude="senior manager")
-        params = engine._build_adzuna_params(ctx, "dev")
+        params = engine.feeds[0].params(ctx, "dev")
         assert params["what_exclude"] == "senior manager"
 
     def test_company_param(self):
         engine = self._make_engine()
         ctx = MatchContext(query="dev", company="Google")
-        params = engine._build_adzuna_params(ctx, "dev")
+        params = engine.feeds[0].params(ctx, "dev")
         assert params["company"] == "Google"
 
     def test_what_phrase_param(self):
         engine = self._make_engine()
         ctx = MatchContext(query="dev", what_phrase="software engineer")
-        params = engine._build_adzuna_params(ctx, "dev")
+        params = engine.feeds[0].params(ctx, "dev")
         assert params["what_phrase"] == "software engineer"
         assert "what" not in params  # what_phrase replaces what
 
     def test_what_used_when_no_phrase(self):
         engine = self._make_engine()
         ctx = MatchContext(query="dev")
-        params = engine._build_adzuna_params(ctx, "dev")
+        params = engine.feeds[0].params(ctx, "dev")
         assert params["what"] == "dev"
         assert "what_phrase" not in params
 
     def test_salary_include_unknown_always_sent(self):
         engine = self._make_engine()
         ctx = MatchContext(query="dev")
-        params = engine._build_adzuna_params(ctx, "dev")
+        params = engine.feeds[0].params(ctx, "dev")
         assert params["salary_include_unknown"] == "1"
 
     def test_results_per_page_param(self):
         engine = self._make_engine()
         ctx = MatchContext(query="dev", results_per_page=50)
-        params = engine._build_adzuna_params(ctx, "dev")
+        params = engine.feeds[0].params(ctx, "dev")
         assert params["results_per_page"] == 50
 
     def test_default_results_per_page(self):
         engine = self._make_engine()
         ctx = MatchContext(query="dev")
-        params = engine._build_adzuna_params(ctx, "dev")
+        params = engine.feeds[0].params(ctx, "dev")
         assert params["results_per_page"] == 20  # engine.RESULTS_PER_QUERY default
 
     def test_zero_distance_not_sent(self):
         engine = self._make_engine()
         ctx = MatchContext(query="dev", distance=0)
-        params = engine._build_adzuna_params(ctx, "dev")
+        params = engine.feeds[0].params(ctx, "dev")
         assert "distance" not in params
 
     def test_invalid_sort_dir_not_sent(self):
         engine = self._make_engine()
         ctx = MatchContext(query="dev", sort_dir="invalid")
-        params = engine._build_adzuna_params(ctx, "dev")
+        params = engine.feeds[0].params(ctx, "dev")
         assert "sort_dir" not in params
 
 
@@ -790,7 +796,7 @@ class TestPaginationAndTotalAvailable:
     """Tests for pagination and total_available in search results."""
 
     def _make_engine(self):
-        return JobMatchEngine("test_id", "test_key")
+        return JobMatchEngine([AdzunaFeed("test_id", "test_key")])
 
     def _make_jobs(self, n, url_prefix="http://job"):
         from datetime import datetime, timezone
@@ -809,12 +815,11 @@ class TestPaginationAndTotalAvailable:
             for i in range(n)
         ]
 
-    @patch.object(JobMatchEngine, "_fetch_adzuna")
+    @patch.object(AdzunaFeed, "search")
     def test_total_available_in_result(self, mock_fetch):
         """search_and_rank should return total_available."""
-        mock_fetch.return_value = self._make_jobs(6)
+        mock_fetch.return_value = (self._make_jobs(6), 0)
         engine = self._make_engine()
-        engine._last_total = 150
 
         ctx = MatchContext(query="software engineer")
         result = engine.search_and_rank(ctx)
@@ -823,7 +828,7 @@ class TestPaginationAndTotalAvailable:
 
     @patch("requests.get")
     def test_page_param_in_api_url(self, mock_get):
-        """_fetch_adzuna should use page number in the URL."""
+        """AdzunaFeed.search should use page number in the URL."""
         mock_resp = MagicMock()
         mock_resp.raise_for_status = MagicMock()
         mock_resp.json.return_value = {"results": [], "count": 0}
@@ -831,7 +836,7 @@ class TestPaginationAndTotalAvailable:
 
         engine = self._make_engine()
         ctx = MatchContext(query="dev", page=3, country="gb")
-        engine._fetch_adzuna(ctx, "dev")
+        engine.feeds[0].search(ctx, "dev")
 
         # Check the URL contains /search/3
         call_url = mock_get.call_args[0][0]
@@ -842,7 +847,7 @@ class TestKeepDescription:
     """Tests for keep_description option."""
 
     def _make_engine(self):
-        return JobMatchEngine("test_id", "test_key")
+        return JobMatchEngine([AdzunaFeed("test_id", "test_key")])
 
     def _make_jobs(self, n):
         from datetime import datetime, timezone
@@ -861,9 +866,9 @@ class TestKeepDescription:
             for i in range(n)
         ]
 
-    @patch.object(JobMatchEngine, "_fetch_adzuna")
+    @patch.object(AdzunaFeed, "search")
     def test_keep_description_preserves_field(self, mock_fetch):
-        mock_fetch.return_value = self._make_jobs(6)
+        mock_fetch.return_value = (self._make_jobs(6), 0)
         engine = self._make_engine()
 
         ctx = MatchContext(query="dev")
@@ -871,9 +876,9 @@ class TestKeepDescription:
 
         assert all("_description" in j for j in result["jobs"])
 
-    @patch.object(JobMatchEngine, "_fetch_adzuna")
+    @patch.object(AdzunaFeed, "search")
     def test_default_strips_description(self, mock_fetch):
-        mock_fetch.return_value = self._make_jobs(6)
+        mock_fetch.return_value = (self._make_jobs(6), 0)
         engine = self._make_engine()
 
         ctx = MatchContext(query="dev")

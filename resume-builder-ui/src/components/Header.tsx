@@ -11,6 +11,7 @@ import AuthModal from "./AuthModal";
 import LogoMark from "./LogoMark";
 import GlobalNavDrawer from "./GlobalNavDrawer";
 import { getNavLinks } from "../config/navLinks";
+import { useJobsAvailable } from "../hooks/useJobsAvailable";
 import useNavPill from "../hooks/useNavPill";
 
 export default function Header() {
@@ -23,7 +24,9 @@ export default function Header() {
 
   const isEditorPage = location.pathname.startsWith("/editor");
   const editorContext = useOptionalEditorContext();
-  const navLinks = getNavLinks(isAuthenticated);
+  // Optimistic: only a definite "unsupported" hides the link, so it never pops in late
+  const jobsAvailable = useJobsAvailable() !== false;
+  const navLinks = getNavLinks(isAuthenticated, jobsAvailable);
 
   // The pill follows whichever link matches the route; a page with no nav
   // entry (blog, an example, the landing page) correctly has no pill.

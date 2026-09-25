@@ -72,7 +72,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # Copy only necessary application files (excludes resume-builder-ui via .dockerignore patterns)
 # Copy Python files
-COPY --chown=appuser:appuser app.py resume_generator*.py job_engine.py jobs_pseo.py jobs_content.py generate_jobs_matrix.py ./
+COPY --chown=appuser:appuser app.py resume_generator*.py job_engine.py job_feeds.py jobs_pseo.py jobs_content.py generate_jobs_matrix.py ./
 COPY --chown=appuser:appuser jobs_matrix.json ./
 
 # Copy directories needed for the application
@@ -111,6 +111,7 @@ ENV PYTHONUNBUFFERED=1
 #   - SUPABASE_DB_PASSWORD
 #   - ADZUNA_APP_ID (required for Jobs feature)
 #   - ADZUNA_APP_KEY (required for Jobs feature)
+#   - JOBS_PSEO_ENABLED (off by default, see ADR-0001)
 
 # Add security labels
 LABEL security.non-root=true

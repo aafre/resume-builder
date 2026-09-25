@@ -14,8 +14,20 @@ describe("PrivacyPolicy Component", () => {
 
     expect(screen.getByText("Privacy Policy")).toBeInTheDocument();
     expect(
-      screen.getByText(/Last updated 4 August 2026/i)
+      screen.getByText(/Last updated 25 September 2026/i)
     ).toBeInTheDocument();
+  });
+
+  it("names the job feed and what is sent to it", () => {
+    render(
+      <MemoryRouter>
+        <PrivacyPolicy />
+      </MemoryRouter>
+    );
+    const para = screen.getByText(/Job listings come from our job feed, Adzuna/);
+    expect(para).toHaveTextContent(/job title, location and country/);
+    expect(para).toHaveTextContent(/resume text, name and\s+contact details are never sent to Adzuna/);
+    expect(para).toHaveTextContent(/AI job-title suggestion function/);
   });
 
   it("renders the policy content and a link to GitHub issues", () => {
