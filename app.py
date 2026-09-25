@@ -44,6 +44,7 @@ load_dotenv()
 
 # pSEO imports (lazy — only used in production or when ADZUNA keys present)
 from jobs_pseo import PageType, PseoRenderer, load_vite_manifest
+from job_feeds import ADZUNA_COUNTRIES, AdzunaFeed, FeedError
 
 # Configure logging based on environment variable
 # Set DEBUG_LOGGING=true to enable detailed debug logs for troubleshooting
@@ -4126,29 +4127,9 @@ def update_user_preferences():
         return jsonify({"success": False, "error": "Failed to update preferences"}), 500
 
 
-# ===== Adzuna Job Search Proxy =====
+# ===== Job Search (job feeds: see job_feeds.py) =====
 
-ADZUNA_SUPPORTED_COUNTRIES = {
-    "gb",
-    "us",
-    "at",
-    "au",
-    "be",
-    "br",
-    "ca",
-    "ch",
-    "de",
-    "es",
-    "fr",
-    "in",
-    "it",
-    "mx",
-    "nl",
-    "nz",
-    "pl",
-    "sg",
-    "za",
-}
+ADZUNA_SUPPORTED_COUNTRIES = ADZUNA_COUNTRIES
 
 # Simple TTL cache for Adzuna responses (15 minutes)
 _adzuna_cache = {}
@@ -4181,10 +4162,9 @@ def _search_jobs_post():
     if country not in ADZUNA_SUPPORTED_COUNTRIES:
         country = "us"
 
-    app_id = os.getenv("ADZUNA_APP_ID")
-    app_key = os.getenv("ADZUNA_APP_KEY")
-    if not app_id or not app_key:
-        logging.warning("Adzuna API credentials not configured")
+    feeds = [f for f in (AdzunaFeed.from_env(),) if f.configured]
+    if not feeds:
+        logging.warning("No job feed configured")
         return jsonify({"success": False, "error": "Job search not configured"}), 502
 
     sort_by = (body.get("sort_by") or "relevance").strip()
@@ -4222,7 +4202,7 @@ def _search_jobs_post():
         return jsonify({"success": False, "error": f"Invalid parameter: {e}"}), 400
 
     try:
-        engine = JobMatchEngine(app_id, app_key, supabase=supabase)
+        engine = JobMatchEngine(feeds, supabase=supabase)
         data = engine.search_and_rank(context)
         return jsonify({"success": True, "data": data})
     except Exception as e:
@@ -4235,117 +4215,65 @@ def _search_jobs_post():
 
 def _search_jobs_get():
     """GET handler: legacy passthrough (backward compat, no re-ranking)."""
+    from job_engine import MatchContext
+
     query = request.args.get("query", "").strip()
     if not query:
         return jsonify({"success": False, "error": "query parameter is required"}), 400
 
-    location = request.args.get("location", "").strip()
-    category = request.args.get("category", "").strip().lower()
-    what_or = request.args.get("what_or", "").strip()
     country = request.args.get("country", "us").strip().lower()
-    page = min(max(int(request.args.get("page", "1")), 1), 5)
-
     if country not in ADZUNA_SUPPORTED_COUNTRIES:
         country = "us"
 
-    app_id = os.getenv("ADZUNA_APP_ID")
-    app_key = os.getenv("ADZUNA_APP_KEY")
-    if not app_id or not app_key:
-        logging.warning("Adzuna API credentials not configured")
+    feed = AdzunaFeed.from_env()
+    if not feed.configured:
+        logging.warning("No job feed configured")
         return jsonify({"success": False, "error": "Job search not configured"}), 502
 
-    # Optional passthrough params
-    title_only = request.args.get("title_only", "").strip()
-    max_days_old = request.args.get("max_days_old", "").strip()
-    salary_min = request.args.get("salary_min", "").strip()
-    full_time = request.args.get("full_time", "").strip()
-    permanent = request.args.get("permanent", "").strip()
-    sort_by = request.args.get("sort_by", "relevance").strip()
-    if sort_by not in ("relevance", "salary", "date"):
-        sort_by = "relevance"
+    arg = lambda name: request.args.get(name, "").strip()  # noqa: E731
+    sort_by = arg("sort_by") or "relevance"
+    try:
+        context = MatchContext(
+            query=query,
+            location=arg("location"),
+            country=country,
+            category=arg("category").lower(),
+            what_or=arg("what_or"),
+            title_only=bool(arg("title_only")),
+            max_days_old=int(arg("max_days_old") or 0),
+            salary_min=int(arg("salary_min") or 0),
+            full_time=bool(arg("full_time")),
+            permanent=bool(arg("permanent")),
+            sort_by=sort_by if sort_by in ("relevance", "salary", "date") else "relevance",
+            page=min(max(int(arg("page") or 1), 1), 5),
+            results_per_page=10,
+        )
+    except ValueError as e:
+        return jsonify({"success": False, "error": f"Invalid parameter: {e}"}), 400
 
-    # Check cache
-    cache_key = (
-        query.lower(),
-        location.lower(),
-        country,
-        category,
-        what_or.lower(),
-        page,
-        title_only,
-        max_days_old,
-        salary_min,
-        full_time,
-        permanent,
-        sort_by,
-    )
+    cache_key = (query.lower(), context.location.lower(), context.what_or.lower(),
+                 *(str(getattr(context, f)) for f in (
+                     "country", "category", "page", "title_only", "max_days_old",
+                     "salary_min", "full_time", "permanent", "sort_by")))
     now = time.time()
     cached = _adzuna_cache.get(cache_key)
     if cached and (now - cached["ts"]) < _ADZUNA_CACHE_TTL:
         return jsonify({"success": True, "data": cached["data"]})
 
     try:
-        params = {
-            "app_id": app_id,
-            "app_key": app_key,
-            "what": query,
-            "results_per_page": 10,
-            "sort_by": sort_by,
-            "salary_include_unknown": "1",
-        }
-        if location:
-            params["where"] = location
-        if category:
-            params["category"] = category
-        if what_or:
-            params["what_or"] = what_or
-        if title_only:
-            params["title_only"] = title_only
-        if max_days_old:
-            params["max_days_old"] = max_days_old
-        if salary_min:
-            params["salary_min"] = salary_min
-        if full_time:
-            params["full_time"] = full_time
-        if permanent:
-            params["permanent"] = permanent
-
-        resp = http_requests.get(
-            f"https://api.adzuna.com/v1/api/jobs/{country}/search/{page}",
-            params=params,
-            timeout=5,
-        )
-        resp.raise_for_status()
-        raw = resp.json()
-
-        jobs = []
-        for r in raw.get("results", []):
-            jobs.append(
-                {
-                    "title": r.get("title", ""),
-                    "company": (r.get("company", {}) or {}).get("display_name", ""),
-                    "location": (r.get("location", {}) or {}).get("display_name", ""),
-                    "salary_min": r.get("salary_min"),
-                    "salary_max": r.get("salary_max"),
-                    "salary_is_predicted": bool(r.get("salary_is_predicted")),
-                    "url": r.get("redirect_url", ""),
-                    "created": r.get("created", ""),
-                }
-            )
-
-        data = {"count": raw.get("count", 0), "jobs": jobs}
-
-        # Store in cache
-        _adzuna_cache[cache_key] = {"ts": now, "data": data}
-
-        return jsonify({"success": True, "data": data})
-
-    except http_requests.RequestException as e:
-        logging.error(f"Adzuna API error: {e}")
+        jobs, count = feed.search(context, query)
+    except FeedError as e:
+        logging.error(f"Job feed error: {e}")
         return (
             jsonify({"success": False, "error": "Job search temporarily unavailable"}),
             502,
         )
+
+    for job in jobs:
+        job.pop("_description", None)
+    data = {"count": count, "jobs": jobs}
+    _adzuna_cache[cache_key] = {"ts": now, "data": data}
+    return jsonify({"success": True, "data": data})
 
 
 # ===== AI Role Suggestions =====
