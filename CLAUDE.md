@@ -227,13 +227,16 @@ Before making ANY change that affects SEO (titles, meta tags, schema, URLs, H1s,
 7. Entity signals (sameAs arrays) must stay in sync across: index.html (WebApplication + Organization), schemaGenerators.ts (SoftwareApplication), Footer.tsx
 8. Brand name "EasyFreeResume" must appear **first** in the title tag on landing and product pages
    (`/`, `/free-resume-builder-*`, `/templates*`, `/cv-templates*`, `/ats-resume-templates`,
-   `/resume-keywords*`, `/examples*`, comparison pages). This is the brand-defence rule from Mistake #5:
+   `/resume-keywords*`, comparison pages). This is the brand-defence rule from Mistake #5:
    the brand is composed of generic dictionary words, and a truncated brand-last title let Google read it
    as a description rather than a proper noun.
    **Blog and informational posts keep the brand last** (`Title | EasyFreeResume`, as
    `BlogLayout.tsx` emits): those titles compete on the query, not on the brand, and the pixel budget
    belongs to the query words. Amended 2026-09-22 — all 47 posts already follow the blog convention, and
    flipping them would churn every blog title at once for no brand-defence benefit.
+   **`/examples*` role pages follow the blog convention** (brand not required): titles use
+   `Free <Role> Resume Example & Template (2026)` and compete on the role query. Amended 2026-09-25 for
+   role batch R1 (#817).
 
 The `seo-tracking/` directory is the single source of truth. Do not rely on memory.
 
