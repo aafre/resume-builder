@@ -24,6 +24,7 @@ import { calculateSHA256 } from './utils/hash.ts';
 import { isLikelyResume } from './utils/resume-detector.ts';
 import { convertToYAML } from './utils/yaml-converter.ts';
 import { validateFile } from './utils/file-validator.ts';
+import { verifyTurnstileToken } from './utils/turnstile.ts';
 
 // Extractors
 import { extractTextFromPDF } from './extractors/pdf-extractor.ts';
@@ -45,6 +46,7 @@ const MAX_PER_USER_PER_DAY = 10;
 const MAX_PER_IP_PER_DAY = 20;
 const RATE_LIMIT_MESSAGE =
   "You've imported several resumes today. Try again tomorrow, or edit your current resume in the editor.";
+const TURNSTILE_ERROR_MESSAGE = "Couldn't verify your browser, please refresh and try again";
 
 function getClientIp(req: Request): string | null {
   const cf = req.headers.get('cf-connecting-ip');
@@ -219,6 +221,28 @@ serve(async (req: Request) => {
     }
 
     console.log('File uploaded:', file.name, file.type, file.size, 'bytes');
+
+    // === 2b. Verify Turnstile token (bot check) ===
+    // Skipped (fail-open) until TURNSTILE_SECRET is set, so deploying this
+    // code before the owner sets the secret never breaks imports. Once set,
+    // a missing/invalid token is rejected before any hashing/extraction/AI work.
+    const turnstileSecret = Deno.env.get('TURNSTILE_SECRET');
+    if (turnstileSecret) {
+      const turnstileToken = formData.get('turnstile_token') as string | null;
+      const verified = await verifyTurnstileToken(turnstileToken, turnstileSecret, clientIp);
+      if (!verified) {
+        console.warn('Turnstile verification failed for user', userId, 'ip', clientIp);
+        return new Response(
+          JSON.stringify({ success: false, error: TURNSTILE_ERROR_MESSAGE }),
+          {
+            status: 403,
+            headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+          }
+        );
+      }
+    } else {
+      console.warn('TURNSTILE_SECRET not set - skipping Turnstile verification');
+    }
 
     // === 3. Calculate file hash for caching ===
     const fileBuffer = await file.arrayBuffer();
