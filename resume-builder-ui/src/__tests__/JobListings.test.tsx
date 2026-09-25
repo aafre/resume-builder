@@ -267,3 +267,45 @@ it('post-download waits for availability before searching', async () => {
   );
   expect(await screen.findByText('Staff Nurse 1')).toBeInTheDocument();
 });
+
+it('/jobs?q= auto-search waits for availability instead of being dropped', async () => {
+  jobsAvailable = null;
+  searchJobs.mockResolvedValue(result([job(1)]));
+  // A fresh element each time: rerendering the same element object is a no-op
+  const tree = () => (
+    <HelmetProvider>
+      <MemoryRouter initialEntries={['/jobs?q=Registered%20Nurse&c=gb']}>
+        <JobsPage />
+      </MemoryRouter>
+    </HelmetProvider>
+  );
+  const { rerender } = render(tree());
+  await waitFor(() => expect(screen.getByRole('textbox', { name: /job title/i })).toHaveValue('Registered Nurse'));
+  expect(searchJobs).not.toHaveBeenCalled();
+
+  jobsAvailable = true;
+  rerender(tree());
+  expect(await screen.findByText('Staff Nurse 1')).toBeInTheDocument();
+  expect(searchJobs).toHaveBeenCalledTimes(1);
+});
+
+it('/jobs Search clicked before availability is known runs once it resolves', async () => {
+  jobsAvailable = null;
+  searchJobs.mockResolvedValue(result([job(1)]));
+  // A fresh element each time: rerendering the same element object is a no-op
+  const tree = () => (
+    <HelmetProvider>
+      <MemoryRouter initialEntries={['/jobs']}>
+        <JobsPage />
+      </MemoryRouter>
+    </HelmetProvider>
+  );
+  const { rerender } = render(tree());
+  fireEvent.change(screen.getByRole('textbox', { name: /job title/i }), { target: { value: 'Nurse' } });
+  fireEvent.click(screen.getByRole('button', { name: /^search$/i }));
+  expect(searchJobs).not.toHaveBeenCalled();
+
+  jobsAvailable = true;
+  rerender(tree());
+  expect(await screen.findByText('Staff Nurse 1')).toBeInTheDocument();
+});

@@ -166,7 +166,12 @@ export default function JobsPage() {
 
   const handleSearch = useCallback(async (e?: React.FormEvent) => {
     e?.preventDefault();
-    if (!titleInput.trim() || jobsAvailable !== true) return;
+    if (!titleInput.trim() || jobsAvailable === false) return;
+    if (jobsAvailable === null) {
+      // Availability not known yet: run this search once it resolves
+      shouldAutoSearch.current = true;
+      return;
+    }
 
     setLoading(true);
     setError(null);
@@ -314,11 +319,11 @@ export default function JobsPage() {
 
   // Auto-search when pre-filled from editor
   useEffect(() => {
-    if (shouldAutoSearch.current && titleInput) {
+    if (shouldAutoSearch.current && titleInput && jobsAvailable === true) {
       shouldAutoSearch.current = false;
       handleSearch();
     }
-  }, [titleInput, handleSearch]);
+  }, [titleInput, handleSearch, jobsAvailable]);
 
   const handlePillClick = (title: string) => {
     setTitleInput(title);
