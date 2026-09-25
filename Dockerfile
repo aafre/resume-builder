@@ -72,7 +72,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # Copy only necessary application files (excludes resume-builder-ui via .dockerignore patterns)
 # Copy Python files
-COPY --chown=appuser:appuser app.py resume_generator*.py job_engine.py jobs_pseo.py jobs_content.py generate_jobs_matrix.py ./
+COPY --chown=appuser:appuser app.py resume_generator*.py job_engine.py job_feeds.py jobs_pseo.py jobs_content.py generate_jobs_matrix.py ./
 COPY --chown=appuser:appuser jobs_matrix.json ./
 
 # Copy directories needed for the application
