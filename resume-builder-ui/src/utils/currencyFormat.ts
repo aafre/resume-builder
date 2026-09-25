@@ -36,7 +36,7 @@ export function formatSalary(
   const sym = getCurrencySymbol(country);
   const fmt = (n: number) =>
     n >= 1000 ? `${sym}${Math.round(n / 1000)}K` : `${sym}${n}`;
-  if (min && max) return `${fmt(min)} – ${fmt(max)}`;
+  if (min && max) return fmt(min) === fmt(max) ? fmt(min) : `${fmt(min)} – ${fmt(max)}`;
   if (min) return `From ${fmt(min)}`;
   return `Up to ${fmt(max!)}`;
 }
