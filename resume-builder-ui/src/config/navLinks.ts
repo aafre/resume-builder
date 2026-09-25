@@ -15,7 +15,7 @@ export interface NavLink {
  * before committing to the funnel. Only account-scoped destinations branch on
  * authentication.
  */
-/** jobsAvailable: from useJobsAvailable() — master flag on and the visitor's country is served. */
+/** jobsAvailable: useJobsAvailable() !== false (optimistic while loading). */
 export function getNavLinks(isAuthenticated: boolean, jobsAvailable: boolean): NavLink[] {
   return [
     ...(isAuthenticated

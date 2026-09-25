@@ -24,7 +24,8 @@ export default function Header() {
 
   const isEditorPage = location.pathname.startsWith("/editor");
   const editorContext = useOptionalEditorContext();
-  const jobsAvailable = useJobsAvailable() === true;
+  // Optimistic: only a definite "unsupported" hides the link, so it never pops in late
+  const jobsAvailable = useJobsAvailable() !== false;
   const navLinks = getNavLinks(isAuthenticated, jobsAvailable);
 
   // The pill follows whichever link matches the route; a page with no nav

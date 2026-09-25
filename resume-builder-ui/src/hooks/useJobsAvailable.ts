@@ -40,6 +40,9 @@ function fetchJobsAvailable(): Promise<boolean> {
  * Whether the jobs feature (nav link, /jobs, post-download listings, editor
  * badge) should show: the master flag is on and the visitor's country is
  * served. null while not yet known on a first visit.
+ *
+ * Links (header, footer) treat null as available so they don't shift in late.
+ * Anything that calls Adzuna waits for a definite true.
  */
 export function useJobsAvailable(): boolean | null {
   const enabled = affiliateConfig.jobSearch.enabled;

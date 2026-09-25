@@ -93,7 +93,8 @@ function FooterColumn({
 }
 
 export default function Footer() {
-  const jobsAvailable = useJobsAvailable() === true;
+  // Optimistic, like the header link: only a definite "unsupported" hides it
+  const jobsAvailable = useJobsAvailable() !== false;
   const location = useLocation();
   const navigate = useNavigate();
 
