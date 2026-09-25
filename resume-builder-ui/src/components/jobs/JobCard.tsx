@@ -88,7 +88,7 @@ export default function JobCard({ job, position, context, country, showMatch, co
     <a
       href={job.url}
       target="_blank"
-      rel="noopener noreferrer nofollow"
+      rel="sponsored noopener noreferrer nofollow"
       onClick={() =>
         trackJobClick({ context, feed: job.feed, position, match_score: job.match_score ?? null })
       }

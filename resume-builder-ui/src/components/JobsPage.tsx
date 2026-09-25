@@ -790,7 +790,7 @@ export default function JobsPage() {
                   <a
                     href={outboundSearchUrl}
                     target="_blank"
-                    rel="noopener noreferrer nofollow"
+                    rel="sponsored noopener noreferrer nofollow"
                     className="btn-primary inline-flex items-center justify-center gap-2 py-3.5 px-8"
                   >
                     Search {searched.title || 'jobs'} on Adzuna

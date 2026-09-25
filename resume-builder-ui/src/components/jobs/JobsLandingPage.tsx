@@ -258,7 +258,7 @@ function JobCard({ job }: { job: PseoJob }) {
             <a
               href={job.url}
               target="_blank"
-              rel="noopener noreferrer nofollow"
+              rel="sponsored noopener noreferrer nofollow"
               className="hover:text-accent-text inline-flex items-center gap-1 transition-colors"
             >
               {job.title}

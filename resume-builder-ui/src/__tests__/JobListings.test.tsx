@@ -222,6 +222,7 @@ it('/jobs refreshing state offers the outbound search and a way back to the resu
   const outbound = screen.getByRole('link', { name: /search .*adzuna/i });
   expect(outbound).toHaveAttribute('href', refreshing.searchUrl);
   expect(outbound).toHaveAttribute('target', '_blank');
+  expect(outbound.getAttribute('rel')).toContain('sponsored');
   expect(screen.getByRole('link', { name: /tailor your resume/i })).toHaveAttribute('href', '/editor/abc123');
   expect(screen.queryByText(/no jobs found/i)).not.toBeInTheDocument();
   expect(screen.queryByText(/coming soon|error/i)).not.toBeInTheDocument();
@@ -336,4 +337,11 @@ it('/jobs results count names the searched title, not the edited input', async (
   fireEvent.change(screen.getByRole('textbox', { name: /job title/i }), { target: { value: '' } });
   fireEvent.change(screen.getByRole('textbox', { name: /city or region/i }), { target: { value: 'York' } });
   expect(screen.getByText(/for .Registered Nurse. in Leeds/)).toBeInTheDocument();
+});
+
+it('job card links are marked sponsored', async () => {
+  searchJobs.mockResolvedValue(result([job(1)]));
+  renderJobsPage();
+  const link = (await screen.findByText('Staff Nurse 1')).closest('a');
+  expect(link?.getAttribute('rel')).toContain('sponsored');
 });
