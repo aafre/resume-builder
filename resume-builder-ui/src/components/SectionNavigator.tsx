@@ -28,6 +28,7 @@ import { PanelRightClose, PanelRightOpen, ShieldCheck, ChevronRight, ExternalLin
 import { JobSparkleIcon } from "./icons/JobSparkleIcon";
 import { Link } from "react-router-dom";
 import { affiliateConfig, hasAnyAffiliate } from "../config/affiliate";
+import { useJobsAvailable } from "../hooks/useJobsAvailable";
 import { chromeHeight } from "../utils/chromeHeight";
 import { extractJobSearchParams } from "../utils/resumeDataExtractor";
 import type { ContactInfo, Section as ResumeSection } from "../types";
@@ -310,6 +311,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   }`;
 
   const showAffiliates = hasAnyAffiliate();
+  const jobsAvailable = useJobsAvailable() === true;
 
   return (
     <nav
@@ -691,7 +693,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
           )}
 
           {/* Find Matching Jobs — partner-powered job search */}
-          {affiliateConfig.jobSearch.enabled && (
+          {jobsAvailable && (
             isCollapsed ? (
               <Link
                 to="/jobs"

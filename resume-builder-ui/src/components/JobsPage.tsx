@@ -14,6 +14,7 @@ import { extractSearchParamsFromYAML } from '../utils/resumeDataExtractor';
 import type { SeniorityLevel } from '../utils/resumeDataExtractor';
 import { useResumeParser } from '../hooks/useResumeParser';
 import { useAuth } from '../contexts/AuthContext';
+import { useJobsAvailable } from '../hooks/useJobsAvailable';
 import yaml from 'js-yaml';
 import { isExperienceSection } from '../utils/sectionTypeChecker';
 import { SEO_PAGES } from '../config/seoPages';
@@ -116,6 +117,8 @@ export default function JobsPage() {
   const [resumeContext, setResumeContext] = useState<ResumeContext | null>(null);
   const { session } = useAuth();
   useJobImpression(jobs, 'jobs_page', 10);
+  // Master flag + visitor's country served by a job feed (null until known)
+  const jobsAvailable = useJobsAvailable();
   const { parseResume, parsing: parserBusy, progress: parserProgress, progressMessage } = useResumeParser({ source: 'job_search' });
 
   const schemas = usePageSchema({
@@ -163,7 +166,7 @@ export default function JobsPage() {
 
   const handleSearch = useCallback(async (e?: React.FormEvent) => {
     e?.preventDefault();
-    if (!titleInput.trim()) return;
+    if (!titleInput.trim() || jobsAvailable !== true) return;
 
     setLoading(true);
     setError(null);
@@ -255,7 +258,7 @@ export default function JobsPage() {
     } finally {
       setLoading(false);
     }
-  }, [titleInput, locationInput, country, resumeContext, filters, setSearchParams]);
+  }, [titleInput, locationInput, country, resumeContext, filters, setSearchParams, jobsAvailable]);
 
   const handleLoadMore = useCallback(() => {
     setVisibleCount(prev => prev + 10);
@@ -463,365 +466,386 @@ export default function JobsPage() {
           </p>
         </div>
 
-        {/* Search Form */}
-        <form
-          ref={formRef}
-          onSubmit={handleSearch}
-          onDragEnter={handleDragIn}
-          onDragOver={handleDrag}
-          onDragLeave={handleDragOut}
-          onDrop={handleDrop}
-          className="bg-white rounded-2xl shadow-premium card-gradient-border p-4 sm:p-6 mb-8 relative"
-        >
-          {/* Drag overlay */}
-          {dragActive && (
-            <div className="absolute inset-0 bg-accent/10 border-2 border-dashed border-accent rounded-2xl z-10 flex flex-col items-center justify-center gap-2 pointer-events-none">
-              <Upload className="w-8 h-8 text-accent-text" />
-              <p className="text-ink font-semibold text-sm">Drop your resume here (PDF or DOCX)</p>
-            </div>
-          )}
-
-          {/* Parsing progress */}
-          {(resumeParsing || parserBusy) ? (
-            <div className="py-6 flex flex-col items-center gap-3">
-              <div className="w-full max-w-xs bg-gray-200 rounded-full h-2 overflow-clip">
-                <div
-                  className="bg-accent h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${parserProgress}%` }}
-                />
-              </div>
-              <p className="text-sm text-ink/60">{progressMessage || 'Analyzing your resume...'}</p>
-            </div>
-          ) : (
-            <>
-              <div className="flex flex-col sm:flex-row gap-3">
-                {/* Job Title */}
-                <div className="flex-1 relative">
-                  <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/60" />
-                  <input
-                    type="text"
-                    value={titleInput}
-                    onChange={(e) => setTitleInput(e.target.value)}
-                    aria-label="Job title"
-                    placeholder="Job title (e.g. Software Engineer)"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
-                  />
-                </div>
-
-                {/* Location */}
-                <div className="flex-1 relative">
-                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/60" />
-                  <input
-                    type="text"
-                    value={locationInput}
-                    onChange={(e) => setLocationInput(e.target.value)}
-                    aria-label="City or region"
-                    placeholder="City or region (optional)"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
-                  />
-                </div>
-
-                {/* Country */}
-                <div className="relative sm:w-44">
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/60 pointer-events-none" />
-                  <select
-                    aria-label="Country"
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
-                    className="w-full appearance-none pl-4 pr-10 py-3 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
-                  >
-                    {ADZUNA_COUNTRIES.map((c) => (
-                      <option key={c.code} value={c.code}>{c.label}</option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Search Button */}
-                <button
-                  type="submit"
-                  disabled={loading || !titleInput.trim()}
-                  className="btn-primary flex items-center justify-center gap-2 px-6 py-3 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {loading ? (
-                    <div className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
-                  ) : (
-                    <Search className="w-4 h-4" />
-                  )}
-                  <span>{loading ? 'Searching...' : 'Search'}</span>
-                </button>
-              </div>
-
-              {/* Drop hint */}
-              <p className="text-xs text-ink/60 text-center mt-2 flex items-center justify-center gap-1">
-                <Upload className="w-3 h-3" />
-                Or drag &amp; drop your resume (PDF/DOCX) for an instant personalized search
-              </p>
-            </>
-          )}
-        </form>
-
-        {/* Filters */}
-        {hasSearched && !loading && (
-          <JobFilters
-            filters={filters}
-            onChange={handleFilterChange}
-            hasLocation={!!locationInput.trim()}
-          />
-        )}
-
-        {/* Active Filter Chips */}
-        <FilterChips
-          filters={activeFilters}
-          onRemove={handleRemoveFilter}
-          onClearAll={handleClearAllFilters}
-        />
-
-        {/* Error */}
-        {error && (
-          <div className="text-center text-red-600 bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
-            {error}
-          </div>
-        )}
-
-        {/* Role Suggestions */}
-        {suggestions && suggestions.alternative_roles.length > 0 && !loading && (
-          <div className="mb-6 bg-chalk-dark border border-black/[0.06] rounded-2xl p-5">
-            <div className="flex items-center gap-2 mb-2">
-              <Sparkles className="w-4 h-4 text-accent-text" />
-              <h3 className="text-sm font-display font-bold text-ink">Consider these related roles</h3>
-            </div>
-            <p className="text-xs text-ink/60 mb-3">Based on your resume skills and experience</p>
-            <div className="flex flex-wrap gap-2">
-              {suggestions.alternative_roles.map((role) => (
-                <button
-                  key={role}
-                  onClick={() => handlePillClick(role)}
-                  className="px-3 py-1.5 bg-white border border-black/[0.06] text-ink text-sm font-medium rounded-full hover:text-accent-text hover:border-accent/30 transition-all shadow-sm"
-                >
-                  {role}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Results Count */}
-        {hasSearched && !loading && !error && jobs.length > 0 && (
-          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 mb-4">
-            <h2 className="text-lg font-display font-bold text-ink">
-              {totalCount.toLocaleString()} jobs found
-            </h2>
-            <span className="text-sm text-ink/60">
-              for &ldquo;{titleInput}&rdquo;{locationInput ? ` in ${locationInput}` : ''}
-            </span>
-            {resultStatus === 'stale' && <StaleLabel fetchedAt={fetchedAt} className="sm:ml-auto" />}
-          </div>
-        )}
-
-        {/* Tier 3 AI Transparency */}
-        {hasSearched && !loading && aiTermsUsed.length > 0 && (
-          <div className="flex items-center gap-2 mb-6 text-xs text-ink/60">
-            <Info className="w-3.5 h-3.5 flex-shrink-0" />
-            <span>Also searched for:</span>
-            {aiTermsUsed.map((term) => (
-              <span key={term} className="px-2 py-0.5 bg-accent/10 text-accent-text rounded-full font-medium">
-                {term}
-              </span>
-            ))}
-          </div>
-        )}
-
-        {/* Resume Context Banner */}
-        {hasSearched && !loading && jobs.length > 0 && resumeContext && (
-          <div className="mb-6 bg-accent/5 border border-accent/20 rounded-2xl p-4">
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2 min-w-0">
-                <FileText className="w-4 h-4 text-accent-text flex-shrink-0" />
-                <span className="text-sm font-medium text-ink truncate">
-                  Matching against: {resumeContext.fileName}
-                </span>
-              </div>
-              <button
-                onClick={handleClearResume}
-                className="p-1 rounded-lg hover:bg-black/5 text-ink/60 hover:text-ink transition-colors flex-shrink-0"
-                aria-label="Clear resume context"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-            <div className="flex items-center gap-3 mt-2 text-xs text-ink/60 flex-wrap">
-              {resumeContext.displayTitle && (
-                <span className="font-medium">{resumeContext.displayTitle}</span>
-              )}
-              {resumeContext.displayTitle && resumeContext.skills.length > 0 && (
-                <span className="text-ink/60">|</span>
-              )}
-              {resumeContext.skills.length > 0 && (
-                <span className="flex items-center gap-1 flex-wrap">
-                  {resumeContext.skills.slice(0, 3).map((skill) => (
-                    <span key={skill} className="px-2 py-0.5 bg-accent/10 text-accent-text rounded-full">
-                      {skill}
-                    </span>
-                  ))}
-                  {resumeContext.skills.length > 3 && (
-                    <span className="text-ink/60">+{resumeContext.skills.length - 3}</span>
-                  )}
-                </span>
-              )}
-              {resumeContext.yearsExperience > 0 && (
-                <>
-                  <span className="text-ink/60">|</span>
-                  <span>{resumeContext.yearsExperience}yr exp</span>
-                </>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Nudge Banner — when no resume */}
-        {hasSearched && !loading && jobs.length > 0 && !resumeContext && (
-          <div className="flex items-center gap-2 mb-6 text-xs text-ink/60">
-            <Upload className="w-3.5 h-3.5 text-accent-text flex-shrink-0" />
-            <span>Drop your resume on the search box for personalized match scores</span>
-          </div>
-        )}
-
-        {/* Loading Skeletons — mirror JobCard's rows so results land without a jump */}
-        {loading && (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label="Loading jobs">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div
-                key={i}
-                className="bg-white rounded-xl border border-black/[0.08] p-5 flex flex-col gap-1.5 animate-pulse"
-              >
-                <div className="h-7 flex items-center"><div className="h-5 bg-ink/[0.08] rounded w-3/4" /></div>
-                <div className="h-5 flex items-center"><div className="h-3.5 bg-ink/[0.06] rounded w-1/2" /></div>
-                <div className="h-5 flex items-center"><div className="h-3.5 bg-ink/[0.06] rounded w-1/3" /></div>
-                <div className="h-4 mt-3 flex items-center justify-between">
-                  <div className="h-3 bg-ink/[0.06] rounded w-1/5" />
-                  <div className="h-3 bg-ink/[0.06] rounded w-1/6" />
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Job Cards Grid */}
-        {!loading && jobs.length > 0 && (
-          <>
-            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {jobs.slice(0, visibleCount).map((job, i) => (
-                <li key={job.url || i} className="min-w-0">
-                  <JobCard
-                    job={job}
-                    position={i + 1}
-                    context="jobs_page"
-                    country={searchedCountry}
-                    showMatch={!!resumeContext}
-                  />
-                </li>
-              ))}
-            </ul>
-
-            {/* Load More */}
-            {visibleCount < jobs.length && (
-              <div className="text-center mt-6">
-                <button
-                  onClick={handleLoadMore}
-                  className="btn-secondary inline-flex items-center gap-2"
-                >
-                  <Search className="w-4 h-4" />
-                  Load more jobs ({jobs.length - visibleCount} remaining)
-                </button>
-              </div>
-            )}
-          </>
-        )}
-
-        {/* Refreshing: every job feed is out of quota and nothing is saved for this search */}
-        {hasSearched && !loading && !error && resultStatus === 'refreshing' && (
+        {jobsAvailable === false ? (
           <section
-            aria-labelledby="jobs-refreshing-heading"
-            className="bg-white border border-black/[0.08] rounded-2xl px-6 py-10 sm:px-12 sm:py-14 text-center"
+            aria-labelledby="jobs-unavailable-heading"
+            className="bg-white border border-black/[0.08] rounded-2xl px-6 py-10 sm:px-12 sm:py-14 text-center mb-12"
           >
-            <span className="relative mx-auto mb-6 flex w-3 h-3" aria-hidden="true">
-              <span className="absolute inset-0 rounded-full bg-accent/40 motion-safe:animate-ping" />
-              <span className="relative w-3 h-3 rounded-full bg-accent" />
-            </span>
-            <h2 id="jobs-refreshing-heading" className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-ink mb-3">
-              Fresh listings are refreshing
+            <h2 id="jobs-unavailable-heading" className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-ink mb-3">
+              Job listings aren&apos;t available in your country yet
             </h2>
             <p className="font-display text-lg font-extralight leading-relaxed text-ink/60 max-w-xl mx-auto mb-8">
-              New {titleInput.trim() ? <>&ldquo;{titleInput.trim()}&rdquo; </> : ''}roles
-              {locationInput.trim() ? ` in ${locationInput.trim()}` : ''} are on their way.
-              Search the same roles on Adzuna right now, or sharpen your resume while they land.
+              Our job feed doesn&apos;t cover your region, so we won&apos;t show you empty results. Your resume
+              builder works everywhere, free.
             </p>
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
-              {outboundSearchUrl && (
-                <a
-                  href={outboundSearchUrl}
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                  className="btn-primary inline-flex items-center justify-center gap-2 py-3.5 px-8"
-                >
-                  Search {titleInput.trim() || 'jobs'} on Adzuna
-                  <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
-                  <span className="sr-only">(opens in a new tab)</span>
-                </a>
-              )}
-              <Link to={returnTo} className="btn-secondary inline-flex items-center justify-center py-3.5 px-8">
-                Tailor your resume
-              </Link>
-            </div>
+            <Link to="/templates" className="btn-primary inline-flex items-center justify-center py-3.5 px-8">
+              Build your resume
+            </Link>
           </section>
-        )}
+        ) : (
+          <>
+          {/* Search Form */}
+          <form
+            ref={formRef}
+            onSubmit={handleSearch}
+            onDragEnter={handleDragIn}
+            onDragOver={handleDrag}
+            onDragLeave={handleDragOut}
+            onDrop={handleDrop}
+            className="bg-white rounded-2xl shadow-premium card-gradient-border p-4 sm:p-6 mb-8 relative"
+          >
+            {/* Drag overlay */}
+            {dragActive && (
+              <div className="absolute inset-0 bg-accent/10 border-2 border-dashed border-accent rounded-2xl z-10 flex flex-col items-center justify-center gap-2 pointer-events-none">
+                <Upload className="w-8 h-8 text-accent-text" />
+                <p className="text-ink font-semibold text-sm">Drop your resume here (PDF or DOCX)</p>
+              </div>
+            )}
 
-        {/* No Results State */}
-        {hasSearched && !loading && !error && jobs.length === 0 && resultStatus !== 'refreshing' && (
-          <div className="text-center py-12 bg-white rounded-2xl card-gradient-border shadow-premium">
-            <Search className="w-12 h-12 mx-auto mb-3 text-ink/60" />
-            <h3 className="text-lg font-display font-bold text-ink mb-2">No jobs found</h3>
-            <p className="text-sm text-ink/60 mb-6">Try different keywords or a broader location</p>
-            <div className="flex flex-wrap justify-center gap-2 max-w-lg mx-auto">
-              {POPULAR_SEARCHES.slice(0, 6).map((title) => (
-                <button
-                  key={title}
-                  onClick={() => handlePillClick(title)}
-                  className="px-3 py-1.5 bg-chalk-dark text-ink text-xs font-medium rounded-full hover:text-accent-text hover:bg-accent/10 transition-colors"
-                >
-                  {title}
-                </button>
+            {/* Parsing progress */}
+            {(resumeParsing || parserBusy) ? (
+              <div className="py-6 flex flex-col items-center gap-3">
+                <div className="w-full max-w-xs bg-gray-200 rounded-full h-2 overflow-clip">
+                  <div
+                    className="bg-accent h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${parserProgress}%` }}
+                  />
+                </div>
+                <p className="text-sm text-ink/60">{progressMessage || 'Analyzing your resume...'}</p>
+              </div>
+            ) : (
+              <>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  {/* Job Title */}
+                  <div className="flex-1 relative">
+                    <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/60" />
+                    <input
+                      type="text"
+                      value={titleInput}
+                      onChange={(e) => setTitleInput(e.target.value)}
+                      aria-label="Job title"
+                      placeholder="Job title (e.g. Software Engineer)"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
+                    />
+                  </div>
+
+                  {/* Location */}
+                  <div className="flex-1 relative">
+                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/60" />
+                    <input
+                      type="text"
+                      value={locationInput}
+                      onChange={(e) => setLocationInput(e.target.value)}
+                      aria-label="City or region"
+                      placeholder="City or region (optional)"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
+                    />
+                  </div>
+
+                  {/* Country */}
+                  <div className="relative sm:w-44">
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/60 pointer-events-none" />
+                    <select
+                      aria-label="Country"
+                      value={country}
+                      onChange={(e) => setCountry(e.target.value)}
+                      className="w-full appearance-none pl-4 pr-10 py-3 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
+                    >
+                      {ADZUNA_COUNTRIES.map((c) => (
+                        <option key={c.code} value={c.code}>{c.label}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Search Button */}
+                  <button
+                    type="submit"
+                    disabled={loading || !titleInput.trim()}
+                    className="btn-primary flex items-center justify-center gap-2 px-6 py-3 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {loading ? (
+                      <div className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                    ) : (
+                      <Search className="w-4 h-4" />
+                    )}
+                    <span>{loading ? 'Searching...' : 'Search'}</span>
+                  </button>
+                </div>
+
+                {/* Drop hint */}
+                <p className="text-xs text-ink/60 text-center mt-2 flex items-center justify-center gap-1">
+                  <Upload className="w-3 h-3" />
+                  Or drag &amp; drop your resume (PDF/DOCX) for an instant personalized search
+                </p>
+              </>
+            )}
+          </form>
+
+          {/* Filters */}
+          {hasSearched && !loading && (
+            <JobFilters
+              filters={filters}
+              onChange={handleFilterChange}
+              hasLocation={!!locationInput.trim()}
+            />
+          )}
+
+          {/* Active Filter Chips */}
+          <FilterChips
+            filters={activeFilters}
+            onRemove={handleRemoveFilter}
+            onClearAll={handleClearAllFilters}
+          />
+
+          {/* Error */}
+          {error && (
+            <div className="text-center text-red-600 bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
+              {error}
+            </div>
+          )}
+
+          {/* Role Suggestions */}
+          {suggestions && suggestions.alternative_roles.length > 0 && !loading && (
+            <div className="mb-6 bg-chalk-dark border border-black/[0.06] rounded-2xl p-5">
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="w-4 h-4 text-accent-text" />
+                <h3 className="text-sm font-display font-bold text-ink">Consider these related roles</h3>
+              </div>
+              <p className="text-xs text-ink/60 mb-3">Based on your resume skills and experience</p>
+              <div className="flex flex-wrap gap-2">
+                {suggestions.alternative_roles.map((role) => (
+                  <button
+                    key={role}
+                    onClick={() => handlePillClick(role)}
+                    className="px-3 py-1.5 bg-white border border-black/[0.06] text-ink text-sm font-medium rounded-full hover:text-accent-text hover:border-accent/30 transition-all shadow-sm"
+                  >
+                    {role}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Results Count */}
+          {hasSearched && !loading && !error && jobs.length > 0 && (
+            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 mb-4">
+              <h2 className="text-lg font-display font-bold text-ink">
+                {totalCount.toLocaleString()} jobs found
+              </h2>
+              <span className="text-sm text-ink/60">
+                for &ldquo;{titleInput}&rdquo;{locationInput ? ` in ${locationInput}` : ''}
+              </span>
+              {resultStatus === 'stale' && <StaleLabel fetchedAt={fetchedAt} className="sm:ml-auto" />}
+            </div>
+          )}
+
+          {/* Tier 3 AI Transparency */}
+          {hasSearched && !loading && aiTermsUsed.length > 0 && (
+            <div className="flex items-center gap-2 mb-6 text-xs text-ink/60">
+              <Info className="w-3.5 h-3.5 flex-shrink-0" />
+              <span>Also searched for:</span>
+              {aiTermsUsed.map((term) => (
+                <span key={term} className="px-2 py-0.5 bg-accent/10 text-accent-text rounded-full font-medium">
+                  {term}
+                </span>
               ))}
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Empty State (before searching) — Popular searches */}
-        {!hasSearched && !loading && (
-          <div className="text-center py-12">
-            <Briefcase className="w-12 h-12 mx-auto mb-3 text-ink/60" />
-            <p className="text-lg font-display font-bold text-ink mb-1">Search for your next opportunity</p>
-            <p className="text-sm text-ink/60 mb-6">Or try one of these popular searches</p>
-            <div className="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto">
-              {POPULAR_SEARCHES.map((title) => (
+          {/* Resume Context Banner */}
+          {hasSearched && !loading && jobs.length > 0 && resumeContext && (
+            <div className="mb-6 bg-accent/5 border border-accent/20 rounded-2xl p-4">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2 min-w-0">
+                  <FileText className="w-4 h-4 text-accent-text flex-shrink-0" />
+                  <span className="text-sm font-medium text-ink truncate">
+                    Matching against: {resumeContext.fileName}
+                  </span>
+                </div>
                 <button
-                  key={title}
-                  onClick={() => handlePillClick(title)}
-                  className="px-4 py-2 bg-white border border-black/[0.06] text-ink text-sm font-medium rounded-full hover:text-accent-text hover:border-accent/30 transition-all shadow-sm"
+                  onClick={handleClearResume}
+                  className="p-1 rounded-lg hover:bg-black/5 text-ink/60 hover:text-ink transition-colors flex-shrink-0"
+                  aria-label="Clear resume context"
                 >
-                  {title}
+                  <X className="w-4 h-4" />
                 </button>
+              </div>
+              <div className="flex items-center gap-3 mt-2 text-xs text-ink/60 flex-wrap">
+                {resumeContext.displayTitle && (
+                  <span className="font-medium">{resumeContext.displayTitle}</span>
+                )}
+                {resumeContext.displayTitle && resumeContext.skills.length > 0 && (
+                  <span className="text-ink/60">|</span>
+                )}
+                {resumeContext.skills.length > 0 && (
+                  <span className="flex items-center gap-1 flex-wrap">
+                    {resumeContext.skills.slice(0, 3).map((skill) => (
+                      <span key={skill} className="px-2 py-0.5 bg-accent/10 text-accent-text rounded-full">
+                        {skill}
+                      </span>
+                    ))}
+                    {resumeContext.skills.length > 3 && (
+                      <span className="text-ink/60">+{resumeContext.skills.length - 3}</span>
+                    )}
+                  </span>
+                )}
+                {resumeContext.yearsExperience > 0 && (
+                  <>
+                    <span className="text-ink/60">|</span>
+                    <span>{resumeContext.yearsExperience}yr exp</span>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Nudge Banner — when no resume */}
+          {hasSearched && !loading && jobs.length > 0 && !resumeContext && (
+            <div className="flex items-center gap-2 mb-6 text-xs text-ink/60">
+              <Upload className="w-3.5 h-3.5 text-accent-text flex-shrink-0" />
+              <span>Drop your resume on the search box for personalized match scores</span>
+            </div>
+          )}
+
+          {/* Loading Skeletons — mirror JobCard's rows so results land without a jump */}
+          {loading && (
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label="Loading jobs">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="bg-white rounded-xl border border-black/[0.08] p-5 flex flex-col gap-1.5 animate-pulse"
+                >
+                  <div className="h-7 flex items-center"><div className="h-5 bg-ink/[0.08] rounded w-3/4" /></div>
+                  <div className="h-5 flex items-center"><div className="h-3.5 bg-ink/[0.06] rounded w-1/2" /></div>
+                  <div className="h-5 flex items-center"><div className="h-3.5 bg-ink/[0.06] rounded w-1/3" /></div>
+                  <div className="h-4 mt-3 flex items-center justify-between">
+                    <div className="h-3 bg-ink/[0.06] rounded w-1/5" />
+                    <div className="h-3 bg-ink/[0.06] rounded w-1/6" />
+                  </div>
+                </div>
               ))}
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Powered by */}
-        <div className="text-center mt-8 mb-12">
-          <p className="text-xs text-ink/60">
-            Job listings powered by Adzuna
-          </p>
-        </div>
+          {/* Job Cards Grid */}
+          {!loading && jobs.length > 0 && (
+            <>
+              <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {jobs.slice(0, visibleCount).map((job, i) => (
+                  <li key={job.url || i} className="min-w-0">
+                    <JobCard
+                      job={job}
+                      position={i + 1}
+                      context="jobs_page"
+                      country={searchedCountry}
+                      showMatch={!!resumeContext}
+                    />
+                  </li>
+                ))}
+              </ul>
+
+              {/* Load More */}
+              {visibleCount < jobs.length && (
+                <div className="text-center mt-6">
+                  <button
+                    onClick={handleLoadMore}
+                    className="btn-secondary inline-flex items-center gap-2"
+                  >
+                    <Search className="w-4 h-4" />
+                    Load more jobs ({jobs.length - visibleCount} remaining)
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+
+          {/* Refreshing: every job feed is out of quota and nothing is saved for this search */}
+          {hasSearched && !loading && !error && resultStatus === 'refreshing' && (
+            <section
+              aria-labelledby="jobs-refreshing-heading"
+              className="bg-white border border-black/[0.08] rounded-2xl px-6 py-10 sm:px-12 sm:py-14 text-center"
+            >
+              <span className="relative mx-auto mb-6 flex w-3 h-3" aria-hidden="true">
+                <span className="absolute inset-0 rounded-full bg-accent/40 motion-safe:animate-ping" />
+                <span className="relative w-3 h-3 rounded-full bg-accent" />
+              </span>
+              <h2 id="jobs-refreshing-heading" className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-ink mb-3">
+                Fresh listings are refreshing
+              </h2>
+              <p className="font-display text-lg font-extralight leading-relaxed text-ink/60 max-w-xl mx-auto mb-8">
+                New {titleInput.trim() ? <>&ldquo;{titleInput.trim()}&rdquo; </> : ''}roles
+                {locationInput.trim() ? ` in ${locationInput.trim()}` : ''} are on their way.
+                Search the same roles on Adzuna right now, or sharpen your resume while they land.
+              </p>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
+                {outboundSearchUrl && (
+                  <a
+                    href={outboundSearchUrl}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    className="btn-primary inline-flex items-center justify-center gap-2 py-3.5 px-8"
+                  >
+                    Search {titleInput.trim() || 'jobs'} on Adzuna
+                    <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+                    <span className="sr-only">(opens in a new tab)</span>
+                  </a>
+                )}
+                <Link to={returnTo} className="btn-secondary inline-flex items-center justify-center py-3.5 px-8">
+                  Tailor your resume
+                </Link>
+              </div>
+            </section>
+          )}
+
+          {/* No Results State */}
+          {hasSearched && !loading && !error && jobs.length === 0 && resultStatus !== 'refreshing' && (
+            <div className="text-center py-12 bg-white rounded-2xl card-gradient-border shadow-premium">
+              <Search className="w-12 h-12 mx-auto mb-3 text-ink/60" />
+              <h3 className="text-lg font-display font-bold text-ink mb-2">No jobs found</h3>
+              <p className="text-sm text-ink/60 mb-6">Try different keywords or a broader location</p>
+              <div className="flex flex-wrap justify-center gap-2 max-w-lg mx-auto">
+                {POPULAR_SEARCHES.slice(0, 6).map((title) => (
+                  <button
+                    key={title}
+                    onClick={() => handlePillClick(title)}
+                    className="px-3 py-1.5 bg-chalk-dark text-ink text-xs font-medium rounded-full hover:text-accent-text hover:bg-accent/10 transition-colors"
+                  >
+                    {title}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Empty State (before searching) — Popular searches */}
+          {!hasSearched && !loading && (
+            <div className="text-center py-12">
+              <Briefcase className="w-12 h-12 mx-auto mb-3 text-ink/60" />
+              <p className="text-lg font-display font-bold text-ink mb-1">Search for your next opportunity</p>
+              <p className="text-sm text-ink/60 mb-6">Or try one of these popular searches</p>
+              <div className="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto">
+                {POPULAR_SEARCHES.map((title) => (
+                  <button
+                    key={title}
+                    onClick={() => handlePillClick(title)}
+                    className="px-4 py-2 bg-white border border-black/[0.06] text-ink text-sm font-medium rounded-full hover:text-accent-text hover:border-accent/30 transition-all shadow-sm"
+                  >
+                    {title}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Powered by */}
+          <div className="text-center mt-8 mb-12">
+            <p className="text-xs text-ink/60">
+              Job listings powered by Adzuna
+            </p>
+          </div>
+
+          </>
+        )}
 
         {/* ===== Static SEO Content ===== */}
 

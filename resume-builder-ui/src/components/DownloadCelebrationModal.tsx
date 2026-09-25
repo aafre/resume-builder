@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, useCallback, useId } from "react";
 import ModalShell from "./shared/ModalShell";
 import { ClipboardCheck, ExternalLink, ShieldAlert } from "lucide-react";
-import { affiliateConfig, hasAnyAffiliate } from "../config/affiliate";
+import { affiliateConfig } from "../config/affiliate";
+import { useJobsAvailable } from "../hooks/useJobsAvailable";
 import { ContactInfo, Section } from "../types";
 import { extractJobSearchParams, JobSearchParams } from "../utils/resumeDataExtractor";
 import { searchJobs, AdzunaJob } from "../services/jobs";
@@ -35,11 +36,13 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
   const [jobsLoading, setJobsLoading] = useState(false);
   const [jobSearchParams, setJobSearchParams] = useState<JobSearchParams | null>(null);
   useJobImpression(jobs, "post_download");
+  // Master flag + visitor's country served by a job feed; null until known
+  const jobsAvailable = useJobsAvailable();
 
 
   // Fetch jobs when modal opens
   useEffect(() => {
-    if (!isOpen || !affiliateConfig.jobSearch.enabled) return;
+    if (!isOpen || jobsAvailable !== true) return;
 
     const params = extractJobSearchParams(contactInfo, sections);
     if (!params) return;
@@ -66,7 +69,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
         // Silently fail — hide section on error
       })
       .finally(() => setJobsLoading(false));
-  }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isOpen, jobsAvailable]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Ref callback to initialize the TrustBox widget when mounted.
   // The Trustpilot bootstrap script is loaded on-demand here (not globally in
@@ -80,8 +83,9 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
 
   if (!isOpen) return null;
 
-  const showAffiliate = hasAnyAffiliate();
-  const showJobSection = affiliateConfig.jobSearch.enabled && (jobsLoading || jobs.length > 0);
+  const hasResumeReview = affiliateConfig.resumeReview.enabled && !!affiliateConfig.resumeReview.url;
+  const showAffiliate = hasResumeReview || jobsAvailable === true;
+  const showJobSection = jobsAvailable === true && (jobsLoading || jobs.length > 0);
 
   return (
     <ModalShell

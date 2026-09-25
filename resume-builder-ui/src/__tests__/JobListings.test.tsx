@@ -31,6 +31,9 @@ vi.mock('../config/affiliate', () => ({
   hasAnyAffiliate: () => true,
 }));
 
+let jobsAvailable: boolean | null = true;
+vi.mock('../hooks/useJobsAvailable', () => ({ useJobsAvailable: () => jobsAvailable }));
+
 vi.mock('../utils/trustpilot', () => ({ ensureTrustpilotLoaded: () => new Promise(() => {}) }));
 vi.mock('../contexts/AuthContext', () => ({ useAuth: () => ({ session: null }) }));
 vi.mock('../hooks/useResumeParser', () => ({
@@ -98,6 +101,7 @@ beforeEach(() => {
   trackJobClick.mockReset();
   trackJobQuotaExhausted.mockReset();
   sessionStorage.clear();
+  jobsAvailable = true;
 });
 
 describe.each([
@@ -226,4 +230,40 @@ it('/jobs is noindex, follow', async () => {
   await waitFor(() =>
     expect(document.head.querySelector('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow'),
   );
+});
+
+describe('country not served by any job feed', () => {
+  beforeEach(() => {
+    jobsAvailable = false;
+    searchJobs.mockResolvedValue(result([job(1)]));
+  });
+
+  it('post-download: no job section and no search', async () => {
+    renderModal();
+    await screen.findByText(/Resume Downloaded Successfully/);
+    expect(searchJobs).not.toHaveBeenCalled();
+    expect(screen.queryByText(/Jobs matching/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/What.s Next/i)).not.toBeInTheDocument();
+  });
+
+  it('/jobs: no search, no results, a plain notice instead', async () => {
+    renderJobsPage();
+    expect(await screen.findByText(/job listings aren.t available in your country yet/i)).toBeInTheDocument();
+    expect(searchJobs).not.toHaveBeenCalled();
+    expect(screen.queryByRole('textbox', { name: /job title/i })).not.toBeInTheDocument();
+    expect(screen.queryByText(/jobs found|no jobs found/i)).not.toBeInTheDocument();
+  });
+});
+
+it('post-download waits for availability before searching', async () => {
+  jobsAvailable = null;
+  searchJobs.mockResolvedValue(result([job(1)]));
+  const { rerender } = renderModal();
+  await screen.findByText(/Resume Downloaded Successfully/);
+  expect(searchJobs).not.toHaveBeenCalled();
+  jobsAvailable = true;
+  rerender(
+    <DownloadCelebrationModal isOpen onClose={() => {}} onSignUp={() => {}} isAnonymous={false} contactInfo={null} sections={[]} />,
+  );
+  expect(await screen.findByText('Staff Nurse 1')).toBeInTheDocument();
 });

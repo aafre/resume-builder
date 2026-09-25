@@ -8,7 +8,7 @@ import { Check, X } from 'lucide-react';
 import { JobSparkleIcon } from '../icons/JobSparkleIcon';
 import { ContactInfo, Section, SaveStatus } from '../../types';
 import { SaveStatusIndicator } from '../SaveStatusIndicator';
-import { affiliateConfig } from '../../config/affiliate';
+import { useJobsAvailable } from '../../hooks/useJobsAvailable';
 import { extractJobSearchParams } from '../../utils/resumeDataExtractor';
 import { searchJobs } from '../../services/jobs';
 import { getSalaryFloor } from '../../utils/salaryFloor';
@@ -54,6 +54,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
   sections,
 }) => {
   const [jobCount, setJobCount] = useState<number | null>(null);
+  const jobsAvailable = useJobsAvailable() === true;
   const [loading, setLoading] = useState(false);
   const [showMobileBanner, setShowMobileBanner] = useState(false);
   const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
@@ -68,7 +69,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
   }, []);
 
   const fetchJobCount = useCallback(async () => {
-    if (!affiliateConfig.jobSearch.enabled) return;
+    if (!jobsAvailable) return;
 
     const params = extractJobSearchParams(contactInfo, sections);
     if (!params) {
@@ -98,10 +99,10 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
     } finally {
       setLoading(false);
     }
-  }, [contactInfo, sections]);
+  }, [contactInfo, sections, jobsAvailable]);
 
   useEffect(() => {
-    if (!affiliateConfig.jobSearch.enabled) return;
+    if (!jobsAvailable) return;
 
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(fetchJobCount, 300);
@@ -113,7 +114,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
 
   // Mobile banner: show once per session when jobCount first loads
   useEffect(() => {
-    if (!affiliateConfig.jobSearch.enabled) return;
+    if (!jobsAvailable) return;
     if (jobCount === null || jobCount === 0 || loading) return;
 
     try {
@@ -143,7 +144,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
     }
   };
 
-  const showBadge = affiliateConfig.jobSearch.enabled && (loading || (jobCount !== null && jobCount > 0));
+  const showBadge = jobsAvailable && (loading || (jobCount !== null && jobCount > 0));
 
   const handleBadgeClick = () => {
     const params = extractJobSearchParams(contactInfo, sections);
