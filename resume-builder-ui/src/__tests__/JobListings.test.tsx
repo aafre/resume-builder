@@ -5,6 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { AdzunaJob, JobSearchResult } from '../services/jobs';
+import { JobSearchError } from '../services/jobs';
 
 const searchJobs = vi.fn<(opts: unknown) => Promise<JobSearchResult>>();
 vi.mock('../services/jobs', async (orig) => ({
@@ -344,4 +345,19 @@ it('job card links are marked sponsored', async () => {
   renderJobsPage();
   const link = (await screen.findByText('Staff Nurse 1')).closest('a');
   expect(link?.getAttribute('rel')).toContain('sponsored');
+});
+
+it('/jobs shows the server\'s 429 message verbatim, not a generic error', async () => {
+  searchJobs.mockRejectedValue(
+    new JobSearchError('Too many searches — try again in a few minutes', 429),
+  );
+  renderJobsPage();
+  expect(await screen.findByText('Too many searches — try again in a few minutes')).toBeInTheDocument();
+  expect(screen.queryByText(/unable to fetch jobs/i)).not.toBeInTheDocument();
+});
+
+it('/jobs falls back to a generic message for non-429 failures', async () => {
+  searchJobs.mockRejectedValue(new JobSearchError('Job search not configured', 502));
+  renderJobsPage();
+  expect(await screen.findByText(/unable to fetch jobs/i)).toBeInTheDocument();
 });
