@@ -219,3 +219,11 @@ it('/jobs refreshing without an editor to return to links to saved resumes', asy
   renderJobsPage();
   expect(await screen.findByRole('link', { name: /tailor your resume/i })).toHaveAttribute('href', '/my-resumes');
 });
+
+it('/jobs is noindex, follow', async () => {
+  searchJobs.mockResolvedValue(result([]));
+  renderJobsPage('/jobs');
+  await waitFor(() =>
+    expect(document.head.querySelector('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow'),
+  );
+});

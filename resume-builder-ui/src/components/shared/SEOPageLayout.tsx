@@ -37,6 +37,7 @@ export default function SEOPageLayout({
         structuredData={schemas.length === 1 ? schemas[0] : wrapInGraph(schemas)}
         hreflangLinks={seoConfig.hreflangLinks}
         ogLocale={seoConfig.ogLocale}
+        robots={seoConfig.robots}
       />
       {/* `.seo-shell` owns overflow-x: clip (so full-bleed Bands can overshoot
           the content column without producing a scrollbar) plus the browser

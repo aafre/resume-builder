@@ -815,6 +815,8 @@ export const SEO_PAGES: Record<string, PageConfig> = {
         'resume job search',
       ],
       canonicalUrl: '/jobs',
+      // Release 1: a search page full of job-feed text stays out of the index (ADR-0001)
+      robots: 'noindex, follow',
     },
     breadcrumbs: [
       { label: 'Home', href: '/' },
