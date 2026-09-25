@@ -186,6 +186,14 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     metaDescription: 'Staff software engineer resume example showing cross-team architecture, a migration and mentoring, plus senior vs staff bullet rewrites. Edit it free.',
     lastmod: '2026-09-25',
   },
+  {
+    slug: 'mlops-engineer',
+    title: 'MLOps Engineer',
+    category: 'tech',
+    priority: 0.7,
+    metaDescription: 'MLOps engineer resume example built from real job postings: model serving, monitoring and cost bullets, skills, and an AI platform engineer variant.',
+    lastmod: '2026-09-25',
+  },
 
   // Tier 6: Creative
   {
