@@ -1224,8 +1224,15 @@ _pseo_renderer = None
 
 
 def _get_pseo_renderer():
-    """Lazy-init the pSEO renderer on first use."""
+    """Lazy-init the pSEO renderer on first use.
+
+    Off unless JOBS_PSEO_ENABLED is true, even with Adzuna credentials set
+    (ADR-0001). When off, /jobs* crawlers get the SPA shell and the jobs
+    sitemap 404s.
+    """
     global _pseo_renderer
+    if os.getenv("JOBS_PSEO_ENABLED", "").strip().lower() not in ("1", "true", "yes"):
+        return None
     if _pseo_renderer is not None:
         return _pseo_renderer
 
