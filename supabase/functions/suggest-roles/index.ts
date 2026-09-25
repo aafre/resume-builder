@@ -30,14 +30,29 @@ serve(async (req: Request) => {
     );
   }
 
+  const internalKey = Deno.env.get('INTERNAL_FN_KEY');
+  if (!internalKey || req.headers.get('x-internal-key') !== internalKey) {
+    return new Response(
+      JSON.stringify({ success: false, error: 'Unauthorized' }),
+      { status: 401, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } }
+    );
+  }
+
   try {
-    const { title, skills, experience_titles } = await req.json();
-    if (!title || typeof title !== 'string' || title.trim().length === 0) {
+    const { title: rawTitle, skills: rawSkills, experience_titles: rawExperienceTitles } = await req.json();
+    if (!rawTitle || typeof rawTitle !== 'string' || rawTitle.trim().length === 0) {
       return new Response(
         JSON.stringify({ success: false, error: 'title is required' }),
         { status: 400, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } }
       );
     }
+    const title = rawTitle.slice(0, 100);
+    const skills = Array.isArray(rawSkills)
+      ? rawSkills.filter((s: unknown) => typeof s === 'string').slice(0, 30).map((s: string) => s.slice(0, 50))
+      : [];
+    const experience_titles = Array.isArray(rawExperienceTitles)
+      ? rawExperienceTitles.filter((t: unknown) => typeof t === 'string').slice(0, 10).map((t: string) => t.slice(0, 100))
+      : [];
 
     const apiKey = Deno.env.get('OPENAI_API_KEY');
     if (!apiKey) {
