@@ -1,6 +1,7 @@
 import atexit
 import base64
 import copy
+import dataclasses
 import hashlib
 import json
 import logging
@@ -44,7 +45,14 @@ load_dotenv()
 
 # pSEO imports (lazy — only used in production or when ADZUNA keys present)
 from jobs_pseo import PageType, PseoRenderer, load_vite_manifest
-from job_feeds import ADZUNA_COUNTRIES, AdzunaFeed, FeedError
+from job_feeds import (
+    ADZUNA_COUNTRIES,
+    AdzunaFeed,
+    FeedError,
+    FeedQuotaExceeded,
+    is_exhausted,
+    mark_exhausted,
+)
 
 # Configure logging based on environment variable
 # Set DEBUG_LOGGING=true to enable detailed debug logs for troubleshooting
@@ -4138,6 +4146,34 @@ def update_user_preferences():
 
 ADZUNA_SUPPORTED_COUNTRIES = ADZUNA_COUNTRIES
 
+# Last good result per search, served as "stale" only when every feed is
+# exhausted or failing. Separate from the 15-minute cache below.
+_saved_job_results: dict[str, tuple[float, dict]] = {}
+_SAVED_JOB_RESULTS_TTL = 24 * 3600
+
+
+def _save_job_result(key: str, data: dict, now: float) -> None:
+    for k in [k for k, (ts, _) in _saved_job_results.items() if now - ts >= _SAVED_JOB_RESULTS_TTL]:
+        del _saved_job_results[k]
+    _saved_job_results[key] = (now, data)
+
+
+def _job_fallback(key: str, feeds: list, context, now: float) -> dict:
+    """No feed could answer: last saved result (stale), else a refreshing state."""
+    saved = _saved_job_results.get(key)
+    if saved and now - saved[0] < _SAVED_JOB_RESULTS_TTL:
+        fetched_at = datetime.fromtimestamp(saved[0], timezone.utc).isoformat()
+        return {**saved[1], "status": "stale", "fetchedAt": fetched_at}
+    return {
+        "count": 0,
+        "jobs": [],
+        "ai_terms_used": [],
+        "total_available": 0,
+        "status": "refreshing",
+        "searchUrl": feeds[0].search_url(context.query, context.location, context.country),
+    }
+
+
 # Simple TTL cache for Adzuna responses (15 minutes)
 _adzuna_cache = {}
 _ADZUNA_CACHE_TTL = 900  # seconds
@@ -4208,10 +4244,16 @@ def _search_jobs_post():
     except (ValueError, TypeError) as e:
         return jsonify({"success": False, "error": f"Invalid parameter: {e}"}), 400
 
+    # Key before searching: the engine relaxes title_only on the context.
+    saved_key = json.dumps(dataclasses.asdict(context), sort_keys=True)
     try:
         engine = JobMatchEngine(feeds, supabase=supabase)
         data = engine.search_and_rank(context)
+        now = time.time()
+        if not data["jobs"] and not engine.feed_answered:
+            return jsonify({"success": True, "data": _job_fallback(saved_key, feeds, context, now)})
         data["status"] = "fresh"
+        _save_job_result(saved_key, data, now)
         return jsonify({"success": True, "data": data})
     except Exception as e:
         logging.error(f"Job match engine error: {e}")
@@ -4269,7 +4311,15 @@ def _search_jobs_get():
         return jsonify({"success": True, "data": cached["data"]})
 
     try:
+        if is_exhausted(feed.name):
+            raise FeedError("quota exhausted for today")
         jobs, count = feed.search(context, query)
+    except FeedQuotaExceeded:
+        mark_exhausted(feed.name)
+        return (
+            jsonify({"success": False, "error": "Job search temporarily unavailable"}),
+            502,
+        )
     except FeedError as e:
         logging.error(f"Job feed error: {e}")
         return (

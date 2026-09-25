@@ -155,3 +155,106 @@ def test_legacy_get_goes_through_feed(jobs_client):
     assert "_description" not in data["jobs"][0]
     assert fake.calls[0]["params"]["what_or"] == "python"
     assert fake.calls[0]["params"]["results_per_page"] == 10
+
+
+# =============================================================================
+# Quota fallback (#823): skip exhausted feed for the UTC day, serve saved
+# results as stale, else an explicit refreshing state.
+# =============================================================================
+
+
+@pytest.fixture(autouse=True)
+def clean_job_state():
+    import app as flask_app
+    import job_feeds
+    flask_app._saved_job_results.clear()
+    flask_app._adzuna_cache.clear()
+    job_feeds._exhausted_on.clear()
+    yield
+    flask_app._saved_job_results.clear()
+    job_feeds._exhausted_on.clear()
+
+
+NURSES = {"nurse": [adzuna_job(f"Nurse {i}") for i in range(5)]}
+
+
+def test_quota_error_skips_adzuna_for_rest_of_utc_day(jobs_client, caplog):
+    client, _ = jobs_client
+    exhausted = FakeAdzuna(NURSES, status=429)
+
+    with patch("requests.get", exhausted):
+        post_search(client, query="nurse")
+        assert len(exhausted.calls) == 1  # no tier 2/3 calls after the quota error
+        post_search(client, query="nurse")
+    assert len(exhausted.calls) == 1
+    assert "job_quota_exhausted" in caplog.text
+
+    tomorrow = FakeAdzuna(NURSES)
+    with patch("requests.get", tomorrow), \
+            patch("job_feeds._utc_today", return_value="2999-01-01"):
+        data = post_search(client, query="nurse").get_json()["data"]
+    assert len(tomorrow.calls) == 1
+    assert data["status"] == "fresh"
+
+
+def test_exhausted_with_saved_result_serves_stale(jobs_client):
+    client, _ = jobs_client
+    with patch("requests.get", FakeAdzuna(NURSES)):
+        fresh = post_search(client, query="nurse", location="Leeds").get_json()["data"]
+
+    with patch("requests.get", FakeAdzuna(NURSES, status=429)):
+        data = post_search(client, query="nurse", location="Leeds").get_json()["data"]
+
+    assert data["status"] == "stale"
+    assert data["jobs"] == fresh["jobs"]
+    fetched = datetime.fromisoformat(data["fetchedAt"])
+    assert datetime.now(timezone.utc) - fetched < timedelta(minutes=1)
+
+
+def test_saved_result_older_than_a_day_is_not_served(jobs_client, monkeypatch):
+    client, flask_app = jobs_client
+    with patch("requests.get", FakeAdzuna(NURSES)):
+        post_search(client, query="nurse")
+
+    real_time = flask_app.time.time
+    monkeypatch.setattr(flask_app.time, "time", lambda: real_time() + 25 * 3600)
+    with patch("requests.get", FakeAdzuna(NURSES, status=429)):
+        data = post_search(client, query="nurse").get_json()["data"]
+    assert data["status"] == "refreshing"
+
+
+def test_exhausted_with_nothing_saved_returns_refreshing_with_search_url(jobs_client):
+    client, _ = jobs_client
+    with patch("requests.get", FakeAdzuna(NURSES, status=429)):
+        resp = post_search(client, query="Staff Nurse", location="Leeds")
+
+    assert resp.status_code == 200
+    data = resp.get_json()["data"]
+    assert data["status"] == "refreshing"
+    assert data["jobs"] == [] and data["count"] == 0
+    assert data["searchUrl"].startswith("https://www.adzuna.co.uk/")
+    assert "Staff+Nurse" in data["searchUrl"] and "Leeds" in data["searchUrl"]
+
+
+def test_feed_failure_also_falls_back(jobs_client):
+    client, _ = jobs_client
+    with patch("requests.get", FakeAdzuna(NURSES, status=500)):
+        data = post_search(client, query="nurse").get_json()["data"]
+    assert data["status"] == "refreshing"
+
+
+def test_genuinely_empty_search_stays_fresh(jobs_client):
+    client, _ = jobs_client
+    with patch("requests.get", FakeAdzuna({})):
+        data = post_search(client, query="underwater basket weaver").get_json()["data"]
+    assert data["status"] == "fresh"
+    assert data["jobs"] == []
+
+
+def test_legacy_get_respects_quota(jobs_client):
+    client, _ = jobs_client
+    fake = FakeAdzuna({"dev": [adzuna_job("Dev")]}, status=429)
+    with patch("requests.get", fake):
+        assert client.get("/api/jobs/search?query=dev").status_code == 502
+        assert client.post("/api/jobs/search", json={"query": "dev"}).get_json()["data"]["status"] == "refreshing"
+    assert len(fake.calls) == 1

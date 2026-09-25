@@ -15,7 +15,7 @@ import math
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 
-from job_feeds import FeedError
+from job_feeds import FeedError, FeedQuotaExceeded, is_exhausted, mark_exhausted
 
 
 # =============================================================================
@@ -462,6 +462,9 @@ class JobMatchEngine:
     def __init__(self, feeds: list, supabase=None):
         self.feeds = feeds
         self.supabase = supabase
+        # False when every usable feed was exhausted or failed: an empty result
+        # then means "no data", not "no jobs".
+        self.feed_answered = False
 
     def search_and_rank(self, context: MatchContext, keep_description: bool = False) -> dict:
         """
@@ -518,17 +521,21 @@ class JobMatchEngine:
         return result
 
     def _fetch(self, context: MatchContext, query: str) -> tuple[list[dict], int]:
-        """Query every configured feed that covers the country; a failing feed is skipped."""
+        """Query every usable feed for the country; exhausted or failing feeds are skipped."""
         jobs: list[dict] = []
         total = 0
         for feed in self.feeds:
-            if not feed.configured or context.country not in feed.countries:
+            if not feed.configured or context.country not in feed.countries or is_exhausted(feed.name):
                 continue
             try:
                 found, count = feed.search(context, query)
+            except FeedQuotaExceeded:
+                mark_exhausted(feed.name)
+                continue
             except FeedError as e:
                 logging.error(f"Job feed {feed.name} failed for query '{query}': {e}")
                 continue
+            self.feed_answered = True
             jobs.extend(found)
             total += count
         return jobs, total

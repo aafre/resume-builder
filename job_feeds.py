@@ -10,14 +10,19 @@ feed's API directly:
     search(context, query) -> (listings, total_available)
         raises FeedQuotaExceeded on a quota/rate-limit response,
         FeedError on any other failure
+    search_url(query, location, country) -> the feed's own public search page,
+        used as the outbound link when no listings can be served
 
 Listings are normalised dicts: title, company, location, salary_min,
 salary_max, salary_is_predicted, url, created, feed, plus the internal
 `_description` (used for scoring, stripped before responses).
 """
 
+import logging
 import os
+from datetime import datetime, timezone
 from typing import Protocol
+from urllib.parse import urlencode
 
 import requests as http_requests
 
@@ -39,11 +44,44 @@ class JobFeed(Protocol):
 
     def search(self, context, query: str) -> tuple[list[dict], int]: ...
 
+    def search_url(self, query: str, location: str, country: str) -> str: ...
+
+
+# Feeds that hit their quota are skipped until the UTC date changes.
+# ponytail: per-process memory; each worker learns about exhaustion on its own
+# first 429, which costs one extra call per worker per day.
+_exhausted_on: dict[str, str] = {}
+
+
+def _utc_today() -> str:
+    return datetime.now(timezone.utc).date().isoformat()
+
+
+def is_exhausted(feed_name: str) -> bool:
+    return _exhausted_on.get(feed_name) == _utc_today()
+
+
+def mark_exhausted(feed_name: str) -> None:
+    _exhausted_on[feed_name] = _utc_today()
+    logging.warning(f"job_quota_exhausted feed={feed_name}: skipped until next UTC day")
+
 
 ADZUNA_COUNTRIES = frozenset({
     "gb", "us", "at", "au", "be", "br", "ca", "ch", "de", "es",
     "fr", "in", "it", "mx", "nl", "nz", "pl", "sg", "za",
 })
+
+
+# Adzuna's public site per country, for the outbound search link.
+ADZUNA_SITES = {
+    "gb": "www.adzuna.co.uk", "us": "www.adzuna.com", "at": "www.adzuna.at",
+    "au": "www.adzuna.com.au", "be": "www.adzuna.be", "br": "www.adzuna.com.br",
+    "ca": "www.adzuna.ca", "ch": "www.adzuna.ch", "de": "www.adzuna.de",
+    "es": "www.adzuna.es", "fr": "www.adzuna.fr", "in": "www.adzuna.in",
+    "it": "www.adzuna.it", "mx": "www.adzuna.com.mx", "nl": "www.adzuna.nl",
+    "nz": "www.adzuna.co.nz", "pl": "www.adzuna.pl", "sg": "www.adzuna.sg",
+    "za": "www.adzuna.co.za",
+}
 
 
 class AdzunaFeed:
@@ -62,6 +100,12 @@ class AdzunaFeed:
     @property
     def configured(self) -> bool:
         return bool(self.app_id and self.app_key)
+
+    def search_url(self, query: str, location: str, country: str) -> str:
+        params = {"q": query}
+        if location:
+            params["w"] = location
+        return f"https://{ADZUNA_SITES.get(country, ADZUNA_SITES['us'])}/search?{urlencode(params)}"
 
     def params(self, context, query: str) -> dict:
         """Adzuna query params for a MatchContext and search term."""
