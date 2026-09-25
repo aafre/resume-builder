@@ -271,3 +271,33 @@ def test_repeat_search_within_15_minutes_is_served_from_cache(jobs_client):
         second = post_search(client, query="nurse").get_json()["data"]
     assert len(fake.calls) == 1
     assert second == first
+
+
+# =============================================================================
+# Country gating (#824): CF-IPCountry decides whether the jobs feature shows.
+# =============================================================================
+
+
+@pytest.mark.parametrize("header, available", [
+    ("GB", True),
+    ("us", True),
+    ("JP", False),
+    ("XX", False),  # Cloudflare: unknown
+    ("T1", False),  # Cloudflare: Tor
+])
+def test_availability_follows_cf_country(jobs_client, header, available):
+    client, _ = jobs_client
+    data = client.get("/api/jobs/availability", headers={"CF-IPCountry": header}).get_json()
+    assert data == {"available": available, "country": header.lower()}
+
+
+def test_availability_fails_open_without_header(jobs_client):
+    client, _ = jobs_client
+    assert client.get("/api/jobs/availability").get_json() == {"available": True, "country": None}
+
+
+def test_availability_false_when_no_feed_configured(flask_test_client):
+    client, _, _ = flask_test_client
+    with patch.dict(os.environ, {"ADZUNA_APP_ID": "", "ADZUNA_APP_KEY": ""}):
+        data = client.get("/api/jobs/availability", headers={"CF-IPCountry": "GB"}).get_json()
+    assert data["available"] is False

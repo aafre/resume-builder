@@ -4179,6 +4179,21 @@ _adzuna_cache = {}
 _ADZUNA_CACHE_TTL = 900  # seconds
 
 
+@app.route("/api/jobs/availability", methods=["GET"])
+def jobs_availability():
+    """
+    Whether the jobs feature should show for this visitor, from Cloudflare's
+    CF-IPCountry. No header (local dev, not behind Cloudflare) fails open.
+    XX (unknown) and T1 (Tor) match no feed, so they come out unsupported.
+    """
+    country = (request.headers.get("CF-IPCountry") or "").strip().lower() or None
+    if country is None:
+        return jsonify({"available": True, "country": None})
+    # Cloudflare sends GB; Adzuna's code is also gb, so no mapping needed.
+    available = any(f.configured and country in f.countries for f in (AdzunaFeed.from_env(),))
+    return jsonify({"available": available, "country": country})
+
+
 @app.route("/api/jobs/search", methods=["GET", "POST"])
 def search_jobs():
     """
