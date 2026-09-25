@@ -92,6 +92,8 @@ export default function JobsPage() {
   const [resultStatus, setResultStatus] = useState<JobResultStatus>('fresh');
   const [fetchedAt, setFetchedAt] = useState<string | undefined>();
   const [outboundSearchUrl, setOutboundSearchUrl] = useState<string | undefined>();
+  // What the last search was for, so result copy doesn't follow later edits to the inputs
+  const [searched, setSearched] = useState({ title: '', location: '' });
   // Where "Tailor your resume" goes: the editor the user came from, else their saved resumes
   const [returnTo, setReturnTo] = useState('/my-resumes');
   const formRef = useRef<HTMLFormElement>(null);
@@ -236,6 +238,7 @@ export default function JobsPage() {
       setResultStatus(result.status ?? 'fresh');
       setFetchedAt(result.fetchedAt);
       setOutboundSearchUrl(result.searchUrl);
+      setSearched({ title: titleInput.trim(), location: locationInput.trim() });
       setJobs(result.jobs);
       setTotalCount(result.count);
       setSearchedCountry(searchCountry);
@@ -778,8 +781,8 @@ export default function JobsPage() {
                 Fresh listings are refreshing
               </h2>
               <p className="font-display text-lg font-extralight leading-relaxed text-ink/60 max-w-xl mx-auto mb-8">
-                New {titleInput.trim() ? <>&ldquo;{titleInput.trim()}&rdquo; </> : ''}roles
-                {locationInput.trim() ? ` in ${locationInput.trim()}` : ''} are on their way.
+                New {searched.title ? <>&ldquo;{searched.title}&rdquo; </> : ''}roles
+                {searched.location ? ` in ${searched.location}` : ''} are on their way.
                 Search the same roles on Adzuna right now, or sharpen your resume while they land.
               </p>
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
@@ -790,7 +793,7 @@ export default function JobsPage() {
                     rel="noopener noreferrer nofollow"
                     className="btn-primary inline-flex items-center justify-center gap-2 py-3.5 px-8"
                   >
-                    Search {titleInput.trim() || 'jobs'} on Adzuna
+                    Search {searched.title || 'jobs'} on Adzuna
                     <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
                     <span className="sr-only">(opens in a new tab)</span>
                   </a>
