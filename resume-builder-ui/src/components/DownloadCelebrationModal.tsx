@@ -84,8 +84,9 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
   if (!isOpen) return null;
 
   const hasResumeReview = affiliateConfig.resumeReview.enabled && !!affiliateConfig.resumeReview.url;
-  const showAffiliate = hasResumeReview || jobsAvailable === true;
   const showJobSection = jobsAvailable === true && (jobsLoading || jobs.length > 0);
+  // Only when something will sit under the "What's Next?" divider
+  const showAffiliate = hasResumeReview || showJobSection;
 
   return (
     <ModalShell

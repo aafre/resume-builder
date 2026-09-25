@@ -202,6 +202,15 @@ it('post-download section renders nothing when refreshing', async () => {
   expect(screen.queryByText(/Jobs matching/)).not.toBeInTheDocument();
   expect(screen.queryByText(/refreshing/i)).not.toBeInTheDocument();
   expect(screen.queryByRole('link', { name: /adzuna/i })).not.toBeInTheDocument();
+  expect(screen.queryByText(/What.s Next/i)).not.toBeInTheDocument();
+});
+
+it('post-download shows no empty "What is next" block when the search finds nothing', async () => {
+  searchJobs.mockResolvedValue({ ...result([]), status: 'fresh' });
+  renderModal();
+  await waitFor(() => expect(searchJobs).toHaveBeenCalled());
+  await waitFor(() => expect(screen.queryByText(/What.s Next/i)).not.toBeInTheDocument());
+  expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument();
 });
 
 it('/jobs refreshing state offers the outbound search and a way back to the resume', async () => {
