@@ -89,7 +89,7 @@ export function PostingEvidenceTable({ evidence, roleTitle }: { evidence?: Posti
               {labelled && (
                 <tr>
                   <th
-                    scope="colgroup"
+                    scope="rowgroup"
                     colSpan={3}
                     className="px-5 pt-5 pb-2 font-mono text-[0.6875rem] tracking-[0.15em] uppercase text-accent-text border-t border-black/[0.06]"
                   >
