@@ -108,6 +108,32 @@ describe('analytics', () => {
       window.requestIdleCallback = originalRIC;
     });
 
+    it('trackJobImpression and trackJobClick capture job events', async () => {
+      const { trackJobImpression, trackJobClick, initAnalytics } = await import('../analytics');
+
+      const originalRIC = window.requestIdleCallback;
+      window.requestIdleCallback = vi.fn((cb: any) => { cb(); return 1; }) as any;
+      initAnalytics();
+      await vi.dynamicImportSettled();
+
+      trackJobImpression({ context: 'post_download', count: 3, feed_mix: { adzuna: 3 } });
+      trackJobClick({ context: 'jobs_page', feed: 'adzuna', position: 2, match_score: 71.5 });
+
+      expect(mockCapture).toHaveBeenCalledWith('job_impression', {
+        context: 'post_download',
+        count: 3,
+        feed_mix: { adzuna: 3 },
+      });
+      expect(mockCapture).toHaveBeenCalledWith('job_click', {
+        context: 'jobs_page',
+        feed: 'adzuna',
+        position: 2,
+        match_score: 71.5,
+      });
+
+      window.requestIdleCallback = originalRIC;
+    });
+
     it('strips query and hash from pageview URLs', async () => {
       // Job-search filters live in the query string and auth data in the hash;
       // neither may reach PostHog.
