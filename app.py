@@ -4204,6 +4204,7 @@ def _search_jobs_post():
     try:
         engine = JobMatchEngine(feeds, supabase=supabase)
         data = engine.search_and_rank(context)
+        data["status"] = "fresh"
         return jsonify({"success": True, "data": data})
     except Exception as e:
         logging.error(f"Job match engine error: {e}")
@@ -4271,7 +4272,7 @@ def _search_jobs_get():
 
     for job in jobs:
         job.pop("_description", None)
-    data = {"count": count, "jobs": jobs}
+    data = {"count": count, "jobs": jobs, "status": "fresh"}
     _adzuna_cache[cache_key] = {"ts": now, "data": data}
     return jsonify({"success": True, "data": data})
 
