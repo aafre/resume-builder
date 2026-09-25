@@ -4156,12 +4156,12 @@ def _save_job_result(key: str, data: dict, now: float) -> None:
     _saved_job_results[key] = (now, data)
 
 
-def _job_fallback(key: str, feeds: list, context, now: float) -> dict:
+def _job_fallback(key: str, feeds: list, context, now: float, engine) -> dict:
     """No feed could answer: last saved result (stale), else a refreshing state."""
     saved = _saved_job_results.get(key)
     if saved and now - saved[0] < _SAVED_JOB_RESULTS_TTL:
         fetched_at = datetime.fromtimestamp(saved[0], timezone.utc).isoformat()
-        return {**saved[1], "status": "stale", "fetchedAt": fetched_at}
+        return {**engine.rank(saved[1], context), "status": "stale", "fetchedAt": fetched_at}
     return {
         "count": 0,
         "jobs": [],
@@ -4171,6 +4171,9 @@ def _job_fallback(key: str, feeds: list, context, now: float) -> dict:
         "searchUrl": feeds[0].search_url(context.query, context.location, context.country),
     }
 
+
+# MatchContext fields used only for scoring, never sent to a feed
+_RESUME_CONTEXT_FIELDS = {"skills", "seniority_level", "years_experience"}
 
 # Freshness cache for job search responses, GET and POST (15 minutes)
 _adzuna_cache = {}
@@ -4257,20 +4260,28 @@ def _search_jobs_post():
     except (ValueError, TypeError) as e:
         return jsonify({"success": False, "error": f"Invalid parameter: {e}"}), 400
 
-    # Key before searching: the engine relaxes title_only on the context.
-    saved_key = json.dumps(dataclasses.asdict(context), sort_keys=True)
-    cached = _adzuna_cache.get(saved_key)
-    if cached and (time.time() - cached["ts"]) < _ADZUNA_CACHE_TTL:
-        return jsonify({"success": True, "data": cached["data"]})
+    # Cache and saved results hold unscored feed results, keyed on the feed
+    # query only, and are ranked per resume on the way out. Key before
+    # fetching: the engine relaxes title_only on the context.
+    query_key = json.dumps(
+        {k: v for k, v in dataclasses.asdict(context).items() if k not in _RESUME_CONTEXT_FIELDS},
+        sort_keys=True,
+    )
+    engine = JobMatchEngine(feeds, supabase=supabase)
     try:
-        engine = JobMatchEngine(feeds, supabase=supabase)
-        data = engine.search_and_rank(context)
-        now = time.time()
-        if not data["jobs"] and not engine.feed_answered:
-            return jsonify({"success": True, "data": _job_fallback(saved_key, feeds, context, now)})
+        cached = _adzuna_cache.get(query_key)
+        if cached and (time.time() - cached["ts"]) < _ADZUNA_CACHE_TTL:
+            fetched = cached["data"]
+        else:
+            fetched = engine.fetch(context)
+            now = time.time()
+            if not fetched["jobs"] and not engine.feed_answered:
+                data = _job_fallback(query_key, feeds, context, now, engine)
+                return jsonify({"success": True, "data": data})
+            _save_job_result(query_key, fetched, now)
+            _adzuna_cache[query_key] = {"ts": now, "data": fetched}
+        data = engine.rank(fetched, context)
         data["status"] = "fresh"
-        _save_job_result(saved_key, data, now)
-        _adzuna_cache[saved_key] = {"ts": now, "data": data}
         return jsonify({"success": True, "data": data})
     except Exception as e:
         logging.error(f"Job match engine error: {e}")

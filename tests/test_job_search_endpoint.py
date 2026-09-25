@@ -301,3 +301,35 @@ def test_availability_false_when_no_feed_configured(flask_test_client):
     with patch.dict(os.environ, {"ADZUNA_APP_ID": "", "ADZUNA_APP_KEY": ""}):
         data = client.get("/api/jobs/availability", headers={"CF-IPCountry": "GB"}).get_json()
     assert data["available"] is False
+
+
+def test_cache_is_shared_across_resume_contexts_and_rescored(jobs_client):
+    # Post-download searches carry per-resume skills; the feed query is what matters.
+    client, _ = jobs_client
+    fake = FakeAdzuna({"data scientist": [
+        adzuna_job("Data Scientist A", description="python pandas"),
+        adzuna_job("Data Scientist B", description="excel tableau"),
+        *[adzuna_job(f"Data Scientist {i}") for i in range(3)],
+    ]})
+    with patch("requests.get", fake):
+        py = post_search(client, query="data scientist", skills=["python"], seniority_level="senior").get_json()["data"]
+        xl = post_search(client, query="data scientist", skills=["excel"], years_experience=2).get_json()["data"]
+
+    assert len(fake.calls) == 1
+    score = lambda data, title: next(j["match_score"] for j in data["jobs"] if j["title"] == title)  # noqa: E731
+    assert score(py, "Data Scientist A") > score(py, "Data Scientist B")
+    assert score(xl, "Data Scientist B") > score(xl, "Data Scientist A")
+    assert all("_description" not in j for j in py["jobs"] + xl["jobs"])
+
+
+def test_stale_fallback_is_shared_across_resume_contexts(jobs_client, monkeypatch):
+    client, flask_app = jobs_client
+    with patch("requests.get", FakeAdzuna(NURSES)):
+        post_search(client, query="nurse", skills=["triage"])
+
+    real_time = flask_app.time.time
+    monkeypatch.setattr(flask_app.time, "time", lambda: real_time() + 20 * 60)
+    with patch("requests.get", FakeAdzuna(NURSES, status=429)):
+        data = post_search(client, query="nurse", skills=["icu"]).get_json()["data"]
+    assert data["status"] == "stale"
+    assert data["count"] == 5

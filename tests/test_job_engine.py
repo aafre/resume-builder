@@ -575,14 +575,13 @@ class TestJobMatchEngine:
 class TestSearchEndpoint:
     """Tests for the /api/jobs/search endpoint."""
 
-    @patch("job_engine.JobMatchEngine.search_and_rank")
+    @patch("job_engine.JobMatchEngine.fetch")
     @patch.dict(os.environ, {"ADZUNA_APP_ID": "test", "ADZUNA_APP_KEY": "test"})
-    def test_post_returns_match_score(self, mock_search, flask_test_client):
-        """POST should return jobs with match_score."""
+    def test_post_returns_match_score(self, mock_fetch, flask_test_client):
+        """POST should return jobs ranked with match_score."""
         client, mock_sb, flask_app = flask_test_client
 
-        mock_search.return_value = {
-            "count": 1,
+        mock_fetch.return_value = {
             "jobs": [
                 {
                     "title": "Software Engineer",
@@ -593,9 +592,12 @@ class TestSearchEndpoint:
                     "salary_is_predicted": False,
                     "url": "http://example.com/1",
                     "created": "2026-01-15T12:00:00Z",
-                    "match_score": 85.5,
+                    "feed": "adzuna",
+                    "_description": "python",
                 }
             ],
+            "total_available": 1,
+            "ai_terms_used": [],
         }
 
         resp = client.post(
@@ -607,7 +609,7 @@ class TestSearchEndpoint:
         assert resp.status_code == 200
         data = resp.get_json()
         assert data["success"] is True
-        assert data["data"]["jobs"][0]["match_score"] == 85.5
+        assert data["data"]["jobs"][0]["match_score"] > 0
 
     @patch.dict(os.environ, {"ADZUNA_APP_ID": "test", "ADZUNA_APP_KEY": "test"})
     def test_get_backward_compat(self, flask_test_client):
@@ -654,14 +656,13 @@ class TestSearchEndpoint:
 
         assert resp.status_code == 400
 
-    @patch("job_engine.JobMatchEngine.search_and_rank")
+    @patch("job_engine.JobMatchEngine.fetch")
     @patch.dict(os.environ, {"ADZUNA_APP_ID": "test", "ADZUNA_APP_KEY": "test"})
-    def test_post_description_not_in_response(self, mock_search, flask_test_client):
+    def test_post_description_not_in_response(self, mock_fetch, flask_test_client):
         """POST response should not include description field."""
         client, mock_sb, flask_app = flask_test_client
 
-        mock_search.return_value = {
-            "count": 1,
+        mock_fetch.return_value = {
             "jobs": [
                 {
                     "title": "Dev",
@@ -672,9 +673,12 @@ class TestSearchEndpoint:
                     "salary_is_predicted": False,
                     "url": "http://example.com/1",
                     "created": "2026-01-15T12:00:00Z",
-                    "match_score": 70,
+                    "feed": "adzuna",
+                    "_description": "secret description",
                 }
             ],
+            "total_available": 1,
+            "ai_terms_used": [],
         }
 
         resp = client.post(
@@ -684,6 +688,7 @@ class TestSearchEndpoint:
         )
 
         data = resp.get_json()
+        assert len(data["data"]["jobs"]) == 1
         for job in data["data"]["jobs"]:
             assert "_description" not in job
             assert "description" not in job
