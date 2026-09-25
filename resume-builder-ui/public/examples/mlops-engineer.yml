@@ -1,0 +1,290 @@
+# MLOps Engineer Resume Example
+# Category: Technology. Role batch R1 (2026-09), with an AI Platform Engineer role variant.
+# Content sources: research brief #2 and #8 + the R1 posting evidence ledger (seo-tracking/).
+
+meta:
+  slug: mlops-engineer
+  title: MLOps Engineer
+  metaTitle: "Free MLOps Engineer Resume Example & Template (2026)"
+  metaDescription: "MLOps engineer resume example built from real job postings: model serving, monitoring and cost bullets, skills, and an AI platform engineer variant."
+  category: tech
+  priority: 0.7
+  lastmod: "2026-09-25"
+
+answerBlock: >
+  A strong MLOps engineer resume shows what happens to a model after training: how it
+  gets promoted, served, monitored and rolled back, and what it costs to run. Put tools
+  like Kubernetes, MLflow and Terraform inside those outcomes, and give every latency or
+  cost number the load and quality level it held.
+
+postingEvidence:
+  asOf: "2026-09"
+  postings:
+    - employer: Anaplan
+      title: ML Ops Engineer
+      location: London
+      asks: "MLOps and LLMOps infrastructure on cloud GPUs: model serving, GPU utilisation, deployment automation and monitoring."
+      skills: [Python, Kubernetes, Docker, Terraform, CI/CD, MLflow, ArgoCD, Monitoring, Model serving, LLMOps, OpenTelemetry, Prometheus, Grafana, vLLM, TensorRT-LLM, GPU utilisation]
+    - employer: Tripadvisor (Viator)
+      title: London - ML Ops Engineer II (Experiences)
+      location: London
+      asks: "A platform that lets data scientists and ML engineers train, deploy and monitor models, with an eye on cost."
+      skills: [Kubernetes, Docker, Terraform, CI/CD, MLflow, ArgoCD, Monitoring, Kubeflow, Ray, SageMaker, KServe, Seldon, Cost]
+    - employer: EPAM
+      title: MLOps Engineer
+      location: London (hybrid)
+      asks: "The full model lifecycle with governance and compliance, extended to LLMOps, RAG and agentic workloads."
+      skills: [Kubernetes, Terraform, LLMOps, OpenTelemetry, Kubeflow, Airflow, Metaflow, Prefect, Experiment tracking, Model lifecycle, Governance, RAG, Agentic workloads]
+    - employer: PayPay Card
+      title: AI Platform Engineer
+      location: Japan (hybrid)
+      asks: "Reusable templates and deployment patterns for GenAI apps, agents and RAG, with monitoring of usage, cost, reliability and adoption."
+      skills: [Evaluation, Cost, Monitoring, Reliability, Reusable templates, Adoption metrics, Agents, RAG, MCP, Kubernetes]
+      group: AI Platform Engineer
+    - employer: Duvo
+      title: "AI Platform Engineer (EU/UK Based - Remote)"
+      location: Remote (EU/UK)
+      asks: "A TypeScript-first agent runtime: context, tool execution, evaluations and sandboxing, with capacity left to SRE."
+      skills: [Evaluation, Cost, Observability, TypeScript, Agent runtime, Context management, Tool execution, Sandboxing]
+      group: AI Platform Engineer
+
+howToWrite:
+  - "Open each role with the lifecycle stage you owned: training pipelines, promotion, serving or monitoring. A reader should be able to tell where a model goes after a data scientist hands it over."
+  - "Put tools inside outcomes. \"Moved model promotion onto MLflow and ArgoCD, cutting release lead time from [X] days to [Y]\" says more than a skills line with both names on it."
+  - "Give serving and cost numbers their context: the load, the hardware, and the quality or SLO you held. A cost cut with no quality context can read like a downgrade."
+  - "Keep your work separate from the model's. Take credit for deployment reliability, rollback time and pipeline success rate, not for accuracy gains a data scientist produced."
+  - "Show seniority through scope. Mid-level engineers run components and deliver scoped pipelines. Senior engineers own lifecycle reliability, incident response and cost trade-offs. Staff and lead engineers set platform standards that several teams adopt."
+  - "Match the posting's stack honestly. The postings we sampled name different tools (Kubeflow, Airflow, Ray, KServe), so list the ones you have run in production and leave the rest off."
+
+summaryExamples:
+  - level: entry
+    summary: >
+      Backend engineer moving into MLOps, with [number] years of Python services and CI/CD
+      work and one production model deployment. Packaged a forecasting model as a
+      Docker service on Kubernetes, added monitoring for latency and input data, and cut
+      manual release steps from [X] to [Y].
+  - level: mid
+    summary: >
+      MLOps engineer with [number] years running training and serving pipelines on
+      Kubernetes. Moved [number] models onto MLflow-tracked Kubeflow pipelines and
+      canary releases, bringing experiment-to-production lead time down from [X] weeks
+      to [Y] days.
+  - level: senior
+    summary: >
+      Senior MLOps engineer who owns the model lifecycle for [number] production models,
+      from promotion gates to on-call. Leads incident response and GPU cost decisions, and
+      set the serving and monitoring standards [number] data science teams now build on.
+
+skills:
+  hard:
+    - Python
+    - Kubernetes & Docker
+    - Terraform & Cloud Infrastructure
+    - CI/CD (ArgoCD)
+    - Model Serving (KServe, Seldon, vLLM)
+    - Experiment Tracking (MLflow)
+    - ML Pipelines (Kubeflow, Airflow, Metaflow, Prefect)
+    - Monitoring (Prometheus, Grafana, OpenTelemetry)
+    - GPU Utilisation & Cost Control
+  soft:
+    - Treating Data Science Teams as Platform Customers
+    - Incident Response & On-Call Ownership
+    - Governance & Compliance Awareness
+    - Written Runbooks & Platform Documentation
+
+keywords:
+  - MLOps
+  - LLMOps
+  - Model Lifecycle
+  - Model Serving
+  - Monitoring
+  - Experiment Tracking
+  - Python
+  - Kubernetes
+  - Docker
+  - Terraform
+  - CI/CD
+  - MLflow
+  - Kubeflow
+  - Airflow
+  - Ray
+  - SageMaker
+  - KServe
+  - Seldon
+  - ArgoCD
+  - Prometheus
+  - Grafana
+  - OpenTelemetry
+  - vLLM
+  - GPU Utilisation
+  - Governance
+
+certifications:
+  - "Certified Kubernetes Administrator (CKA): nice-to-have. One of the three MLOps postings we sampled lists it."
+  - "Certified Kubernetes Application Developer (CKAD): nice-to-have, from the same posting."
+  - "One cloud provider certification: nice-to-have, from the same posting. Pick the cloud you actually deploy on."
+
+mistakes:
+  - mistake: "Listing DevOps tools with no model lifecycle in sight"
+    fix: "Kubernetes and Terraform alone read as a DevOps resume. Tie them to a model: what got trained, promoted, served or rolled back because of the setup you built."
+  - mistake: "Claiming accuracy gains from someone else's model"
+    fix: "If a data scientist improved the model, the accuracy number is theirs. Yours is the part that made it shippable: faster promotion, safer rollout, fewer failed runs."
+  - mistake: "Calling every data shift a production defect"
+    fix: "Say what your monitoring caught and what action followed. Drift that needed a retrain and a broken upstream feed are different failures, and a hiring manager will ask which one you handled."
+  - mistake: "Cost savings with no load or quality context"
+    fix: "State what stayed the same while cost went down: request volume, latency SLO, evaluation scores. Without that, a smaller GPU bill could just mean a worse service."
+  - mistake: "Claiming every cloud platform from one deployment"
+    fix: "List the cloud and services you ran in production. Touching a second provider once for a proof of concept belongs in an interview story, not the skills line."
+
+bulletRewrites:
+  - weak: "Worked with Kubernetes, Docker, MLflow and Airflow"
+    improved: "Moved [number] models from notebook hand-offs to MLflow-tracked Airflow pipelines on Kubernetes, cutting experiment-to-production lead time from [X] days to [Y]"
+    reason: "Turns a tool list into a lifecycle outcome. The same four tools now explain what changed for the models and how fast they reached production."
+  - weak: "Deployed ML models to production"
+    improved: "Served [model] on KServe with canary releases and automatic rollback, holding p95 latency under [X] ms at [Y] requests per second"
+    reason: "Names the serving stack, the release safety mechanism and a latency number with its load, which is what a serving interview will probe."
+  - weak: "Set up monitoring with Prometheus and Grafana"
+    improved: "Added drift and data-quality alerts in Prometheus and Grafana for [number] production models, cutting the time to detect a broken input feed from [X] hours to [Y] minutes"
+    reason: "Says what the monitoring watches and which failure it caught faster, instead of only naming the dashboard tools."
+  - weak: "Reduced GPU costs"
+    improved: "Right-sized the GPU serving fleet and batched requests with vLLM, lowering cost per 1,000 inferences by [X%] with the latency SLO and evaluation scores unchanged"
+    reason: "Adds the method and the quality bar that held, so the saving can't be mistaken for a cheaper, worse service."
+
+customFaqs:
+  - question: "What's the difference between an MLOps engineer and an ML engineer resume?"
+    answer: "An ML engineer resume centres on building and improving models: features, training, evaluation. An MLOps engineer resume centres on everything after that: promotion, serving, monitoring, rollback and running cost. If your bullets are mostly about accuracy, you are describing ML engineering. For the AI platform engineer title, see the role variant section on this page."
+  - question: "How do I move from backend software engineering into MLOps?"
+    answer: "Lead with the backend work that transfers: CI/CD, containers, on-call and running services under load. Then add at least one bullet where a model is the thing you shipped, even a small one, such as packaging a forecasting model as a service with monitoring. A reader looks for that bullet first."
+  - question: "What metrics belong on an MLOps engineer resume?"
+    answer: "Lifecycle metrics: experiment-to-production lead time, p95 latency or throughput at a stated load, cost per inference or training run, time to detect and recover from a failure, and failed pipeline runs. Use bracketed placeholders in your draft and fill them in from your own dashboards before you send it."
+  - question: "Should I list model accuracy or deployment reliability on an MLOps resume?"
+    answer: "Deployment reliability, unless you personally changed the model. Accuracy belongs to whoever trained it. You can mention it as context, for example that a model shipped without the evaluation scores dropping, but the achievement should be the rollout, rollback or monitoring work you did."
+  - question: "How do I show MLflow and Kubernetes experience without a tool dump?"
+    answer: "Name each tool inside the bullet where it did something: MLflow for tracking the runs you promoted, Kubernetes for the serving you ran. Keep the skills section short and make sure every tool in it also appears in at least one bullet."
+  - question: "Do I need a certification to get an MLOps engineer job?"
+    answer: "Not usually. Of the three MLOps postings we sampled, one listed CKA, CKAD or a cloud certification, and it listed them as nice-to-have. Production experience with serving and monitoring carries more weight, so add a certification only if you already hold it or the posting asks for it."
+
+roleVariant:
+  id: ai-platform
+  title: AI Platform Engineer
+  difference: >
+    In the AI platform engineer postings we sampled, the customer is another engineering
+    team. The job is to give them shared pieces they can build on, such as reusable
+    templates, an agent runtime, context and tool handling, and evaluations, then track
+    whether teams actually adopt them. An MLOps resume is organised around promoting and
+    serving trained models. An AI platform resume is organised around reuse: how many
+    teams build on what you made, and what it saved them. Kubernetes is not the defining
+    skill here; one of the two postings is a TypeScript-first agent runtime.
+  summary: >
+    AI platform engineer who builds the shared agent runtime, evaluations and deployment
+    templates that [number] product teams use to ship GenAI features, with usage and cost
+    reported per team.
+  bullets:
+    - "Built a shared agent runtime adopted by [number] teams, cutting time to first production deployment from [X] weeks to [Y]"
+    - "Ran a shared evaluation service across [number] releases, catching [regression types] before launch"
+    - "Added per-team usage and cost reporting, reducing cost per successful workload by [X%]"
+    - "Designed context management for long-running agents, raising task completion from [X%] to [Y%] within the same token and latency budget"
+    - "Published deployment templates and docs for RAG and agent apps, growing active platform teams from [X] to [Y] while support tickets fell by [Z%]"
+  faqs:
+    - question: "What is the difference between an AI platform engineer and an MLOps engineer resume?"
+      answer: "An MLOps resume shows models moving from training to reliable serving. An AI platform resume shows shared infrastructure, such as an agent runtime, evaluations and templates, that other engineering teams adopt. Lead with adoption and reuse on a platform resume, and with lifecycle reliability on an MLOps one."
+    - question: "How do I show platform adoption across engineering teams?"
+      answer: "Count teams or apps that actively build on the platform, not everyone with access to it. Pair the count with what adoption saved them, such as time to first deployment or fewer support tickets. One chatbot used by one team is an app, not a platform."
+
+resume:
+  template: modern
+  contact:
+    name: Maya Okafor
+    title: Senior MLOps Engineer
+    email: maya.okafor@email.com
+    phone: "+44 7700 900418"
+    location: London, UK
+    linkedin: linkedin.com/in/mayaokafor
+
+  summary: >
+    Senior MLOps engineer with 9 years in software and 6 in MLOps. Runs the model lifecycle
+    for 14 production models at a payments company, from MLflow-tracked promotion to KServe
+    serving and on-call. Cut experiment-to-production lead time from 3 weeks to 4 days and
+    GPU serving cost per request by 38% without loosening latency targets.
+
+  experience:
+    - company: Quayside Payments
+      title: Senior MLOps Engineer
+      dates: Mar 2023 - Present
+      location: London, UK
+      bullets:
+        - Built a model promotion pipeline with MLflow, ArgoCD and automated validation gates, cutting experiment-to-production lead time for fraud models from 3 weeks to 4 days
+        - Moved real-time fraud scoring onto KServe with canary releases and automatic rollback, holding p95 latency under 60 ms at 2,500 requests per second
+        - Right-sized the GPU fleet for an internal LLM assistant served with vLLM, lowering cost per 1,000 requests by 38% with the latency SLO and evaluation scores unchanged
+        - Added drift and data-quality monitoring in Prometheus, Grafana and OpenTelemetry that flagged a broken upstream feed within 10 minutes instead of the next morning
+        - Wrote the incident runbook and led on-call for 14 production models, bringing rollback time down from 45 minutes to under 5
+
+    - company: Fernhill Analytics
+      title: MLOps Engineer
+      dates: Jun 2020 - Feb 2023
+      location: Manchester, UK
+      bullets:
+        - Replaced notebook hand-offs with Kubeflow pipelines on Terraform-managed Kubernetes, used by 6 data science teams
+        - Versioned training data, config and model artifacts for every run, so any production model could be rebuilt from its exact inputs for an audit
+        - Standardised Docker templates for training and serving, cutting onboarding for a new model team from 3 weeks to 5 days
+        - Added pipeline checks for schema and data freshness that cut failed nightly training runs from about 20 a month to 3
+
+    - company: Brightmoor Retail
+      title: Backend Software Engineer
+      dates: Sep 2017 - May 2020
+      location: Leeds, UK
+      bullets:
+        - Built Python services and CI/CD pipelines for the pricing platform, handling 12M requests a day
+        - Packaged the data science team's demand-forecast model as a Docker service with latency and input monitoring, the company's first model in production
+        - Shared on-call for checkout and pricing APIs, and wrote the alerting rules the team still uses
+
+  education:
+    - school: University of Leeds
+      degree: BSc Computer Science
+      year: "2017"
+
+  skills:
+    - Python
+    - Kubernetes
+    - Docker
+    - Terraform
+    - AWS (SageMaker)
+    - ArgoCD
+    - MLflow
+    - Kubeflow
+    - Airflow
+    - KServe
+    - vLLM
+    - Prometheus
+    - Grafana
+    - OpenTelemetry
+    - CI/CD
+
+  certifications:
+    - Certified Kubernetes Administrator (CKA)
+
+bulletBank:
+  - category: Pipelines & Promotion
+    bullets:
+      - "Automated [model promotion workflow] with [validation and approval gates], cutting experiment-to-production lead time from [X] to [Y]"
+      - "Versioned [data, config and model artifacts] for [number] models, so every production run could be reproduced for an audit"
+      - "Added [pipeline reliability checks], reducing failed runs and manual reruns from [X] to [Y] a month"
+
+  - category: Serving & Cost
+    bullets:
+      - "Deployed [serving architecture], improving p95 latency from [X] ms to [Y] ms at [load] on [hardware]"
+      - "Right-sized the [GPU/CPU] fleet, reducing cost per [inference/training run] by [X%] with [quality/SLO] unchanged"
+
+  - category: Monitoring & Recovery
+    bullets:
+      - "Implemented [drift/data-quality monitoring], cutting detection time for [failure type] from [X] to [Y]"
+      - "Built [canary/rollback mechanism], reducing recovery time from [X] to [Y] across [number] rollbacks"
+
+  - category: Platform Enablement
+    bullets:
+      - "Standardised [training/serving templates], cutting onboarding time for new model teams from [X] to [Y]"
+
+relatedJobs:
+  - software-engineer
+  - data-analyst
+  - forward-deployed-engineer
