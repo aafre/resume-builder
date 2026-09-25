@@ -474,23 +474,25 @@ class JobMatchEngine:
         Args:
             keep_description: If True, preserve _description field (for pSEO skill aggregation).
         """
+        return self.rank(self.fetch(context), context, keep_description=keep_description)
+
+    def fetch(self, context: MatchContext) -> dict:
+        """
+        The 3 tiers, unscored: { "jobs": [...with _description], "total_available", "ai_terms_used" }.
+        Depends only on the feed query fields, so callers can cache it and rank per resume.
+        """
         # Smart title_only: skill queries need full-text search
         if context.title_only and _is_skill_query(context.query):
             context.title_only = False
 
-        scorer = JobScorer(context)
         seen_urls: set[str] = set()
         all_jobs: list[dict] = []
 
         # --- Tier 1: Primary query ---
         tier1, total_available = self._fetch(context, context.query)
         all_jobs = self._merge(all_jobs, tier1, seen_urls)
-
         if len(all_jobs) >= self.TIER1_THRESHOLD:
-            result = self._finalize(all_jobs, scorer, keep_description=keep_description)
-            result["ai_terms_used"] = []
-            result["total_available"] = total_available
-            return result
+            return {"jobs": all_jobs, "total_available": total_available, "ai_terms_used": []}
 
         # Tier 1 insufficient — relax title_only for broader fallback searches
         context.title_only = False
@@ -502,22 +504,22 @@ class JobMatchEngine:
             # Fetch first synonym only to limit API calls
             tier2, _ = self._fetch(context, synonyms[0])
             all_jobs = self._merge(all_jobs, tier2, seen_urls)
-
         if len(all_jobs) >= self.TIER2_THRESHOLD:
-            result = self._finalize(all_jobs, scorer, keep_description=keep_description)
-            result["ai_terms_used"] = []
-            result["total_available"] = total_available
-            return result
+            return {"jobs": all_jobs, "total_available": total_available, "ai_terms_used": []}
 
         # --- Tier 3: AI fallback ---
         ai_terms = get_ai_search_terms(context.query, self.supabase)
         for term in ai_terms:
             tier3, _ = self._fetch(context, term)
             all_jobs = self._merge(all_jobs, tier3, seen_urls)
+        return {"jobs": all_jobs, "total_available": total_available, "ai_terms_used": ai_terms}
 
-        result = self._finalize(all_jobs, scorer, keep_description=keep_description)
-        result["ai_terms_used"] = ai_terms
-        result["total_available"] = total_available
+    def rank(self, fetched: dict, context: MatchContext, keep_description: bool = False) -> dict:
+        """Score fetched jobs against the resume context. Doesn't modify `fetched`."""
+        jobs = [dict(j) for j in fetched["jobs"]]
+        result = self._finalize(jobs, JobScorer(context), keep_description=keep_description)
+        result["ai_terms_used"] = list(fetched["ai_terms_used"])
+        result["total_available"] = fetched["total_available"]
         return result
 
     def _fetch(self, context: MatchContext, query: str) -> tuple[list[dict], int]:
