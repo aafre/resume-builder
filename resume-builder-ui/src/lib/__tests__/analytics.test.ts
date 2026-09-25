@@ -112,7 +112,7 @@ describe('analytics', () => {
       const { trackJobImpression, trackJobClick, trackJobQuotaExhausted, initAnalytics } = await import('../analytics');
 
       const originalRIC = window.requestIdleCallback;
-      window.requestIdleCallback = vi.fn((cb: any) => { cb(); return 1; }) as any;
+      window.requestIdleCallback = vi.fn((cb: IdleRequestCallback) => { cb({} as IdleDeadline); return 1; });
       initAnalytics();
       await vi.dynamicImportSettled();
 
