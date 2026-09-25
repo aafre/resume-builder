@@ -170,6 +170,14 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     priority: 0.7,
     metaDescription: 'Front-end developer resume example with React, JavaScript, and CSS skills.',
   },
+  {
+    slug: 'forward-deployed-engineer',
+    title: 'Forward Deployed Engineer',
+    category: 'tech',
+    priority: 0.7,
+    metaDescription: 'Forward deployed engineer resume example that takes a customer problem from discovery to production, with skills and keywords from real FDE postings.',
+    lastmod: '2026-09-25',
+  },
 
   // Tier 6: Creative
   {
