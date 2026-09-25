@@ -15,6 +15,7 @@ import type { SeniorityLevel } from '../utils/resumeDataExtractor';
 import { useResumeParser } from '../hooks/useResumeParser';
 import { useAuth } from '../contexts/AuthContext';
 import { useJobsAvailable } from '../hooks/useJobsAvailable';
+import { ensureTurnstilePreClearance } from '../utils/turnstile';
 import yaml from 'js-yaml';
 import { isExperienceSection } from '../utils/sectionTypeChecker';
 import { SEO_PAGES } from '../config/seoPages';
@@ -128,6 +129,13 @@ export default function JobsPage() {
     faqs: jobsConfig.faqs,
     breadcrumbs: jobsConfig.breadcrumbs,
   });
+
+  // Mount the invisible Turnstile widget so this browser earns Cloudflare
+  // pre-clearance for the jobs API WAF rule. No-op when
+  // VITE_TURNSTILE_SITE_KEY is unset.
+  useEffect(() => {
+    ensureTurnstilePreClearance();
+  }, []);
 
   // Restore search state from URL params or sessionStorage on mount
   useEffect(() => {

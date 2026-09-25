@@ -7,6 +7,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useConversion } from "../contexts/ConversionContext";
 import { processSectionsForExport } from "../services/yamlService";
 import usePreferencePersistence from "../hooks/usePreferencePersistence";
+import { ensureTurnstilePreClearance } from "../utils/turnstile";
 
 // Import extracted hooks
 import { useModalManager } from "../hooks/editor/useModalManager";
@@ -300,6 +301,13 @@ const Editor: React.FC = () => {
     closeStartFreshConfirm: modalManager.closeStartFreshConfirm,
     openDownloadCelebration: modalManager.openDownloadCelebration,
   });
+
+  // Mount the invisible Turnstile widget so this browser earns Cloudflare
+  // pre-clearance for the jobs API WAF rule (jobs search can be triggered
+  // from the editor). No-op when VITE_TURNSTILE_SITE_KEY is unset.
+  useEffect(() => {
+    ensureTurnstilePreClearance();
+  }, []);
 
   // ===== DEPRECATED URL Pattern Block =====
   useEffect(() => {
