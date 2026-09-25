@@ -311,7 +311,8 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   }`;
 
   const showAffiliates = hasAnyAffiliate();
-  const jobsAvailable = useJobsAvailable() === true;
+  // Optimistic, like the header link: only a definite "unsupported" hides it
+  const jobsAvailable = useJobsAvailable() !== false;
 
   return (
     <nav
