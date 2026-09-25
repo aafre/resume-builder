@@ -333,3 +333,20 @@ def test_stale_fallback_is_shared_across_resume_contexts(jobs_client, monkeypatc
         data = post_search(client, query="nurse", skills=["icu"]).get_json()["data"]
     assert data["status"] == "stale"
     assert data["count"] == 5
+
+
+def test_job_caches_prune_expired_and_stay_bounded(jobs_client, monkeypatch):
+    client, flask_app = jobs_client
+    monkeypatch.setattr(flask_app, "_JOB_CACHE_MAX_ENTRIES", 3)
+    fake = FakeAdzuna(NURSES)
+    with patch("requests.get", fake):
+        for i in range(5):
+            post_search(client, query="nurse", location=f"Town {i}")
+        assert len(flask_app._adzuna_cache) == 3
+        assert len(flask_app._saved_job_results) == 3
+
+        real_time = flask_app.time.time
+        monkeypatch.setattr(flask_app.time, "time", lambda: real_time() + 25 * 3600)
+        post_search(client, query="nurse", location="Fresh Town")
+    assert len(flask_app._adzuna_cache) == 1
+    assert len(flask_app._saved_job_results) == 1

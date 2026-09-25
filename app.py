@@ -4146,22 +4146,29 @@ ADZUNA_SUPPORTED_COUNTRIES = ADZUNA_COUNTRIES
 
 # Last good result per search, served as "stale" only when every feed is
 # exhausted or failing. Separate from the 15-minute cache below.
-_saved_job_results: dict[str, tuple[float, dict]] = {}
+_saved_job_results: dict = {}
 _SAVED_JOB_RESULTS_TTL = 24 * 3600
+# ponytail: per-worker memory with a fixed cap (oldest evicted first); move to
+# Redis if several workers need to share results.
+_JOB_CACHE_MAX_ENTRIES = 500
 
 
-def _save_job_result(key: str, data: dict, now: float) -> None:
-    for k in [k for k, (ts, _) in _saved_job_results.items() if now - ts >= _SAVED_JOB_RESULTS_TTL]:
-        del _saved_job_results[k]
-    _saved_job_results[key] = (now, data)
+def _cache_put(cache: dict, key, data, now: float, ttl: float) -> None:
+    """Store {"ts", "data"}, dropping expired entries and the oldest past the cap."""
+    for k in [k for k, v in cache.items() if now - v["ts"] >= ttl]:
+        del cache[k]
+    cache.pop(key, None)
+    while len(cache) >= _JOB_CACHE_MAX_ENTRIES:
+        del cache[next(iter(cache))]
+    cache[key] = {"ts": now, "data": data}
 
 
 def _job_fallback(key: str, feeds: list, context, now: float, engine) -> dict:
     """No feed could answer: last saved result (stale), else a refreshing state."""
     saved = _saved_job_results.get(key)
-    if saved and now - saved[0] < _SAVED_JOB_RESULTS_TTL:
-        fetched_at = datetime.fromtimestamp(saved[0], timezone.utc).isoformat()
-        return {**engine.rank(saved[1], context), "status": "stale", "fetchedAt": fetched_at}
+    if saved and now - saved["ts"] < _SAVED_JOB_RESULTS_TTL:
+        fetched_at = datetime.fromtimestamp(saved["ts"], timezone.utc).isoformat()
+        return {**engine.rank(saved["data"], context), "status": "stale", "fetchedAt": fetched_at}
     return {
         "count": 0,
         "jobs": [],
@@ -4278,8 +4285,8 @@ def _search_jobs_post():
             if not fetched["jobs"] and not engine.feed_answered:
                 data = _job_fallback(query_key, feeds, context, now, engine)
                 return jsonify({"success": True, "data": data})
-            _save_job_result(query_key, fetched, now)
-            _adzuna_cache[query_key] = {"ts": now, "data": fetched}
+            _cache_put(_saved_job_results, query_key, fetched, now, _SAVED_JOB_RESULTS_TTL)
+            _cache_put(_adzuna_cache, query_key, fetched, now, _ADZUNA_CACHE_TTL)
         data = engine.rank(fetched, context)
         data["status"] = "fresh"
         return jsonify({"success": True, "data": data})
@@ -4358,7 +4365,7 @@ def _search_jobs_get():
     for job in jobs:
         job.pop("_description", None)
     data = {"count": count, "jobs": jobs, "status": "fresh"}
-    _adzuna_cache[cache_key] = {"ts": now, "data": data}
+    _cache_put(_adzuna_cache, cache_key, data, now, _ADZUNA_CACHE_TTL)
     return jsonify({"success": True, "data": data})
 
 
