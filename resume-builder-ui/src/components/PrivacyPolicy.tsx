@@ -121,6 +121,41 @@ const SECTIONS: LegalSection[] = [
           which receives your job title, skills and previous job titles. Opening a job takes you to the listing on Adzuna&apos;s site, where
           Adzuna&apos;s own privacy policy applies.
         </p>
+        <p>
+          <strong>AI Features (OpenAI):</strong> Three features use OpenAI&apos;s gpt-4o-mini model, called from
+          our Supabase functions. We send OpenAI only what each feature needs, and use the result only to
+          perform that feature:
+        </p>
+        <ul>
+          <li>
+            <strong>Resume import</strong> (importing a PDF or Word resume, including uploading one on the job
+            search page): the text extracted from your file, which is your full resume text including your name
+            and contact details. The file itself is not sent.
+          </li>
+          <li>
+            <strong>Job-title suggestions:</strong> the job title alone.
+          </li>
+          <li>
+            <strong>Related-role suggestions:</strong> your job title, skills and previous job titles.
+          </li>
+        </ul>
+        <p>
+          To import the same file again without a second AI call, we store the import result in our database,
+          linked to your account or guest session: a fingerprint (hash) of the file, its name and size, the
+          extracted text and the parsed resume. A stored result is reused for 30 days. There is currently no
+          automatic deletion after those 30 days; the record stays until your account is deleted, which you
+          can do at any time from your account settings. Job-title and related-role suggestions are not stored
+          in our database. Per{' '}
+          <a
+            href="https://developers.openai.com/api/docs/guides/your-data"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            OpenAI&apos;s API data policy
+          </a>
+          , data sent to the OpenAI API is not used to train its models by default, and OpenAI keeps abuse-monitoring logs
+          for up to 30 days unless longer retention is legally required.
+        </p>
       </>
     ),
   },

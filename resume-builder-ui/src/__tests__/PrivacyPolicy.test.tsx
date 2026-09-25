@@ -30,6 +30,26 @@ describe("PrivacyPolicy Component", () => {
     expect(para).toHaveTextContent(/AI job-title suggestion function/);
   });
 
+  it("discloses OpenAI processing and parsed-resume retention", () => {
+    render(
+      <MemoryRouter>
+        <PrivacyPolicy />
+      </MemoryRouter>
+    );
+    expect(screen.getByText(/use OpenAI.s gpt-4o-mini model/)).toBeInTheDocument();
+    expect(screen.getByText(/your full resume text/)).toBeInTheDocument();
+    const items = screen.getAllByRole("listitem").map((li) => li.textContent ?? "");
+    expect(items.some((t) => /Job-title suggestions:\s*the job title alone/.test(t))).toBe(true);
+    expect(
+      items.some((t) => /Related-role suggestions:\s*your job title, skills and previous job titles/.test(t))
+    ).toBe(true);
+    expect(screen.getByText(/no\s+automatic deletion after those 30 days/)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /OpenAI.s API data policy/ })).toHaveAttribute(
+      "href",
+      "https://developers.openai.com/api/docs/guides/your-data"
+    );
+  });
+
   it("renders the policy content and a link to GitHub issues", () => {
     render(
       <MemoryRouter>
