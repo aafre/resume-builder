@@ -4174,7 +4174,7 @@ def _job_fallback(key: str, feeds: list, context, now: float) -> dict:
     }
 
 
-# Simple TTL cache for Adzuna responses (15 minutes)
+# Freshness cache for job search responses, GET and POST (15 minutes)
 _adzuna_cache = {}
 _ADZUNA_CACHE_TTL = 900  # seconds
 
@@ -4246,6 +4246,9 @@ def _search_jobs_post():
 
     # Key before searching: the engine relaxes title_only on the context.
     saved_key = json.dumps(dataclasses.asdict(context), sort_keys=True)
+    cached = _adzuna_cache.get(saved_key)
+    if cached and (time.time() - cached["ts"]) < _ADZUNA_CACHE_TTL:
+        return jsonify({"success": True, "data": cached["data"]})
     try:
         engine = JobMatchEngine(feeds, supabase=supabase)
         data = engine.search_and_rank(context)
@@ -4254,6 +4257,7 @@ def _search_jobs_post():
             return jsonify({"success": True, "data": _job_fallback(saved_key, feeds, context, now)})
         data["status"] = "fresh"
         _save_job_result(saved_key, data, now)
+        _adzuna_cache[saved_key] = {"ts": now, "data": data}
         return jsonify({"success": True, "data": data})
     except Exception as e:
         logging.error(f"Job match engine error: {e}")

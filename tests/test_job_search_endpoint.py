@@ -197,11 +197,13 @@ def test_quota_error_skips_adzuna_for_rest_of_utc_day(jobs_client, caplog):
     assert data["status"] == "fresh"
 
 
-def test_exhausted_with_saved_result_serves_stale(jobs_client):
-    client, _ = jobs_client
+def test_exhausted_with_saved_result_serves_stale(jobs_client, monkeypatch):
+    client, flask_app = jobs_client
     with patch("requests.get", FakeAdzuna(NURSES)):
         fresh = post_search(client, query="nurse", location="Leeds").get_json()["data"]
 
+    real_time = flask_app.time.time
+    monkeypatch.setattr(flask_app.time, "time", lambda: real_time() + 20 * 60)  # past the 15-min cache
     with patch("requests.get", FakeAdzuna(NURSES, status=429)):
         data = post_search(client, query="nurse", location="Leeds").get_json()["data"]
 
@@ -258,3 +260,14 @@ def test_legacy_get_respects_quota(jobs_client):
         assert client.get("/api/jobs/search?query=dev").status_code == 502
         assert client.post("/api/jobs/search", json={"query": "dev"}).get_json()["data"]["status"] == "refreshing"
     assert len(fake.calls) == 1
+
+
+def test_repeat_search_within_15_minutes_is_served_from_cache(jobs_client):
+    # The editor badge, the post-download modal and /jobs often run the same search.
+    client, _ = jobs_client
+    fake = FakeAdzuna(NURSES)
+    with patch("requests.get", fake):
+        first = post_search(client, query="nurse").get_json()["data"]
+        second = post_search(client, query="nurse").get_json()["data"]
+    assert len(fake.calls) == 1
+    assert second == first
