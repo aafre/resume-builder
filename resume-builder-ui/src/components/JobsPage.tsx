@@ -484,7 +484,7 @@ export default function JobsPage() {
           {/* Parsing progress */}
           {(resumeParsing || parserBusy) ? (
             <div className="py-6 flex flex-col items-center gap-3">
-              <div className="w-full max-w-xs bg-gray-200 rounded-full h-2 overflow-hidden">
+              <div className="w-full max-w-xs bg-gray-200 rounded-full h-2 overflow-clip">
                 <div
                   className="bg-accent h-2 rounded-full transition-all duration-300"
                   style={{ width: `${parserProgress}%` }}
@@ -502,8 +502,9 @@ export default function JobsPage() {
                     type="text"
                     value={titleInput}
                     onChange={(e) => setTitleInput(e.target.value)}
+                    aria-label="Job title"
                     placeholder="Job title (e.g. Software Engineer)"
-                    className="w-full pl-10 pr-4 py-3 border border-black/[0.06] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
                   />
                 </div>
 
@@ -514,8 +515,9 @@ export default function JobsPage() {
                     type="text"
                     value={locationInput}
                     onChange={(e) => setLocationInput(e.target.value)}
+                    aria-label="City or region"
                     placeholder="City or region (optional)"
-                    className="w-full pl-10 pr-4 py-3 border border-black/[0.06] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
                   />
                 </div>
 
@@ -523,9 +525,10 @@ export default function JobsPage() {
                 <div className="relative sm:w-44">
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/60 pointer-events-none" />
                   <select
+                    aria-label="Country"
                     value={country}
                     onChange={(e) => setCountry(e.target.value)}
-                    className="w-full appearance-none pl-4 pr-10 py-3 border border-black/[0.06] rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
+                    className="w-full appearance-none pl-4 pr-10 py-3 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
                   >
                     {ADZUNA_COUNTRIES.map((c) => (
                       <option key={c.code} value={c.code}>{c.label}</option>
@@ -537,7 +540,7 @@ export default function JobsPage() {
                 <button
                   type="submit"
                   disabled={loading || !titleInput.trim()}
-                  className="btn-primary flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn-primary flex items-center justify-center gap-2 px-6 py-3 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? (
                     <div className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
