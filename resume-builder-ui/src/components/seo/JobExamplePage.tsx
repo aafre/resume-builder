@@ -24,6 +24,7 @@ import { generateHowToSchema } from '../../utils/schemaGenerators';
 import ConversionPromptModal from '../ConversionPromptModal';
 import AuthModal from '../AuthModal';
 import TemplateSelectionModal from '../TemplateSelectionModal';
+import { PostingEvidenceHero, PostingEvidenceBody } from './PostingEvidencePrototype'; // PROTOTYPE
 import type { JobExampleData } from '../../data/jobExamples/types';
 import type { FAQConfig } from '../../types/seo';
 import type { Section } from '../../types';
@@ -421,6 +422,7 @@ export default function JobExamplePage() {
             {data.answerBlock}
           </p>
         )}
+        <PostingEvidenceHero />{/* PROTOTYPE */}
         <p className="mt-5 text-lg md:text-xl font-extralight text-ink/60 leading-relaxed max-w-3xl">
           {heroConfig.subtitle}
         </p>
@@ -707,6 +709,8 @@ export default function JobExamplePage() {
           </section>
         </RevealSection>
       )}
+
+      <PostingEvidenceBody />{/* PROTOTYPE */}
 
       {/* Certifications worth listing, where the role genuinely has them */}
       {data.certifications && data.certifications.length > 0 && (
