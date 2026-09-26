@@ -55,7 +55,7 @@ export default function Header() {
         };
 
   // The pill follows whichever link matches the route; a page with no nav
-  // entry (blog, an example, the landing page) correctly has no pill.
+  // entry (a blog post, an example, the landing page) correctly has no pill.
   const activePath = navLinks.some((link) => link.path === location.pathname)
     ? location.pathname
     : null;
@@ -144,7 +144,7 @@ export default function Header() {
             {/* Decoration only. `aria-current` on the link is what actually
                 announces the current page. */}
             <span ref={pillRef} className="nav-rail-pill" aria-hidden="true" />
-            {navLinks.map(({ path, label, countBadge, id }) => {
+            {navLinks.map(({ path, label, countBadge, id, wideOnly }) => {
               const isCurrent = location.pathname === path;
               const NavGlyph = navGlyphs[path];
               return (
@@ -154,7 +154,7 @@ export default function Header() {
                   id={id}
                   data-nav-key={path}
                   aria-current={isCurrent ? "page" : undefined}
-                  className={`nav-rail-link relative inline-flex min-h-11 items-center gap-2 px-3.5 py-2 rounded-lg text-sm transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
+                  className={`nav-rail-link relative ${wideOnly ? "hidden xl:inline-flex" : "inline-flex"} min-h-11 items-center gap-2 px-3.5 py-2 rounded-lg text-sm transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
                     isCurrent
                       ? 'text-ink font-semibold'
                       : 'text-ink/60 font-medium hover:text-ink'
@@ -279,7 +279,7 @@ export default function Header() {
         <GlobalNavDrawer
           isOpen={navDrawerOpen}
           onClose={() => setNavDrawerOpen(false)}
-          links={[...navLinks, { path: "/blog", label: "Career Blog", blurb: "Guides for every step of the search" }]}
+          links={navLinks}
           currentPath={location.pathname}
           resumeCount={resumeCount}
           isAuthenticated={isAuthenticated}
