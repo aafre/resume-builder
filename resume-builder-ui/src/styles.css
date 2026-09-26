@@ -602,6 +602,15 @@ details .faq-content > div {
   opacity: 0;
   animation: dcm-content-fade-up 0.4s ease-out forwards;
 }
+/* Review card: one accent ring pulse once the checkmark has landed, to pull
+   the eye from the success mark to the review ask. Ends fully transparent. */
+@keyframes dcm-review-ring {
+  0% { box-shadow: 0 0 0 0 rgba(0, 212, 126, 0.35); }
+  100% { box-shadow: 0 0 0 10px rgba(0, 212, 126, 0); }
+}
+.animate-dcm-review-ring {
+  animation: dcm-review-ring 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.9s 1;
+}
 
 .dcm-particle {
   position: absolute;
@@ -686,6 +695,9 @@ details .faq-content > div {
   }
   .dcm-particle {
     display: none !important;
+  }
+  .animate-dcm-review-ring {
+    animation: none !important;
   }
 
   /* Background grain: disable */
