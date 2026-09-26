@@ -67,6 +67,7 @@ TRANSIENT_ERROR_KEYWORDS = (
     "server disconnected",
     "connection",
     "timeout",
+    "timed out",
     "reset",
     "network",
 )
@@ -1400,6 +1401,23 @@ def require_auth(f):
 
         # Enhanced logging with context for debugging auth issues
         error_msg = str(last_auth_exception)
+
+        # Upstream flake, not a bad token: 401 would make the client sign out,
+        # wiping an anonymous user's session and orphaning their resumes.
+        if is_transient_error(error_msg):
+            logging.error(
+                f"Auth upstream unavailable: {error_msg} | endpoint={request.path} | "
+                f"method={request.method}"
+            )
+            return (
+                jsonify(
+                    {
+                        "success": False,
+                        "error": "Service temporarily unavailable, please retry",
+                    }
+                ),
+                503,
+            )
         is_expired = "expired" in error_msg.lower()
         user_agent = request.headers.get("User-Agent", "unknown")[:50]
 
