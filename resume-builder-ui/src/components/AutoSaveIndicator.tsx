@@ -1,3 +1,5 @@
+import { AlertCircle, Check, Loader2 } from "lucide-react";
+
 interface AutoSaveIndicatorProps {
   lastSaved?: Date | null;
   isSaving?: boolean;
@@ -5,6 +7,11 @@ interface AutoSaveIndicatorProps {
   onRetry?: () => void;
 }
 
+/**
+ * Cloud save status for signed-in editors. Same chip geometry as
+ * AnonymousStorageBadge so the slot reads identically either way; phones get
+ * the one-word label, wider screens add the time.
+ */
 export default function AutoSaveIndicator({
   lastSaved,
   isSaving = false,
@@ -25,36 +32,37 @@ export default function AutoSaveIndicator({
     return date.toLocaleDateString();
   };
 
-  // Error state
+  const chip =
+    "flex min-h-11 items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium";
+
   if (hasError) {
     return (
-      <div className="flex items-center gap-2 text-xs text-red-600">
-        <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-        <span className="hidden sm:inline">Save Failed - Retrying...</span>
-        <span className="sm:hidden">Error</span>
+      <div role="status" className={`${chip} text-red-700`}>
+        <AlertCircle className="h-3.5 w-3.5" aria-hidden="true" />
+        <span className="sm:hidden">Retrying</span>
+        <span className="hidden sm:inline">Save failed · retrying</span>
       </div>
     );
   }
 
-  // Saving state
   if (isSaving) {
     return (
-      <div className="flex items-center gap-2 text-xs text-accent-text">
-        <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
-        <span className="hidden sm:inline">Saving...</span>
-        <span className="sm:hidden">💾</span>
+      <div role="status" className={`${chip} text-ink/60`}>
+        <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+        Saving
       </div>
     );
   }
 
-  // Static saved state
   return (
-    <div className="flex items-center gap-2 text-xs text-green-600">
-      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-      <span className="hidden sm:inline">
-        Auto-Save {lastSaved ? `• ${formatLastSaved(lastSaved)}` : ""}
+    <div role="status" className={`${chip} text-ink/60`}>
+      <span className="flex h-4 w-4 items-center justify-center rounded-full bg-accent text-ink" aria-hidden="true">
+        <Check className="h-2.5 w-2.5" strokeWidth={3.5} />
       </span>
-      <span className="sm:hidden">✓</span>
+      <span className="sm:hidden">Saved</span>
+      <span className="hidden sm:inline">
+        Saved{lastSaved ? ` · ${formatLastSaved(lastSaved)}` : ""}
+      </span>
     </div>
   );
 }
