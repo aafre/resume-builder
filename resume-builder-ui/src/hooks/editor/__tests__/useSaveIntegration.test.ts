@@ -48,6 +48,26 @@ describe('saveBeforeAction', () => {
     expect(toast.error).toHaveBeenCalledWith(expect.stringContaining('stopped before starting fresh'));
   });
 
+  // saveNow reports a network/API failure by resolving null, not rejecting.
+  it('treats a null save as a failure: warns and still downloads', async () => {
+    saveNow.mockResolvedValue(null);
+    await expect(renderSave().saveBeforeAction('downloading your PDF', { blocking: false })).resolves.toBe(true);
+    expect(toastWarning).toHaveBeenCalled();
+  });
+
+  it('treats a null save as a failure for blocking actions', async () => {
+    saveNow.mockResolvedValue(null);
+    await expect(renderSave().saveBeforeAction('starting fresh')).resolves.toBe(false);
+    expect(toast.error).toHaveBeenCalled();
+  });
+
+  it('proceeds on a successful save without toasting', async () => {
+    saveNow.mockResolvedValue('r1');
+    await expect(renderSave().saveBeforeAction('starting fresh')).resolves.toBe(true);
+    expect(toast.error).not.toHaveBeenCalled();
+    expect(toastWarning).not.toHaveBeenCalled();
+  });
+
   it('opens the storage-limit modal and still downloads when the limit is hit', async () => {
     saveNow.mockRejectedValue(new Error('RESUME_LIMIT_REACHED'));
     await expect(renderSave().saveBeforeAction('downloading your PDF', { blocking: false })).resolves.toBe(true);
