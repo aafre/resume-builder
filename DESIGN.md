@@ -318,7 +318,9 @@ Three variants, all sharing a 44px minimum height and a `active:scale-[0.98]` pr
 
 ### Navigation
 
-Sticky header on `bg-white/95` with `backdrop-blur-xl` and a `border-slate-200/80` underline. Nav links are 8px-radius ghost buttons at `text-sm` weight 500 with a 44px minimum height. Active state is carried by weight and Ink color, not by an underline or a pill. Counts and unread state attach as Signal Green dots with a white ring, positioned absolutely at the target's top-right. The primary CTA ("Create Free Resume") stays visible at every breakpoint, contracting its label rather than disappearing.
+Sticky header, flat white at rest, glass (`blur(24px)`) with a hairline once scrolled; height never changes. Nav links are plain `text-sm` labels (`text-ink/60` → Ink on hover) with a 44px minimum height. The current page is Ink at weight 600 plus a single 3px Signal Green bar on the header's bottom edge that travels between links (`useNavPill`, `.nav-rail-pill`); no pill fills. At `xl+` a mono `FREE · NO SIGN-UP` tag with a green dot sits after the wordmark. Signed-out "Sign In" is a ghost control, so the green CTA is the header's only filled button.
+
+On phones and tablets one trigger (mono `MENU`/`CLOSE` + ≡/×, or the avatar when signed in) opens a full-height Chalk sheet that unfolds from the header: a numbered index of destinations in 3xl weight-800 type with a weight-200 one-line purpose, hairline separators, the current row marked by a green dot, and the account (or "No account needed · Sign In") plus the full-width CTA docked at the bottom in thumb reach. Counts and unread state attach as Signal Green dots with a white ring, positioned absolutely at the target's top-right. The primary CTA ("Create Free Resume") stays visible at every breakpoint, contracting its label rather than disappearing.
 
 ### Ghost Add Button
 

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { BookOpen } from "lucide-react";
 import { MdExpandMore } from "react-icons/md";
 import { useOptionalEditorContext } from "../contexts/EditorContext";
 import { useAuth } from "../contexts/AuthContext";
@@ -115,6 +114,7 @@ export default function Header() {
     >
       <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-header-mobile sm:h-header-desktop transition-all duration-200">
+          <div className="flex items-center">
           {/* Logo and Home Navigation */}
           <Link
             to="/"
@@ -132,11 +132,19 @@ export default function Header() {
             <span className="sr-only sm:hidden">EasyFreeResume — go to homepage</span>
           </Link>
 
+          {/* The promise, stated where every cold arrival looks first. Wide
+              screens only: below xl the rail needs the room. */}
+          <p className="hidden xl:flex items-center gap-2 ml-5 pl-5 border-l border-black/[0.08] font-mono text-[11px] uppercase tracking-[0.15em] text-ink/60">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
+            Free · No sign-up
+          </p>
+          </div>
+
           {/* Product navigation — rendered for every visitor, not only signed-in
               ones. Only account-scoped destinations branch on auth. */}
           <nav
             ref={navRef}
-            className="relative hidden lg:flex items-center gap-1"
+            className="relative hidden lg:flex items-center gap-1 self-stretch"
             aria-label="Primary"
           >
             {/* Decoration only. `aria-current` on the link is what actually
@@ -151,10 +159,10 @@ export default function Header() {
                   id={id}
                   data-nav-key={path}
                   aria-current={isCurrent ? "page" : undefined}
-                  className={`nav-rail-link relative z-10 inline-flex min-h-11 items-center px-4 py-2 rounded-lg font-medium text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
+                  className={`nav-rail-link relative inline-flex min-h-11 items-center px-3.5 py-2 rounded-lg text-sm transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
                     isCurrent
-                      ? 'text-white'
-                      : 'text-ink/60 hover:bg-black/5 hover:text-ink'
+                      ? 'text-ink font-semibold'
+                      : 'text-ink/60 font-medium hover:text-ink'
                   }`}
                 >
                   {label}
@@ -217,7 +225,7 @@ export default function Header() {
                     <button
                       id="tour-sign-in-button"
                       onClick={showAuthModal}
-                      className="flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 font-semibold text-sm transition-all duration-200 text-ink hover:text-accent-text hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 lg:hover:no-underline lg:px-5 lg:bg-ink lg:text-white lg:shadow-sm lg:hover:shadow-md"
+                      className="flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 font-semibold text-sm transition-colors duration-200 text-ink hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
                     >
                       <span>Sign In</span>
                     </button>
@@ -274,7 +282,7 @@ export default function Header() {
         <GlobalNavDrawer
           isOpen={navDrawerOpen}
           onClose={() => setNavDrawerOpen(false)}
-          links={[...navLinks, { path: "/blog", label: "Career Blog", icon: BookOpen, blurb: "Guides for every step of the search" }]}
+          links={[...navLinks, { path: "/blog", label: "Career Blog", blurb: "Guides for every step of the search" }]}
           currentPath={location.pathname}
           resumeCount={resumeCount}
           isAuthenticated={isAuthenticated}

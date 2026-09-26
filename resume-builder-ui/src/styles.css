@@ -1325,18 +1325,16 @@ div[data-google-query-id] {
 }
 
 /* ── The rail ──
-   One ink pill for the whole nav, positioned from measured link geometry and
-   moved by `useNavPill`. It is `aria-hidden` decoration; the authoritative
+   One accent bar for the whole nav, sitting on the header's bottom edge,
+   positioned from measured link geometry and moved by `useNavPill`. It is `aria-hidden` decoration; the authoritative
    current-page signal is `aria-current` on the link itself. */
 .nav-rail-pill {
   position: absolute;
-  top: 50%;
+  bottom: 0;
   left: 0;
-  height: 40px;
-  margin-top: -20px;
-  border-radius: 8px;
-  background-color: #0c0c0c;
-  box-shadow: 0 1px 2px rgba(12, 12, 12, 0.16);
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  background-color: #00d47e;
   pointer-events: none;
   opacity: 0;
   transition: opacity 200ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -1344,21 +1342,6 @@ div[data-google-query-id] {
 
 .nav-rail-pill[data-visible="true"] {
   opacity: 1;
-}
-
-/* The label crossing from ink to white is delayed so the swap happens under
-   the pill rather than on bare ground. The delay is tuned against the pill's
-   easing, which is heavily front-loaded: by ~110ms the pill has covered most
-   of the distance, so a longer delay leaves the outgoing label white on white
-   and the link reads as missing. Retune both together or neither.  */
-.nav-rail-link {
-  transition: color 160ms linear 110ms, background-color 200ms ease;
-}
-
-/* Hover has no pill to wait for, so it must not inherit the swap delay. */
-.nav-rail-link:hover,
-.nav-rail-link:focus-visible {
-  transition-delay: 0ms;
 }
 
 /* ── Count badge ──
@@ -1424,7 +1407,7 @@ div[data-google-query-id] {
    it mounted for the exit). Browsers without @starting-style simply appear. */
 .nav-sheet {
   --sheet-bar: var(--header-height-mobile);
-  clip-path: inset(0 0 0 0 round 0 0 24px 24px);
+  clip-path: inset(0 0 0 0);
   transition: clip-path 420ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -1504,13 +1487,6 @@ div[data-google-query-id] {
   .nav-badge-pop,
   .nav-auth-in {
     animation: none !important;
-  }
-
-  /* The global rule zeroes transition *duration*, not delay. Left alone, the
-     outgoing nav label stays white for 110ms after the pill has snapped away
-     and the link reads as missing. */
-  .nav-rail-link {
-    transition-delay: 0ms !important;
   }
 }
 

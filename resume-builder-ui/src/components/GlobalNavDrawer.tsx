@@ -2,7 +2,7 @@ import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
-import { ChevronRight, LogOut } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import useFocusTrap from "../hooks/useFocusTrap";
 import type { NavLink } from "../config/navLinks";
 import LogoMark from "./LogoMark";
@@ -30,8 +30,9 @@ const EXIT_MS = 280;
  *
  * Distinct from MobileNavigationDrawer, which is editor chrome and navigates
  * resume *sections*. This sheet unfolds from the header itself: its top row
- * repeats the header bar, and the rest is revealed below it by clip-path, so
- * menu and account read as one surface instead of two competing menus.
+ * repeats the header bar, and the rest is revealed below it by clip-path.
+ * It is a full-height index — big type, one destination per line — with the
+ * account and the primary action docked at the bottom, in thumb reach.
  */
 export default function GlobalNavDrawer({
   isOpen,
@@ -93,7 +94,7 @@ export default function GlobalNavDrawer({
 
   if (!isOpen && !mounted) return null;
 
-  // My Resumes lives in the account card, not the list.
+  // My Resumes lives in the account dock, not the index.
   const rows = links.filter((link) => !link.countBadge);
 
   // Portalled to <body> because Header carries a backdrop filter once
@@ -112,15 +113,15 @@ export default function GlobalNavDrawer({
         id="global-nav-drawer"
         ref={drawerRef}
         data-open={isOpen}
-        className="nav-sheet fixed inset-x-0 top-0 z-[9999] max-h-[100dvh] overflow-y-auto overscroll-contain bg-white shadow-2xl lg:hidden"
+        className="nav-sheet fixed inset-0 z-[9999] overflow-y-auto overscroll-contain bg-chalk lg:hidden"
         role="dialog"
         aria-modal="true"
         aria-label="Site navigation"
         tabIndex={-1}
       >
-        <div className="mx-auto max-w-2xl px-4 sm:px-6">
+        <div className="mx-auto flex min-h-full max-w-2xl flex-col px-4 sm:px-6">
           {/* The header bar, repeated, so the sheet reads as the header grown */}
-          <div className="flex h-header-mobile items-center justify-between sm:h-header-desktop">
+          <div className="flex h-header-mobile shrink-0 items-center justify-between sm:h-header-desktop">
             <Link
               to="/"
               onClick={onClose}
@@ -134,107 +135,102 @@ export default function GlobalNavDrawer({
             <NavMenuTrigger open={isOpen} account={account} resumeCount={resumeCount} onClick={onClose} />
           </div>
 
-          {/* Account */}
-          <div className="nav-drawer-item mt-2" style={{ "--i": 0 } as React.CSSProperties}>
+          <nav className="mt-4 border-t border-black/[0.06]" aria-label="Site">
+            <ol>
+              {rows.map(({ path, label, blurb }, index) => {
+                const isCurrent = currentPath === path;
+                return (
+                  <li
+                    key={path}
+                    className="nav-drawer-item border-b border-black/[0.06]"
+                    style={{ "--i": index } as React.CSSProperties}
+                  >
+                    <Link
+                      to={path}
+                      onClick={onClose}
+                      aria-current={isCurrent ? "page" : undefined}
+                      className="group flex min-h-16 items-baseline gap-4 py-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset"
+                    >
+                      <span
+                        className={`w-6 shrink-0 font-mono text-[11px] tracking-[0.15em] ${isCurrent ? "text-accent-text" : "text-ink/60"}`}
+                        aria-hidden="true"
+                      >
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="flex items-center gap-2.5 font-display text-3xl font-extrabold leading-tight tracking-tight text-ink">
+                          {label}
+                          {isCurrent && <span className="h-2 w-2 shrink-0 rounded-full bg-accent" aria-hidden="true" />}
+                        </span>
+                        {blurb && (
+                          <span className="mt-1 block text-[15px] font-extralight leading-snug text-ink/60">{blurb}</span>
+                        )}
+                      </span>
+                      <ArrowRight
+                        className="h-5 w-5 shrink-0 self-center text-ink/60 transition-transform duration-200 group-hover:translate-x-1"
+                        aria-hidden="true"
+                      />
+                    </Link>
+                  </li>
+                );
+              })}
+            </ol>
+          </nav>
+
+          {/* Account and the primary action, docked where a thumb already is */}
+          <div
+            className="nav-drawer-item safe-area-inset-bottom mt-auto pt-8"
+            style={{ "--i": rows.length } as React.CSSProperties}
+          >
             {isAuthenticated && account ? (
-              <Link
-                to="/my-resumes"
-                onClick={onClose}
-                aria-current={currentPath === "/my-resumes" ? "page" : undefined}
-                className="flex min-h-16 items-center gap-3 rounded-xl bg-chalk-dark p-3 transition-colors hover:bg-black/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset"
-              >
+              <div className="flex items-center gap-3 rounded-xl bg-white p-3 ring-1 ring-black/[0.06]">
                 <UserAvatar name={account.name} url={account.avatarUrl} size={40} />
-                <span className="min-w-0 flex-1">
+                <Link
+                  to="/my-resumes"
+                  onClick={onClose}
+                  aria-current={currentPath === "/my-resumes" ? "page" : undefined}
+                  className="min-w-0 flex-1 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
+                >
                   <span className="block truncate text-[15px] font-semibold text-ink">{account.name}</span>
                   <span className="block truncate text-sm text-ink/60">
                     My Resumes
                     {resumeCount > 0 && <> · {resumeCount} saved</>}
                   </span>
-                </span>
-                <ChevronRight className="h-5 w-5 shrink-0 text-ink/40" aria-hidden="true" />
-              </Link>
-            ) : (
-              <div className="flex items-center gap-3 rounded-xl bg-chalk-dark p-3">
-                <p className="min-w-0 flex-1 text-sm leading-snug text-ink/60">
-                  <span className="block font-semibold text-ink">No account needed</span>
-                  Sign in only to save up to 5 resumes across devices.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    onClose();
-                    onSignInClick();
-                  }}
-                  className="btn-secondary shrink-0 px-4 py-2 text-sm"
-                >
-                  Sign In
-                </button>
-              </div>
-            )}
-          </div>
-
-          <nav className="mt-3 flex flex-col gap-1" aria-label="Site">
-            {rows.map(({ path, label, blurb, icon: Icon }, index) => {
-              const isCurrent = currentPath === path;
-              return (
-                <Link
-                  key={path}
-                  to={path}
-                  onClick={onClose}
-                  aria-current={isCurrent ? "page" : undefined}
-                  style={{ "--i": index + 1 } as React.CSSProperties}
-                  className={`nav-drawer-item group flex min-h-14 items-center gap-3 rounded-xl px-2 py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset ${
-                    isCurrent ? "bg-black/[0.04]" : "hover:bg-black/[0.04]"
-                  }`}
-                >
-                  {Icon && (
-                    // Current page mirrors the desktop rail: ink tile, like the ink pill
-                    <span
-                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-colors ${
-                        isCurrent ? "bg-ink text-accent" : "bg-chalk-dark text-ink"
-                      }`}
-                      aria-hidden="true"
-                    >
-                      <Icon className="h-5 w-5" />
-                    </span>
-                  )}
-                  <span className="min-w-0 flex-1">
-                    <span className={`block text-[15px] text-ink ${isCurrent ? "font-bold" : "font-semibold"}`}>
-                      {label}
-                    </span>
-                    {blurb && <span className="block truncate text-sm text-ink/60">{blurb}</span>}
-                  </span>
-                  <ChevronRight
-                    className="h-4 w-4 shrink-0 text-ink/30 transition-transform group-hover:translate-x-0.5"
-                    aria-hidden="true"
-                  />
                 </Link>
-              );
-            })}
-          </nav>
-
-          <div
-            className="nav-drawer-item safe-area-inset-bottom mt-3 border-t border-black/[0.06] pt-3"
-            style={{ "--i": rows.length + 1 } as React.CSSProperties}
-          >
-            {isAuthenticated ? (
-              onSignOut && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    onClose();
-                    onSignOut();
-                  }}
-                  className="flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-sm font-medium text-red-600 transition-colors hover:bg-red-50/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset"
-                >
-                  <LogOut className="h-4 w-4" aria-hidden="true" />
-                  Sign Out
-                </button>
-              )
+                {onSignOut && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      onSignOut();
+                    }}
+                    className="min-h-11 shrink-0 rounded-lg px-3 text-sm font-medium text-ink/60 transition-colors hover:bg-black/5 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
+                  >
+                    Sign Out
+                  </button>
+                )}
+              </div>
             ) : (
-              <Link to="/templates" onClick={onClose} className="btn-primary w-full px-5 text-sm font-bold">
-                Create Free Resume
-              </Link>
+              <>
+                <p className="mb-3 text-sm font-extralight text-ink/60">
+                  <span className="font-semibold text-ink">No account needed</span>
+                  {" · "}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      onSignInClick();
+                    }}
+                    className="inline-flex min-h-11 items-center font-semibold text-ink underline decoration-accent decoration-2 underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text"
+                  >
+                    Sign In
+                  </button>{" "}
+                  to save up to 5 resumes.
+                </p>
+                <Link to="/templates" onClick={onClose} className="btn-primary w-full px-5 text-base font-bold">
+                  Create Free Resume
+                </Link>
+              </>
             )}
           </div>
         </div>
