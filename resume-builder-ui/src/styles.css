@@ -1417,17 +1417,42 @@ div[data-google-query-id] {
   }
 }
 
-/* ── Drawer ──
-   The panel already slides in; the links follow it in sequence so the drawer
-   reads as one gesture instead of a block that appears. */
+/* ── Mobile sheet ──
+   The sheet's top row repeats the header bar, and clip-path reveals the rest
+   downward from under it — the header grows rather than a panel arriving.
+   Closing folds it back to bar height before unmount (GlobalNavDrawer holds
+   it mounted for the exit). Browsers without @starting-style simply appear. */
+.nav-sheet {
+  --sheet-bar: var(--header-height-mobile);
+  clip-path: inset(0 0 0 0 round 0 0 24px 24px);
+  transition: clip-path 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 640px) {
+  .nav-sheet { --sheet-bar: var(--header-height-desktop); }
+}
+
+.nav-sheet[data-open="false"] {
+  clip-path: inset(0 0 calc(100% - var(--sheet-bar)) 0 round 0 0 0 0);
+  pointer-events: none;
+  transition-duration: 280ms;
+}
+
+@starting-style {
+  .nav-sheet[data-open="true"] {
+    clip-path: inset(0 0 calc(100% - var(--sheet-bar)) 0 round 0 0 0 0);
+  }
+}
+
+/* Rows drop in behind the reveal edge, in sequence. */
 @keyframes nav-drawer-item-in {
-  from { opacity: 0; transform: translateX(14px); }
+  from { opacity: 0; transform: translateY(-10px); }
   to   { opacity: 1; transform: none; }
 }
 
 .nav-drawer-item {
-  animation: nav-drawer-item-in 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: calc(90ms + var(--i, 0) * 40ms);
+  animation: nav-drawer-item-in 360ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(60ms + var(--i, 0) * 35ms);
 }
 
 @keyframes nav-drawer-backdrop-in {
@@ -1437,6 +1462,38 @@ div[data-google-query-id] {
 
 .nav-drawer-backdrop {
   animation: nav-drawer-backdrop-in 220ms ease-out both;
+  transition: opacity 280ms ease-out;
+}
+
+.nav-drawer-backdrop[data-open="false"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Menu trigger ──
+   ≡ and × are stacked; the open state turns one into the other. The sheet
+   mounts its own trigger already open, so @starting-style plays the turn. */
+.nav-trigger-icon {
+  transition:
+    transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 200ms ease-out;
+}
+
+.nav-trigger[data-open="true"] .nav-trigger-menu,
+.nav-trigger[data-open="false"] .nav-trigger-x {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.6);
+}
+
+@starting-style {
+  .nav-trigger[data-open="true"] .nav-trigger-x {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.6);
+  }
+  .nav-trigger[data-open="true"] .nav-trigger-menu {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
