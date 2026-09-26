@@ -66,7 +66,6 @@ export function getTurnstileToken(): Promise<string | null> {
 
         widgetId = window.turnstile.render(container, {
           sitekey: SITE_KEY,
-          size: 'invisible',
           callback: (token: string) => finish(token),
           'error-callback': () => finish(null),
           'expired-callback': () => finish(null),
@@ -91,6 +90,6 @@ export function ensureTurnstilePreClearance(): void {
     const container = document.createElement('div');
     container.style.display = 'none';
     document.body.appendChild(container);
-    window.turnstile.render(container, { sitekey: SITE_KEY, size: 'invisible' });
+    window.turnstile.render(container, { sitekey: SITE_KEY });
   });
 }
