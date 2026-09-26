@@ -154,7 +154,10 @@ export const useSaveIntegration = ({
         console.log(`Saving before ${actionName}...`);
         const result = await saveNow();
 
-        if (result === null && saveStatusRef.current === 'error') {
+        // saveNow resolves null on failure without throwing, and the status ref
+        // only catches up after the next render, so it can't be read here. Null
+        // means failure unless saving was off (loading from URL, auth pending).
+        if (result === null && !isLoadingFromUrl && !authLoading) {
           return onFailure();
         }
 
@@ -164,7 +167,7 @@ export const useSaveIntegration = ({
         return onFailure(error instanceof Error && error.message === 'RESUME_LIMIT_REACHED');
       }
     },
-    [isAnonymous, contactInfo, templateId, saveNow, openStorageLimitModal]
+    [isAnonymous, contactInfo, templateId, isLoadingFromUrl, authLoading, saveNow, openStorageLimitModal]
   );
 
   return {
