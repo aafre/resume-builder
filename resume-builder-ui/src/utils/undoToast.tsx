@@ -36,8 +36,14 @@ export function toastUndo(message: string, onUndo: () => void): string {
         >
           Undo
         </button>
+        {/* Time left in the undo window. Pauses with the toast (styles.css). */}
+        <span
+          aria-hidden="true"
+          className="toast-countdown absolute inset-x-0 bottom-0 h-0.5 origin-left bg-accent"
+          style={{ animationDuration: `${UNDO_TOAST_MS}ms` }}
+        />
       </span>
     ),
-    { duration: UNDO_TOAST_MS }
+    { duration: UNDO_TOAST_MS, icon: null }
   );
 }
