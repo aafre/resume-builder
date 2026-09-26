@@ -7,6 +7,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useConversion } from "../contexts/ConversionContext";
 import { processSectionsForExport } from "../services/yamlService";
 import usePreferencePersistence from "../hooks/usePreferencePersistence";
+import { ensureTurnstilePreClearance } from "../utils/turnstile";
 
 // Import extracted hooks
 import { useModalManager } from "../hooks/editor/useModalManager";
@@ -301,6 +302,13 @@ const Editor: React.FC = () => {
     openDownloadCelebration: modalManager.openDownloadCelebration,
   });
 
+  // Mount the invisible Turnstile widget so this browser earns Cloudflare
+  // pre-clearance for the jobs API WAF rule (jobs search can be triggered
+  // from the editor). No-op when VITE_TURNSTILE_SITE_KEY is unset.
+  useEffect(() => {
+    ensureTurnstilePreClearance();
+  }, []);
+
   // ===== DEPRECATED URL Pattern Block =====
   useEffect(() => {
     const templateParam = searchParams.get('template');
@@ -451,6 +459,8 @@ const Editor: React.FC = () => {
           isDownloading: editorActions.isDownloading,
           downloadPhase: editorActions.downloadPhase,
           isOpeningPreview: editorActions.isOpeningPreview,
+          missingIconsNotice: editorActions.missingIconsNotice,
+          dismissMissingIconsNotice: editorActions.dismissMissingIconsNotice,
         }}
         preview={{
           previewUrl: preview.previewUrl,
@@ -498,7 +508,7 @@ const Editor: React.FC = () => {
         sections={sections}
         contactInfo={contactInfo}
         onAuthSuccess={() => {
-          toast.success('Welcome! Your resume will now be saved to the cloud.');
+          toast.success('Signed in. Your resume now saves to your account.', { id: 'account-saved' });
         }}
       />
 

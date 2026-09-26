@@ -1,10 +1,14 @@
 import type React from "react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
-import { X } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import useFocusTrap from "../hooks/useFocusTrap";
 import type { NavLink } from "../config/navLinks";
+import LogoMark from "./LogoMark";
+import { navGlyphs } from "./icons/NavGlyphs";
+import UserAvatar from "./UserAvatar";
+import NavMenuTrigger, { type NavAccount } from "./NavMenuTrigger";
 
 interface GlobalNavDrawerProps {
   isOpen: boolean;
@@ -14,14 +18,22 @@ interface GlobalNavDrawerProps {
   resumeCount: number;
   isAuthenticated: boolean;
   onSignInClick: () => void;
+  /** Signed-in identity for the account card; null for guests */
+  account?: NavAccount | null;
+  onSignOut?: () => void;
 }
 
+/** Matches the exit transition in styles.css (.nav-sheet[data-open="false"]). */
+const EXIT_MS = 280;
+
 /**
- * Global site navigation for phones and tablets.
+ * Global site navigation and account for phones and tablets.
  *
  * Distinct from MobileNavigationDrawer, which is editor chrome and navigates
- * resume *sections*. This one navigates the site and is the only way a signed
- * out phone visitor can reach Templates or Examples from the header.
+ * resume *sections*. This sheet unfolds from the header itself: its top row
+ * repeats the header bar, and the rest is revealed below it by clip-path.
+ * It is a full-height index — big type, one destination per line — with the
+ * account and the primary action docked at the bottom, in thumb reach.
  */
 export default function GlobalNavDrawer({
   isOpen,
@@ -31,14 +43,28 @@ export default function GlobalNavDrawer({
   resumeCount,
   isAuthenticated,
   onSignInClick,
+  account = null,
+  onSignOut,
 }: GlobalNavDrawerProps) {
   const drawerRef = useRef<HTMLDivElement>(null);
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
 
+  // Outlives `isOpen` by the exit transition so closing folds the sheet back
+  // into the header instead of cutting it.
+  const [mounted, setMounted] = useState(isOpen);
+  useEffect(() => {
+    if (isOpen) {
+      setMounted(true);
+      return;
+    }
+    const timer = window.setTimeout(() => setMounted(false), EXIT_MS);
+    return () => window.clearTimeout(timer);
+  }, [isOpen]);
+
   useFocusTrap(isOpen, drawerRef, onClose);
 
-  // The drawer is `lg:hidden`, so widening past the breakpoint hides it
+  // The sheet is `lg:hidden`, so widening past the breakpoint hides it
   // without closing it — leaving the focus trap swallowing Tab against a
   // panel nobody can see. Close on the breakpoint instead of relying on CSS.
   useEffect(() => {
@@ -56,7 +82,7 @@ export default function GlobalNavDrawer({
   }, [isOpen]);
 
   // aria-modal="true" is a promise that the rest of the page is inert; without
-  // this the page scrolls behind the drawer and reopens at a different offset.
+  // this the page scrolls behind the sheet and reopens at a different offset.
   // Body only, never html — see the overflow note in CLAUDE.md.
   useEffect(() => {
     if (!isOpen) return;
@@ -67,17 +93,19 @@ export default function GlobalNavDrawer({
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  if (!isOpen && !mounted) return null;
 
-  // Portalled to <body> because Header carries `backdrop-blur-xl`, and a
-  // backdrop-filtered ancestor becomes the containing block for fixed
-  // descendants — which clamped this drawer to the 64px header. Same pattern
-  // as AuthModal and ResumeRecoveryModal.
+  // My Resumes lives in the account dock, not the index.
+  const rows = links.filter((link) => !link.countBadge);
+
+  // Portalled to <body> because Header carries a backdrop filter once
+  // scrolled, and a filtered ancestor becomes the containing block for fixed
+  // descendants — which clamped this to the header's height.
   return createPortal(
     <>
-      {/* Backdrop */}
       <div
-        className="nav-drawer-backdrop fixed inset-0 bg-black/50 z-[9998] lg:hidden"
+        className="nav-drawer-backdrop fixed inset-0 z-[9998] bg-ink/40 lg:hidden"
+        data-open={isOpen}
         onClick={onClose}
         aria-hidden="true"
       />
@@ -85,75 +113,128 @@ export default function GlobalNavDrawer({
       <div
         id="global-nav-drawer"
         ref={drawerRef}
-        className="fixed top-0 right-0 bottom-0 w-[300px] max-w-[85vw] bg-white z-[9999] lg:hidden shadow-xl
-          animate-slide-in-right flex flex-col"
+        data-open={isOpen}
+        className="nav-sheet fixed inset-0 z-[9999] overflow-y-auto overscroll-contain bg-chalk lg:hidden"
         role="dialog"
         aria-modal="true"
         aria-label="Site navigation"
         tabIndex={-1}
       >
-        <div className="flex h-16 items-center justify-between border-b border-gray-200 pl-4 pr-2">
-          <span className="font-display text-base font-extrabold tracking-tight text-ink">
-            EasyFreeResume
-          </span>
-          <button
-            type="button"
-            onClick={onClose}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-ink/70 transition-colors hover:bg-black/5 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
-            aria-label="Close navigation menu"
-          >
-            <X className="h-5 w-5" aria-hidden="true" />
-          </button>
-        </div>
-
-        <nav className="flex-1 overflow-y-auto p-2" aria-label="Site">
-          {links.map(({ path, label, countBadge }, index) => {
-            const isCurrent = currentPath === path;
-            return (
-              <Link
-                key={path}
-                to={path}
-                onClick={onClose}
-                aria-current={isCurrent ? "page" : undefined}
-                style={{ "--i": index } as React.CSSProperties}
-                className={`nav-drawer-item flex min-h-11 items-center justify-between gap-3 rounded-lg px-4 py-3 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset ${
-                  isCurrent
-                    ? "bg-black/5 font-bold text-ink"
-                    : "font-medium text-ink hover:bg-black/5 hover:text-ink"
-                }`}
-              >
-                <span>{label}</span>
-                {countBadge && resumeCount > 0 && (
-                  <span className="min-w-[20px] rounded-full bg-accent px-1.5 py-0.5 text-center text-[11px] font-bold text-ink">
-                    {resumeCount > 99 ? "99+" : resumeCount}
-                  </span>
-                )}
-              </Link>
-            );
-          })}
-        </nav>
-
-        {!isAuthenticated && (
-          <div className="safe-area-inset-bottom border-t border-gray-200 px-3 pt-3">
+        <div className="mx-auto flex min-h-full max-w-2xl flex-col px-4 sm:px-6">
+          {/* The header bar, repeated, so the sheet reads as the header grown */}
+          <div className="flex h-header-mobile shrink-0 items-center justify-between sm:h-header-desktop">
             <Link
-              to="/templates"
+              to="/"
               onClick={onClose}
-              className="btn-primary w-full px-5 text-sm font-bold"
+              className="flex min-h-11 items-center rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
             >
-              Create Free Resume
+              <LogoMark size={36} className="h-9 w-9 sm:h-10 sm:w-10" />
+              <span className="ml-2.5 font-display text-lg font-extrabold tracking-tight text-ink">
+                EasyFreeResume
+              </span>
             </Link>
-            <button
-              type="button"
-              onClick={() => {
-                onClose();
-                onSignInClick();
-              }}
-              className="mt-2 flex min-h-11 w-full items-center justify-center rounded-lg text-sm font-semibold text-ink transition-colors hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
-            >
-              Sign In
-            </button>
+            <NavMenuTrigger open={isOpen} account={account} resumeCount={resumeCount} onClick={onClose} />
           </div>
-        )}
+
+          <nav className="mt-4 border-t border-black/[0.06]" aria-label="Site">
+            <ol>
+              {rows.map(({ path, label, blurb }, index) => {
+                const isCurrent = currentPath === path;
+                const NavGlyph = navGlyphs[path];
+                return (
+                  <li
+                    key={path}
+                    className="nav-drawer-item border-b border-black/[0.06]"
+                    style={{ "--i": index } as React.CSSProperties}
+                  >
+                    <Link
+                      to={path}
+                      onClick={onClose}
+                      aria-current={isCurrent ? "page" : undefined}
+                      className="group flex min-h-16 items-baseline gap-4 py-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset"
+                    >
+                      {NavGlyph && (
+                        <NavGlyph
+                          className={`h-6 w-6 shrink-0 self-start mt-1.5 ${isCurrent ? "text-ink" : "text-ink/60"}`}
+                        />
+                      )}
+                      <span className="min-w-0 flex-1">
+                        <span className="flex items-center gap-2.5 font-display text-3xl font-extrabold leading-tight tracking-tight text-ink">
+                          {label}
+                          {isCurrent && <span className="h-2 w-2 shrink-0 rounded-full bg-accent" aria-hidden="true" />}
+                        </span>
+                        {blurb && (
+                          <span className="mt-1 block text-[15px] font-extralight leading-snug text-ink/60">{blurb}</span>
+                        )}
+                      </span>
+                      <ArrowRight
+                        className="h-5 w-5 shrink-0 self-center text-ink/60 transition-transform duration-200 group-hover:translate-x-1"
+                        aria-hidden="true"
+                      />
+                    </Link>
+                  </li>
+                );
+              })}
+            </ol>
+          </nav>
+
+          {/* Account and the primary action, docked where a thumb already is */}
+          <div
+            className="nav-drawer-item safe-area-inset-bottom mt-auto pt-8"
+            style={{ "--i": rows.length } as React.CSSProperties}
+          >
+            {isAuthenticated && account ? (
+              <div className="flex items-center gap-3 rounded-xl bg-white p-3 ring-1 ring-black/[0.06]">
+                <UserAvatar name={account.name} url={account.avatarUrl} size={40} />
+                <Link
+                  to="/my-resumes"
+                  onClick={onClose}
+                  aria-current={currentPath === "/my-resumes" ? "page" : undefined}
+                  className="min-w-0 flex-1 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
+                >
+                  <span className="block truncate text-[15px] font-semibold text-ink">{account.name}</span>
+                  <span className="block truncate text-sm text-ink/60">
+                    My Resumes
+                    {resumeCount > 0 && <> · {resumeCount} saved</>}
+                  </span>
+                </Link>
+                {onSignOut && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      onSignOut();
+                    }}
+                    className="min-h-11 shrink-0 rounded-lg px-3 text-sm font-medium text-ink/60 transition-colors hover:bg-black/5 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
+                  >
+                    Sign Out
+                  </button>
+                )}
+              </div>
+            ) : (
+              <>
+                <p className="mb-3 text-sm font-extralight text-ink/60">
+                  <span className="font-semibold text-ink">No account needed</span>
+                  {" · "}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      onSignInClick();
+                    }}
+                    className="inline-flex min-h-11 items-center font-semibold text-ink underline decoration-accent decoration-2 underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text"
+                  >
+                    Sign In
+                  </button>{" "}
+                  to save up to 5 resumes.
+                </p>
+                <Link to="/templates" onClick={onClose} className="btn-primary w-full px-5 text-base font-bold">
+                  Create Free Resume
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
       </div>
     </>,
     document.body

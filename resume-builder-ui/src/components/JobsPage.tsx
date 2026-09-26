@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { ArrowUpRight, Briefcase, MapPin, Search, ChevronDown, FileText, BookOpen, Target, Upload, Sparkles, Info, X } from 'lucide-react';
-import { searchJobs, suggestRoles, AdzunaJob } from '../services/jobs';
+import { searchJobs, suggestRoles, AdzunaJob, JobSearchError } from '../services/jobs';
 import type { JobResultStatus, RoleSuggestion } from '../services/jobs';
 import { normalizeJobTitle } from '../utils/jobTitleNormalizer';
 import { detectCountryCode, sanitizeLocationForSearch } from '../utils/countryDetector';
@@ -15,6 +15,7 @@ import type { SeniorityLevel } from '../utils/resumeDataExtractor';
 import { useResumeParser } from '../hooks/useResumeParser';
 import { useAuth } from '../contexts/AuthContext';
 import { useJobsAvailable } from '../hooks/useJobsAvailable';
+import { ensureTurnstilePreClearance } from '../utils/turnstile';
 import yaml from 'js-yaml';
 import { isExperienceSection } from '../utils/sectionTypeChecker';
 import { SEO_PAGES } from '../config/seoPages';
@@ -128,6 +129,13 @@ export default function JobsPage() {
     faqs: jobsConfig.faqs,
     breadcrumbs: jobsConfig.breadcrumbs,
   });
+
+  // Mount the invisible Turnstile widget so this browser earns Cloudflare
+  // pre-clearance for the jobs API WAF rule. No-op when
+  // VITE_TURNSTILE_SITE_KEY is unset.
+  useEffect(() => {
+    ensureTurnstilePreClearance();
+  }, []);
 
   // Restore search state from URL params or sessionStorage on mount
   useEffect(() => {
@@ -259,8 +267,14 @@ export default function JobsPage() {
       if (filters.sortBy !== 'relevance') params.sort = filters.sortBy;
       if (filters.sortDir) params.dir = filters.sortDir;
       setSearchParams(params, { replace: true });
-    } catch {
-      setError('Unable to fetch jobs. Please try again.');
+    } catch (err) {
+      // Rate-limit responses carry a specific, user-facing message; everything
+      // else keeps the generic fallback so we don't leak raw network errors.
+      const message =
+        err instanceof JobSearchError && err.status === 429 && err.message
+          ? err.message
+          : 'Unable to fetch jobs. Please try again.';
+      setError(message);
       setJobs([]);
       setTotalCount(0);
     } finally {

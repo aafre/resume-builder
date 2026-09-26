@@ -5,6 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { AdzunaJob, JobSearchResult } from '../services/jobs';
+import { JobSearchError } from '../services/jobs';
 
 const searchJobs = vi.fn<(opts: unknown) => Promise<JobSearchResult>>();
 vi.mock('../services/jobs', async (orig) => ({
@@ -205,6 +206,29 @@ it('post-download section renders nothing when refreshing', async () => {
   expect(screen.queryByText(/What.s Next/i)).not.toBeInTheDocument();
 });
 
+it('post-download shows 3 jobs, the rest behind "Show more", and counts only those shown', async () => {
+  searchJobs.mockResolvedValue(result([1, 2, 3, 4, 5].map((i) => job(i))));
+  renderModal();
+
+  await screen.findByText('Staff Nurse 3');
+  expect(screen.queryByText('Staff Nurse 4')).not.toBeInTheDocument();
+  await waitFor(() => expect(trackJobImpression).toHaveBeenCalledWith(expect.objectContaining({ count: 3 })));
+
+  fireEvent.click(screen.getByRole('button', { name: 'Show 2 more jobs' }));
+  expect(screen.getByText('Staff Nurse 5')).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /more jobs/ })).not.toBeInTheDocument();
+  expect(trackJobImpression).toHaveBeenCalledTimes(1);
+});
+
+it('post-download review ask sits above the job list', async () => {
+  searchJobs.mockResolvedValue(result([job(1)]));
+  renderModal();
+
+  const firstJob = await screen.findByText('Staff Nurse 1');
+  const review = screen.getByText('Did we save you from a paywall?');
+  expect(review.compareDocumentPosition(firstJob) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+});
+
 it('post-download shows no empty "What is next" block when the search finds nothing', async () => {
   searchJobs.mockResolvedValue({ ...result([]), status: 'fresh' });
   renderModal();
@@ -344,4 +368,19 @@ it('job card links are marked sponsored', async () => {
   renderJobsPage();
   const link = (await screen.findByText('Staff Nurse 1')).closest('a');
   expect(link?.getAttribute('rel')).toContain('sponsored');
+});
+
+it('/jobs shows the server\'s 429 message verbatim, not a generic error', async () => {
+  searchJobs.mockRejectedValue(
+    new JobSearchError('Too many searches — try again in a few minutes', 429),
+  );
+  renderJobsPage();
+  expect(await screen.findByText('Too many searches — try again in a few minutes')).toBeInTheDocument();
+  expect(screen.queryByText(/unable to fetch jobs/i)).not.toBeInTheDocument();
+});
+
+it('/jobs falls back to a generic message for non-429 failures', async () => {
+  searchJobs.mockRejectedValue(new JobSearchError('Job search not configured', 502));
+  renderJobsPage();
+  expect(await screen.findByText(/unable to fetch jobs/i)).toBeInTheDocument();
 });

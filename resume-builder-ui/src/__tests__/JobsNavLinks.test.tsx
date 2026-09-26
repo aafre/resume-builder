@@ -17,6 +17,7 @@ vi.mock('../contexts/AuthContext', () => ({
   }),
 }));
 vi.mock('../hooks/useResumeCount', () => ({ useResumeCount: () => ({ data: 0 }) }));
+vi.mock('../hooks/useSignOut', () => ({ useSignOut: () => vi.fn() }));
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';

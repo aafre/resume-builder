@@ -4,6 +4,7 @@
 import { useEffect, useRef, useCallback, useMemo } from 'react';
 import { Session } from '@supabase/supabase-js';
 import { toast } from 'react-hot-toast';
+import { toastWarning } from '../../utils/toasts';
 import { ContactInfo, Section, SaveStatus } from '../../types';
 import { useCloudSave } from '../useCloudSave';
 
@@ -31,7 +32,7 @@ interface UseSaveIntegrationReturn {
   lastSaved: Date | null;
   saveNow: () => Promise<string | null>;
   savedResumeId: string | null;
-  saveBeforeAction: (actionName: string) => Promise<boolean>;
+  saveBeforeAction: (actionName: string, options?: { blocking?: boolean }) => Promise<boolean>;
 }
 
 /**
@@ -102,15 +103,36 @@ export const useSaveIntegration = ({
   }, [savedResumeId, cloudResumeId, setCloudResumeId]);
 
   /**
-   * Saves pending changes before critical actions (Preview, Download, etc.)
-   * Returns true if action can proceed, false if save failed
+   * Saves pending changes before an action. Returns whether the action may run.
+   *
+   * `blocking: false` is for actions that only read what's on the page
+   * (download, preview, export): a failed cloud save must never hold them
+   * hostage, so the user is told the sync failed and the action still runs.
+   * `blocking: true` (default) is for actions that replace the page (start
+   * fresh, import): if the cloud copy is stale, stopping is what keeps the
+   * edits safe.
+   *
+   * `actionName` is a gerund phrase for the copy: "starting fresh".
    */
   const saveBeforeAction = useCallback(
-    async (actionName: string): Promise<boolean> => {
+    async (actionName: string, { blocking = true }: { blocking?: boolean } = {}): Promise<boolean> => {
       // Skip save for anonymous users or if no data exists
       if (isAnonymous || !contactInfo || !templateId) {
         return true;
       }
+
+      const onFailure = (limitReached = false): boolean => {
+        if (limitReached) {
+          openStorageLimitModal();
+        } else if (blocking) {
+          toast.error(
+            `Couldn't save your changes, so we stopped before ${actionName} to keep them safe. Check your connection and try again.`
+          );
+        } else {
+          toastWarning("Couldn't sync to your account. Your edits are still here; check your connection.");
+        }
+        return !blocking;
+      };
 
       // If already saving, wait for completion (use ref to avoid stale closure)
       if (saveStatusRef.current === 'saving') {
@@ -124,7 +146,7 @@ export const useSaveIntegration = ({
         // Cast needed because TypeScript narrows based on the if-check above, but ref.current
         // can change asynchronously during the while loop
         const currentStatus = saveStatusRef.current as SaveStatus;
-        return currentStatus !== 'error';
+        return currentStatus === 'error' ? onFailure() : true;
       }
 
       // Always trigger save before action
@@ -133,21 +155,13 @@ export const useSaveIntegration = ({
         const result = await saveNow();
 
         if (result === null && saveStatusRef.current === 'error') {
-          toast.error(`Failed to save changes before ${actionName}. Please try again.`);
-          return false;
+          return onFailure();
         }
 
         return true;
       } catch (error) {
         console.error(`Save failed before ${actionName}:`, error);
-
-        if (error instanceof Error && error.message === 'RESUME_LIMIT_REACHED') {
-          openStorageLimitModal();
-          return false;
-        }
-
-        toast.error(`Failed to save changes before ${actionName}. Please try again.`);
-        return false;
+        return onFailure(error instanceof Error && error.message === 'RESUME_LIMIT_REACHED');
       }
     },
     [isAnonymous, contactInfo, templateId, saveNow, openStorageLimitModal]

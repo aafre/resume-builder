@@ -17,6 +17,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '../lib/api-client';
 import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
+import { toastFailure } from '../utils/toasts';
 import { trackResumeCreated } from '../lib/analytics';
 
 interface ContactInfo {
@@ -84,7 +85,7 @@ export function useResumeCreate(): UseResumeCreateReturn {
 
   const createResume = useCallback(async (options: CreateResumeOptions): Promise<string | null> => {
     if (!session) {
-      toast.error("Session not ready. Please try again.");
+      toast.error("Still getting ready. Try again in a moment.");
       return null;
     }
 
@@ -131,18 +132,17 @@ export function useResumeCreate(): UseResumeCreateReturn {
         : (options.loadExample ? 'example' : 'blank');
       trackResumeCreated({ template_id: options.templateId, method });
 
-      toast.success("Resume created! Loading editor...");
       navigate(`/editor/${response.resume_id}`);
       return response.resume_id;
 
     } catch (error: any) {
       if (error.data?.error_code === "RESUME_LIMIT_REACHED") {
-        toast.error("Resume limit reached (5/5). Delete a resume to create a new one.");
+        toast.error("You're at the 5-resume limit. Delete one to create a new resume.");
         navigate("/my-resumes");
         return null;
       }
       console.error("Error creating resume:", error);
-      toast.error("Failed to create resume. Please try again.");
+      toastFailure("create your resume", error);
       return null;
     } finally {
       inFlight.current = false;

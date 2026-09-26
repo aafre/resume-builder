@@ -41,6 +41,42 @@ describe("GlobalNavDrawer", () => {
     );
   });
 
+  it("offers sign-in to guests without implying it is required", () => {
+    renderDrawer();
+
+    expect(screen.getByText("No account needed")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Sign In" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Create Free Resume" })).toBeInTheDocument();
+  });
+
+  it("puts the account card and sign-out in the sheet for signed-in users", () => {
+    const onSignOut = vi.fn();
+    render(
+      <MemoryRouter>
+        <GlobalNavDrawer
+          isOpen
+          onClose={vi.fn()}
+          links={[{ path: "/my-resumes", label: "My Resumes", countBadge: true }, ...links]}
+          currentPath="/templates"
+          resumeCount={3}
+          isAuthenticated
+          onSignInClick={vi.fn()}
+          account={{ name: "Ada Lovelace", email: "a@b.co" }}
+          onSignOut={onSignOut}
+        />
+      </MemoryRouter>
+    );
+
+    // My Resumes moves out of the list and into the account card
+    const card = screen.getByRole("link", { name: /Ada Lovelace/ });
+    expect(card).toHaveAttribute("href", "/my-resumes");
+    expect(card).toHaveTextContent("3 saved");
+    expect(screen.getAllByRole("link", { name: /My Resumes/ })).toHaveLength(1);
+
+    fireEvent.click(screen.getByRole("button", { name: "Sign Out" }));
+    expect(onSignOut).toHaveBeenCalledTimes(1);
+  });
+
   it("closes on Escape", () => {
     const { onClose } = renderDrawer();
 

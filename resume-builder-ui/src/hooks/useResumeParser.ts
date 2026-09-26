@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { trackResumeUploadStarted, trackResumeParseCompleted, categorizeError } from '../lib/analytics';
 import type { ParseSource } from '../lib/analytics';
+import { getTurnstileToken } from '../utils/turnstile';
 
 interface ParseResponse {
   success: boolean;
@@ -20,6 +21,14 @@ interface ParseResponse {
     type: string;
   };
 }
+
+export type ParseErrorKind = 'rate_limit' | 'bot_check' | 'invalid_file' | 'generic';
+
+const kindForStatus = (status: number): ParseErrorKind =>
+  status === 429 ? 'rate_limit'
+  : status === 403 ? 'bot_check'
+  : status === 400 ? 'invalid_file'
+  : 'generic';
 
 // Progress stages with corresponding messages
 const PROGRESS_STAGES = [
@@ -44,6 +53,7 @@ export function useResumeParser(options?: { source?: ParseSource }) {
   const [progress, setProgress] = useState(0);
   const [progressMessage, setProgressMessage] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [errorKind, setErrorKind] = useState<ParseErrorKind | null>(null);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Cleanup interval on unmount
@@ -119,15 +129,18 @@ export function useResumeParser(options?: { source?: ParseSource }) {
     setProgress(0);
     setProgressMessage('Preparing upload...');
     setError(null);
+    setErrorKind(null);
 
     // Declared outside the try so the catch can still report parse duration
     let parseStart = 0;
     let fileType = 'unknown';
+    let kind: ParseErrorKind = 'generic';
 
     try {
       // Validate file first
       const validationError = validateFile(file);
       if (validationError) {
+        kind = 'invalid_file';
         throw new Error(validationError);
       }
 
@@ -148,9 +161,16 @@ export function useResumeParser(options?: { source?: ParseSource }) {
       // Start continuous progress animation (0% → 90% over 1200ms)
       startProgressAnimation(90);
 
+      // Single-use bot-check token; resolves null (no-op) when Turnstile
+      // isn't configured, so the request is unchanged in that case.
+      const turnstileToken = await getTurnstileToken();
+
       // Create FormData
       const formData = new FormData();
       formData.append('file', file);
+      if (turnstileToken) {
+        formData.append('turnstile_token', turnstileToken);
+      }
 
       // Bracket the parse so abandonment during the ~12s median wait is measurable.
       // Set only once the request is actually attempted, so validation/auth
@@ -181,7 +201,8 @@ export function useResumeParser(options?: { source?: ParseSource }) {
         }
       );
 
-      const data = await response.json();
+      // Gateway errors (e.g. 503) aren't JSON; fall through to the generic message.
+      const data = await response.json().catch(() => ({}));
 
       // Debug: Log response
       if (!response.ok) {
@@ -193,6 +214,7 @@ export function useResumeParser(options?: { source?: ParseSource }) {
       }
 
       if (!response.ok || !data.success) {
+        kind = kindForStatus(response.status);
         throw new Error(data.error || 'Failed to parse resume');
       }
 
@@ -225,6 +247,7 @@ export function useResumeParser(options?: { source?: ParseSource }) {
         });
       }
       setError(errorMessage);
+      setErrorKind(kind);
       throw err;
     } finally {
       setParsing(false);
@@ -235,7 +258,10 @@ export function useResumeParser(options?: { source?: ParseSource }) {
     }
   };
 
-  const clearError = () => setError(null);
+  const clearError = () => {
+    setError(null);
+    setErrorKind(null);
+  };
 
   return {
     parseResume,
@@ -243,6 +269,7 @@ export function useResumeParser(options?: { source?: ParseSource }) {
     progress,
     progressMessage,
     error,
+    errorKind,
     clearError,
   };
 }

@@ -67,6 +67,7 @@ TRANSIENT_ERROR_KEYWORDS = (
     "server disconnected",
     "connection",
     "timeout",
+    "timed out",
     "reset",
     "network",
 )
@@ -1400,6 +1401,23 @@ def require_auth(f):
 
         # Enhanced logging with context for debugging auth issues
         error_msg = str(last_auth_exception)
+
+        # Upstream flake, not a bad token: 401 would make the client sign out,
+        # wiping an anonymous user's session and orphaning their resumes.
+        if is_transient_error(error_msg):
+            logging.error(
+                f"Auth upstream unavailable: {error_msg} | endpoint={request.path} | "
+                f"method={request.method}"
+            )
+            return (
+                jsonify(
+                    {
+                        "success": False,
+                        "error": "Service temporarily unavailable, please retry",
+                    }
+                ),
+                503,
+            )
         is_expired = "expired" in error_msg.lower()
         user_agent = request.headers.get("User-Agent", "unknown")[:50]
 
@@ -1687,6 +1705,9 @@ def jobs_main():
 @app.route("/api/jobs/page/<path:subpath>", methods=["GET"])
 def jobs_pseo_data(subpath):
     """JSON data for React client-side navigation and pagination."""
+    limited = _jobs_rate_limited("jobs_page", JOBS_PAGE_RATE_LIMIT)
+    if limited:
+        return limited
     renderer = _get_pseo_renderer()
     if not renderer:
         return jsonify({"success": False, "error": "pSEO not configured"}), 503
@@ -3154,29 +3175,36 @@ MIGRATE_COMPAT_EXPIRES = datetime(2026, 11, 1, tzinfo=timezone.utc)
 # if we ever run enough workers that a per-process budget stops meaning anything.
 MIGRATE_RATE_LIMIT = 5
 MIGRATE_RATE_WINDOW_SECONDS = 300
-_migrate_attempts: dict[str, list[float]] = {}
+
+# Generic per-bucket fixed-window limiter, shared by the migrate endpoint above
+# and the jobs endpoints below. Each bucket gets its own {key: [timestamps]} dict.
+# ponytail: in-process, per worker, no lock, resets on restart — the Cloudflare
+# edge rule (separate human issue) covers all instances; move to Redis only if a
+# per-process budget stops meaning anything.
+_rate_limit_buckets: dict[str, dict[str, list[float]]] = {}
+# Kept as a name so existing tests can clear it directly without knowing about
+# the generic bucket dict underneath (same dict object, bucket="migrate").
+# Other tests that reset rate-limit state should clear each bucket's contents
+# in place (`for v in _rate_limit_buckets.values(): v.clear()`), not replace
+# _rate_limit_buckets itself — that would orphan this alias.
+_migrate_attempts: dict[str, list[float]] = _rate_limit_buckets.setdefault("migrate", {})
 
 
-def _migrate_rate_limited(caller_uid: str) -> bool:
-    """Record an attempt for caller_uid; True if it exceeds the window budget."""
-    global _migrate_attempts
+def _rate_limited(bucket: str, key: str, limit: int, window_s: int) -> bool:
+    """Record an attempt for key in bucket; True if it exceeds the window budget."""
+    store = _rate_limit_buckets.setdefault(bucket, {})
     now = time.monotonic()
 
-    if len(_migrate_attempts) > 10000:  # bound memory; entries expire anyway
-        _migrate_attempts = {
-            uid: stamps
-            for uid, stamps in _migrate_attempts.items()
-            if stamps and now - stamps[-1] < MIGRATE_RATE_WINDOW_SECONDS
-        }
+    if len(store) > 10000:  # bound memory; entries expire anyway
+        for stale_key in [
+            k for k, stamps in store.items() if not stamps or now - stamps[-1] >= window_s
+        ]:
+            del store[stale_key]
 
-    recent = [
-        t
-        for t in _migrate_attempts.get(caller_uid, [])
-        if now - t < MIGRATE_RATE_WINDOW_SECONDS
-    ]
+    recent = [t for t in store.get(key, []) if now - t < window_s]
     recent.append(now)
-    _migrate_attempts[caller_uid] = recent
-    return len(recent) > MIGRATE_RATE_LIMIT
+    store[key] = recent
+    return len(recent) > limit
 
 
 @app.route("/api/migrate-anonymous-resumes", methods=["POST"])
@@ -3216,7 +3244,7 @@ def migrate_anonymous_resumes():
         if not old_user_id:
             return jsonify({"error": "old_user_id is required"}), 400
 
-        if _migrate_rate_limited(new_user_id):
+        if _rate_limited("migrate", new_user_id, MIGRATE_RATE_LIMIT, MIGRATE_RATE_WINDOW_SECONDS):
             logging.warning(
                 f"Migration rate limited | caller={new_user_id} | source={old_user_id}"
             )
@@ -4186,6 +4214,34 @@ _RESUME_CONTEXT_FIELDS = {"skills", "seniority_level", "years_experience"}
 _adzuna_cache = {}
 _ADZUNA_CACHE_TTL = 900  # seconds
 
+# Per-IP rate limits so scripted callers can't burn the Adzuna daily quota or
+# the OpenAI tier-3 fallback. Uses the generic _rate_limited() bucket limiter.
+JOBS_SEARCH_RATE_LIMIT = 60
+JOBS_SUGGEST_ROLES_RATE_LIMIT = 20
+JOBS_PAGE_RATE_LIMIT = 60
+JOBS_RATE_WINDOW_SECONDS = 600
+_JOBS_RATE_LIMIT_ERROR = "Too many searches — try again in a few minutes"
+
+
+def _client_ip() -> str:
+    """Cloudflare's client IP header, else the socket address (local dev)."""
+    return request.headers.get("CF-Connecting-IP") or request.remote_addr or "unknown"
+
+
+def _jobs_rate_limited(bucket: str, limit: int):
+    """None if under budget, else the 429 response to return."""
+    if _rate_limited(bucket, _client_ip(), limit, JOBS_RATE_WINDOW_SECONDS):
+        return jsonify({"success": False, "error": _JOBS_RATE_LIMIT_ERROR}), 429
+    return None
+
+
+def _capped_str(value, max_len: int = 100) -> str:
+    return (value or "")[:max_len]
+
+
+def _clamped_int(value: int, low: int, high: int) -> int:
+    return max(low, min(high, value))
+
 
 @app.route("/api/jobs/availability", methods=["GET"])
 def jobs_availability():
@@ -4210,6 +4266,9 @@ def search_jobs():
     GET: Legacy passthrough (backward compat, no re-ranking)
     POST: 3-tier search with scoring via JobMatchEngine
     """
+    limited = _jobs_rate_limited("jobs_search", JOBS_SEARCH_RATE_LIMIT)
+    if limited:
+        return limited
     if request.method == "POST":
         return _search_jobs_post()
     return _search_jobs_get()
@@ -4220,7 +4279,7 @@ def _search_jobs_post():
     from job_engine import JobMatchEngine, MatchContext
 
     body = request.get_json(silent=True) or {}
-    query = (body.get("query") or "").strip()
+    query = _capped_str((body.get("query") or "").strip())
     if not query:
         return jsonify({"success": False, "error": "query is required"}), 400
 
@@ -4240,10 +4299,10 @@ def _search_jobs_post():
     try:
         context = MatchContext(
             query=query,
-            location=(body.get("location") or "").strip(),
+            location=_capped_str((body.get("location") or "").strip()),
             country=country,
             category=(body.get("category") or "").strip().lower(),
-            skills=body.get("skills") or [],
+            skills=(body.get("skills") or [])[:30],
             seniority_level=(body.get("seniority_level") or "").strip(),
             years_experience=int(body.get("years_experience") or 0),
             salary_min=int(body.get("salary_min") or 0),
@@ -4253,15 +4312,15 @@ def _search_jobs_post():
             permanent=bool(body.get("permanent")),
             sort_by=sort_by,
             # Advanced filters
-            distance=int(body.get("distance") or 0),
+            distance=_clamped_int(int(body.get("distance") or 0), 0, 200),
             contract=bool(body.get("contract")),
             part_time=bool(body.get("part_time")),
             salary_max=int(body.get("salary_max") or 0),
             sort_dir=(body.get("sort_dir") or "").strip(),
-            what_exclude=(body.get("what_exclude") or "").strip(),
-            company=(body.get("company") or "").strip(),
+            what_exclude=_capped_str((body.get("what_exclude") or "").strip()),
+            company=_capped_str((body.get("company") or "").strip()),
             what_phrase=(body.get("what_phrase") or "").strip(),
-            page=int(body.get("page") or 1),
+            page=_clamped_int(int(body.get("page") or 1), 1, 10),
             results_per_page=min(max(int(body.get("results_per_page") or 20), 1), 50),
         )
     except (ValueError, TypeError) as e:
@@ -4302,7 +4361,7 @@ def _search_jobs_get():
     """GET handler: legacy passthrough (backward compat, no re-ranking)."""
     from job_engine import MatchContext
 
-    query = request.args.get("query", "").strip()
+    query = _capped_str(request.args.get("query", "").strip())
     if not query:
         return jsonify({"success": False, "error": "query parameter is required"}), 400
 
@@ -4320,7 +4379,7 @@ def _search_jobs_get():
     try:
         context = MatchContext(
             query=query,
-            location=arg("location"),
+            location=_capped_str(arg("location")),
             country=country,
             category=arg("category").lower(),
             what_or=arg("what_or"),
@@ -4382,6 +4441,9 @@ def suggest_roles():
     Calls the suggest-roles Supabase Edge Function with 15-min in-memory cache.
     Gracefully returns the original title on any failure.
     """
+    limited = _jobs_rate_limited("jobs_suggest_roles", JOBS_SUGGEST_ROLES_RATE_LIMIT)
+    if limited:
+        return limited
     body = request.get_json(silent=True) or {}
     title = (body.get("title") or "").strip()
     if not title:
@@ -4416,18 +4478,20 @@ def suggest_roles():
 
     fallback = {"primary_role": title, "alternative_roles": [], "confidence": 0}
 
-    if not supabase:
+    internal_key = os.environ.get("INTERNAL_FN_KEY")
+    if not supabase or not internal_key:
         return jsonify({"success": True, **fallback})
 
     try:
         response = supabase.functions.invoke(
             "suggest-roles",
             invoke_options={
+                "headers": {"x-internal-key": internal_key},
                 "body": {
                     "title": title,
                     "skills": skills,
                     "experience_titles": experience_titles,
-                }
+                },
             },
         )
 
