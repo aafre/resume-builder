@@ -31,10 +31,12 @@ function ensureScriptLoaded(): Promise<void> {
   return scriptPromise;
 }
 
+const TOKEN_TIMEOUT_MS = 15_000;
+
 /**
  * Get a single-use Turnstile token for the resume import request.
  * Resolves `null` immediately (no script loaded) when no site key is
- * configured, or if the widget fails/expires before solving.
+ * configured, or if the widget fails/expires/times out before solving.
  */
 export function getTurnstileToken(): Promise<string | null> {
   if (!SITE_KEY || typeof document === 'undefined') {
@@ -54,7 +56,13 @@ export function getTurnstileToken(): Promise<string | null> {
         document.body.appendChild(container);
 
         let widgetId: string;
+        let done = false;
+        // Callbacks are the only resolve path - cap the wait so a silent widget can't hang import.
+        const timer = setTimeout(() => finish(null), TOKEN_TIMEOUT_MS);
         const finish = (token: string | null) => {
+          if (done) return;
+          done = true;
+          clearTimeout(timer);
           try {
             window.turnstile?.remove(widgetId);
           } catch {
