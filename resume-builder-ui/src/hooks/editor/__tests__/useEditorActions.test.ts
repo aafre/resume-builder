@@ -310,7 +310,8 @@ describe('useEditorActions', () => {
 
       expect(generateResume).toHaveBeenCalled();
       expect(mockLinkClick).toHaveBeenCalled();
-      expect(toast.success).toHaveBeenCalledWith('Resume downloaded successfully!');
+      // First download: the celebration modal is the peak, no toast under it.
+      expect(toast.success).not.toHaveBeenCalled();
     });
 
     it('should show celebration modal for anonymous users on first download', async () => {
@@ -358,6 +359,10 @@ describe('useEditorActions', () => {
       });
 
       expect(mockOpenDownloadCelebration).not.toHaveBeenCalled();
+      expect(toast.success).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({ id: 'pdf-downloaded' })
+      );
     });
 
     it('should show celebration modal for authenticated users on first download', async () => {

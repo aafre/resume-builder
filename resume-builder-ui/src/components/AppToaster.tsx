@@ -1,16 +1,19 @@
 import { Toaster } from 'react-hot-toast';
-import { Check, Info, TriangleAlert, X } from 'lucide-react';
+import { Check, FileCheck, Info, TriangleAlert, X } from 'lucide-react';
 import { useResponsive } from '../hooks/useResponsive';
 
-export type ToastKind = 'success' | 'error' | 'warning' | 'info';
+export type ToastKind = 'success' | 'error' | 'warning' | 'info' | 'download';
 
 // Tinted tile + solid glyph: the kind reads before the words do. Fills are the
 // semantic status colours DESIGN.md allows inside status affordances only.
+const SMALL = 'h-7 w-7 rounded-lg [&>svg]:h-4 [&>svg]:w-4';
 const GLYPH: Record<ToastKind, { Icon: typeof Check; tile: string }> = {
-  success: { Icon: Check, tile: 'bg-accent text-ink' },
-  error: { Icon: X, tile: 'bg-red-500 text-white' },
-  warning: { Icon: TriangleAlert, tile: 'bg-amber-400 text-ink' },
-  info: { Icon: Info, tile: 'bg-white/15 text-white' },
+  success: { Icon: Check, tile: `${SMALL} bg-accent text-ink` },
+  error: { Icon: X, tile: `${SMALL} bg-red-500 text-white` },
+  warning: { Icon: TriangleAlert, tile: `${SMALL} bg-amber-400 text-ink` },
+  info: { Icon: Info, tile: `${SMALL} bg-white/15 text-white` },
+  // The product's peak: the PDF is in hand. The one larger tile.
+  download: { Icon: FileCheck, tile: 'h-10 w-10 rounded-xl bg-accent text-ink [&>svg]:h-5 [&>svg]:w-5' },
 };
 
 export function ToastGlyph({ kind }: { kind: ToastKind }) {
@@ -18,9 +21,9 @@ export function ToastGlyph({ kind }: { kind: ToastKind }) {
   return (
     <span
       aria-hidden="true"
-      className={`inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg ${tile}`}
+      className={`inline-flex flex-shrink-0 items-center justify-center ${tile}`}
     >
-      <Icon className="h-4 w-4" strokeWidth={2.75} />
+      <Icon strokeWidth={2.75} />
     </span>
   );
 }

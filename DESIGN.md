@@ -333,6 +333,7 @@ One surface, `components/AppToaster.tsx`. Ink (`bg-ink`, white text, `rounded-xl
 - **Kind reads before the words.** A 28px tinted tile with a lucide glyph leads every toast: `accent` + check (success), `red-500` + X (error), `amber-400` + triangle (warning), `white/15` + info (info). These are the only places red and amber appear.
 - **Errors are heavier:** red ring, 7s, `role="alert"`. Success 4s, default 5s.
 - **Placement:** top-right below the header on desktop; bottom-centre below `lg`, lifted over the editor's MobileActionBar — the thumb that caused the event is at the bottom.
+- **The download toast is the peak:** `toastDownloaded()` (`utils/toasts.tsx`) — a title, the filename in mono, and the one 40px accent tile. Skipped on the first download, where the celebration modal is the peak.
 - **Undo toasts** carry no glyph, a real `<button>`, and a 2px accent countdown bar that pauses with the timer.
 - **What earns a toast:** an outcome the user can't otherwise see (background save, off-screen result, an undo window). If the user must *do* something, it's an inline notice, not a toast. Visible state changes (reorder, load) need no toast.
 

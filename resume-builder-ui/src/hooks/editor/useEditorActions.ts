@@ -3,6 +3,7 @@
 
 import { useState, useCallback, useRef, useMemo } from 'react';
 import { toast } from 'react-hot-toast';
+import { toastDownloaded } from '../../utils/toasts';
 import yaml from 'js-yaml';
 import { Section, ContactInfo } from '../../types';
 import { UseEditorActionsReturn } from '../../types/editor';
@@ -281,11 +282,13 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
         document.body.removeChild(link);
         URL.revokeObjectURL(pdfUrl);
 
-        toast.success('Resume downloaded successfully!');
         trackPdfDownloaded({ template_id: templateId || 'unknown', source: 'editor' });
 
-        // Show celebration modal on first download (all users)
-        if (!hasShownDownloadToast) {
+        // First download: the celebration modal is the peak, so no toast under
+        // it. Every later download gets the downloaded toast.
+        if (hasShownDownloadToast) {
+          toastDownloaded(fileName);
+        } else {
           markDownloadToastShown();
 
           setTimeout(() => {

@@ -11,6 +11,7 @@ import PreviewModal from '../components/PreviewModal';
 import SignInRequiredGate from '../components/SignInRequiredGate';
 import { apiClient, ApiError } from '../lib/api-client';
 import { toast } from 'react-hot-toast';
+import { toastDownloaded } from '../utils/toasts';
 import { useThumbnailRefresh } from '../hooks/useThumbnailRefresh';
 import { useResumes } from '../hooks/useResumes';
 import { useAuth } from '../contexts/AuthContext';
@@ -234,13 +235,14 @@ export default function MyResumes() {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `${resumes.find(r => r.id === id)?.title || 'Resume'}.pdf`;
+        const fileName = `${resumes.find(r => r.id === id)?.title || 'Resume'}.pdf`;
+        a.download = fileName;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
 
-        toast.success('Resume downloaded successfully');
+        toastDownloaded(fileName);
         trackPdfDownloaded({
           template_id: resumes.find(r => r.id === id)?.template_id || 'unknown',
           source: 'my_resumes',
