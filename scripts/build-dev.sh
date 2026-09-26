@@ -22,6 +22,7 @@ VITE_AFFILIATE_RESUME_REVIEW_ENABLED="${VITE_AFFILIATE_RESUME_REVIEW_ENABLED:-fa
 VITE_AFFILIATE_RESUME_REVIEW_URL="${VITE_AFFILIATE_RESUME_REVIEW_URL:-}"
 VITE_POSTHOG_KEY="${VITE_POSTHOG_KEY:-}"
 VITE_POSTHOG_HOST="${VITE_POSTHOG_HOST:-}"
+VITE_TURNSTILE_SITE_KEY="${VITE_TURNSTILE_SITE_KEY:-}"
 
 # Registry
 REGISTRY="europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder"
@@ -40,6 +41,11 @@ if [ -n "$VITE_POSTHOG_KEY" ]; then
   echo "  VITE_POSTHOG_KEY: set"
 else
   echo "  VITE_POSTHOG_KEY: (unset - analytics disabled)"
+fi
+if [ -n "$VITE_TURNSTILE_SITE_KEY" ]; then
+  echo "  VITE_TURNSTILE_SITE_KEY: set"
+else
+  echo "  VITE_TURNSTILE_SITE_KEY: (unset - Turnstile skipped)"
 fi
 
 docker build  --no-cache \
