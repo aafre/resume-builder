@@ -40,6 +40,88 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
+const FN_NAME = 'parse-resume';
+const MAX_PER_USER_PER_DAY = 10;
+const MAX_PER_IP_PER_DAY = 20;
+const RATE_LIMIT_MESSAGE =
+  "You've imported several resumes today. Try again tomorrow, or edit your current resume in the editor.";
+
+function getClientIp(req: Request): string | null {
+  const cf = req.headers.get('cf-connecting-ip');
+  if (cf) return cf;
+  const xff = req.headers.get('x-forwarded-for');
+  if (xff) return xff.split(',')[0].trim();
+  return null;
+}
+
+// Fail open: any error here must never block a legitimate user, just log it.
+async function isRateLimited(
+  supabaseAdmin: ReturnType<typeof createClient>,
+  userId: string,
+  ip: string | null
+): Promise<boolean> {
+  try {
+    const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+
+    const userCountPromise = supabaseAdmin
+      .from('ai_usage')
+      .select('id', { count: 'exact', head: true })
+      .eq('fn', FN_NAME)
+      .eq('user_id', userId)
+      .gte('created_at', since);
+
+    const ipCountPromise = ip
+      ? supabaseAdmin
+          .from('ai_usage')
+          .select('id', { count: 'exact', head: true })
+          .eq('fn', FN_NAME)
+          .eq('ip', ip)
+          .gte('created_at', since)
+      : null;
+
+    const [userResult, ipResult] = await Promise.all([
+      userCountPromise,
+      ipCountPromise ?? Promise.resolve({ count: 0, error: null }),
+    ]);
+
+    if (userResult.error || ipResult.error) {
+      console.error('ai_usage count check failed, failing open:', userResult.error || ipResult.error);
+      return false;
+    }
+
+    return (userResult.count ?? 0) >= MAX_PER_USER_PER_DAY || (ipResult.count ?? 0) >= MAX_PER_IP_PER_DAY;
+  } catch (error) {
+    console.error('ai_usage count check threw, failing open:', error);
+    return false;
+  }
+}
+
+// Records a successful parse for rate-limiting, then opportunistically purges old rows.
+// Never throws - usage tracking must not break a successful response.
+async function recordUsage(
+  supabaseAdmin: ReturnType<typeof createClient>,
+  userId: string,
+  ip: string | null
+): Promise<void> {
+  try {
+    const { error } = await supabaseAdmin.from('ai_usage').insert({ fn: FN_NAME, user_id: userId, ip });
+    if (error) {
+      console.error('ai_usage insert failed (non-fatal):', error);
+    }
+
+    // ponytail: 1-in-10 chance keeps cleanup cheap without a cron job; fine at this volume.
+    if (Math.random() < 0.1) {
+      const cutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+      const { error: purgeError } = await supabaseAdmin.from('ai_usage').delete().lt('created_at', cutoff);
+      if (purgeError) {
+        console.error('ai_usage purge failed (non-fatal):', purgeError);
+      }
+    }
+  } catch (error) {
+    console.error('ai_usage recordUsage threw (non-fatal):', error);
+  }
+}
+
 /**
  * Main Edge Function handler
  */
@@ -109,6 +191,19 @@ serve(async (req: Request) => {
     const userId = user.id;
     console.log('✅ Authenticated user:', userId);
 
+    // === 1b. Rate limit: cap daily imports per user and per IP ===
+    const clientIp = getClientIp(req);
+    if (await isRateLimited(supabaseAdmin, userId, clientIp)) {
+      console.warn('Rate limit hit for user', userId, 'ip', clientIp);
+      return new Response(
+        JSON.stringify({ success: false, error: RATE_LIMIT_MESSAGE }),
+        {
+          status: 429,
+          headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
     // === 2. Parse multipart form data ===
     const formData = await req.formData();
     const file = formData.get('file') as File;
@@ -140,6 +235,7 @@ serve(async (req: Request) => {
 
     if (cached) {
       console.log('Cache hit! Returning cached result.');
+      await recordUsage(supabaseAdmin, userId, clientIp);
 
       // Hallucination check for cached results
       const cachedWarnings = [...(cached.warnings || [])];
@@ -335,6 +431,8 @@ serve(async (req: Request) => {
     } else {
       console.log('Result cached successfully');
     }
+
+    await recordUsage(supabaseAdmin, userId, clientIp);
 
     // === 13. Hallucination Check ===
     // Add warning about AI-generated content that should be reviewed
