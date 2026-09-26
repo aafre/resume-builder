@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { FileText, Menu } from "lucide-react";
+import { MdExpandMore } from "react-icons/md";
 import { useOptionalEditorContext } from "../contexts/EditorContext";
 import { useAuth } from "../contexts/AuthContext";
 import { useResumeCount } from "../hooks/useResumeCount";
@@ -13,10 +14,16 @@ import GlobalNavDrawer from "./GlobalNavDrawer";
 import { getNavLinks } from "../config/navLinks";
 import { useJobsAvailable } from "../hooks/useJobsAvailable";
 import useNavPill from "../hooks/useNavPill";
+import { useAuthHint } from "../hooks/useAuthHint";
+import UserAvatar from "./UserAvatar";
 
 export default function Header() {
   const location = useLocation();
-  const { isAuthenticated, isAnonymous, loading: authLoading, showAuthModal, hideAuthModal, authModalOpen } = useAuth();
+  const { isAuthenticated: authResolved, isAnonymous, loading: authLoading, showAuthModal, hideAuthModal, authModalOpen } = useAuth();
+  // While the lazy SDK loads, trust the session it will restore from. Without
+  // this the header paints signed-out, then reflows 2-3s later.
+  const authHint = useAuthHint();
+  const isAuthenticated = authLoading ? authHint?.signedIn ?? false : authResolved;
   const [navDrawerOpen, setNavDrawerOpen] = useState(false);
 
   // Get resume count for mobile badge (lightweight count-only query)
@@ -196,9 +203,20 @@ export default function Header() {
 
             {/* Auth UI - User Menu or Sign In Button — fixed min-width prevents CLS on auth resolve */}
             <div className="flex items-center min-w-[50px] lg:min-w-[80px] min-h-[36px] lg:min-h-[40px]">
-              {!authLoading && (
-                <div className="nav-auth-in">
-                  {isAuthenticated ? (
+              {authLoading && authHint?.signedIn ? (
+                // Stand-in with UserMenu's exact trigger geometry; swapped for
+                // the real menu when the SDK resolves, so nothing moves.
+                <div className="flex min-h-11 items-center gap-2 px-3 py-2" aria-hidden="true">
+                  <UserAvatar name={authHint.name || authHint.email || "U"} url={authHint.avatarUrl} />
+                  <span className="hidden sm:block text-sm font-medium text-ink">
+                    {authHint.name || authHint.email?.split("@")[0]}
+                  </span>
+                  <MdExpandMore className="text-ink/60" />
+                </div>
+              ) : (
+                // No fade after a hinted stand-in: it would blink the avatar.
+                <div className={authHint?.signedIn ? undefined : "nav-auth-in"}>
+                  {authResolved ? (
                     <UserMenu />
                   ) : (
                     <button
