@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState, useCallback, useId } from "react";
 import ModalShell from "./shared/ModalShell";
 import { ClipboardCheck, ExternalLink, ShieldAlert } from "lucide-react";
-import { affiliateConfig, hasAnyAffiliate } from "../config/affiliate";
+import { affiliateConfig } from "../config/affiliate";
+import { useJobsAvailable } from "../hooks/useJobsAvailable";
 import { ContactInfo, Section } from "../types";
 import { extractJobSearchParams, JobSearchParams } from "../utils/resumeDataExtractor";
 import { searchJobs, AdzunaJob } from "../services/jobs";
-import { formatSalary } from "../utils/currencyFormat";
+import JobCard, { StaleLabel, reportJobStatus, useJobImpression } from "./jobs/JobCard";
 import { getSalaryFloor } from "../utils/salaryFloor";
 import { ensureTrustpilotLoaded } from "../utils/trustpilot";
 
@@ -18,6 +19,10 @@ interface DownloadCelebrationModalProps {
   sections: Section[];
 }
 
+// Cards shown before "Show more" — keeps the modal short so nothing below the
+// job list falls out of view.
+const JOBS_PREVIEW = 3;
+
 const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
   isOpen,
   onClose,
@@ -28,21 +33,29 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
 }) => {
   const titleId = useId();
   const descriptionId = useId();
+  const jobListId = useId();
   const primaryButtonRef = useRef<HTMLButtonElement>(null);
 
   const [jobs, setJobs] = useState<AdzunaJob[]>([]);
+  const [staleSince, setStaleSince] = useState<string | undefined>();
   const [jobsLoading, setJobsLoading] = useState(false);
   const [jobSearchParams, setJobSearchParams] = useState<JobSearchParams | null>(null);
+  const [showAllJobs, setShowAllJobs] = useState(false);
+  // Only the first few cards count as seen; the rest sit behind "Show more"
+  useJobImpression(jobs, "post_download", JOBS_PREVIEW);
+  // Master flag + visitor's country served by a job feed; null until known
+  const jobsAvailable = useJobsAvailable();
 
 
   // Fetch jobs when modal opens
   useEffect(() => {
-    if (!isOpen || !affiliateConfig.jobSearch.enabled) return;
+    if (!isOpen || jobsAvailable !== true) return;
 
     const params = extractJobSearchParams(contactInfo, sections);
     if (!params) return;
 
     setJobSearchParams(params);
+    setShowAllJobs(false);
     setJobsLoading(true);
     searchJobs({
       query: params.query,
@@ -54,12 +67,17 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
       maxDaysOld: 30,
       salaryMin: getSalaryFloor(params.country, params.seniorityLevel),
     })
-      .then((result) => setJobs(result.jobs))
+      .then((result) => {
+        reportJobStatus(result, "post_download");
+        // refreshing has no jobs, so the section stays hidden
+        setJobs(result.jobs);
+        setStaleSince(result.status === "stale" ? result.fetchedAt : undefined);
+      })
       .catch(() => {
         // Silently fail — hide section on error
       })
       .finally(() => setJobsLoading(false));
-  }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isOpen, jobsAvailable]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Ref callback to initialize the TrustBox widget when mounted.
   // The Trustpilot bootstrap script is loaded on-demand here (not globally in
@@ -73,8 +91,10 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
 
   if (!isOpen) return null;
 
-  const showAffiliate = hasAnyAffiliate();
-  const showJobSection = affiliateConfig.jobSearch.enabled && (jobsLoading || jobs.length > 0);
+  const hasResumeReview = affiliateConfig.resumeReview.enabled && !!affiliateConfig.resumeReview.url;
+  const showJobSection = jobsAvailable === true && (jobsLoading || jobs.length > 0);
+  // Only when something will sit under the "What's Next?" divider
+  const showAffiliate = hasResumeReview || showJobSection;
 
   return (
     <ModalShell
@@ -124,21 +144,54 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
           <div className="animate-dcm-content-fade-up" style={{ animationDelay: '75ms' }}>
             <h2
               id={titleId}
-              className="text-2xl sm:text-3xl font-bold text-center mb-4 text-ink"
+              className="text-2xl sm:text-3xl font-extrabold text-center mb-4 text-ink"
             >
               Resume Downloaded Successfully!
             </h2>
             <p
               id={descriptionId}
-              className="text-lg text-ink/60 text-center mb-4"
+              className="text-lg text-ink/60 text-center mb-6"
             >
               Your PDF has been saved to your device.
             </p>
           </div>
 
+          {/* Trustpilot Review Prompt — directly under the headline, at the
+              "we didn't paywall you" moment, so it never scrolls out of view */}
+          <div className="animate-dcm-content-fade-up" style={{ animationDelay: '150ms' }}>
+            <div className="animate-dcm-review-ring bg-accent/[0.04] border border-accent/10 rounded-xl p-4 mb-6 text-center">
+              <p className="text-sm font-semibold text-ink mb-1">
+                Did we save you from a paywall?
+              </p>
+              <p className="text-xs text-ink/60 mb-3">
+                Most &ldquo;free&rdquo; resume builders charge you at the last step. We didn&apos;t.
+                Help other job seekers find us — leave a quick review on Trustpilot.
+              </p>
+              {/* TrustBox Review Collector widget */}
+              <div
+                ref={trustboxRef}
+                className="trustpilot-widget"
+                data-locale="en-US"
+                data-template-id="56278e9abfbbba0bdcd568bc"
+                data-businessunit-id="6991965ec479215d80d8e4b7"
+                data-style-height="52px"
+                data-style-width="100%"
+                data-token="71af434a-ffb1-44a9-b616-8f3320d34897"
+              >
+                <a
+                  href="https://www.trustpilot.com/review/easyfreeresume.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Trustpilot
+                </a>
+              </div>
+            </div>
+          </div>
+
           {/* Anonymous-only: Warning + Sign-up CTA */}
           {isAnonymous && (
-            <div className="animate-dcm-content-fade-up" style={{ animationDelay: '150ms' }}>
+            <div className="animate-dcm-content-fade-up" style={{ animationDelay: '225ms' }}>
               {/* Warning Box */}
               <div className="bg-amber-50/80 border border-amber-200/60 rounded-xl p-4 mb-4">
                 <p className="text-sm text-amber-800 flex items-start gap-2">
@@ -191,7 +244,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
 
           {/* Affiliate "What's Next?" Section */}
           {showAffiliate && (
-            <div className="mt-6 animate-dcm-content-fade-up" style={{ animationDelay: '225ms' }}>
+            <div className="mt-6 animate-dcm-content-fade-up" style={{ animationDelay: '300ms' }}>
               {/* Divider */}
               <div className="flex items-center gap-3 mb-4">
                 <div className="flex-1 h-px bg-black/[0.06]" />
@@ -228,22 +281,28 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                 <div className="mt-4">
                   {/* Section header */}
                   {jobSearchParams && (
-                    <p className="text-xs font-medium text-ink/60 mb-2">
-                      Jobs matching &ldquo;{jobSearchParams.displayTitle}&rdquo;
-                      {jobSearchParams.location && ` near ${jobSearchParams.location}`}
-                    </p>
+                    <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 mb-2">
+                      <p className="text-xs font-medium text-ink/60">
+                        Jobs matching &ldquo;{jobSearchParams.displayTitle}&rdquo;
+                        {jobSearchParams.location && ` near ${jobSearchParams.location}`}
+                      </p>
+                      {!jobsLoading && <StaleLabel fetchedAt={staleSince} />}
+                    </div>
                   )}
 
                   {/* Loading skeleton */}
                   {jobsLoading && (
-                    <div className="space-y-2">
+                    <div className="space-y-2" aria-busy="true" aria-label="Loading matching jobs">
                       {[0, 1, 2].map((i) => (
                         <div
                           key={i}
-                          className="bg-chalk-dark border border-black/[0.06] rounded-xl p-3 animate-pulse"
+                          className="bg-white border border-black/[0.08] rounded-xl p-4 flex flex-col gap-1 animate-pulse"
                         >
-                          <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
-                          <div className="h-3 bg-gray-200 rounded w-1/2" />
+                          {/* mirrors the compact JobCard: title, meta, meta, source row */}
+                          <div className="h-6 flex items-center"><div className="h-4 bg-ink/[0.08] rounded w-3/4" /></div>
+                          <div className="h-5 flex items-center"><div className="h-3 bg-ink/[0.06] rounded w-1/2" /></div>
+                          <div className="h-5 flex items-center"><div className="h-3 bg-ink/[0.06] rounded w-1/3" /></div>
+                          <div className="h-5 pt-1 flex items-center"><div className="h-2.5 bg-ink/[0.06] rounded w-1/4" /></div>
                         </div>
                       ))}
                     </div>
@@ -251,46 +310,38 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
 
                   {/* Job cards */}
                   {!jobsLoading && jobs.length > 0 && (
-                    <div className="space-y-2">
-                      {jobs.map((job, i) => {
-                        const salary = formatSalary(job.salary_min, job.salary_max, jobSearchParams?.country);
-                        return (
-                          <a
-                            key={i}
-                            href={job.url}
-                            target="_blank"
-                            rel="noopener noreferrer nofollow"
-                            className="flex items-center gap-3 bg-chalk-dark border border-black/[0.06] rounded-xl p-3 cursor-pointer hover:bg-white hover:shadow-lg hover:border-accent/20 hover:-translate-y-0.5 transition-all duration-200"
-                          >
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-semibold text-ink truncate">
-                                {job.title}
-                              </p>
-                              <p className="text-xs text-ink/60 truncate">
-                                {[job.company, job.location]
-                                  .filter(Boolean)
-                                  .join(" · ")}
-                              </p>
-                              {salary && (
-                                <p className={`text-xs font-medium mt-0.5 ${
-                                  job.salary_is_predicted ? 'text-amber-600' : 'text-emerald-600'
-                                }`}>
-                                  {salary}{job.salary_is_predicted ? ' (est.)' : ''}
-                                </p>
-                              )}
-                            </div>
-                            <ExternalLink className="w-4 h-4 text-ink/60 flex-shrink-0" />
-                          </a>
-                        );
-                      })}
-                    </div>
+                    <ul id={jobListId} className="space-y-2">
+                      {(showAllJobs ? jobs : jobs.slice(0, JOBS_PREVIEW)).map((job, i) => (
+                        <li key={job.url || i}>
+                          <JobCard
+                            job={job}
+                            position={i + 1}
+                            context="post_download"
+                            country={jobSearchParams?.country}
+                            compact
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {!jobsLoading && !showAllJobs && jobs.length > JOBS_PREVIEW && (
+                    <button
+                      type="button"
+                      onClick={() => setShowAllJobs(true)}
+                      aria-expanded={false}
+                      aria-controls={jobListId}
+                      className="mt-3 w-full rounded-lg py-2 text-sm font-semibold text-accent-text hover:bg-accent/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text transition-colors"
+                    >
+                      Show {jobs.length - JOBS_PREVIEW} more {jobs.length - JOBS_PREVIEW === 1 ? "job" : "jobs"}
+                    </button>
                   )}
                 </div>
               )}
 
               {/* Close button for authenticated users when affiliate is shown */}
               {!isAnonymous && (
-                <div className="flex justify-center mt-4">
+                <div className="sticky bottom-0 -mx-6 sm:-mx-8 -mb-6 sm:-mb-8 mt-4 px-6 sm:px-8 py-4 bg-white border-t border-black/[0.06] flex justify-center">
                   <button
                     ref={!isAnonymous ? primaryButtonRef : undefined}
                     onClick={onClose}
@@ -303,45 +354,6 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
             </div>
           )}
 
-          {/* Trustpilot Review Prompt */}
-          <div className="mt-6 animate-dcm-content-fade-up" style={{ animationDelay: '225ms' }}>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex-1 h-px bg-black/[0.06]" />
-              <span className="text-xs font-semibold text-ink/60 uppercase tracking-wider">
-                One more thing
-              </span>
-              <div className="flex-1 h-px bg-black/[0.06]" />
-            </div>
-
-            <div className="bg-accent/[0.04] border border-accent/10 rounded-xl p-4 text-center">
-              <p className="text-sm font-semibold text-ink mb-1">
-                Did we save you from a paywall?
-              </p>
-              <p className="text-xs text-ink/60 mb-3">
-                Most &ldquo;free&rdquo; resume builders charge you at the last step. We didn&apos;t.
-                Help other job seekers find us — leave a quick review on Trustpilot.
-              </p>
-              {/* TrustBox Review Collector widget */}
-              <div
-                ref={trustboxRef}
-                className="trustpilot-widget"
-                data-locale="en-US"
-                data-template-id="56278e9abfbbba0bdcd568bc"
-                data-businessunit-id="6991965ec479215d80d8e4b7"
-                data-style-height="52px"
-                data-style-width="100%"
-                data-token="71af434a-ffb1-44a9-b616-8f3320d34897"
-              >
-                <a
-                  href="https://www.trustpilot.com/review/easyfreeresume.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Trustpilot
-                </a>
-              </div>
-            </div>
-          </div>
     </ModalShell>
   );
 };

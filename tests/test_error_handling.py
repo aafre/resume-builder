@@ -402,8 +402,8 @@ class TestRequireAuthRetry:
         assert response.status_code == 401
         assert call_count == 1
 
-    def test_returns_401_when_retry_also_fails(self, flask_test_client, auth_headers):
-        """Verify require_auth returns 401 when both attempts raise connection errors."""
+    def test_returns_503_when_retry_also_fails(self, flask_test_client, auth_headers):
+        """Verify require_auth returns 503 (not 401: client would sign out) when both attempts raise connection errors."""
         client, mock_sb, flask_app = flask_test_client
 
         call_count = 0
@@ -418,7 +418,7 @@ class TestRequireAuthRetry:
         with patch('time.sleep'):
             response = client.get('/api/user/preferences', headers=auth_headers)
 
-        assert response.status_code == 401
+        assert response.status_code == 503
         data = response.get_json()
         assert data['success'] is False
         assert call_count == 2

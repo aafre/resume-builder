@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { FileText, Menu } from "lucide-react";
+import { MdExpandMore } from "react-icons/md";
 import { useOptionalEditorContext } from "../contexts/EditorContext";
 import { useAuth } from "../contexts/AuthContext";
 import { useResumeCount } from "../hooks/useResumeCount";
@@ -11,22 +11,51 @@ import AuthModal from "./AuthModal";
 import LogoMark from "./LogoMark";
 import GlobalNavDrawer from "./GlobalNavDrawer";
 import { getNavLinks } from "../config/navLinks";
+import { useJobsAvailable } from "../hooks/useJobsAvailable";
 import useNavPill from "../hooks/useNavPill";
+import { useAuthHint } from "../hooks/useAuthHint";
+import UserAvatar from "./UserAvatar";
+import NavMenuTrigger, { type NavAccount } from "./NavMenuTrigger";
+import { useSignOut } from "../hooks/useSignOut";
+import { navGlyphs } from "./icons/NavGlyphs";
 
 export default function Header() {
   const location = useLocation();
-  const { isAuthenticated, isAnonymous, loading: authLoading, showAuthModal, hideAuthModal, authModalOpen } = useAuth();
+  const { user, isAuthenticated: authResolved, isAnonymous, loading: authLoading, showAuthModal, hideAuthModal, authModalOpen } = useAuth();
+  // While the lazy SDK loads, trust the session it will restore from. Without
+  // this the header paints signed-out, then reflows 2-3s later.
+  const authHint = useAuthHint();
+  const isAuthenticated = authLoading ? authHint?.signedIn ?? false : authResolved;
   const [navDrawerOpen, setNavDrawerOpen] = useState(false);
+  const signOut = useSignOut();
 
   // Get resume count for mobile badge (lightweight count-only query)
   const { data: resumeCount = 0 } = useResumeCount();
 
   const isEditorPage = location.pathname.startsWith("/editor");
   const editorContext = useOptionalEditorContext();
-  const navLinks = getNavLinks(isAuthenticated);
+  // Optimistic: only a definite "unsupported" hides the link, so it never pops in late
+  const jobsAvailable = useJobsAvailable() !== false;
+  const navLinks = getNavLinks(isAuthenticated, jobsAvailable);
+
+  // Identity for the mobile trigger and account card: the real user once
+  // resolved, the stored-session hint until then.
+  const account: NavAccount | null = !isAuthenticated
+    ? null
+    : user
+      ? {
+          name: user.user_metadata?.full_name || user.email?.split("@")[0] || "User",
+          email: user.email,
+          avatarUrl: user.user_metadata?.avatar_url,
+        }
+      : authHint && {
+          name: authHint.name || authHint.email?.split("@")[0] || "User",
+          email: authHint.email,
+          avatarUrl: authHint.avatarUrl,
+        };
 
   // The pill follows whichever link matches the route; a page with no nav
-  // entry (blog, an example, the landing page) correctly has no pill.
+  // entry (a blog post, an example, the landing page) correctly has no pill.
   const activePath = navLinks.some((link) => link.path === location.pathname)
     ? location.pathname
     : null;
@@ -86,6 +115,7 @@ export default function Header() {
     >
       <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-header-mobile sm:h-header-desktop transition-all duration-200">
+          <div className="flex items-center">
           {/* Logo and Home Navigation */}
           <Link
             to="/"
@@ -102,19 +132,21 @@ export default function Header() {
                 reach a screen reader from somewhere. */}
             <span className="sr-only sm:hidden">EasyFreeResume — go to homepage</span>
           </Link>
+          </div>
 
           {/* Product navigation — rendered for every visitor, not only signed-in
               ones. Only account-scoped destinations branch on auth. */}
           <nav
             ref={navRef}
-            className="relative hidden lg:flex items-center gap-1"
+            className="relative hidden lg:flex items-center gap-1 self-stretch"
             aria-label="Primary"
           >
             {/* Decoration only. `aria-current` on the link is what actually
                 announces the current page. */}
             <span ref={pillRef} className="nav-rail-pill" aria-hidden="true" />
-            {navLinks.map(({ path, label, countBadge, id }) => {
+            {navLinks.map(({ path, label, countBadge, id, wideOnly }) => {
               const isCurrent = location.pathname === path;
+              const NavGlyph = navGlyphs[path];
               return (
                 <Link
                   key={path}
@@ -122,12 +154,14 @@ export default function Header() {
                   id={id}
                   data-nav-key={path}
                   aria-current={isCurrent ? "page" : undefined}
-                  className={`nav-rail-link relative z-10 inline-flex min-h-11 items-center px-4 py-2 rounded-lg font-medium text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
+                  className={`nav-rail-link relative ${wideOnly ? "hidden xl:inline-flex" : "inline-flex"} min-h-11 items-center gap-2 px-3.5 py-2 rounded-lg text-sm transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
                     isCurrent
-                      ? 'text-white'
-                      : 'text-ink/60 hover:bg-black/5 hover:text-ink'
+                      ? 'text-ink font-semibold'
+                      : 'text-ink/60 font-medium hover:text-ink'
                   }`}
                 >
+                  {/* From xl only: at lg the glyphs wrap labels and the CTA. */}
+                  {NavGlyph && <NavGlyph className="hidden xl:block h-5 w-5 shrink-0" />}
                   {label}
                   {countBadge && resumeCount > 0 && (
                     <span
@@ -145,36 +179,11 @@ export default function Header() {
           {/* Right Side Content */}
           <div className="flex items-center gap-3 sm:gap-4">
 
-            {/* Mobile Icon Navigation - Authenticated Only */}
-            {isAuthenticated && (
-              <div className="lg:hidden flex items-center gap-3">
-                {/* My Resumes Icon with Badge */}
-                <Link
-                  to="/my-resumes"
-                  className="relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg hover:bg-black/5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
-                  aria-label={`My Resumes${resumeCount > 0 ? ` (${resumeCount})` : ''}`}
-                >
-                  <div className="relative">
-                    <FileText className="w-6 h-6 text-ink" />
-                    {resumeCount > 0 && (
-                      <div
-                        key={resumeCount}
-                        className="nav-badge-pop absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-accent rounded-full flex items-center justify-center ring-2 ring-white"
-                      >
-                        <span className="text-ink text-[10px] font-bold px-1">
-                          {resumeCount > 99 ? '99+' : resumeCount}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                </Link>
-              </div>
-            )}
-
             {/* Auto-Save Indicator (authenticated) or storage badge (anonymous) - only on editor page */}
             {isEditorPage && editorContext && (
               <div id="header-auth-status" className="flex items-center gap-3">
-                <div id="header-job-badge-slot" />
+                {/* Phones get the one-per-session job banner instead */}
+                <div id="header-job-badge-slot" className="hidden sm:flex" />
                 {/* min-width reserves space regardless of which badge mounts, preventing CLS */}
                 <div className="flex items-center min-w-[80px] sm:min-w-[150px] min-h-[32px]">
                   {isAuthenticated && (
@@ -192,16 +201,28 @@ export default function Header() {
             )}
 
             {/* Auth UI - User Menu or Sign In Button — fixed min-width prevents CLS on auth resolve */}
-            <div className="flex items-center min-w-[50px] lg:min-w-[80px] min-h-[36px] lg:min-h-[40px]">
-              {!authLoading && (
-                <div className="nav-auth-in">
-                  {isAuthenticated ? (
+            {/* Off the editor, phones reach account through the menu trigger */}
+            <div className={`${isEditorPage ? "flex" : "hidden lg:flex"} items-center min-w-[50px] lg:min-w-[80px] min-h-[36px] lg:min-h-[40px]`}>
+              {authLoading && authHint?.signedIn ? (
+                // Stand-in with UserMenu's exact trigger geometry; swapped for
+                // the real menu when the SDK resolves, so nothing moves.
+                <div className="flex min-h-11 items-center gap-2 px-3 py-2" aria-hidden="true">
+                  <UserAvatar name={authHint.name || authHint.email || "U"} url={authHint.avatarUrl} />
+                  <span className="hidden sm:block text-sm font-medium text-ink">
+                    {authHint.name || authHint.email?.split("@")[0]}
+                  </span>
+                  <MdExpandMore className="text-ink/60" />
+                </div>
+              ) : (
+                // No fade after a hinted stand-in: it would blink the avatar.
+                <div className={authHint?.signedIn ? undefined : "nav-auth-in"}>
+                  {authResolved ? (
                     <UserMenu />
                   ) : (
                     <button
                       id="tour-sign-in-button"
                       onClick={showAuthModal}
-                      className="flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 font-semibold text-sm transition-all duration-200 text-ink hover:text-accent-text hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 lg:hover:no-underline lg:px-5 lg:bg-ink lg:text-white lg:shadow-sm lg:hover:shadow-md"
+                      className="flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 font-semibold text-sm transition-colors duration-200 text-ink hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
                     >
                       <span>Sign In</span>
                     </button>
@@ -221,20 +242,17 @@ export default function Header() {
               </Link>
             )}
 
-            {/* Global navigation trigger — the site had no mobile navigation at
-                all. Not rendered in the editor, which has its own drawer. */}
+            {/* One mobile entry point for navigation and account. Not
+                rendered in the editor, which has its own drawer. */}
             {!isEditorPage && (
-              <button
-                type="button"
-                onClick={() => setNavDrawerOpen(true)}
-                className="lg:hidden inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-ink transition-colors hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
-                aria-label="Open navigation menu"
-                aria-haspopup="dialog"
-                aria-expanded={navDrawerOpen}
-                aria-controls="global-nav-drawer"
-              >
-                <Menu className="w-6 h-6" aria-hidden="true" />
-              </button>
+              <div className="lg:hidden">
+                <NavMenuTrigger
+                  open={navDrawerOpen}
+                  account={account}
+                  resumeCount={resumeCount}
+                  onClick={() => setNavDrawerOpen(true)}
+                />
+              </div>
             )}
           </div>
         </div>
@@ -261,11 +279,13 @@ export default function Header() {
         <GlobalNavDrawer
           isOpen={navDrawerOpen}
           onClose={() => setNavDrawerOpen(false)}
-          links={[...navLinks, { path: "/blog", label: "Career Blog" }]}
+          links={navLinks}
           currentPath={location.pathname}
           resumeCount={resumeCount}
           isAuthenticated={isAuthenticated}
           onSignInClick={showAuthModal}
+          account={account}
+          onSignOut={signOut}
         />
       )}
 

@@ -170,6 +170,30 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     priority: 0.7,
     metaDescription: 'Front-end developer resume example with React, JavaScript, and CSS skills.',
   },
+  {
+    slug: 'forward-deployed-engineer',
+    title: 'Forward Deployed Engineer',
+    category: 'tech',
+    priority: 0.7,
+    metaDescription: 'Forward deployed engineer resume example that takes a customer problem from discovery to production, with skills and keywords from real FDE postings.',
+    lastmod: '2026-09-25',
+  },
+  {
+    slug: 'staff-software-engineer',
+    title: 'Staff Software Engineer',
+    category: 'tech',
+    priority: 0.7,
+    metaDescription: 'Staff software engineer resume example showing cross-team architecture, a migration and mentoring, plus senior vs staff bullet rewrites. Edit it free.',
+    lastmod: '2026-09-25',
+  },
+  {
+    slug: 'mlops-engineer',
+    title: 'MLOps Engineer',
+    category: 'tech',
+    priority: 0.7,
+    metaDescription: 'MLOps engineer resume example built from real job postings: model serving, monitoring and cost bullets, skills, and an AI platform engineer variant.',
+    lastmod: '2026-09-25',
+  },
 
   // Tier 6: Creative
   {

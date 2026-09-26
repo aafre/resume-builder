@@ -1,3 +1,4 @@
+# seo-tracking/ and revenue-tracking/ are junctions into the private repo aafre/efr-private (restore steps in its README)
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -226,6 +227,7 @@ cold-reachouts/
 local_files/
 SearchConsole/
 seo-tracking/
+revenue-tracking/
 linkedin-content/
 docs/templates/examples/
 pnpm-lock.yaml

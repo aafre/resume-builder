@@ -4,11 +4,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import { Check, X } from 'lucide-react';
+import { Check, ChevronRight, X } from 'lucide-react';
 import { JobSparkleIcon } from '../icons/JobSparkleIcon';
 import { ContactInfo, Section, SaveStatus } from '../../types';
 import { SaveStatusIndicator } from '../SaveStatusIndicator';
-import { affiliateConfig } from '../../config/affiliate';
+import { useJobsAvailable } from '../../hooks/useJobsAvailable';
 import { extractJobSearchParams } from '../../utils/resumeDataExtractor';
 import { searchJobs } from '../../services/jobs';
 import { getSalaryFloor } from '../../utils/salaryFloor';
@@ -54,6 +54,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
   sections,
 }) => {
   const [jobCount, setJobCount] = useState<number | null>(null);
+  const jobsAvailable = useJobsAvailable() === true;
   const [loading, setLoading] = useState(false);
   const [showMobileBanner, setShowMobileBanner] = useState(false);
   const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
@@ -68,7 +69,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
   }, []);
 
   const fetchJobCount = useCallback(async () => {
-    if (!affiliateConfig.jobSearch.enabled) return;
+    if (!jobsAvailable) return;
 
     const params = extractJobSearchParams(contactInfo, sections);
     if (!params) {
@@ -98,10 +99,10 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
     } finally {
       setLoading(false);
     }
-  }, [contactInfo, sections]);
+  }, [contactInfo, sections, jobsAvailable]);
 
   useEffect(() => {
-    if (!affiliateConfig.jobSearch.enabled) return;
+    if (!jobsAvailable) return;
 
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(fetchJobCount, 300);
@@ -113,7 +114,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
 
   // Mobile banner: show once per session when jobCount first loads
   useEffect(() => {
-    if (!affiliateConfig.jobSearch.enabled) return;
+    if (!jobsAvailable) return;
     if (jobCount === null || jobCount === 0 || loading) return;
 
     try {
@@ -143,7 +144,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
     }
   };
 
-  const showBadge = affiliateConfig.jobSearch.enabled && (loading || (jobCount !== null && jobCount > 0));
+  const showBadge = jobsAvailable && (loading || (jobCount !== null && jobCount > 0));
 
   const handleBadgeClick = () => {
     const params = extractJobSearchParams(contactInfo, sections);
@@ -156,37 +157,30 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
           skills: params.skills,
           seniorityLevel: params.seniorityLevel,
           yearsExperience: params.yearsExperience,
+          returnTo: window.location.pathname,
         }));
       } catch { /* ignore */ }
     }
   };
 
   // Badge element to portal into the header
+  // One line, one number. The count is the information; a static dot marks
+  // it live. No perpetual ping — motion on the workbench is feedback only.
   const badgeElement = showBadge ? (
     <Link
       to="/jobs"
       onClick={handleBadgeClick}
-      className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-black/[0.06] rounded-full shadow-sm hover:shadow-md hover:border-accent/30 transition-all duration-300 animate-[badgeFadeIn_0.4s_ease-out] group"
+      aria-label={loading ? 'Finding matching jobs' : `${jobCount?.toLocaleString()} matching jobs, view`}
+      className="group inline-flex min-h-11 items-center gap-2 rounded-full border border-black/[0.08] bg-white pl-3 pr-2 text-sm font-medium text-ink transition-colors hover:bg-black/[0.04] animate-[badgeFadeIn_0.4s_ease-out] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
     >
+      <span className="h-2 w-2 shrink-0 rounded-full bg-accent" aria-hidden="true" />
       {loading ? (
-        <div className="w-3.5 h-3.5 rounded-full border-2 border-accent/30 border-t-accent animate-spin" />
+        <span className="h-3 w-8 animate-pulse rounded bg-black/10" aria-hidden="true" />
       ) : (
-        <JobSparkleIcon className="w-3.5 h-3.5 text-accent-text" />
+        <span className="font-bold tabular-nums">{jobCount?.toLocaleString()}</span>
       )}
-      <div className="flex flex-col leading-none">
-        <span className="text-[10px] uppercase font-bold text-ink/60 tracking-wider group-hover:text-accent-text transition-colors">
-          Matches
-        </span>
-        <span className="text-xs font-bold text-ink tabular-nums">
-          {loading ? '...' : jobCount?.toLocaleString()}
-        </span>
-      </div>
-      {!loading && (
-        <span className="relative flex h-2 w-2 ml-0.5">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
-        </span>
-      )}
+      <span className="text-ink/60">jobs</span>
+      <ChevronRight className="h-4 w-4 text-ink/40 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
     </Link>
   ) : null;
 

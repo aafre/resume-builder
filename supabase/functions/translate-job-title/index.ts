@@ -31,15 +31,24 @@ serve(async (req: Request) => {
     );
   }
 
+  const internalKey = Deno.env.get('INTERNAL_FN_KEY');
+  if (!internalKey || req.headers.get('x-internal-key') !== internalKey) {
+    return new Response(
+      JSON.stringify({ success: false, error: 'Unauthorized' }),
+      { status: 401, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } }
+    );
+  }
+
   try {
     // Parse request body
-    const { title } = await req.json();
-    if (!title || typeof title !== 'string' || title.trim().length === 0) {
+    const { title: rawTitle } = await req.json();
+    if (!rawTitle || typeof rawTitle !== 'string' || rawTitle.trim().length === 0) {
       return new Response(
         JSON.stringify({ success: false, error: 'title is required' }),
         { status: 400, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } }
       );
     }
+    const title = rawTitle.slice(0, 100);
 
     const apiKey = Deno.env.get('OPENAI_API_KEY');
     if (!apiKey) {
@@ -59,7 +68,8 @@ serve(async (req: Request) => {
           role: 'system',
           content:
             'You convert job titles into standard, commonly-advertised equivalents. ' +
-            'Return ONLY a comma-separated list of 3 standard job titles. No numbering, no explanations.',
+            'Return ONLY a comma-separated list of 3 standard job titles. No numbering, no explanations. ' +
+            'If the input is not a recognisable job title (gibberish, random words, a name), return exactly: NONE',
         },
         {
           role: 'user',
@@ -74,7 +84,7 @@ serve(async (req: Request) => {
     const terms = raw
       .split(',')
       .map((t: string) => t.trim())
-      .filter((t: string) => t.length > 0)
+      .filter((t: string) => t.length > 0 && t.toUpperCase() !== 'NONE')
       .slice(0, 3);
 
     console.log(`Translated "${title}" → [${terms.join(', ')}]`);

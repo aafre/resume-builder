@@ -16,6 +16,8 @@ export interface SEOConfig {
   ogImage?: string;
   hreflangLinks?: HreflangLink[];
   ogLocale?: string;
+  /** robots meta content; SEOHead defaults to "index, follow". */
+  robots?: string;
 }
 
 export interface HeroConfig {

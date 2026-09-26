@@ -12,13 +12,35 @@ export interface AdzunaJob {
   url: string;
   created: string;
   match_score?: number;
+  /** Job feed the listing came from, e.g. "adzuna". */
+  feed: string;
 }
+
+/**
+ * fresh: live results. stale: every feed is out of quota or failing, these are
+ * the last saved results (fetchedAt says when). refreshing: nothing saved
+ * either; searchUrl is the feed's own search page for the same query.
+ */
+export type JobResultStatus = 'fresh' | 'stale' | 'refreshing';
 
 export interface JobSearchResult {
   count: number;
   jobs: AdzunaJob[];
   ai_terms_used?: string[];
   total_available?: number;
+  status?: JobResultStatus;
+  fetchedAt?: string;
+  searchUrl?: string;
+}
+
+/** Thrown by searchJobs; carries the HTTP status so callers can special-case it (e.g. 429). */
+export class JobSearchError extends Error {
+  status?: number;
+  constructor(message: string, status?: number) {
+    super(message);
+    this.name = 'JobSearchError';
+    this.status = status;
+  }
 }
 
 export interface RoleSuggestion {
@@ -92,13 +114,14 @@ export async function searchJobs(opts: JobSearchOptions): Promise<JobSearchResul
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   });
+  // Read the body even on a non-2xx: error responses (e.g. 429) carry a
+  // user-facing message in `error` that callers should be able to show.
+  const data = await response.json().catch(() => null);
   if (!response.ok) {
-    throw new Error('Job search request failed');
+    throw new JobSearchError(data?.error || 'Job search request failed', response.status);
   }
-
-  const data = await response.json();
   if (!data.success) {
-    throw new Error(data.error || 'Job search failed');
+    throw new JobSearchError(data.error || 'Job search failed', response.status);
   }
 
   return data.data;

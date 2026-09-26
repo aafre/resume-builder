@@ -99,15 +99,64 @@ const SECTIONS: LegalSection[] = [
     id: 'third-party',
     title: 'Third-Party Services',
     body: (
-      <p>
-        We use Supabase for authentication and database services (account users only). We use PostHog for
-        product analytics to understand how the site is used — page views, which features are used, and
-        click and scroll patterns. If you are signed in, this activity is linked to your account identifier,
-        so it is pseudonymous rather than anonymous; if you are not signed in, it is tied only to a random
-        device identifier. We do <strong>not</strong> record your screen or session, and we never send your
-        resume content, file names, or contact details to any analytics provider. Analytics are loaded after
-        the page has rendered so they stay off the critical path.
-      </p>
+      <>
+        <p>
+          We use Supabase for authentication and database services (account users only). We use PostHog for
+          product analytics to understand how the site is used — page views, which features are used, and
+          click and scroll patterns. If you are signed in, this activity is linked to your account identifier,
+          so it is pseudonymous rather than anonymous; if you are not signed in, it is tied only to a random
+          device identifier. We do <strong>not</strong> record your screen or session, and we never send your
+          resume content, file names, or contact details to any analytics provider. Analytics are loaded after
+          the page has rendered so they stay off the critical path.
+        </p>
+        <p>
+          Job listings come from our job feed, Adzuna. When you search for jobs, or we suggest jobs after you
+          download your resume, we send Adzuna the job title, location and country, plus search filters such
+          as a minimum salary (which we may estimate from your seniority), contract type or how recent the
+          posting is. When the search starts
+          from your resume, the title and location are read from it on our side; your resume text, name and
+          contact details are never sent to Adzuna. If a search finds too few jobs, we send the job title
+          alone to an AI job-title suggestion function (run on Supabase, using OpenAI) to find the standard
+          names for that role. On the job search page, related-role suggestions come from a similar AI function,
+          which receives your job title, skills and previous job titles. Opening a job takes you to the listing on Adzuna&apos;s site, where
+          Adzuna&apos;s own privacy policy applies.
+        </p>
+        <p>
+          <strong>AI Features (OpenAI):</strong> Three features use OpenAI&apos;s gpt-4o-mini model, called from
+          our Supabase functions. We send OpenAI only what each feature needs, and use the result only to
+          perform that feature:
+        </p>
+        <ul>
+          <li>
+            <strong>Resume import</strong> (importing a PDF or Word resume, including uploading one on the job
+            search page): the text extracted from your file, which is your full resume text including your name
+            and contact details. The file itself is not sent.
+          </li>
+          <li>
+            <strong>Job-title suggestions:</strong> the job title alone.
+          </li>
+          <li>
+            <strong>Related-role suggestions:</strong> your job title, skills and previous job titles.
+          </li>
+        </ul>
+        <p>
+          To import the same file again without a second AI call, we store the import result in our database,
+          linked to your account or guest session: a fingerprint (hash) of the file, its name and size, the
+          extracted text and the parsed resume. A stored result is reused for 30 days. There is currently no
+          automatic deletion after those 30 days; the record stays until your account is deleted, which you
+          can do at any time from your account settings. Job-title and related-role suggestions are not stored
+          in our database. Per{' '}
+          <a
+            href="https://developers.openai.com/api/docs/guides/your-data"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            OpenAI&apos;s API data policy
+          </a>
+          , data sent to the OpenAI API is not used to train its models by default, and OpenAI keeps abuse-monitoring logs
+          for up to 30 days unless longer retention is legally required.
+        </p>
+      </>
     ),
   },
   {
@@ -161,7 +210,7 @@ const SECTIONS: LegalSection[] = [
 const PrivacyPolicy = () => (
   <LegalDocument
     title="Privacy Policy"
-    lastUpdated="4 August 2026"
+    lastUpdated="25 September 2026"
     intro={
       <p>
         At <strong>EasyFreeResume.com</strong>, your privacy is important to us. This Privacy Policy

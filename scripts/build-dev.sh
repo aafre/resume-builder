@@ -17,11 +17,12 @@ fi
 
 VITE_APP_URL="${VITE_APP_URL:-https://dev.easyfreeresume.com}"
 VITE_ENABLE_EXPLICIT_ADS="${VITE_ENABLE_EXPLICIT_ADS:-true}"
-VITE_AFFILIATE_JOB_SEARCH_ENABLED="${VITE_AFFILIATE_JOB_SEARCH_ENABLED:-false}"
+VITE_AFFILIATE_JOB_SEARCH_ENABLED="${VITE_AFFILIATE_JOB_SEARCH_ENABLED:-true}"
 VITE_AFFILIATE_RESUME_REVIEW_ENABLED="${VITE_AFFILIATE_RESUME_REVIEW_ENABLED:-false}"
 VITE_AFFILIATE_RESUME_REVIEW_URL="${VITE_AFFILIATE_RESUME_REVIEW_URL:-}"
 VITE_POSTHOG_KEY="${VITE_POSTHOG_KEY:-}"
 VITE_POSTHOG_HOST="${VITE_POSTHOG_HOST:-}"
+VITE_TURNSTILE_SITE_KEY="${VITE_TURNSTILE_SITE_KEY:-}"
 
 # Registry
 REGISTRY="europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder"
@@ -40,6 +41,11 @@ if [ -n "$VITE_POSTHOG_KEY" ]; then
   echo "  VITE_POSTHOG_KEY: set"
 else
   echo "  VITE_POSTHOG_KEY: (unset - analytics disabled)"
+fi
+if [ -n "$VITE_TURNSTILE_SITE_KEY" ]; then
+  echo "  VITE_TURNSTILE_SITE_KEY: set"
+else
+  echo "  VITE_TURNSTILE_SITE_KEY: (unset - Turnstile skipped)"
 fi
 
 docker build  --no-cache \
@@ -69,3 +75,4 @@ echo "    -e SUPABASE_SECRET_KEY=$SUPABASE_SECRET_KEY \\"
 echo "    -e ADZUNA_APP_ID=\$ADZUNA_APP_ID \\"
 echo "    -e ADZUNA_APP_KEY=\$ADZUNA_APP_KEY \\"
 echo "    $IMAGE_NAME:$TAG"
+echo "  (leave JOBS_PSEO_ENABLED unset: job SEO pages stay off, see ADR-0001)"

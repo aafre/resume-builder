@@ -602,6 +602,15 @@ details .faq-content > div {
   opacity: 0;
   animation: dcm-content-fade-up 0.4s ease-out forwards;
 }
+/* Review card: one accent ring pulse once the checkmark has landed, to pull
+   the eye from the success mark to the review ask. Ends fully transparent. */
+@keyframes dcm-review-ring {
+  0% { box-shadow: 0 0 0 0 rgba(0, 212, 126, 0.35); }
+  100% { box-shadow: 0 0 0 10px rgba(0, 212, 126, 0); }
+}
+.animate-dcm-review-ring {
+  animation: dcm-review-ring 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.9s 1;
+}
 
 .dcm-particle {
   position: absolute;
@@ -686,6 +695,9 @@ details .faq-content > div {
   }
   .dcm-particle {
     display: none !important;
+  }
+  .animate-dcm-review-ring {
+    animation: none !important;
   }
 
   /* Background grain: disable */
@@ -1313,18 +1325,16 @@ div[data-google-query-id] {
 }
 
 /* ── The rail ──
-   One ink pill for the whole nav, positioned from measured link geometry and
-   moved by `useNavPill`. It is `aria-hidden` decoration; the authoritative
+   One accent bar for the whole nav, sitting on the header's bottom edge,
+   positioned from measured link geometry and moved by `useNavPill`. It is `aria-hidden` decoration; the authoritative
    current-page signal is `aria-current` on the link itself. */
 .nav-rail-pill {
   position: absolute;
-  top: 50%;
+  bottom: 0;
   left: 0;
-  height: 40px;
-  margin-top: -20px;
-  border-radius: 8px;
-  background-color: #0c0c0c;
-  box-shadow: 0 1px 2px rgba(12, 12, 12, 0.16);
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  background-color: #00d47e;
   pointer-events: none;
   opacity: 0;
   transition: opacity 200ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -1334,19 +1344,59 @@ div[data-google-query-id] {
   opacity: 1;
 }
 
-/* The label crossing from ink to white is delayed so the swap happens under
-   the pill rather than on bare ground. The delay is tuned against the pill's
-   easing, which is heavily front-loaded: by ~110ms the pill has covered most
-   of the distance, so a longer delay leaves the outgoing label white on white
-   and the link reads as missing. Retune both together or neither.  */
-.nav-rail-link {
-  transition: color 160ms linear 110ms, background-color 200ms ease;
+/* ── Nav glyphs ──
+   Each glyph acts out its destination on hover/focus: layouts fan, a page
+   writes itself, a beam scans, a spark lands, the top resume lifts. Motion is
+   gated on no-preference, so reduced motion gets static glyphs. The current
+   page fills the glyph's `.g-accent` shape — Signal Green as fill, never as
+   the only carrier of meaning (label weight + rail pill + aria-current). */
+.nav-glyph .g-accent { fill: transparent; transition: fill 200ms cubic-bezier(0.16, 1, 0.3, 1); }
+.nav-glyph .g-spark { fill: currentColor; }
+[aria-current="page"] .nav-glyph .g-accent { fill: #00d47e; }
+[aria-current="page"] .nav-glyph .g-accent-stroke { stroke: #00d47e; }
+.nav-glyph :is(.g-fan, .g-lift, .g-peek, .g-beam, .g-spark) {
+  transform-box: fill-box;
 }
 
-/* Hover has no pill to wait for, so it must not inherit the swap delay. */
-.nav-rail-link:hover,
-.nav-rail-link:focus-visible {
-  transition-delay: 0ms;
+@media (prefers-reduced-motion: no-preference) {
+  .nav-glyph .g-fan { transform-origin: 0% 100%; }
+  .nav-glyph .g-spark { transform-origin: center; }
+  .nav-glyph :is(.g-fan, .g-lift, .g-peek) {
+    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  a:is(:hover, :focus-visible) .nav-glyph .g-fan { transform: rotate(9deg) translate(1px, -0.5px); }
+  a:is(:hover, :focus-visible) .nav-glyph .g-lift { transform: translateY(-1.5px); }
+  a:is(:hover, :focus-visible) .nav-glyph .g-peek { transform: translate(0.75px, 0.5px); }
+  a:is(:hover, :focus-visible) .nav-glyph .g-write {
+    stroke-dasharray: 1;
+    animation: nav-glyph-write 380ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+  a:is(:hover, :focus-visible) .nav-glyph .g-write-2 { animation-delay: 90ms; }
+  a:is(:hover, :focus-visible) .nav-glyph .g-write-3 { animation-delay: 180ms; }
+  a:is(:hover, :focus-visible) .nav-glyph .g-beam {
+    animation: nav-glyph-scan 900ms cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  a:is(:hover, :focus-visible) .nav-glyph .g-spark {
+    animation: nav-glyph-spark 560ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+@keyframes nav-glyph-write {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+
+@keyframes nav-glyph-scan {
+  0%   { transform: translateY(0); }
+  30%  { transform: translateY(-6px); }
+  75%  { transform: translateY(6px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes nav-glyph-spark {
+  0%   { transform: scale(0.3) rotate(-90deg); opacity: 0; }
+  60%  { transform: scale(1.3) rotate(10deg); opacity: 1; }
+  100% { transform: none; opacity: 1; }
 }
 
 /* ── Count badge ──
@@ -1405,17 +1455,42 @@ div[data-google-query-id] {
   }
 }
 
-/* ── Drawer ──
-   The panel already slides in; the links follow it in sequence so the drawer
-   reads as one gesture instead of a block that appears. */
+/* ── Mobile sheet ──
+   The sheet's top row repeats the header bar, and clip-path reveals the rest
+   downward from under it — the header grows rather than a panel arriving.
+   Closing folds it back to bar height before unmount (GlobalNavDrawer holds
+   it mounted for the exit). Browsers without @starting-style simply appear. */
+.nav-sheet {
+  --sheet-bar: var(--header-height-mobile);
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 640px) {
+  .nav-sheet { --sheet-bar: var(--header-height-desktop); }
+}
+
+.nav-sheet[data-open="false"] {
+  clip-path: inset(0 0 calc(100% - var(--sheet-bar)) 0 round 0 0 0 0);
+  pointer-events: none;
+  transition-duration: 280ms;
+}
+
+@starting-style {
+  .nav-sheet[data-open="true"] {
+    clip-path: inset(0 0 calc(100% - var(--sheet-bar)) 0 round 0 0 0 0);
+  }
+}
+
+/* Rows drop in behind the reveal edge, in sequence. */
 @keyframes nav-drawer-item-in {
-  from { opacity: 0; transform: translateX(14px); }
+  from { opacity: 0; transform: translateY(-10px); }
   to   { opacity: 1; transform: none; }
 }
 
 .nav-drawer-item {
-  animation: nav-drawer-item-in 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: calc(90ms + var(--i, 0) * 40ms);
+  animation: nav-drawer-item-in 360ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(60ms + var(--i, 0) * 35ms);
 }
 
 @keyframes nav-drawer-backdrop-in {
@@ -1425,6 +1500,38 @@ div[data-google-query-id] {
 
 .nav-drawer-backdrop {
   animation: nav-drawer-backdrop-in 220ms ease-out both;
+  transition: opacity 280ms ease-out;
+}
+
+.nav-drawer-backdrop[data-open="false"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Menu trigger ──
+   ≡ and × are stacked; the open state turns one into the other. The sheet
+   mounts its own trigger already open, so @starting-style plays the turn. */
+.nav-trigger-icon {
+  transition:
+    transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 200ms ease-out;
+}
+
+.nav-trigger[data-open="true"] .nav-trigger-menu,
+.nav-trigger[data-open="false"] .nav-trigger-x {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.6);
+}
+
+@starting-style {
+  .nav-trigger[data-open="true"] .nav-trigger-x {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.6);
+  }
+  .nav-trigger[data-open="true"] .nav-trigger-menu {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1435,13 +1542,6 @@ div[data-google-query-id] {
   .nav-badge-pop,
   .nav-auth-in {
     animation: none !important;
-  }
-
-  /* The global rule zeroes transition *duration*, not delay. Left alone, the
-     outgoing nav label stays white for 110ms after the pill has snapped away
-     and the link reads as missing. */
-  .nav-rail-link {
-    transition-delay: 0ms !important;
   }
 }
 
@@ -2358,4 +2458,19 @@ main:has(.seo-shell) {
 .legal-prose ::selection {
   background-color: rgba(0, 212, 126, 0.25);
   color: #0c0c0c;
+}
+
+/* Undo toast countdown (utils/undoToast.tsx). Pauses exactly when
+   react-hot-toast pauses the timer — pointer over the toaster — and while the
+   toast holds focus. Under reduced motion the global rule jumps it to empty. */
+@keyframes toast-countdown {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+.toast-countdown {
+  animation: toast-countdown linear forwards;
+}
+.app-toaster:hover .toast-countdown,
+.app-toast:focus-within .toast-countdown {
+  animation-play-state: paused;
 }
