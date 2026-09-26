@@ -1407,7 +1407,7 @@ div[data-google-query-id] {
    it mounted for the exit). Browsers without @starting-style simply appear. */
 .nav-sheet {
   --sheet-bar: var(--header-height-mobile);
-  clip-path: inset(0 0 0 0 round 0 0 24px 24px);
+  clip-path: inset(0 0 0 0);
   transition: clip-path 420ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
