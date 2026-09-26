@@ -12,6 +12,7 @@ describe('turnstile', () => {
 
   afterEach(() => {
     vi.unstubAllEnvs();
+    vi.useRealTimers();
   });
 
   it('getTurnstileToken resolves null and injects no script when no site key is set', async () => {
@@ -54,12 +55,13 @@ describe('turnstile', () => {
     const { getTurnstileToken } = await import('../turnstile');
 
     const tokenPromise = getTurnstileToken();
-    (window as any).turnstile = { render: () => 'widget-1', remove: vi.fn(), reset: vi.fn() };
+    const remove = vi.fn();
+    (window as any).turnstile = { render: () => 'widget-1', remove, reset: vi.fn() };
     document.head.querySelector(SELECTOR)!.dispatchEvent(new Event('load'));
     await vi.advanceTimersByTimeAsync(15_000);
 
     await expect(tokenPromise).resolves.toBeNull();
-    vi.useRealTimers();
+    expect(remove).toHaveBeenCalledWith('widget-1');
   });
 
   it('getTurnstileToken renders a visible interaction-only widget and waits for a click challenge', async () => {
