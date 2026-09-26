@@ -62,6 +62,7 @@ jobs:
             VITE_POSTHOG_KEY=${{ secrets.VITE_POSTHOG_KEY }}
             VITE_POSTHOG_HOST=${{ vars.VITE_POSTHOG_HOST }}
             VITE_AFFILIATE_JOB_SEARCH_ENABLED=${{ vars.VITE_AFFILIATE_JOB_SEARCH_ENABLED }}
+            VITE_TURNSTILE_SITE_KEY=${{ vars.VITE_TURNSTILE_SITE_KEY }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
