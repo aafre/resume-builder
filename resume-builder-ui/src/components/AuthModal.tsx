@@ -2,6 +2,7 @@ import React, { useState, useId } from 'react';
 import ModalShell from './shared/ModalShell';
 import { useAuth } from '../contexts/AuthContext';
 import { toast } from 'react-hot-toast';
+import { toastFailure } from '../utils/toasts';
 import { FcGoogle } from 'react-icons/fc';
 import { FaLinkedin } from 'react-icons/fa';
 import { MdEmail, MdClose } from 'react-icons/md';
@@ -25,7 +26,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
       await signInWithGoogle();
       onSuccess?.();
     } catch (error: any) {
-      toast.error(error.message || 'Failed to sign in with Google');
+      toastFailure('sign in with Google', error);
     } finally {
       setLoading(false);
     }
@@ -37,7 +38,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
       await signInWithLinkedIn();
       onSuccess?.();
     } catch (error: any) {
-      toast.error(error.message || 'Failed to sign in with LinkedIn');
+      toastFailure('sign in with LinkedIn', error);
     } finally {
       setLoading(false);
     }
@@ -47,7 +48,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
     e.preventDefault();
 
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      toast.error('Please enter a valid email address');
+      toast.error('Enter your email address, like name@example.com.');
       return;
     }
 
@@ -57,7 +58,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
       setEmailSent(true);
       toast.success('Magic link sent! Check your email to continue.');
     } catch (error: any) {
-      toast.error(error.message || 'Failed to send magic link');
+      toastFailure('send your sign-in link', error);
     } finally {
       setLoading(false);
     }

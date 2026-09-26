@@ -3,6 +3,7 @@
 
 import { useState, useCallback, useRef, useMemo } from 'react';
 import { toast } from 'react-hot-toast';
+import { toastFailure, toastWarning } from '../../utils/toasts';
 import { Section, ContactInfo } from '../../types';
 import { UseFileOperationsReturn } from '../../types/editor';
 import {
@@ -129,7 +130,7 @@ export const useFileOperations = ({
       toast.success(message);
     } catch (error) {
       console.error('Error exporting YAML:', error);
-      toast.error('Save failed. Check browser settings and try again.');
+      toast.error("Couldn't export your file. Check that your browser allows downloads, then try again.");
     } finally {
       setLoadingSave(false);
     }
@@ -195,10 +196,9 @@ export const useFileOperations = ({
         if (!supportsIcons) {
           const referencedIcons = extractReferencedIconFilenames(processedSections);
           if (referencedIcons.length > 0) {
-            toast(
-              `This template doesn't support icons. ${referencedIcons.length} icon(s) ` +
-                `were found in the imported file and will be ignored.`,
-              { duration: 8000, icon: '⚠️' }
+            toastWarning(
+              `This template doesn't show icons, so the ${referencedIcons.length} ` +
+                `in your file will be left out.`
             );
           }
         }
@@ -227,7 +227,7 @@ export const useFileOperations = ({
         toast.success(message);
       } catch (error) {
         console.error('Error parsing YAML file:', error);
-        toast.error('Invalid file format. Please upload a valid resume file.');
+        toast.error("That file isn't one we can read. Choose a .yaml file exported from EasyFreeResume.");
       } finally {
         setLoadingLoad(false);
         clearPendingImportFile();
@@ -236,7 +236,7 @@ export const useFileOperations = ({
 
     reader.onerror = () => {
       console.error('Error reading file');
-      toast.error('Failed to read file. Please try again.');
+      toastFailure('read that file', reader.error);
       setLoadingLoad(false);
       clearPendingImportFile();
     };

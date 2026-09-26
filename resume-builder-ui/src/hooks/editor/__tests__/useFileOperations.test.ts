@@ -283,7 +283,9 @@ describe('useFileOperations', () => {
         await exportPromise;
       });
 
-      expect(toast.error).toHaveBeenCalledWith('Save failed. Check browser settings and try again.');
+      expect(toast.error).toHaveBeenCalledWith(
+        "Couldn't export your file. Check that your browser allows downloads, then try again."
+      );
       expect(result.current.loadingSave).toBe(false);
     });
   });
@@ -582,8 +584,8 @@ describe('useFileOperations', () => {
       });
 
       expect(toast).toHaveBeenCalledWith(
-        expect.stringContaining("This template doesn't support icons"),
-        expect.objectContaining({ duration: 8000, icon: '⚠️' })
+        expect.stringContaining("This template doesn't show icons"),
+        expect.objectContaining({ duration: 7000 })
       );
       cleanup();
     });
@@ -610,7 +612,9 @@ describe('useFileOperations', () => {
         await importPromise;
       });
 
-      expect(toast.error).toHaveBeenCalledWith('Invalid file format. Please upload a valid resume file.');
+      expect(toast.error).toHaveBeenCalledWith(
+        "That file isn't one we can read. Choose a .yaml file exported from EasyFreeResume."
+      );
       expect(result.current.loadingLoad).toBe(false);
       cleanup();
     });
