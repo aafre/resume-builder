@@ -1,6 +1,3 @@
-import type { LucideIcon } from "lucide-react";
-import { Briefcase, FileText, FolderOpen, LayoutTemplate, ScanSearch } from "lucide-react";
-
 export interface NavLink {
   path: string;
   label: string;
@@ -8,8 +5,7 @@ export interface NavLink {
   countBadge?: boolean;
   /** Tour anchor, kept because tourSteps.ts targets it by id. */
   id?: string;
-  /** Mobile menu only: row icon and one-line purpose. */
-  icon?: LucideIcon;
+  /** Mobile menu only: one-line purpose. */
   blurb?: string;
 }
 
@@ -25,13 +21,13 @@ export interface NavLink {
 export function getNavLinks(isAuthenticated: boolean, jobsAvailable: boolean): NavLink[] {
   return [
     ...(isAuthenticated
-      ? [{ path: "/my-resumes", label: "My Resumes", countBadge: true, id: "tour-my-resumes-link", icon: FolderOpen, blurb: "Your saved resumes" }]
+      ? [{ path: "/my-resumes", label: "My Resumes", countBadge: true, id: "tour-my-resumes-link", blurb: "Your saved resumes" }]
       : []),
-    { path: "/templates", label: "Templates", icon: LayoutTemplate, blurb: "ATS-friendly designs, free to download" },
-    { path: "/examples", label: "Examples", icon: FileText, blurb: "Resumes written for real roles" },
-    { path: "/resume-keyword-scanner", label: "ATS Scanner", icon: ScanSearch, blurb: "Check your resume against a job post" },
+    { path: "/templates", label: "Templates", blurb: "ATS-friendly designs, free to download" },
+    { path: "/examples", label: "Examples", blurb: "Resumes written for real roles" },
+    { path: "/resume-keyword-scanner", label: "ATS Scanner", blurb: "Check your resume against a job post" },
     ...(jobsAvailable
-      ? [{ path: "/jobs", label: "Jobs", icon: Briefcase, blurb: "Openings that match your resume" }]
+      ? [{ path: "/jobs", label: "Jobs", blurb: "Openings that match your resume" }]
       : []),
   ];
 }

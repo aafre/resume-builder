@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { BookOpen } from "lucide-react";
 import { MdExpandMore } from "react-icons/md";
 import { useOptionalEditorContext } from "../contexts/EditorContext";
 import { useAuth } from "../contexts/AuthContext";
@@ -283,7 +282,7 @@ export default function Header() {
         <GlobalNavDrawer
           isOpen={navDrawerOpen}
           onClose={() => setNavDrawerOpen(false)}
-          links={[...navLinks, { path: "/blog", label: "Career Blog", icon: BookOpen, blurb: "Guides for every step of the search" }]}
+          links={[...navLinks, { path: "/blog", label: "Career Blog", blurb: "Guides for every step of the search" }]}
           currentPath={location.pathname}
           resumeCount={resumeCount}
           isAuthenticated={isAuthenticated}
