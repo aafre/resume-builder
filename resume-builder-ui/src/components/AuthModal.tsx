@@ -56,7 +56,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
       setLoading(true);
       await signInWithEmail(email);
       setEmailSent(true);
-      toast.success('Magic link sent! Check your email to continue.');
+      toast.success('Check your email for your sign-in link.');
     } catch (error: any) {
       toastFailure('send your sign-in link', error);
     } finally {

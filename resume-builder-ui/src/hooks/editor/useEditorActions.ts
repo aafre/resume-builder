@@ -421,7 +421,6 @@ export const useEditorActions = ({
       setSections(emptySections);
       iconRegistry.clearRegistry();
 
-      toast.success('Template cleared successfully!');
     } catch (error) {
       toastFailure('clear your resume', error);
     } finally {

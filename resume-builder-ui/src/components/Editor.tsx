@@ -508,7 +508,7 @@ const Editor: React.FC = () => {
         sections={sections}
         contactInfo={contactInfo}
         onAuthSuccess={() => {
-          toast.success('Welcome! Your resume will now be saved to the cloud.');
+          toast.success('Signed in. Your resume now saves to your account.', { id: 'account-saved' });
         }}
       />
 

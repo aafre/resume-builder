@@ -216,7 +216,7 @@ describe('useFileOperations', () => {
         await exportPromise;
       });
 
-      expect(toast.success).toHaveBeenCalledWith('Resume saved successfully!');
+      expect(toast.success).toHaveBeenCalledWith('Exported resume.yaml.');
     });
 
     it('should show success toast with icon count (singular)', async () => {
@@ -233,7 +233,7 @@ describe('useFileOperations', () => {
         await exportPromise;
       });
 
-      expect(toast.success).toHaveBeenCalledWith('Resume saved successfully with 1 embedded icon!');
+      expect(toast.success).toHaveBeenCalledWith('Exported resume.yaml with 1 icon.');
     });
 
     it('should show success toast with icon count (plural)', async () => {
@@ -250,7 +250,7 @@ describe('useFileOperations', () => {
         await exportPromise;
       });
 
-      expect(toast.success).toHaveBeenCalledWith('Resume saved successfully with 3 embedded icons!');
+      expect(toast.success).toHaveBeenCalledWith('Exported resume.yaml with 3 icons.');
     });
 
     it('should trigger file download', async () => {
@@ -525,7 +525,7 @@ describe('useFileOperations', () => {
       cleanup();
     });
 
-    it('should show success toast with icon count', async () => {
+    it('should not toast after import (the loaded resume is the feedback)', async () => {
       const mockFile = createMockFile('test: yaml');
       const cleanup = mockFileReader('test: yaml');
 
@@ -551,7 +551,7 @@ describe('useFileOperations', () => {
         await importPromise;
       });
 
-      expect(toast.success).toHaveBeenCalledWith('Resume loaded successfully with 2 icons!');
+      expect(toast.success).not.toHaveBeenCalled();
       cleanup();
     });
 

@@ -131,7 +131,7 @@ export default function MyResumes() {
       // Use centralized API client (handles auth, 401/403 interceptor)
       await apiClient.delete(`/api/resumes/${resumeToDelete.id}`);
 
-      toast.success('Resume deleted successfully');
+      toast.success('Resume deleted.');
       refetch(); // Refetch to update the list
 
       // Invalidate count cache to update header badge
@@ -167,7 +167,7 @@ export default function MyResumes() {
         new_title: newTitle
       });
 
-      toast.success('Resume duplicated successfully');
+      toast.success('Copy created.');
       refetch(); // Refetch to update the list
 
       // Invalidate count cache to update header badge
@@ -209,7 +209,6 @@ export default function MyResumes() {
         ) || []
       );
 
-      toast.success('Resume renamed');
     } catch (err) {
       toastFailure('rename this resume', err);
       throw err; // Re-throw so ResumeCard can revert

@@ -123,10 +123,8 @@ export const useFileOperations = ({
       // Show success message with icon count if applicable
       const message =
         result.iconCount > 0
-          ? `Resume saved successfully with ${result.iconCount} embedded icon${
-              result.iconCount === 1 ? '' : 's'
-            }!`
-          : 'Resume saved successfully!';
+          ? `Exported resume.yaml with ${result.iconCount} icon${result.iconCount === 1 ? '' : 's'}.`
+          : 'Exported resume.yaml.';
       toast.success(message);
     } catch (error) {
       console.error('Error exporting YAML:', error);
@@ -217,14 +215,6 @@ export const useFileOperations = ({
         // Enable auto-save after YAML import completes
         setIsLoadingFromUrl(false);
 
-        // Show success message with icon count if applicable
-        const message =
-          result.iconCount > 0
-            ? `Resume loaded successfully with ${result.iconCount} icon${
-                result.iconCount === 1 ? '' : 's'
-              }!`
-            : 'Resume loaded successfully!';
-        toast.success(message);
       } catch (error) {
         console.error('Error parsing YAML file:', error);
         toast.error("That file isn't one we can read. Choose a .yaml file exported from EasyFreeResume.");

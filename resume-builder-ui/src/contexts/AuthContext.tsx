@@ -233,9 +233,9 @@ async function migrateAllLegacyResumes(session: Session, legacyResumes: FoundLeg
     // Show appropriate toast based on results
     if (successCount > 0) {
       if (successCount === 1) {
-        toast.success('Your resume has been saved to your account!');
+        toast.success('Your resume is saved to your account.', { id: 'account-saved' });
       } else {
-        toast.success(`${successCount} resumes have been saved to your account!`);
+        toast.success(`${successCount} resumes are saved to your account.`, { id: 'account-saved' });
       }
     }
 
@@ -485,7 +485,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             // Show welcome toast on successful sign-in (only once per session)
             const hasShownToast = sessionStorage.getItem('login-toast-shown');
             if (!hasShownToast) {
-              toast.success('Signed in successfully');
               sessionStorage.setItem('login-toast-shown', 'true');
 
               // Track inside this guard: Supabase also emits SIGNED_IN when it
@@ -675,9 +674,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       sessionStorage.removeItem('auth-return-to');
       forgetAnonSession();
       migrationAttempted.current = false;
-
-      // Show success toast
-      toast.success('Signed out successfully');
 
       // Sign out current user (don't await - can hang in some Supabase versions)
       // The auth state listener will handle state updates

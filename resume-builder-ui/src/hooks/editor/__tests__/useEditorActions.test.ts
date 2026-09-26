@@ -764,7 +764,7 @@ describe('useEditorActions', () => {
       expect(mockIconRegistry.clearRegistry).toHaveBeenCalled();
     });
 
-    it('should show success toast on completion', async () => {
+    it('should not toast on completion (the emptied page is the feedback)', async () => {
       const { result } = renderHook(() =>
         useEditorActions(createDefaultProps({ isAnonymous: true }))
       );
@@ -774,7 +774,7 @@ describe('useEditorActions', () => {
         await vi.runAllTimersAsync();
       });
 
-      expect(toast.success).toHaveBeenCalledWith('Template cleared successfully!');
+      expect(toast.success).not.toHaveBeenCalled();
     });
 
     it('should handle errors gracefully', async () => {

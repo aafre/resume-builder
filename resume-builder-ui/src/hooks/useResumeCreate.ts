@@ -132,7 +132,6 @@ export function useResumeCreate(): UseResumeCreateReturn {
         : (options.loadExample ? 'example' : 'blank');
       trackResumeCreated({ template_id: options.templateId, method });
 
-      toast.success("Resume created! Loading editor...");
       navigate(`/editor/${response.resume_id}`);
       return response.resume_id;
 
