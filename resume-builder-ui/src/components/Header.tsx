@@ -131,13 +131,6 @@ export default function Header() {
                 reach a screen reader from somewhere. */}
             <span className="sr-only sm:hidden">EasyFreeResume — go to homepage</span>
           </Link>
-
-          {/* The promise, stated where every cold arrival looks first. Wide
-              screens only: below xl the rail needs the room. */}
-          <p className="hidden xl:flex items-center gap-2 ml-5 pl-5 border-l border-black/[0.08] font-mono text-[11px] uppercase tracking-[0.15em] text-ink/60">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
-            Free · No sign-up
-          </p>
           </div>
 
           {/* Product navigation — rendered for every visitor, not only signed-in
