@@ -22,7 +22,10 @@ export async function verifyTurnstileToken(
   secret: string,
   remoteip: string | null
 ): Promise<boolean> {
-  if (!token) return false;
+  if (!token) {
+    console.warn('Turnstile: no token sent (client widget failed or timed out)');
+    return false;
+  }
 
   try {
     const body = new URLSearchParams({ secret, response: token });
@@ -30,6 +33,9 @@ export async function verifyTurnstileToken(
 
     const res = await fetch(VERIFY_URL, { method: 'POST', body });
     const data = await res.json();
+    if (data.success !== true) {
+      console.warn('Turnstile: siteverify rejected token:', data['error-codes']);
+    }
     return data.success === true;
   } catch (error) {
     console.error('Turnstile verification request failed, failing open:', error);
