@@ -4416,18 +4416,20 @@ def suggest_roles():
 
     fallback = {"primary_role": title, "alternative_roles": [], "confidence": 0}
 
-    if not supabase:
+    internal_key = os.environ.get("INTERNAL_FN_KEY")
+    if not supabase or not internal_key:
         return jsonify({"success": True, **fallback})
 
     try:
         response = supabase.functions.invoke(
             "suggest-roles",
             invoke_options={
+                "headers": {"x-internal-key": internal_key},
                 "body": {
                     "title": title,
                     "skills": skills,
                     "experience_titles": experience_titles,
-                }
+                },
             },
         )
 

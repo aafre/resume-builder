@@ -297,6 +297,11 @@ class TestAIFallback:
     def setup_method(self):
         _ai_cache.clear()
 
+    @pytest.fixture(autouse=True)
+    def _internal_key_env(self):
+        with patch.dict(os.environ, {"INTERNAL_FN_KEY": "test-internal-key"}):
+            yield
+
     def test_successful_translation(self):
         mock_sb = MagicMock()
         mock_sb.functions.invoke.return_value = json.dumps({
@@ -351,6 +356,29 @@ class TestAIFallback:
 
         terms = get_ai_search_terms("Some Title", mock_sb)
         assert len(terms) <= 3
+
+    def test_sends_internal_key_header_when_configured(self):
+        mock_sb = MagicMock()
+        mock_sb.functions.invoke.return_value = json.dumps({
+            "success": True,
+            "terms": ["A"],
+        }).encode("utf-8")
+
+        with patch.dict(os.environ, {"INTERNAL_FN_KEY": "shh-secret"}):
+            get_ai_search_terms("Header Check Title", mock_sb)
+
+        _, kwargs = mock_sb.functions.invoke.call_args
+        assert kwargs["invoke_options"]["headers"] == {"x-internal-key": "shh-secret"}
+
+    def test_skips_invoke_and_returns_empty_when_key_unset(self):
+        mock_sb = MagicMock()
+
+        with patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("INTERNAL_FN_KEY", None)
+            terms = get_ai_search_terms("No Key Title", mock_sb)
+
+        assert terms == []
+        mock_sb.functions.invoke.assert_not_called()
 
 
 # =============================================================================

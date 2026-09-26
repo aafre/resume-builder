@@ -10,6 +10,7 @@ All tiers feed into JobScorer which ranks results by resume fit.
 
 import json
 import logging
+import os
 import time
 import math
 from dataclasses import dataclass, field
@@ -251,6 +252,11 @@ def get_ai_search_terms(title: str, supabase) -> list[str]:
     if not supabase:
         return []
 
+    internal_key = os.environ.get("INTERNAL_FN_KEY")
+    if not internal_key:
+        logging.warning("INTERNAL_FN_KEY not set — skipping AI title translation")
+        return []
+
     # Check cache
     cache_key = title.lower().strip()
     now = time.time()
@@ -262,7 +268,10 @@ def get_ai_search_terms(title: str, supabase) -> list[str]:
         logging.info(f"Low results for '{title}' — asking AI for standard titles")
         response = supabase.functions.invoke(
             "translate-job-title",
-            invoke_options={"body": {"title": title}},
+            invoke_options={
+                "headers": {"x-internal-key": internal_key},
+                "body": {"title": title},
+            },
         )
 
         # supabase-py returns bytes or str
