@@ -2459,3 +2459,18 @@ main:has(.seo-shell) {
   background-color: rgba(0, 212, 126, 0.25);
   color: #0c0c0c;
 }
+
+/* Undo toast countdown (utils/undoToast.tsx). Pauses exactly when
+   react-hot-toast pauses the timer — pointer over the toaster — and while the
+   toast holds focus. Under reduced motion the global rule jumps it to empty. */
+@keyframes toast-countdown {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+.toast-countdown {
+  animation: toast-countdown linear forwards;
+}
+.app-toaster:hover .toast-countdown,
+.app-toast:focus-within .toast-countdown {
+  animation-play-state: paused;
+}

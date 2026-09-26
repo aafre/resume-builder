@@ -3,9 +3,10 @@
 
 import { useState, useCallback, useRef, useMemo } from 'react';
 import { toast } from 'react-hot-toast';
+import { toastDownloaded, toastFailure } from '../../utils/toasts';
 import yaml from 'js-yaml';
 import { Section, ContactInfo } from '../../types';
-import { UseEditorActionsReturn } from '../../types/editor';
+import { MissingIconsNotice, UseEditorActionsReturn } from '../../types/editor';
 import { generateResume } from '../../services/templates';
 import { getSessionId } from '../../utils/session';
 import { extractReferencedIconFilenames } from '../../utils/iconExtractor';
@@ -50,7 +51,7 @@ export interface UseEditorActionsProps {
   /** Function to process sections for export */
   processSections: (sections: Section[]) => Section[];
   /** Save before action helper (returns false if save failed/cancelled) */
-  saveBeforeAction: (actionName: string) => Promise<boolean>;
+  saveBeforeAction: (actionName: string, options?: { blocking?: boolean }) => Promise<boolean>;
   /** Whether user is anonymous */
   isAnonymous: boolean;
   /** Whether download celebration toast has been shown */
@@ -126,74 +127,51 @@ export const useEditorActions = ({
   const [downloadPhase, setDownloadPhase] = useState<string | null>(null);
   const [isOpeningPreview, setIsOpeningPreview] = useState(false);
   const [loadingStartFresh, setLoadingStartFresh] = useState(false);
+  const [missingIconsNotice, setMissingIconsNotice] = useState<MissingIconsNotice | null>(null);
 
   // Download deduplication ref
   const downloadPromiseRef = useRef<Promise<void> | null>(null);
 
   /**
-   * Shows detailed information about missing icons to help user locate them.
+   * Missing icons block the PDF, and fixing them means visiting entries, so the
+   * detail lives in a persistent inline notice (EditorContent), not a toast
+   * that vanishes mid-fix. The toast only says what happened and where to look.
    */
   const showMissingIconsDialog = useCallback(
     (missingIcons: string[], isFromCloudLoad: boolean = false) => {
-      if (isFromCloudLoad) {
-        // Special message for cloud load failures
-        toast.error(
-          `⚠️ Unable to load ${missingIcons.length} icon(s) from cloud storage
-
-This can happen if:
-• Icons failed to upload when resume was last saved
-• Temporary storage connectivity issue
-
-To fix:
-1. Re-upload the missing icons using the icon picker
-2. Save your resume
-3. Icons will then be available on next edit
-
-Missing icons:
-${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
-          {
-            duration: 15000,
-            style: { whiteSpace: 'pre-line', maxWidth: '600px' },
+      const icons = missingIcons.map((file) => {
+        const usedIn: string[] = [];
+        sections.forEach((section) => {
+          const content = section.content;
+          if (!Array.isArray(content)) {
+            return;
           }
-        );
-      } else {
-        // Original detailed error for regular missing icons
-        const iconLocations = missingIcons
-          .map((icon) => {
-            // Find where this icon is referenced
-            const locations: string[] = [];
-            sections.forEach((section) => {
-              const content = section.content;
-              if (!Array.isArray(content)) {
-                return;
-              }
 
-              // Use type guards for consistent section type checking
-              let entryLabel = '';
-              if (isExperienceSection(section) || isEducationSection(section)) {
-                entryLabel = 'Entry';
-              } else if (section.type === 'icon-list') {
-                entryLabel = 'Item';
-              }
+          // Use type guards for consistent section type checking
+          let entryLabel = '';
+          if (isExperienceSection(section) || isEducationSection(section)) {
+            entryLabel = 'Entry';
+          } else if (section.type === 'icon-list') {
+            entryLabel = 'Item';
+          }
 
-              if (entryLabel) {
-                content.forEach((item, index) => {
-                  if (typeof item === 'object' && item !== null && 'icon' in item && item.icon === icon) {
-                    locations.push(`${section.name} → ${entryLabel} ${index + 1}`);
-                  }
-                });
+          if (entryLabel) {
+            content.forEach((item, index) => {
+              if (typeof item === 'object' && item !== null && 'icon' in item && item.icon === file) {
+                usedIn.push(`${section.name} → ${entryLabel} ${index + 1}`);
               }
             });
+          }
+        });
+        return { file, usedIn };
+      });
 
-            return `• ${icon}${locations.length > 0 ? ' (used in: ' + locations.join(', ') + ')' : ''}`;
-          })
-          .join('\n');
-
-        toast.error(
-          `Missing Icons (${missingIcons.length}):\n${iconLocations}\n\nPlease upload these icons or remove them from your sections.`,
-          { duration: 12000, style: { whiteSpace: 'pre-line' } }
-        );
-      }
+      setMissingIconsNotice({ fromCloud: isFromCloudLoad, icons });
+      const n = icons.length;
+      toast.error(
+        `${n} icon${n === 1 ? ' is' : 's are'} missing, so the PDF wasn't made. The list is at the top of the editor.`,
+        { id: 'missing-icons' }
+      );
     },
     [sections]
   );
@@ -215,12 +193,12 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
         // used to happen behind an idle-looking button.
         setIsDownloading(true);
         setDownloadPhase('Saving your latest edits');
-        const canProceed = await saveBeforeAction('download PDF');
+        const canProceed = await saveBeforeAction('downloading your PDF', { blocking: false });
         if (!canProceed) return;
 
         // Validate LinkedIn URL only if provided (block invalid, allow empty)
         if (contactInfo?.linkedin && !validateLinkedInUrl(contactInfo.linkedin)) {
-          toast.error('Please enter a valid LinkedIn URL or leave it empty');
+          toast.error("That LinkedIn URL doesn't look right. Use linkedin.com/in/your-name, or leave it empty.");
           return;
         }
 
@@ -231,6 +209,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
             showMissingIconsDialog(missingIcons, isLoadingFromUrl);
             return;
           }
+          setMissingIconsNotice(null);
         }
 
         const processedSections = processSections(sections);
@@ -281,11 +260,13 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
         document.body.removeChild(link);
         URL.revokeObjectURL(pdfUrl);
 
-        toast.success('Resume downloaded successfully!');
         trackPdfDownloaded({ template_id: templateId || 'unknown', source: 'editor' });
 
-        // Show celebration modal on first download (all users)
-        if (!hasShownDownloadToast) {
+        // First download: the celebration modal is the peak, so no toast under
+        // it. Every later download gets the downloaded toast.
+        if (hasShownDownloadToast) {
+          toastDownloaded(fileName);
+        } else {
           markDownloadToastShown();
 
           setTimeout(() => {
@@ -293,9 +274,8 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
           }, 500);
         }
       } catch (error) {
-        console.error('Error generating resume:', error);
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        toast.error(`Resume generation failed: ${errorMessage}`);
+        toastFailure('make your PDF', error);
         trackPdfDownloadFailed({
           template_id: templateId || 'unknown',
           source: 'editor',
@@ -337,7 +317,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
 
     try {
       // Save first to ensure database has latest changes
-      const canProceed = await saveBeforeAction('preview');
+      const canProceed = await saveBeforeAction('previewing', { blocking: false });
       if (!canProceed) {
         setIsOpeningPreview(false);
         return;
@@ -350,6 +330,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
         setIsOpeningPreview(false);
         return;
       }
+      setMissingIconsNotice(null);
 
       // Clear stale preview to show loader instead of old content
       if (previewIsStale) {
@@ -379,7 +360,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
    */
   const handleRefreshPreview = useCallback(async (): Promise<void> => {
     // Save first to ensure database has latest changes
-    const canProceed = await saveBeforeAction('refresh preview');
+    const canProceed = await saveBeforeAction('refreshing the preview', { blocking: false });
     if (!canProceed) return;
 
     // Validate icons using memoized function from hook
@@ -388,6 +369,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
       showMissingIconsDialog(missingIcons, isLoadingFromUrl);
       return;
     }
+    setMissingIconsNotice(null);
 
     await generatePreview();
   }, [saveBeforeAction, validateIcons, showMissingIconsDialog, isLoadingFromUrl, generatePreview]);
@@ -408,7 +390,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
 
     // Save current work before clearing (if authenticated and has content)
     if (!isAnonymous && contactInfo && sections.length > 0) {
-      const canProceed = await saveBeforeAction('start fresh');
+      const canProceed = await saveBeforeAction('starting fresh');
       if (!canProceed) {
         closeStartFreshConfirm();
         return;
@@ -439,10 +421,8 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
       setSections(emptySections);
       iconRegistry.clearRegistry();
 
-      toast.success('Template cleared successfully!');
     } catch (error) {
-      console.error('Error clearing template:', error);
-      toast.error('Failed to clear template');
+      toastFailure('clear your resume', error);
     } finally {
       setLoadingStartFresh(false);
     }
@@ -457,6 +437,8 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
     setSections,
     iconRegistry,
   ]);
+
+  const dismissMissingIconsNotice = useCallback(() => setMissingIconsNotice(null), []);
 
   // Return stable object with useMemo
   return useMemo(
@@ -475,6 +457,10 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
       loadingStartFresh,
       handleStartFresh,
       confirmStartFresh,
+
+      // Missing icons
+      missingIconsNotice,
+      dismissMissingIconsNotice,
     }),
     [
       isDownloading,
@@ -486,6 +472,8 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
       loadingStartFresh,
       handleStartFresh,
       confirmStartFresh,
+      missingIconsNotice,
+      dismissMissingIconsNotice,
     ]
   );
 };

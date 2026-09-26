@@ -5,6 +5,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { FaLinkedin } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { toast } from 'react-hot-toast';
+import { toastFailure } from '../utils/toasts';
 
 interface SignInRequiredGateProps {
   heading?: string;
@@ -27,7 +28,7 @@ export default function SignInRequiredGate({
       setLoading(true);
       await signInWithGoogle();
     } catch (error: any) {
-      toast.error(error.message || 'Failed to sign in with Google');
+      toastFailure('sign in with Google', error);
     } finally {
       setLoading(false);
     }
@@ -38,7 +39,7 @@ export default function SignInRequiredGate({
       setLoading(true);
       await signInWithLinkedIn();
     } catch (error: any) {
-      toast.error(error.message || 'Failed to sign in with LinkedIn');
+      toastFailure('sign in with LinkedIn', error);
     } finally {
       setLoading(false);
     }
@@ -48,7 +49,7 @@ export default function SignInRequiredGate({
     e.preventDefault();
 
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      toast.error('Please enter a valid email address');
+      toast.error('Enter your email address, like name@example.com.');
       return;
     }
 
@@ -56,9 +57,9 @@ export default function SignInRequiredGate({
       setLoading(true);
       await signInWithEmail(email);
       setEmailSent(true);
-      toast.success('Magic link sent! Check your email to continue.');
+      toast.success('Check your email for your sign-in link.');
     } catch (error: any) {
-      toast.error(error.message || 'Failed to send magic link');
+      toastFailure('send your sign-in link', error);
     } finally {
       setLoading(false);
     }

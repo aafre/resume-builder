@@ -6,7 +6,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { lazy, Suspense, useEffect } from "react";
-import { Toaster } from "react-hot-toast";
+import AppToaster from "./components/AppToaster";
 import { initAnalytics, identifyUser } from "./lib/analytics";
 
 // Critical components - loaded immediately
@@ -1127,33 +1127,7 @@ function AppWithProviders() {
       <QueryClientProvider client={queryClient}>
         <EditorProvider>
           <AppContent />
-          <Toaster
-            position="top-right"
-            containerStyle={{
-              zIndex: 10001,
-            }}
-            toastOptions={{
-              duration: 4000,
-              style: {
-                background: '#363636',
-                color: '#fff',
-              },
-              success: {
-                duration: 3000,
-                iconTheme: {
-                  primary: '#10b981',
-                  secondary: '#fff',
-                },
-              },
-              error: {
-                duration: 5000,
-                iconTheme: {
-                  primary: '#ef4444',
-                  secondary: '#fff',
-                },
-              },
-            }}
-          />
+          <AppToaster />
         </EditorProvider>
         <Suspense fallback={null}>
           <ReactQueryDevtools initialIsOpen={false} />

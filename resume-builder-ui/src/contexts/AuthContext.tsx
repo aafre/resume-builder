@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, useRef, useCallback, ReactNode } from 'react';
 import { apiClient, ApiError } from '../lib/api-client';
 import { toast } from 'react-hot-toast';
+import { SUPPORT_EMAIL, toastFailure, toastWarning } from '../utils/toasts';
 import { trackSignedIn, resetUser } from '../lib/analytics';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { User, Session } from '@supabase/supabase-js';
@@ -232,27 +233,26 @@ async function migrateAllLegacyResumes(session: Session, legacyResumes: FoundLeg
     // Show appropriate toast based on results
     if (successCount > 0) {
       if (successCount === 1) {
-        toast.success('Your resume has been saved to your account!');
+        toast.success('Your resume is saved to your account.', { id: 'account-saved' });
       } else {
-        toast.success(`${successCount} resumes have been saved to your account!`);
+        toast.success(`${successCount} resumes are saved to your account.`, { id: 'account-saved' });
       }
     }
 
     if (skippedCount > 0) {
-      toast(`We migrated your ${LEGACY_RESUME_LIMIT} most recent resumes. ${skippedCount} older drafts were not migrated.`, {
+      toast(`We moved your ${LEGACY_RESUME_LIMIT} most recent resumes to your account. ${skippedCount} older drafts stayed behind.`, {
         duration: 7000,
-        icon: 'ℹ️'
       });
     }
 
     if (failedCount > 0 && successCount === 0) {
-      toast.error('Failed to migrate your resumes. Please contact support.');
+      toast.error(`Couldn't move your resumes to your account. They're still on this device; email ${SUPPORT_EMAIL} and we'll help.`, { duration: 10000 });
     }
 
     return successCount > 0;
   } catch (error) {
     console.error('❌ Migration process failed:', error);
-    toast.error('Failed to migrate your resumes. Please try again.');
+    toastFailure('move your resumes to your account', error);
     return false;
   }
 }
@@ -300,10 +300,9 @@ async function migrateAnonResumes(session: Session, oldUserId: string): Promise<
     // Show toast only for important warnings (exceeds limit)
     if (result.migrated_count > 0) {
       if (result.exceeds_limit) {
-        toast.success(
-          `Your ${result.migrated_count} resume(s) have been migrated. ` +
-          `You now have ${result.total_count}/5 resumes - please delete some before creating new ones.`,
-          { duration: 7000 }
+        toastWarning(
+          `Moved ${result.migrated_count} resume${result.migrated_count === 1 ? '' : 's'} to your account. ` +
+          `You now have ${result.total_count} of 5, so delete some before creating new ones.`
         );
       } else {
         // Silent success - tour toast will handle confirmation
@@ -334,7 +333,7 @@ async function migrateAnonResumes(session: Session, oldUserId: string): Promise<
     // Show error for other failures (500, network errors, token refresh failures)
     const message = error instanceof Error ? error.message : String(error);
     console.error('Failed to migrate anonymous resumes:', message);
-    toast.error('Failed to migrate your resumes');
+    toastFailure('move your resumes to your account', error);
     return false;
   }
 }
@@ -406,13 +405,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                   const { data, error } = await supabase.auth.signInAnonymously();
                   if (error) {
                     console.error('❌ Failed to create anonymous session:', error);
-                    toast.error('Failed to initialize. Please refresh the page.');
+                    toast.error("Couldn't start your session. Refresh the page to try again.");
                   } else {
                     console.log('✅ Anonymous session created:', data.user?.id);
                   }
                 } catch (error) {
                   console.error('❌ Anonymous sign-in error:', error);
-                  toast.error('Failed to initialize. Please refresh the page.');
+                  toast.error("Couldn't start your session. Refresh the page to try again.");
                 }
               }, 0);
             }
@@ -486,7 +485,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             // Show welcome toast on successful sign-in (only once per session)
             const hasShownToast = sessionStorage.getItem('login-toast-shown');
             if (!hasShownToast) {
-              toast.success('Signed in successfully');
               sessionStorage.setItem('login-toast-shown', 'true');
 
               // Track inside this guard: Supabase also emits SIGNED_IN when it
@@ -677,9 +675,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       forgetAnonSession();
       migrationAttempted.current = false;
 
-      // Show success toast
-      toast.success('Signed out successfully');
-
       // Sign out current user (don't await - can hang in some Supabase versions)
       // The auth state listener will handle state updates
       supabase.auth.signOut().catch((error) => {
@@ -694,13 +689,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       if (anonError) {
         console.error('Error creating new anonymous session:', anonError);
-        toast.error('Failed to create new session. Please refresh the page.');
+        toast.error("Couldn't start a new session. Refresh the page to try again.");
       } else {
         console.log('New anonymous session created after sign-out');
       }
     } catch (error) {
-      console.error('Unexpected error during sign out:', error);
-      toast.error('Sign out failed. Please try again.');
+      toastFailure('sign you out', error);
     } finally {
       setSigningOut(false);
     }
