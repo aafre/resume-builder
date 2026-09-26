@@ -2,7 +2,6 @@
 // Section drag-and-drop hook (Layer 2) - manages section reordering
 
 import { useState, useCallback } from 'react';
-import { toast } from 'react-hot-toast';
 import {
   KeyboardSensor,
   PointerSensor,
@@ -44,7 +43,6 @@ export interface UseSectionDragDropReturn {
  * - Sensor configuration (8px pointer activation distance)
  * - Active drag state tracking
  * - Section reordering with arrayMove
- * - Success toast notifications
  *
  * @param props - Dependency injection props from useEditorState
  * @returns Drag-and-drop state and handlers
@@ -131,7 +129,7 @@ export const useSectionDragDrop = ({
 
   /**
    * Handles the end of a drag operation
-   * Reorders sections if position changed, shows success toast
+   * Reorders sections if position changed
    *
    * @param event - DragEndEvent from @dnd-kit
    */
@@ -156,8 +154,6 @@ export const useSectionDragDrop = ({
           return arrayMove(prevSections, oldIndex, newIndex);
         });
 
-        // Toast notification for successful reorder
-        toast.success('Section reordered successfully!');
       }
 
       // Clear drag state

@@ -271,7 +271,7 @@ The one sanctioned exception is marketing feature cards, which may carry `.shado
 
 **The Flat-At-Rest Rule.** If a surface is not being interacted with and is not floating above the page, it has no shadow. A resting card that carries lift is claiming an importance it has not earned.
 
-**The Glass Restraint Rule.** `backdrop-blur` is reserved for elements that genuinely overlay content: the sticky header, toasts, modal scrims. Glass on a static in-flow card is decoration, and it costs paint performance on the editor's long lists.
+**The Glass Restraint Rule.** `backdrop-blur` is reserved for elements that genuinely overlay content: the sticky header, modal scrims. Toasts are deliberately *not* glass — see Toasts. Glass on a static in-flow card is decoration, and it costs paint performance on the editor's long lists.
 
 ## Shapes
 
@@ -325,6 +325,17 @@ On phones and tablets one trigger (mono `MENU`/`CLOSE` + ≡/×, or the avatar w
 ### Ghost Add Button
 
 Full-width dashed `border-2 border-gray-300` at control radius, muted grey label with a leading plus icon. On hover it resolves to `border-accent/70`, accent text, and a `bg-accent/[0.06]` wash. It is the system's signature "there could be more here" affordance and appears throughout the editor for adding sections and items. It is the one place a dashed border is permitted.
+
+### Toasts
+
+One surface, `components/AppToaster.tsx`. Ink (`bg-ink`, white text, `rounded-xl shadow-xl`, a 1px ring), never glass: a white/80 card over a chalk page has no separation, and a toast must read over the editor, the preview, and modals alike. Body weight is set to 400 in the toast rather than inherited from the extralight body.
+
+- **Kind reads before the words.** A 28px tinted tile with a lucide glyph leads every toast: `accent` + check (success), `red-500` + X (error), `amber-400` + triangle (warning), `white/15` + info (info). These are the only places red and amber appear.
+- **Errors are heavier:** red ring, 7s, `role="alert"`. Success 4s, default 5s.
+- **Placement:** top-right below the header on desktop; bottom-centre below `lg`, lifted over the editor's MobileActionBar — the thumb that caused the event is at the bottom.
+- **The download toast is the peak:** `toastDownloaded()` (`utils/toasts.tsx`) — a title, the filename in mono, and the one 40px accent tile. Skipped on the first download, where the celebration modal is the peak.
+- **Undo toasts** carry no glyph, a real `<button>`, and a 2px accent countdown bar that pauses with the timer.
+- **What earns a toast:** an outcome the user can't otherwise see (background save, off-screen result, an undo window). If the user must *do* something, it's an inline notice, not a toast. Visible state changes (reorder, load) need no toast.
 
 ### Ad Surface
 
@@ -410,7 +421,7 @@ Sizes are applied as utilities at the call site: `py-3.5 px-8` (default), `py-4 
 
 Defined in `styles.css`:
 
-- **`.glass`** — `bg-white/80 backdrop-blur-xl border-white/40 shadow-xl`, paired with `.glass-hover`. Reserved for true overlays (sticky header, toasts, modal scrims) per the Glass Restraint Rule.
+- **`.glass`** — `bg-white/80 backdrop-blur-xl border-white/40 shadow-xl`, paired with `.glass-hover`. Reserved for true overlays (sticky header, modal scrims) per the Glass Restraint Rule.
 - **`.card-gradient-border`** — subtle accent gradient border via mask-composite.
 - **`.shadow-premium`** / **`.shadow-premium-hover`** — 4-layer depth; hover adds the accent bloom.
 - **`.bg-grain`** — optional subtle dot texture overlay.

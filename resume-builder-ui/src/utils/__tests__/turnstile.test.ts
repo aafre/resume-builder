@@ -61,4 +61,32 @@ describe('turnstile', () => {
     await expect(tokenPromise).resolves.toBeNull();
     vi.useRealTimers();
   });
+
+  it('getTurnstileToken renders a visible interaction-only widget and waits for a click challenge', async () => {
+    vi.useFakeTimers();
+    vi.stubEnv('VITE_TURNSTILE_SITE_KEY', 'test-site-key');
+    const { getTurnstileToken } = await import('../turnstile');
+
+    let opts: any;
+    let container: HTMLElement | undefined;
+    const tokenPromise = getTurnstileToken();
+    (window as any).turnstile = {
+      render: (el: HTMLElement, o: any) => { container = el; opts = o; return 'widget-1'; },
+      remove: vi.fn(),
+      reset: vi.fn(),
+    };
+    document.head.querySelector(SELECTOR)!.dispatchEvent(new Event('load'));
+    await vi.advanceTimersByTimeAsync(0);
+
+    // Managed mode escalated to a click: a hidden widget could never be solved.
+    expect(opts.appearance).toBe('interaction-only');
+    expect(container!.style.display).not.toBe('none');
+    opts['before-interactive-callback']();
+
+    await vi.advanceTimersByTimeAsync(30_000); // past the silent 15s cap
+    opts.callback('clicked-token');
+
+    await expect(tokenPromise).resolves.toBe('clicked-token');
+    vi.useRealTimers();
+  });
 });

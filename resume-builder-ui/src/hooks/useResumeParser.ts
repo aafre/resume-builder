@@ -22,6 +22,14 @@ interface ParseResponse {
   };
 }
 
+export type ParseErrorKind = 'rate_limit' | 'bot_check' | 'invalid_file' | 'generic';
+
+const kindForStatus = (status: number): ParseErrorKind =>
+  status === 429 ? 'rate_limit'
+  : status === 403 ? 'bot_check'
+  : status === 400 ? 'invalid_file'
+  : 'generic';
+
 // Progress stages with corresponding messages
 const PROGRESS_STAGES = [
   { threshold: 0, message: 'Preparing upload...' },
@@ -45,6 +53,7 @@ export function useResumeParser(options?: { source?: ParseSource }) {
   const [progress, setProgress] = useState(0);
   const [progressMessage, setProgressMessage] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [errorKind, setErrorKind] = useState<ParseErrorKind | null>(null);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Cleanup interval on unmount
@@ -120,15 +129,18 @@ export function useResumeParser(options?: { source?: ParseSource }) {
     setProgress(0);
     setProgressMessage('Preparing upload...');
     setError(null);
+    setErrorKind(null);
 
     // Declared outside the try so the catch can still report parse duration
     let parseStart = 0;
     let fileType = 'unknown';
+    let kind: ParseErrorKind = 'generic';
 
     try {
       // Validate file first
       const validationError = validateFile(file);
       if (validationError) {
+        kind = 'invalid_file';
         throw new Error(validationError);
       }
 
@@ -202,6 +214,7 @@ export function useResumeParser(options?: { source?: ParseSource }) {
       }
 
       if (!response.ok || !data.success) {
+        kind = kindForStatus(response.status);
         throw new Error(data.error || 'Failed to parse resume');
       }
 
@@ -234,6 +247,7 @@ export function useResumeParser(options?: { source?: ParseSource }) {
         });
       }
       setError(errorMessage);
+      setErrorKind(kind);
       throw err;
     } finally {
       setParsing(false);
@@ -244,7 +258,10 @@ export function useResumeParser(options?: { source?: ParseSource }) {
     }
   };
 
-  const clearError = () => setError(null);
+  const clearError = () => {
+    setError(null);
+    setErrorKind(null);
+  };
 
   return {
     parseResume,
@@ -252,6 +269,7 @@ export function useResumeParser(options?: { source?: ParseSource }) {
     progress,
     progressMessage,
     error,
+    errorKind,
     clearError,
   };
 }

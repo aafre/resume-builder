@@ -32,6 +32,27 @@ function ensureScriptLoaded(): Promise<void> {
 }
 
 const TOKEN_TIMEOUT_MS = 15_000;
+// Once Cloudflare asks for a click, give the person time to actually do it.
+const INTERACTIVE_TIMEOUT_MS = 120_000;
+
+/**
+ * Managed mode escalates risky visitors to a click challenge. The widget must
+ * be on screen for that (display:none makes it unsolvable, so import 403s);
+ * appearance:'interaction-only' keeps it empty unless a click is needed.
+ */
+function mountWidgetContainer(): HTMLDivElement {
+  const container = document.createElement('div');
+  container.setAttribute('data-turnstile-widget', '');
+  Object.assign(container.style, {
+    position: 'fixed',
+    bottom: '16px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    zIndex: '2147483647',
+  });
+  document.body.appendChild(container);
+  return container;
+}
 
 /**
  * Get a single-use Turnstile token for the resume import request.
@@ -51,14 +72,12 @@ export function getTurnstileToken(): Promise<string | null> {
           return;
         }
 
-        const container = document.createElement('div');
-        container.style.display = 'none';
-        document.body.appendChild(container);
+        const container = mountWidgetContainer();
 
         let widgetId: string;
         let done = false;
         // Callbacks are the only resolve path - cap the wait so a silent widget can't hang import.
-        const timer = setTimeout(() => finish(null), TOKEN_TIMEOUT_MS);
+        let timer = setTimeout(() => finish(null), TOKEN_TIMEOUT_MS);
         const finish = (token: string | null) => {
           if (done) return;
           done = true;
@@ -74,9 +93,14 @@ export function getTurnstileToken(): Promise<string | null> {
 
         widgetId = window.turnstile.render(container, {
           sitekey: SITE_KEY,
+          appearance: 'interaction-only',
           callback: (token: string) => finish(token),
           'error-callback': () => finish(null),
           'expired-callback': () => finish(null),
+          'before-interactive-callback': () => {
+            clearTimeout(timer);
+            timer = setTimeout(() => finish(null), INTERACTIVE_TIMEOUT_MS);
+          },
         });
       })
   );
@@ -95,9 +119,7 @@ export function ensureTurnstilePreClearance(): void {
   preClearanceMounted = true;
   ensureScriptLoaded().then(() => {
     if (!window.turnstile) return;
-    const container = document.createElement('div');
-    container.style.display = 'none';
-    document.body.appendChild(container);
-    window.turnstile.render(container, { sitekey: SITE_KEY });
+    const container = mountWidgetContainer();
+    window.turnstile.render(container, { sitekey: SITE_KEY, appearance: 'interaction-only' });
   });
 }
