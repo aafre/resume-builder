@@ -233,7 +233,7 @@ describe('useEditorActions', () => {
       });
 
       expect(toast.error).toHaveBeenCalledWith(
-        'Please enter a valid LinkedIn URL or leave it empty'
+        "That LinkedIn URL doesn't look right. Use linkedin.com/in/your-name, or leave it empty."
       );
       expect(generateResume).not.toHaveBeenCalled();
     });
@@ -399,7 +399,10 @@ describe('useEditorActions', () => {
         await vi.runAllTimersAsync();
       });
 
-      expect(toast.error).toHaveBeenCalledWith('Resume generation failed: Network error');
+      // Raw 'Network error' stays in the console; the user gets the recovery.
+      expect(toast.error).toHaveBeenCalledWith(
+        "Couldn't make your PDF. Check your connection and try again."
+      );
       expect(result.current.isDownloading).toBe(false);
     });
 
@@ -793,7 +796,7 @@ describe('useEditorActions', () => {
         await vi.runAllTimersAsync();
       });
 
-      expect(toast.error).toHaveBeenCalledWith('Failed to clear template');
+      expect(toast.error).toHaveBeenCalledWith(expect.stringContaining("Couldn't clear your resume."));
       expect(result.current.loadingStartFresh).toBe(false);
     });
   });
@@ -819,8 +822,12 @@ describe('useEditorActions', () => {
 
       expect(toast.error).toHaveBeenCalled();
       const errorCall = vi.mocked(toast.error).mock.calls[0][0];
-      expect(errorCall).toContain('Unable to load');
-      expect(errorCall).toContain('cloud storage');
+      expect(errorCall).toContain('1 icon is missing');
+      // The detail lives in the inline notice, not the toast.
+      expect(result.current.missingIconsNotice).toEqual({
+        fromCloud: true,
+        icons: [{ file: 'icon1.png', usedIn: [] }],
+      });
     });
 
     it('should show detailed icon locations for regular missing icons', async () => {
@@ -854,8 +861,11 @@ describe('useEditorActions', () => {
 
       expect(toast.error).toHaveBeenCalled();
       const errorCall = vi.mocked(toast.error).mock.calls[0][0];
-      expect(errorCall).toContain('Missing Icons');
-      expect(errorCall).toContain('Experience');
+      expect(errorCall).toContain('1 icon is missing');
+      expect(result.current.missingIconsNotice?.icons[0]).toEqual({
+        file: 'missing.png',
+        usedIn: ['Experience → Entry 1'],
+      });
     });
   });
 });

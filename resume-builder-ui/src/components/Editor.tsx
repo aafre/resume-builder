@@ -459,6 +459,8 @@ const Editor: React.FC = () => {
           isDownloading: editorActions.isDownloading,
           downloadPhase: editorActions.downloadPhase,
           isOpeningPreview: editorActions.isOpeningPreview,
+          missingIconsNotice: editorActions.missingIconsNotice,
+          dismissMissingIconsNotice: editorActions.dismissMissingIconsNotice,
         }}
         preview={{
           previewUrl: preview.previewUrl,
