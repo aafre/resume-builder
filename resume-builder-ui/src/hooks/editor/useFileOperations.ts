@@ -28,7 +28,7 @@ export interface UseFileOperationsProps {
   /** Icon registry for import/export */
   iconRegistry: IconRegistryForYAML;
   /** Save before action helper (returns false if save failed/cancelled) */
-  saveBeforeAction: (actionName: string) => Promise<boolean>;
+  saveBeforeAction: (actionName: string, options?: { blocking?: boolean }) => Promise<boolean>;
   /** Whether user is anonymous */
   isAnonymous: boolean;
   /** Whether current template supports icons */
@@ -100,7 +100,7 @@ export const useFileOperations = ({
    */
   const handleExportYAML = useCallback(async () => {
     // Save first to ensure export has latest changes
-    const canProceed = await saveBeforeAction('export YAML');
+    const canProceed = await saveBeforeAction('exporting your file', { blocking: false });
     if (!canProceed) return;
 
     try {
@@ -164,7 +164,7 @@ export const useFileOperations = ({
 
     // Save current work before importing (if authenticated and has content)
     if (!isAnonymous && contactInfo && sections.length > 0) {
-      const canProceed = await saveBeforeAction('import YAML');
+      const canProceed = await saveBeforeAction('importing a file');
       if (!canProceed) {
         clearPendingImportFile();
         return;

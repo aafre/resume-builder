@@ -157,7 +157,7 @@ describe('useFileOperations', () => {
         await exportPromise;
       });
 
-      expect(mockSaveBeforeAction).toHaveBeenCalledWith('export YAML');
+      expect(mockSaveBeforeAction).toHaveBeenCalledWith('exporting your file', { blocking: false });
     });
 
     it('should not export if saveBeforeAction returns false', async () => {
@@ -434,7 +434,7 @@ describe('useFileOperations', () => {
         await importPromise;
       });
 
-      expect(mockSaveBeforeAction).toHaveBeenCalledWith('import YAML');
+      expect(mockSaveBeforeAction).toHaveBeenCalledWith('importing a file');
       cleanup();
     });
 

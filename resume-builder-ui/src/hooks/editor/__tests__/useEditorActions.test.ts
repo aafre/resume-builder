@@ -201,7 +201,7 @@ describe('useEditorActions', () => {
         await vi.runAllTimersAsync();
       });
 
-      expect(mockSaveBeforeAction).toHaveBeenCalledWith('download PDF');
+      expect(mockSaveBeforeAction).toHaveBeenCalledWith('downloading your PDF', { blocking: false });
     });
 
     it('should not proceed if saveBeforeAction returns false', async () => {
@@ -471,7 +471,7 @@ describe('useEditorActions', () => {
         await vi.runAllTimersAsync();
       });
 
-      expect(mockSaveBeforeAction).toHaveBeenCalledWith('preview');
+      expect(mockSaveBeforeAction).toHaveBeenCalledWith('previewing', { blocking: false });
     });
 
     it('should not proceed if saveBeforeAction returns false', async () => {
@@ -560,7 +560,7 @@ describe('useEditorActions', () => {
         await vi.runAllTimersAsync();
       });
 
-      expect(mockSaveBeforeAction).toHaveBeenCalledWith('refresh preview');
+      expect(mockSaveBeforeAction).toHaveBeenCalledWith('refreshing the preview', { blocking: false });
     });
 
     it('should not proceed if saveBeforeAction returns false', async () => {
@@ -650,7 +650,7 @@ describe('useEditorActions', () => {
         await vi.runAllTimersAsync();
       });
 
-      expect(mockSaveBeforeAction).toHaveBeenCalledWith('start fresh');
+      expect(mockSaveBeforeAction).toHaveBeenCalledWith('starting fresh');
     });
 
     it('should not save for anonymous users', async () => {

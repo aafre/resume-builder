@@ -51,7 +51,7 @@ export interface UseEditorActionsProps {
   /** Function to process sections for export */
   processSections: (sections: Section[]) => Section[];
   /** Save before action helper (returns false if save failed/cancelled) */
-  saveBeforeAction: (actionName: string) => Promise<boolean>;
+  saveBeforeAction: (actionName: string, options?: { blocking?: boolean }) => Promise<boolean>;
   /** Whether user is anonymous */
   isAnonymous: boolean;
   /** Whether download celebration toast has been shown */
@@ -216,7 +216,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
         // used to happen behind an idle-looking button.
         setIsDownloading(true);
         setDownloadPhase('Saving your latest edits');
-        const canProceed = await saveBeforeAction('download PDF');
+        const canProceed = await saveBeforeAction('downloading your PDF', { blocking: false });
         if (!canProceed) return;
 
         // Validate LinkedIn URL only if provided (block invalid, allow empty)
@@ -340,7 +340,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
 
     try {
       // Save first to ensure database has latest changes
-      const canProceed = await saveBeforeAction('preview');
+      const canProceed = await saveBeforeAction('previewing', { blocking: false });
       if (!canProceed) {
         setIsOpeningPreview(false);
         return;
@@ -382,7 +382,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
    */
   const handleRefreshPreview = useCallback(async (): Promise<void> => {
     // Save first to ensure database has latest changes
-    const canProceed = await saveBeforeAction('refresh preview');
+    const canProceed = await saveBeforeAction('refreshing the preview', { blocking: false });
     if (!canProceed) return;
 
     // Validate icons using memoized function from hook
@@ -411,7 +411,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
 
     // Save current work before clearing (if authenticated and has content)
     if (!isAnonymous && contactInfo && sections.length > 0) {
-      const canProceed = await saveBeforeAction('start fresh');
+      const canProceed = await saveBeforeAction('starting fresh');
       if (!canProceed) {
         closeStartFreshConfirm();
         return;
