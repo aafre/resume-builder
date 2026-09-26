@@ -189,7 +189,8 @@ export function useResumeParser(options?: { source?: ParseSource }) {
         }
       );
 
-      const data = await response.json();
+      // Gateway errors (e.g. 503) aren't JSON; fall through to the generic message.
+      const data = await response.json().catch(() => ({}));
 
       // Debug: Log response
       if (!response.ok) {
