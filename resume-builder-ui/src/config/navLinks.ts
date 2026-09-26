@@ -7,6 +7,8 @@ export interface NavLink {
   id?: string;
   /** Mobile menu only: one-line purpose. */
   blurb?: string;
+  /** Desktop rail shows it from xl only; below that it would wrap the CTA. */
+  wideOnly?: boolean;
 }
 
 /**
@@ -29,5 +31,6 @@ export function getNavLinks(isAuthenticated: boolean, jobsAvailable: boolean): N
     ...(jobsAvailable
       ? [{ path: "/jobs", label: "Jobs", blurb: "Openings that match your resume" }]
       : []),
+    { path: "/blog", label: "Career Blog", blurb: "Guides for every step of the search", wideOnly: true },
   ];
 }
