@@ -193,7 +193,12 @@ serve(async (req: Request) => {
     const userId = user.id;
     console.log('✅ Authenticated user:', userId);
 
-    // === 1b. Rate limit: cap daily imports per user and per IP ===
+    // === 2. Parse multipart form data ===
+    // Read the body before any early return: responding while the browser is
+    // still uploading leaves the fetch hanging (the 429 below never arrives).
+    const formData = await req.formData();
+
+    // === 2a. Rate limit: cap daily imports per user and per IP ===
     const clientIp = getClientIp(req);
     if (await isRateLimited(supabaseAdmin, userId, clientIp)) {
       console.warn('Rate limit hit for user', userId, 'ip', clientIp);
@@ -206,8 +211,6 @@ serve(async (req: Request) => {
       );
     }
 
-    // === 2. Parse multipart form data ===
-    const formData = await req.formData();
     const file = formData.get('file') as File;
 
     if (!file) {
