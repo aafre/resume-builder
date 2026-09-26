@@ -86,6 +86,7 @@ serve(async (req: Request) => {
       ],
       max_tokens: 150,
       temperature: 0.3,
+      response_format: { type: 'json_object' }, // Force raw JSON - model otherwise fences long replies in ```json
     });
 
     const raw = completion.choices[0]?.message?.content?.trim() || '';
