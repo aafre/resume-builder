@@ -17,6 +17,7 @@ import { useAuthHint } from "../hooks/useAuthHint";
 import UserAvatar from "./UserAvatar";
 import NavMenuTrigger, { type NavAccount } from "./NavMenuTrigger";
 import { useSignOut } from "../hooks/useSignOut";
+import { navGlyphs } from "./icons/NavGlyphs";
 
 export default function Header() {
   const location = useLocation();
@@ -145,6 +146,7 @@ export default function Header() {
             <span ref={pillRef} className="nav-rail-pill" aria-hidden="true" />
             {navLinks.map(({ path, label, countBadge, id }) => {
               const isCurrent = location.pathname === path;
+              const NavGlyph = navGlyphs[path];
               return (
                 <Link
                   key={path}
@@ -152,12 +154,14 @@ export default function Header() {
                   id={id}
                   data-nav-key={path}
                   aria-current={isCurrent ? "page" : undefined}
-                  className={`nav-rail-link relative inline-flex min-h-11 items-center px-3.5 py-2 rounded-lg text-sm transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
+                  className={`nav-rail-link relative inline-flex min-h-11 items-center gap-2 px-3.5 py-2 rounded-lg text-sm transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
                     isCurrent
                       ? 'text-ink font-semibold'
                       : 'text-ink/60 font-medium hover:text-ink'
                   }`}
                 >
+                  {/* From xl only: at lg the glyphs wrap labels and the CTA. */}
+                  {NavGlyph && <NavGlyph className="hidden xl:block h-5 w-5 shrink-0" />}
                   {label}
                   {countBadge && resumeCount > 0 && (
                     <span

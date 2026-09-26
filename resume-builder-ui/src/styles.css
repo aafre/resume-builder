@@ -1344,6 +1344,61 @@ div[data-google-query-id] {
   opacity: 1;
 }
 
+/* ── Nav glyphs ──
+   Each glyph acts out its destination on hover/focus: layouts fan, a page
+   writes itself, a beam scans, a spark lands, the top resume lifts. Motion is
+   gated on no-preference, so reduced motion gets static glyphs. The current
+   page fills the glyph's `.g-accent` shape — Signal Green as fill, never as
+   the only carrier of meaning (label weight + rail pill + aria-current). */
+.nav-glyph .g-accent { fill: transparent; transition: fill 200ms cubic-bezier(0.16, 1, 0.3, 1); }
+.nav-glyph .g-spark { fill: currentColor; }
+[aria-current="page"] .nav-glyph .g-accent { fill: #00d47e; }
+[aria-current="page"] .nav-glyph .g-accent-stroke { stroke: #00d47e; }
+.nav-glyph :is(.g-fan, .g-lift, .g-peek, .g-beam, .g-spark) {
+  transform-box: fill-box;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nav-glyph .g-fan { transform-origin: 0% 100%; }
+  .nav-glyph .g-spark { transform-origin: center; }
+  .nav-glyph :is(.g-fan, .g-lift, .g-peek) {
+    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  a:is(:hover, :focus-visible) .nav-glyph .g-fan { transform: rotate(9deg) translate(1px, -0.5px); }
+  a:is(:hover, :focus-visible) .nav-glyph .g-lift { transform: translateY(-1.5px); }
+  a:is(:hover, :focus-visible) .nav-glyph .g-peek { transform: translate(0.75px, 0.5px); }
+  a:is(:hover, :focus-visible) .nav-glyph .g-write {
+    stroke-dasharray: 1;
+    animation: nav-glyph-write 380ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+  a:is(:hover, :focus-visible) .nav-glyph .g-write-2 { animation-delay: 90ms; }
+  a:is(:hover, :focus-visible) .nav-glyph .g-write-3 { animation-delay: 180ms; }
+  a:is(:hover, :focus-visible) .nav-glyph .g-beam {
+    animation: nav-glyph-scan 900ms cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  a:is(:hover, :focus-visible) .nav-glyph .g-spark {
+    animation: nav-glyph-spark 560ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+@keyframes nav-glyph-write {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+
+@keyframes nav-glyph-scan {
+  0%   { transform: translateY(0); }
+  30%  { transform: translateY(-6px); }
+  75%  { transform: translateY(6px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes nav-glyph-spark {
+  0%   { transform: scale(0.3) rotate(-90deg); opacity: 0; }
+  60%  { transform: scale(1.3) rotate(10deg); opacity: 1; }
+  100% { transform: none; opacity: 1; }
+}
+
 /* ── Count badge ──
    Keyed on the count, so a change remounts the badge and replays this once.
    Transform and opacity only, so the global reduced-motion rule collapses it. */

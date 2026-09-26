@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import useFocusTrap from "../hooks/useFocusTrap";
 import type { NavLink } from "../config/navLinks";
 import LogoMark from "./LogoMark";
+import { navGlyphs } from "./icons/NavGlyphs";
 import UserAvatar from "./UserAvatar";
 import NavMenuTrigger, { type NavAccount } from "./NavMenuTrigger";
 
@@ -139,6 +140,7 @@ export default function GlobalNavDrawer({
             <ol>
               {rows.map(({ path, label, blurb }, index) => {
                 const isCurrent = currentPath === path;
+                const NavGlyph = navGlyphs[path];
                 return (
                   <li
                     key={path}
@@ -151,12 +153,11 @@ export default function GlobalNavDrawer({
                       aria-current={isCurrent ? "page" : undefined}
                       className="group flex min-h-16 items-baseline gap-4 py-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset"
                     >
-                      <span
-                        className={`w-6 shrink-0 font-mono text-[11px] tracking-[0.15em] ${isCurrent ? "text-accent-text" : "text-ink/60"}`}
-                        aria-hidden="true"
-                      >
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
+                      {NavGlyph && (
+                        <NavGlyph
+                          className={`h-6 w-6 shrink-0 self-start mt-1.5 ${isCurrent ? "text-ink" : "text-ink/60"}`}
+                        />
+                      )}
                       <span className="min-w-0 flex-1">
                         <span className="flex items-center gap-2.5 font-display text-3xl font-extrabold leading-tight tracking-tight text-ink">
                           {label}
