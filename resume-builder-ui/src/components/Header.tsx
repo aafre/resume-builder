@@ -177,7 +177,8 @@ export default function Header() {
             {/* Auto-Save Indicator (authenticated) or storage badge (anonymous) - only on editor page */}
             {isEditorPage && editorContext && (
               <div id="header-auth-status" className="flex items-center gap-3">
-                <div id="header-job-badge-slot" />
+                {/* Phones get the one-per-session job banner instead */}
+                <div id="header-job-badge-slot" className="hidden sm:flex" />
                 {/* min-width reserves space regardless of which badge mounts, preventing CLS */}
                 <div className="flex items-center min-w-[80px] sm:min-w-[150px] min-h-[32px]">
                   {isAuthenticated && (
