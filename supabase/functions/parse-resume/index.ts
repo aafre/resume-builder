@@ -44,6 +44,7 @@ const CORS_HEADERS = {
 const FN_NAME = 'parse-resume';
 const MAX_PER_USER_PER_DAY = 10;
 const MAX_PER_IP_PER_DAY = 20;
+const MAX_BODY_BYTES = 11 * 1024 * 1024; // 10 MB file limit + multipart overhead
 const RATE_LIMIT_MESSAGE =
   "You've imported several resumes today. Try again tomorrow, or edit your current resume in the editor.";
 const TURNSTILE_ERROR_MESSAGE = "Couldn't verify your browser, please refresh and try again";
@@ -124,6 +125,19 @@ async function recordUsage(
   }
 }
 
+// Early responses must consume the whole body first: responding while the client
+// is still uploading leaves the fetch hanging (the response never arrives) - verified
+// on the edge runtime, where even a partial read + cancel still hangs the client.
+// Streams and discards chunks (O(chunk) memory, no multipart parse); total time is
+// bounded by the platform's wall-clock limit.
+async function drainBody(req: Request): Promise<void> {
+  try {
+    if (req.body) for await (const _chunk of req.body) { /* discard */ }
+  } catch (error) {
+    console.warn('Draining request body failed:', error);
+  }
+}
+
 /**
  * Main Edge Function handler
  */
@@ -193,15 +207,24 @@ serve(async (req: Request) => {
     const userId = user.id;
     console.log('✅ Authenticated user:', userId);
 
-    // === 2. Parse multipart form data ===
-    // Read the body before any early return: responding while the browser is
-    // still uploading leaves the fetch hanging (the 429 below never arrives).
-    const formData = await req.formData();
+    // === 2. Reject oversized bodies before parsing them ===
+    const contentLength = Number(req.headers.get('content-length'));
+    if (contentLength > MAX_BODY_BYTES) {
+      await drainBody(req);
+      return new Response(
+        JSON.stringify({ success: false, error: 'File too large (max 10MB)' }),
+        {
+          status: 413,
+          headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+        }
+      );
+    }
 
     // === 2a. Rate limit: cap daily imports per user and per IP ===
     const clientIp = getClientIp(req);
     if (await isRateLimited(supabaseAdmin, userId, clientIp)) {
       console.warn('Rate limit hit for user', userId, 'ip', clientIp);
+      await drainBody(req);
       return new Response(
         JSON.stringify({ success: false, error: RATE_LIMIT_MESSAGE }),
         {
@@ -211,6 +234,8 @@ serve(async (req: Request) => {
       );
     }
 
+    // Parse multipart form data (only once the caller is under the cap)
+    const formData = await req.formData();
     const file = formData.get('file') as File;
 
     if (!file) {
