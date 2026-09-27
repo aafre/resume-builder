@@ -122,6 +122,8 @@ export const InFeedAd = ({
         testId="in-feed-ad-container"
         enabled={enabled}
         onUnfilled={handleUnfilled}
+        // Flex wrapper shrinks the container to content width; AdSense won't fill a 0px slot
+        style={{ width: "100%" }}
         {...rest}
       />
     </div>
