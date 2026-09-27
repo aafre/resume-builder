@@ -13,7 +13,7 @@ import {
   ChevronDownIcon,
 } from "@heroicons/react/24/solid";
 import { TUTORIAL_VIDEO } from "../config/videoContent";
-import { Odometer, ResumeCount } from "./Odometer";
+import { Odometer } from "./Odometer";
 
 // Animation-delay for the hero build sequence (consumed by hero-* classes in styles.css).
 // Static values only — the landing route must prerender/hydrate byte-identical.
@@ -328,9 +328,9 @@ const LandingPage: React.FC = () => {
         <div ref={statsRef} className="odo-band max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-12 sm:gap-0 sm:divide-x sm:divide-ink/10">
           <div className="text-center sm:px-16">
             <p className="font-mono text-5xl md:text-7xl font-normal text-ink tracking-tight">
-              <ResumeCount bandRef={statsRef} />
+              <Odometer value="∞" />
             </p>
-            <p className="mt-5 font-mono text-xs tracking-[0.15em] uppercase text-ink/60">Resumes Created</p>
+            <p className="mt-5 font-mono text-xs tracking-[0.15em] uppercase text-ink/60">Downloads &amp; Edits</p>
           </div>
           <div className="text-center sm:px-16">
             <p className="inline-block font-mono text-5xl md:text-7xl font-normal text-ink tracking-tight">
