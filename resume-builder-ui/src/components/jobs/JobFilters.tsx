@@ -136,7 +136,7 @@ export default function JobFilters({ filters, onChange, hasLocation }: JobFilter
         <button
           type="button"
           onClick={() => setExpanded(!expanded)}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-ink hover:bg-chalk-dark rounded-lg transition-colors ml-auto"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-ink/60 hover:text-ink hover:bg-chalk-dark rounded-lg transition-colors ml-auto"
         >
           <SlidersHorizontal className="w-3.5 h-3.5" />
           More

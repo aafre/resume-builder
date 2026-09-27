@@ -108,11 +108,11 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
     >
           {/* Celebration Icon */}
           <div className="w-20 h-20 mx-auto mb-6 relative">
-            {/* Main checkmark circle with gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-green-400 via-emerald-500 to-teal-600 rounded-full flex items-center justify-center animate-dcm-scale-in shadow-lg">
+            {/* Main checkmark circle */}
+            <div className="absolute inset-0 bg-accent rounded-full flex items-center justify-center animate-dcm-scale-in shadow-lg">
               {/* Checkmark SVG */}
               <svg
-                className="w-12 h-12 text-white animate-dcm-checkmark-draw"
+                className="w-12 h-12 text-ink animate-dcm-checkmark-draw"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -131,7 +131,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
             </div>
 
             {/* Pulsing ring effect - runs once */}
-            <div className="absolute inset-0 bg-green-400 rounded-full animate-dcm-ping-once opacity-20" />
+            <div className="absolute inset-0 bg-accent rounded-full animate-dcm-ping-once opacity-20" />
 
             {/* Celebration particles */}
             <div className="dcm-particle dcm-particle-1" />

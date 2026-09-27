@@ -150,7 +150,7 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
           {/* Preview */}
           {previewMarkdown && (
             <div className="bg-chalk rounded-lg p-3 border border-gray-200">
-              <p className="text-xs text-gray-600 mb-1">Preview (markdown):</p>
+              <p className="text-xs text-ink/60 mb-1">Preview (markdown):</p>
               <code className="text-sm text-ink break-all">
                 {previewMarkdown}
               </code>

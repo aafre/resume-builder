@@ -26,7 +26,7 @@ function formatTimeAgo(date: Date | null): string {
 export function SaveStatusIndicator({ status, lastSaved }: SaveStatusIndicatorProps) {
   const icons = {
     saved: (
-      <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg className="w-4 h-4 text-accent-text" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
       </svg>
     ),
@@ -59,7 +59,7 @@ export function SaveStatusIndicator({ status, lastSaved }: SaveStatusIndicatorPr
   };
 
   const colorClasses = {
-    saved: 'text-gray-600',
+    saved: 'text-ink/60',
     saving: 'text-accent-text',
     error: 'text-red-600'
   };

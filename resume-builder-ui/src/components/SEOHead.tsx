@@ -104,8 +104,8 @@ export default function SEOHead({
       <meta name="twitter:image" content={finalOgImage} />
 
       {/* Additional SEO Meta Tags */}
-      <meta name="theme-color" content="#2563eb" />
-      <meta name="msapplication-TileColor" content="#2563eb" />
+      <meta name="theme-color" content="#fafaf8" />
+      <meta name="msapplication-TileColor" content="#fafaf8" />
 
       {/* Structured Data */}
       {structuredData && (
