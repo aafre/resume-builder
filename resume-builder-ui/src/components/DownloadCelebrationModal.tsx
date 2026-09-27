@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback, useId } from "react";
 import ModalShell from "./shared/ModalShell";
-import { ClipboardCheck, ExternalLink, ShieldAlert } from "lucide-react";
+import { ChevronDown, ClipboardCheck, ExternalLink, ShieldAlert } from "lucide-react";
 import { affiliateConfig } from "../config/affiliate";
 import { useJobsAvailable } from "../hooks/useJobsAvailable";
 import { ContactInfo, Section } from "../types";
@@ -331,10 +331,12 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                       onClick={() => setShowAllJobs(true)}
                       aria-expanded={false}
                       aria-controls={jobListId}
-                      // scroll-mb clears the sticky Close footer when focused/scrolled into view
-                      className="mt-3 w-full scroll-mb-28 rounded-xl border border-black/[0.08] bg-white py-3 text-sm font-semibold text-accent-text hover:bg-accent/[0.06] hover:border-accent/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text transition-colors"
+                      // Filled + chevron, not bordered: a bordered white box read as a 4th job card
+                      // clipped by the footer. scroll-mb clears the sticky Close footer on focus.
+                      className="mt-3 w-full scroll-mb-28 inline-flex items-center justify-center gap-1.5 rounded-xl bg-chalk-dark py-2.5 text-sm font-semibold text-accent-text hover:bg-accent/[0.08] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text transition-colors"
                     >
                       Show {jobs.length - JOBS_PREVIEW} more {jobs.length - JOBS_PREVIEW === 1 ? "job" : "jobs"}
+                      <ChevronDown className="w-4 h-4" aria-hidden="true" />
                     </button>
                   )}
                 </div>
@@ -342,7 +344,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
 
               {/* Close button for authenticated users when affiliate is shown */}
               {!isAnonymous && (
-                <div className="sticky bottom-0 -mx-6 sm:-mx-8 -mb-6 sm:-mb-8 mt-6 px-6 sm:px-8 py-4 bg-white border-t border-black/[0.06] flex justify-center">
+                <div className="sticky bottom-0 -mx-6 sm:-mx-8 -mb-6 sm:-mb-8 mt-6 px-6 sm:px-8 py-4 bg-white border-t border-black/[0.06] shadow-[0_-8px_16px_-8px_rgba(12,12,12,0.12)] flex justify-center">
                   <button
                     ref={!isAnonymous ? primaryButtonRef : undefined}
                     onClick={onClose}
