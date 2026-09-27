@@ -218,6 +218,10 @@
   height: var(--h);
   overflow: clip;
 }
+/* ∞ comes from a fallback font and is wider than its column, and both the
+   clip and the drum mask stop at the box edge. Widen the box with padding and
+   give the space back with margin, so layout is unchanged. */
+.odo-inf { padding-inline: 0.25em; margin-inline: -0.25em; }
 
 @media (prefers-reduced-motion: no-preference) {
   /* Drum shading: the strip fades at the top/bottom edge like a curved wheel */
@@ -243,7 +247,7 @@
   .odo-band.revealed .odo-inf::before {
     content: "0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A 0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A 0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A \221E";
     content: "0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A 0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A 0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A \221E" / "";
-    text-align: center; /* ∞ is wider than a digit in some fallbacks */
+    text-align: center;
     animation-duration: 1.6s;
     animation-timing-function: cubic-bezier(0.5, 0, 0.15, 1);
   }
