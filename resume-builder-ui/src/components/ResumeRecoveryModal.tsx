@@ -44,7 +44,7 @@ export const ResumeRecoveryModal: React.FC<ResumeRecoveryModalProps> = ({
         </button>
 
         {/* Header with warning icon */}
-        <div className="bg-gradient-to-br from-amber-100 via-amber-50 to-white px-6 py-4 rounded-t-2xl border-b border-amber-200/60">
+        <div className="bg-amber-50 px-6 py-4 rounded-t-2xl border-b border-amber-200/60">
           <div className="flex items-center gap-3">
             <div className="bg-amber-200/40 p-2 rounded-full">
               <MdWarning className="text-3xl text-amber-600" />
