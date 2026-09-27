@@ -143,7 +143,7 @@ describe("InFeedAd", () => {
 
     const wrapper = screen.getByTestId("in-feed-ad");
     expect(wrapper).toHaveStyle({
-      backgroundColor: "#fafafa",
+      backgroundColor: "#fafaf8",
       borderRadius: "8px",
     });
   });
@@ -153,7 +153,7 @@ describe("InFeedAd", () => {
 
     const wrapper = screen.getByTestId("in-feed-ad");
     expect(wrapper).toHaveStyle({
-      backgroundColor: "#fafafa",
+      backgroundColor: "#fafaf8",
       borderRadius: "4px",
     });
   });
@@ -326,7 +326,7 @@ describe("InFeedAd", () => {
         minHeight: "280px",
         minWidth: "250px",
         opacity: "1",
-        backgroundColor: "#fafafa",
+        backgroundColor: "#fafaf8",
       });
     });
   });
