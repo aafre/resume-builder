@@ -220,8 +220,9 @@
 }
 /* ∞ comes from a fallback font and is wider than its column, and both the
    clip and the drum mask stop at the box edge. Widen the box with padding and
-   give the space back with margin, so layout is unchanged. */
-.odo-inf { padding-inline: 0.25em; margin-inline: -0.25em; }
+   give the space back with margin, so layout is unchanged. The fallback glyph
+   also sits small beside the digits; scale is paint-only, so no layout shift. */
+.odo-inf { padding-inline: 0.25em; margin-inline: -0.25em; transform: scale(1.3); }
 
 @media (prefers-reduced-motion: no-preference) {
   /* Drum shading: the strip fades at the top/bottom edge like a curved wheel */
