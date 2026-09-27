@@ -52,7 +52,7 @@ export default function CopyablePrompt({
         {/* Copy Button */}
         <div className="absolute right-2 top-2 sm:right-3 sm:top-3">
           {copied ? (
-            <span className="flex items-center gap-1 text-green-600 text-sm font-medium bg-green-50 px-2 py-1 rounded-full sm:bg-transparent sm:px-0 sm:py-0 sm:rounded-none">
+            <span className="flex items-center gap-1 text-accent-text text-sm font-medium bg-accent/[0.06] px-2 py-1 rounded-full sm:bg-transparent sm:px-0 sm:py-0 sm:rounded-none">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>

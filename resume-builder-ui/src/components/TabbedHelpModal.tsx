@@ -222,14 +222,14 @@ function AnonymousSavingContent({ onSignInClick }: { onSignInClick?: () => void 
 function AuthenticatedSavingContent() {
   return (
     <div className="space-y-6">
-      <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
+      <div className="bg-accent/[0.06] border-l-4 border-accent p-4 rounded-r-lg">
         <div className="flex items-start">
-          <span className="text-green-600 text-xl mr-3">✓</span>
+          <span className="text-accent-text text-xl mr-3">✓</span>
           <div>
-            <h3 className="font-semibold text-green-900 mb-2">
+            <h3 className="font-semibold text-ink mb-2">
               Your data is secure
             </h3>
-            <p className="text-green-800 text-sm">
+            <p className="text-ink text-sm">
               Your resume is automatically saved to the cloud with enterprise-grade encryption via Supabase.
               You can access it from any device, anytime.
             </p>

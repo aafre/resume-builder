@@ -131,7 +131,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
             </div>
 
             {/* Pulsing ring effect - runs once */}
-            <div className="absolute inset-0 bg-green-400 rounded-full animate-dcm-ping-once opacity-20" />
+            <div className="absolute inset-0 bg-accent rounded-full animate-dcm-ping-once opacity-20" />
 
             {/* Celebration particles */}
             <div className="dcm-particle dcm-particle-1" />

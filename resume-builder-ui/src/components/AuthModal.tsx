@@ -163,8 +163,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
             </>
           ) : (
             <div className="text-center py-8">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <MdEmail className="text-green-600" size={32} />
+              <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <MdEmail className="text-accent-text" size={32} />
               </div>
               <h3 className="text-xl font-semibold text-ink mb-2">Check Your Email</h3>
               <p className="text-gray-600 mb-6">

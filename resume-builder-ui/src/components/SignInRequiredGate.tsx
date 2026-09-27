@@ -159,8 +159,8 @@ export default function SignInRequiredGate({
         ) : (
           <div className="text-center py-8">
             {/* Success Icon */}
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <MdEmail className="text-green-600" size={32} />
+            <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <MdEmail className="text-accent-text" size={32} />
             </div>
 
             {/* Success Message */}

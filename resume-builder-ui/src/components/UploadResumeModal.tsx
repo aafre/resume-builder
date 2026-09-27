@@ -117,13 +117,13 @@ export function UploadResumeModal({
             <div
               className={`mb-4 p-4 rounded-lg border-2 ${
                 parseResult.ui_message.type === 'success'
-                  ? 'bg-green-50 border-green-200'
+                  ? 'bg-accent/[0.06] border-accent/30'
                   : 'bg-yellow-50 border-yellow-200'
               }`}
             >
               <div className="flex items-start gap-3">
                 {parseResult.ui_message.type === 'success' ? (
-                  <CheckCircleIcon className="w-6 h-6 text-green-600 flex-shrink-0" />
+                  <CheckCircleIcon className="w-6 h-6 text-accent-text flex-shrink-0" />
                 ) : (
                   <ExclamationTriangleIcon className="w-6 h-6 text-yellow-600 flex-shrink-0" />
                 )}
@@ -131,7 +131,7 @@ export function UploadResumeModal({
                   <h3
                     className={`font-semibold ${
                       parseResult.ui_message.type === 'success'
-                        ? 'text-green-900'
+                        ? 'text-ink'
                         : 'text-yellow-900'
                     }`}
                   >
@@ -140,7 +140,7 @@ export function UploadResumeModal({
                   <p
                     className={`text-sm mt-1 ${
                       parseResult.ui_message.type === 'success'
-                        ? 'text-green-700'
+                        ? 'text-ink/80'
                         : 'text-yellow-700'
                     }`}
                   >
