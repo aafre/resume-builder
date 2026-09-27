@@ -668,11 +668,11 @@ export default function HowToListSkills() {
             </div>
           </div>
 
-          <div className="bg-teal-50 border border-teal-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-teal-800 mb-4">
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-4">
               🤝 Universal Soft Skills (All Industries)
             </h3>
-            <div className="grid md:grid-cols-3 gap-4 text-teal-700 text-sm">
+            <div className="grid md:grid-cols-3 gap-4 text-ink/60 text-sm">
               <div>
                 <h4 className="font-medium mb-2">Communication:</h4>
                 <ul className="list-disc pl-5 space-y-1">

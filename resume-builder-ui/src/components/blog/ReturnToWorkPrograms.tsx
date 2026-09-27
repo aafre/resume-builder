@@ -227,7 +227,7 @@ function ProgramCard({ program }: { program: Program }) {
           <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-bold callout ${STATUS_STYLES[program.applicationStatus]}`}>
             {program.applicationStatus === 'open' ? 'Applications open' : program.applicationStatus === 'closed' ? 'Applications closed' : 'Window unknown'}
           </span>
-          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-accent/10 text-accent-text">
             {program.duration}
           </span>
         </div>

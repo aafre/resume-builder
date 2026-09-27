@@ -296,7 +296,7 @@ export default function BestFreeResumeBuilderReddit() {
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           When a paid tool makes sense
         </h2>
-        <div className="max-w-4xl mx-auto bg-yellow-50 border border-yellow-200 rounded-xl p-8">
+        <div className="max-w-4xl mx-auto bg-chalk-dark border border-black/[0.06] rounded-xl p-8">
           <p className="text-lg text-ink/60 leading-relaxed">
             We believe in being honest. Paid resume services can be worth it if you need:
           </p>

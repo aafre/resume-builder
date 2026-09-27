@@ -277,11 +277,11 @@ export default function AIResumeReview() {
           </p>
         </div>
 
-        <div className="my-12 bg-gradient-to-r to-teal-600 text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
+        <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Ready to Create a Polished Resume?
           </h3>
-          <p className="text-xl mb-6 opacity-90">
+          <p className="text-xl mb-6 text-white/60">
             After your AI review, format with our free ATS-friendly templates.
           </p>
           <Link
