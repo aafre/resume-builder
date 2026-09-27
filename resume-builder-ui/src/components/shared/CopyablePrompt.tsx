@@ -69,7 +69,7 @@ export default function CopyablePrompt({
         </div>
       </div>
       {bestFor && (
-        <p className="text-gray-600 mt-3 text-sm">
+        <p className="text-ink/60 mt-3 text-sm">
           <strong>Best for:</strong> {bestFor}
         </p>
       )}

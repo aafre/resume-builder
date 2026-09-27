@@ -37,7 +37,7 @@ export const ResumeRecoveryModal: React.FC<ResumeRecoveryModalProps> = ({
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-ink/60 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-chalk-dark"
+          className="absolute top-4 right-4 text-ink/60 hover:text-ink transition-colors p-1 rounded-full hover:bg-chalk-dark"
           aria-label="Close modal"
         >
           <MdClose size={24} />
@@ -63,7 +63,7 @@ export const ResumeRecoveryModal: React.FC<ResumeRecoveryModalProps> = ({
               <p className="text-ink/60 text-lg mb-2">
                 We noticed you were working on a resume <span className="font-semibold">"{resumeTitle}"</span>.
               </p>
-              <p className="text-gray-600 mb-4">
+              <p className="text-ink/60 mb-4">
                 It is currently stored in a temporary session. You are at risk of losing it.
               </p>
 
@@ -104,7 +104,7 @@ export const ResumeRecoveryModal: React.FC<ResumeRecoveryModalProps> = ({
               <p className="text-ink/60 text-lg mb-2">
                 We noticed you already have a resume <span className="font-semibold">"{resumeTitle}"</span> using the <span className="font-semibold">{templateName}</span> template.
               </p>
-              <p className="text-gray-600 mb-6">
+              <p className="text-ink/60 mb-6">
                 Would you like to edit that one or start fresh?
               </p>
 

@@ -127,11 +127,11 @@ export default function Footer() {
           <div className="flex flex-col items-center gap-4">
             {/* Copyright */}
             <div className="text-center">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-ink/60">
                 © {new Date().getFullYear()}{" "}
                 <span className="font-semibold">EasyFreeResume.com</span>
               </p>
-              <p className="text-xs text-gray-600 mt-1">
+              <p className="text-xs text-ink/60 mt-1">
                 Build professional resumes effortlessly
               </p>
             </div>

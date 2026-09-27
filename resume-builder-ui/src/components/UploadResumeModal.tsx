@@ -160,7 +160,7 @@ export function UploadResumeModal({
                   )}
 
                   {/* Confidence & Cache Info */}
-                  <div className="mt-3 flex items-center gap-4 text-xs text-gray-600">
+                  <div className="mt-3 flex items-center gap-4 text-xs text-ink/60">
                     <span>
                       Confidence: {(parseResult.confidence * 100).toFixed(0)}%
                     </span>
@@ -233,9 +233,9 @@ export function UploadResumeModal({
                 <span className="text-sm font-medium text-ink">
                   Parsing your resume...
                 </span>
-                <span className="text-sm text-gray-600">{progress}%</span>
+                <span className="text-sm text-ink/60">{progress}%</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+              <div className="w-full bg-ink/[0.08] rounded-full h-2 overflow-hidden">
                 <div
                   className="bg-accent h-2 rounded-full transition-all duration-300"
                   style={{ width: `${progress}%` }}

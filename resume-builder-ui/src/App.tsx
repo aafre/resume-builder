@@ -251,22 +251,22 @@ const SEOPageSkeleton = () => (
     <div className="max-w-7xl mx-auto px-4 py-12">
       <div className="animate-pulse">
         {/* Breadcrumb */}
-        <div className="h-5 w-48 bg-gray-200 rounded-md mb-8"></div>
+        <div className="h-5 w-48 bg-ink/[0.08] rounded-md mb-8"></div>
         {/* Hero H1 */}
-        <div className="h-12 w-3/4 bg-gray-200 rounded-lg mb-4"></div>
+        <div className="h-12 w-3/4 bg-ink/[0.08] rounded-lg mb-4"></div>
         {/* Subtitle */}
-        <div className="h-6 w-2/3 bg-gray-200 rounded-md mb-8"></div>
+        <div className="h-6 w-2/3 bg-ink/[0.08] rounded-md mb-8"></div>
         {/* CTA buttons */}
         <div className="flex gap-4 mb-12">
-          <div className="h-14 w-40 bg-gray-200 rounded-xl"></div>
-          <div className="h-14 w-40 bg-gray-200 rounded-xl"></div>
+          <div className="h-14 w-40 bg-ink/[0.08] rounded-xl"></div>
+          <div className="h-14 w-40 bg-ink/[0.08] rounded-xl"></div>
         </div>
         {/* Content sections */}
-        <div className="h-48 bg-gray-200 rounded-lg mb-6"></div>
-        <div className="h-48 bg-gray-200 rounded-lg mb-6"></div>
-        <div className="h-48 bg-gray-200 rounded-lg mb-6"></div>
-        <div className="h-48 bg-gray-200 rounded-lg mb-6"></div>
-        <div className="h-48 bg-gray-200 rounded-lg"></div>
+        <div className="h-48 bg-ink/[0.08] rounded-lg mb-6"></div>
+        <div className="h-48 bg-ink/[0.08] rounded-lg mb-6"></div>
+        <div className="h-48 bg-ink/[0.08] rounded-lg mb-6"></div>
+        <div className="h-48 bg-ink/[0.08] rounded-lg mb-6"></div>
+        <div className="h-48 bg-ink/[0.08] rounded-lg"></div>
       </div>
     </div>
   </div>

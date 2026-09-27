@@ -41,8 +41,8 @@ export default function JobsRoleHub() {
   if (loading && !data) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-8 animate-pulse">
-        <div className="h-8 bg-gray-200 rounded w-1/2 mb-4" />
-        <div className="h-4 bg-gray-200 rounded w-full mb-8" />
+        <div className="h-8 bg-ink/[0.08] rounded w-1/2 mb-4" />
+        <div className="h-4 bg-ink/[0.08] rounded w-full mb-8" />
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
           {Array.from({ length: 8 }).map((_, i) => (
             <div key={i} className="h-16 bg-chalk-dark rounded-lg" />

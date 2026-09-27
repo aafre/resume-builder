@@ -60,7 +60,7 @@ export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
             </button>
             <button
               onClick={onClose}
-              className="flex-1 bg-gray-200 hover:bg-gray-300 text-ink font-medium py-2 px-4 rounded-lg transition-colors"
+              className="flex-1 bg-chalk-dark hover:bg-ink/[0.08] text-ink font-medium py-2 px-4 rounded-lg transition-colors"
             >
               Cancel
             </button>

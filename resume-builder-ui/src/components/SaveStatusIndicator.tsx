@@ -59,7 +59,7 @@ export function SaveStatusIndicator({ status, lastSaved }: SaveStatusIndicatorPr
   };
 
   const colorClasses = {
-    saved: 'text-gray-600',
+    saved: 'text-ink/60',
     saving: 'text-accent-text',
     error: 'text-red-600'
   };

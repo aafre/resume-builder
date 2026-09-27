@@ -46,7 +46,7 @@ export default function TabbedHelpModal({
             </h2>
             <button
               onClick={onClose}
-              className="text-ink/60 hover:text-gray-600 transition-colors"
+              className="text-ink/60 hover:text-ink transition-colors"
             >
               <MdClose className="w-6 h-6" />
             </button>
@@ -63,7 +63,7 @@ export default function TabbedHelpModal({
                     'py-3 px-4 font-medium text-sm transition-all border-b-2 -mb-px',
                     selected
                       ? 'text-accent-text border-accent'
-                      : 'text-gray-600 border-transparent hover:text-ink hover:border-gray-300'
+                      : 'text-ink/60 border-transparent hover:text-ink hover:border-gray-300'
                   )}
                 >
                   Editor Guide
@@ -77,7 +77,7 @@ export default function TabbedHelpModal({
                     'py-3 px-4 font-medium text-sm transition-all border-b-2 -mb-px',
                     selected
                       ? 'text-accent-text border-accent'
-                      : 'text-gray-600 border-transparent hover:text-ink hover:border-gray-300'
+                      : 'text-ink/60 border-transparent hover:text-ink hover:border-gray-300'
                   )}
                 >
                   Saving & Data
@@ -91,7 +91,7 @@ export default function TabbedHelpModal({
                     'py-3 px-4 font-medium text-sm transition-all border-b-2 -mb-px',
                     selected
                       ? 'text-accent-text border-accent'
-                      : 'text-gray-600 border-transparent hover:text-ink hover:border-gray-300'
+                      : 'text-ink/60 border-transparent hover:text-ink hover:border-gray-300'
                   )}
                 >
                   FAQs
@@ -131,10 +131,10 @@ function EditorGuideContent() {
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-semibold text-ink mb-3">Formatting Text</h3>
-        <p className="text-gray-600 mb-2">
+        <p className="text-ink/60 mb-2">
           Select any text to reveal the formatting toolbar (bubble menu). You can:
         </p>
-        <ul className="list-disc pl-5 text-gray-600 space-y-1">
+        <ul className="list-disc pl-5 text-ink/60 space-y-1">
           <li>Make text <strong>bold</strong>, <em>italic</em>, or <u>underlined</u></li>
           <li>Add hyperlinks to portfolios, LinkedIn, GitHub, etc.</li>
           <li>Clear formatting to start fresh</li>
@@ -143,7 +143,7 @@ function EditorGuideContent() {
 
       <div>
         <h3 className="text-lg font-semibold text-ink mb-3">Reordering Sections & Items</h3>
-        <div className="text-gray-600 space-y-2">
+        <div className="text-ink/60 space-y-2">
           <p className="flex items-center gap-2">
             <MdMouse className="text-accent-text flex-shrink-0" />
             <span><strong>Desktop:</strong> Hover over any section or item to reveal the ••• handle, then drag to reorder</span>
@@ -160,7 +160,7 @@ function EditorGuideContent() {
 
       <div>
         <h3 className="text-lg font-semibold text-ink mb-3">Adding Sections</h3>
-        <p className="text-gray-600">
+        <p className="text-ink/60">
           Click the "Add Section" button to insert new sections like Skills, Projects, Certifications, or custom sections.
           You can add as many as you need.
         </p>
@@ -168,7 +168,7 @@ function EditorGuideContent() {
 
       <div>
         <h3 className="text-lg font-semibold text-ink mb-3">Keyboard Shortcuts</h3>
-        <ul className="list-disc pl-5 text-gray-600 space-y-1">
+        <ul className="list-disc pl-5 text-ink/60 space-y-1">
           <li><kbd className="px-2 py-1 bg-chalk-dark border border-gray-300 rounded text-xs">Ctrl+\</kbd> - Toggle sidebar (desktop)</li>
           <li><kbd className="px-2 py-1 bg-chalk-dark border border-gray-300 rounded text-xs">Ctrl+B</kbd> - Bold text</li>
           <li><kbd className="px-2 py-1 bg-chalk-dark border border-gray-300 rounded text-xs">Ctrl+I</kbd> - Italic text</li>
@@ -199,7 +199,7 @@ function AnonymousSavingContent({ onSignInClick }: { onSignInClick?: () => void 
 
       <div>
         <h3 className="text-lg font-semibold text-ink mb-3">How to Save Your Work (Manual)</h3>
-        <ol className="list-decimal pl-5 text-gray-600 space-y-2">
+        <ol className="list-decimal pl-5 text-ink/60 space-y-2">
           <li>Click <strong>"Backup to File"</strong> in the sidebar to download a .yaml file</li>
           <li>Store this file somewhere safe (email it to yourself, save to cloud drive, etc.)</li>
           <li>To restore later, click <strong>"Load My Work"</strong> and upload the .yaml file</li>
@@ -239,7 +239,7 @@ function AuthenticatedSavingContent() {
 
       <div>
         <h3 className="text-lg font-semibold text-ink mb-3">Cloud Storage Features</h3>
-        <ul className="list-disc pl-5 text-gray-600 space-y-2">
+        <ul className="list-disc pl-5 text-ink/60 space-y-2">
           <li><strong>Auto-save every few seconds</strong> - No need to click save, your work is continuously backed up</li>
           <li><strong>Access from any device</strong> - Edit your resume from desktop, tablet, or mobile</li>
           <li><strong>Up to 5 resumes stored</strong> - Create different versions for different roles</li>
@@ -249,10 +249,10 @@ function AuthenticatedSavingContent() {
 
       <div>
         <h3 className="text-lg font-semibold text-ink mb-3">Additional Backup Options</h3>
-        <p className="text-gray-600 mb-2">
+        <p className="text-ink/60 mb-2">
           While your resume is safe in the cloud, you can still create local backups:
         </p>
-        <ul className="list-disc pl-5 text-gray-600 space-y-1">
+        <ul className="list-disc pl-5 text-ink/60 space-y-1">
           <li>Click <strong>"Backup to File"</strong> to download a .yaml file for extra peace of mind</li>
           <li>Click <strong>"Download Resume"</strong> to save a PDF copy</li>
         </ul>
@@ -267,7 +267,7 @@ function FAQContent() {
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-semibold text-ink mb-2">Is this ATS-compatible?</h3>
-        <p className="text-gray-600">
+        <p className="text-ink/60">
           Yes! Our templates are designed to pass Applicant Tracking Systems (ATS) used by top companies.
           We use clean formatting, standard fonts, and avoid complex graphics that can confuse ATS scanners.
         </p>
@@ -275,7 +275,7 @@ function FAQContent() {
 
       <div>
         <h3 className="text-lg font-semibold text-ink mb-2">Can I customize the template?</h3>
-        <p className="text-gray-600">
+        <p className="text-ink/60">
           Currently, we offer the "Modern" template with a professional, clean design.
           You can customize all content, reorder sections, and format text to match your needs.
         </p>
@@ -283,7 +283,7 @@ function FAQContent() {
 
       <div>
         <h3 className="text-lg font-semibold text-ink mb-2">What format does it export to?</h3>
-        <p className="text-gray-600">
+        <p className="text-ink/60">
           Your resume exports as a high-quality PDF file, ready to send to employers or upload to job boards.
           The PDF preserves all formatting and looks professional on any device.
         </p>
@@ -291,7 +291,7 @@ function FAQContent() {
 
       <div>
         <h3 className="text-lg font-semibold text-ink mb-2">How many resumes can I save?</h3>
-        <p className="text-gray-600">
+        <p className="text-ink/60">
           Free accounts can save up to 5 resumes in the cloud. This lets you create different versions
           tailored to specific roles or industries.
         </p>
@@ -299,7 +299,7 @@ function FAQContent() {
 
       <div>
         <h3 className="text-lg font-semibold text-ink mb-2">Is my data private?</h3>
-        <p className="text-gray-600">
+        <p className="text-ink/60">
           Absolutely. Your resume data is encrypted (AES-256) and stored securely on Supabase servers.
           We never share your personal information with third parties. You can delete your data at any time.
         </p>
