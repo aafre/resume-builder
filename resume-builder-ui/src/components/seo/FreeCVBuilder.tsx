@@ -113,7 +113,7 @@ export default function FreeCVBuilder() {
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-orange-500">
+            <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-accent">
               <h3 className="font-display text-xl font-bold text-ink mb-2">
                 Reverse chronological order
               </h3>

@@ -67,9 +67,9 @@ export const InFeedAd = ({
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: hidden ? "transparent" : "#fafafa",
+      backgroundColor: hidden ? "transparent" : "#fafaf8",
       borderRadius: "8px",
-      border: hidden ? "none" : "1px solid #e5e7eb",
+      border: hidden ? "none" : "1px solid rgba(12, 12, 12, 0.06)",
     },
     row: {
       minHeight: "100px",
@@ -77,9 +77,9 @@ export const InFeedAd = ({
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: hidden ? "transparent" : "#fafafa",
+      backgroundColor: hidden ? "transparent" : "#fafaf8",
       borderRadius: "4px",
-      border: hidden ? "none" : "1px solid #e5e7eb",
+      border: hidden ? "none" : "1px solid rgba(12, 12, 12, 0.06)",
     },
   };
 

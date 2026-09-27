@@ -527,7 +527,7 @@ export default function JobsPage() {
             {/* Parsing progress */}
             {(resumeParsing || parserBusy) ? (
               <div className="py-6 flex flex-col items-center gap-3">
-                <div className="w-full max-w-xs bg-gray-200 rounded-full h-2 overflow-clip">
+                <div className="w-full max-w-xs bg-ink/[0.08] rounded-full h-2 overflow-clip">
                   <div
                     className="bg-accent h-2 rounded-full transition-all duration-300"
                     style={{ width: `${parserProgress}%` }}

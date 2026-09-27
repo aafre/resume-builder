@@ -108,11 +108,11 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
     >
           {/* Celebration Icon */}
           <div className="w-20 h-20 mx-auto mb-6 relative">
-            {/* Main checkmark circle with gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-green-400 via-emerald-500 to-teal-600 rounded-full flex items-center justify-center animate-dcm-scale-in shadow-lg">
+            {/* Main checkmark circle */}
+            <div className="absolute inset-0 bg-accent rounded-full flex items-center justify-center animate-dcm-scale-in shadow-lg">
               {/* Checkmark SVG */}
               <svg
-                className="w-12 h-12 text-white animate-dcm-checkmark-draw"
+                className="w-12 h-12 text-ink animate-dcm-checkmark-draw"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -131,7 +131,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
             </div>
 
             {/* Pulsing ring effect - runs once */}
-            <div className="absolute inset-0 bg-green-400 rounded-full animate-dcm-ping-once opacity-20" />
+            <div className="absolute inset-0 bg-accent rounded-full animate-dcm-ping-once opacity-20" />
 
             {/* Celebration particles */}
             <div className="dcm-particle dcm-particle-1" />
@@ -331,7 +331,8 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                       onClick={() => setShowAllJobs(true)}
                       aria-expanded={false}
                       aria-controls={jobListId}
-                      className="mt-3 w-full rounded-lg py-2 text-sm font-semibold text-accent-text hover:bg-accent/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text transition-colors"
+                      // scroll-mb clears the sticky Close footer when focused/scrolled into view
+                      className="mt-3 w-full scroll-mb-28 rounded-xl border border-black/[0.08] bg-white py-3 text-sm font-semibold text-accent-text hover:bg-accent/[0.06] hover:border-accent/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text transition-colors"
                     >
                       Show {jobs.length - JOBS_PREVIEW} more {jobs.length - JOBS_PREVIEW === 1 ? "job" : "jobs"}
                     </button>
@@ -341,7 +342,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
 
               {/* Close button for authenticated users when affiliate is shown */}
               {!isAnonymous && (
-                <div className="sticky bottom-0 -mx-6 sm:-mx-8 -mb-6 sm:-mb-8 mt-4 px-6 sm:px-8 py-4 bg-white border-t border-black/[0.06] flex justify-center">
+                <div className="sticky bottom-0 -mx-6 sm:-mx-8 -mb-6 sm:-mb-8 mt-6 px-6 sm:px-8 py-4 bg-white border-t border-black/[0.06] flex justify-center">
                   <button
                     ref={!isAnonymous ? primaryButtonRef : undefined}
                     onClick={onClose}

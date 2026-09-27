@@ -52,7 +52,7 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
           type="button"
           onClick={onClose}
           disabled={loading}
-          className="absolute top-4 right-4 text-ink/60 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-chalk-dark disabled:opacity-50"
+          className="absolute top-4 right-4 text-ink/60 hover:text-ink transition-colors p-1 rounded-full hover:bg-chalk-dark disabled:opacity-50"
           aria-label="Close modal"
         >
           <MdClose size={24} />
@@ -75,7 +75,7 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
           <p className="text-ink/60 text-lg mb-2">
             You're about to <span className="font-semibold">{actionLabel}</span>.
           </p>
-          <p className="text-gray-600 mb-4">
+          <p className="text-ink/60 mb-4">
             Sign in to save your resume permanently, or continue as a guest with temporary storage.
           </p>
 

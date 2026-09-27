@@ -112,7 +112,7 @@ export default function BulletPointBank({ categories, jobTitle }: BulletPointBan
                         className={`
                           group relative p-4 rounded-lg cursor-pointer transition-all
                           ${isCopied
-                            ? 'bg-green-50 border border-green-300'
+                            ? 'bg-accent/[0.06] border border-accent/30'
                             : 'bg-chalk border border-black/[0.06] hover:bg-accent/[0.06] hover:border-accent/20'
                           }
                         `}
@@ -129,7 +129,7 @@ export default function BulletPointBank({ categories, jobTitle }: BulletPointBan
                         {/* Copy Button / Status */}
                         <div className="absolute right-4 top-1/2 -translate-y-1/2">
                           {isCopied ? (
-                            <span className="flex items-center gap-1 text-green-600 text-sm font-medium">
+                            <span className="flex items-center gap-1 text-accent-text text-sm font-medium">
                               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                               </svg>

@@ -83,7 +83,7 @@ export default function SignInRequiredGate({
             </h1>
 
             {/* Message */}
-            <p className="text-gray-600 text-center mb-8">
+            <p className="text-ink/60 text-center mb-8">
               {message}
             </p>
 
@@ -159,13 +159,13 @@ export default function SignInRequiredGate({
         ) : (
           <div className="text-center py-8">
             {/* Success Icon */}
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <MdEmail className="text-green-600" size={32} />
+            <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <MdEmail className="text-accent-text" size={32} />
             </div>
 
             {/* Success Message */}
             <h3 className="text-xl font-semibold text-ink mb-2">Check Your Email</h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-ink/60 mb-6">
               We've sent a magic link to <strong>{email}</strong>.
               <br />
               Click the link in the email to sign in.
@@ -180,7 +180,7 @@ export default function SignInRequiredGate({
 
             <button
               onClick={() => setEmailSent(false)}
-              className="px-6 py-2 bg-chalk-dark text-ink rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-6 py-2 bg-chalk-dark text-ink rounded-lg hover:bg-ink/[0.08] transition-colors"
             >
               Try a different method
             </button>
