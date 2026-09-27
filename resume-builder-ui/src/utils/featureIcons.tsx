@@ -1,7 +1,7 @@
 /**
  * Feature Icons Utility
  * Maps emoji strings from seoPages.ts to Lucide React SVG icons
- * rendered inside styled gradient containers.
+ * rendered in ink.
  *
  * This avoids changing the data file (seoPages.ts stays pure string data).
  */
@@ -78,42 +78,22 @@ const emojiToIcon: Record<string, LucideIcon> = {
   '🎧': Headset,
 };
 
-/** 6-color rotation: each index mod 6 gets a unique gradient theme */
-const colorThemes = [
-  { bg: 'from-blue-50 to-indigo-50', icon: 'text-blue-600' },
-  { bg: 'from-purple-50 to-fuchsia-50', icon: 'text-purple-600' },
-  { bg: 'from-emerald-50 to-teal-50', icon: 'text-emerald-600' },
-  { bg: 'from-amber-50 to-orange-50', icon: 'text-amber-600' },
-  { bg: 'from-indigo-50 to-violet-50', icon: 'text-indigo-600' },
-  { bg: 'from-rose-50 to-pink-50', icon: 'text-rose-600' },
-] as const;
-
-export function getColorTheme(index: number) {
-  return colorThemes[((index % colorThemes.length) + colorThemes.length) % colorThemes.length];
-}
-
 /**
- * Renders an emoji as a Lucide SVG icon inside a gradient container.
- * Falls back to rendering the raw emoji in a neutral container if unmapped.
+ * Renders an emoji as a bare Lucide SVG icon in ink. No tinted tile, no
+ * per-index colour rotation: accent is a fill used sparingly (DESIGN.md), and
+ * a rainbow of pastel tiles read as six unrelated brands on one page.
+ * Falls back to the raw emoji if unmapped.
  */
-export function FeatureIcon({ emoji, index }: { emoji: string; index: number }) {
+export function FeatureIcon({ emoji }: { emoji: string }) {
   const IconComponent = emojiToIcon[emoji];
-  const theme = getColorTheme(index);
 
   if (IconComponent) {
-    return (
-      <div
-        className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${theme.bg} shadow-sm flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}
-      >
-        <IconComponent className={`w-7 h-7 ${theme.icon}`} />
-      </div>
-    );
+    return <IconComponent className="w-7 h-7 text-ink" strokeWidth={1.5} aria-hidden="true" />;
   }
 
-  // Fallback: unknown emoji in a neutral container
   return (
-    <div className="w-14 h-14 rounded-2xl bg-chalk shadow-sm flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 motion-reduce:group-hover:scale-100 motion-reduce:group-hover:rotate-0 transition-transform duration-300">
-      <span className="text-2xl">{emoji}</span>
-    </div>
+    <span className="text-2xl leading-none" aria-hidden="true">
+      {emoji}
+    </span>
   );
 }
