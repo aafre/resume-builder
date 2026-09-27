@@ -628,12 +628,12 @@ details .faq-content > div {
 }
 .dcm-particle-2 {
   --px: -22px; --py: -20px;
-  width: 4px; height: 4px; background: #34d399;
+  width: 4px; height: 4px; background: #0c0c0c;
   animation: dcm-particle-burst 0.7s ease-out 0.4s forwards;
 }
 .dcm-particle-3 {
   --px: 20px; --py: 18px;
-  width: 4px; height: 4px; background: #2dd4bf;
+  width: 4px; height: 4px; background: #007a48;
   animation: dcm-particle-burst 0.7s ease-out 0.35s forwards;
 }
 .dcm-particle-4 {
