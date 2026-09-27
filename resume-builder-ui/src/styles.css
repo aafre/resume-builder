@@ -237,6 +237,16 @@
     /* Left columns land first; the overshoot shows a sliver of the next digit */
     animation: odo-roll calc(0.9s + var(--k) * 0.14s) cubic-bezier(0.2, 1.15, 0.35, 1) both;
   }
+  /* ∞ rides the same drum: three turns of digits, then the one glyph past 9.
+     Row 30 = ∞, so --n: 0 + --t: 3 lands exactly on it. Longer and steeper
+     than the digit roll, so it reads as the counter running out of numbers. */
+  .odo-band.revealed .odo-inf::before {
+    content: "0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A 0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A 0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A \221E";
+    content: "0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A 0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A 0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A \221E" / "";
+    text-align: center; /* ∞ is wider than a digit in some fallbacks */
+    animation-duration: 1.6s;
+    animation-timing-function: cubic-bezier(0.5, 0, 0.15, 1);
+  }
   .odo-band.revealed .odo-s {
     animation: odo-drop 0.5s cubic-bezier(0.16, 1, 0.3, 1) calc(0.6s + var(--cols) * 0.14s) both;
   }

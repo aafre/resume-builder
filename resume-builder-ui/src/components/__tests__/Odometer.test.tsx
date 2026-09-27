@@ -9,4 +9,11 @@ describe('Odometer', () => {
     expect(container.querySelector('.odo-s')!.textContent).toBe('%');
     expect(container.querySelector('.odo')!.getAttribute('aria-label')).toBe('100%');
   });
+
+  it('treats ∞ as a drum column that lands past the digits', () => {
+    const { container } = render(<Odometer value="∞" />);
+    const inf = container.querySelector('.odo-inf') as HTMLElement;
+    expect(inf.textContent).toBe('∞');
+    expect(inf.style.getPropertyValue('--t')).toBe('3');
+  });
 });
