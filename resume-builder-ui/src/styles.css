@@ -266,6 +266,11 @@
   overflow: visible;
 }
 .odo-inf-trace { display: none; }
+/* The tracer is infinite; pause it while the band is off screen. Same
+   specificity as the .revealed rule and later, so it wins (cf. .hero-frame). */
+.odo-band.offscreen .odo-inf-trace {
+  animation-play-state: paused;
+}
 @keyframes inf-draw {
   from { stroke-dashoffset: 100; }
 }

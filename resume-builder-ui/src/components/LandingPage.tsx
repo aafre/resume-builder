@@ -72,7 +72,8 @@ const LandingPage: React.FC = () => {
   const heroFrameRef = useScrollReveal<HTMLElement>({ once: false, rootMargin: '0px' });
 
   // Triggers the stats odometer roll (.odo-band.revealed in styles.css)
-  const statsRef = useScrollReveal<HTMLDivElement>({ threshold: 0.5 });
+  // once:false so .offscreen can pause the ∞ tracer loop (styles.css)
+  const statsRef = useScrollReveal<HTMLDivElement>({ threshold: 0.5, once: false });
 
   // Features data
   const features = [
