@@ -244,6 +244,36 @@
     transform-origin: left;
     animation: odo-fill 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.2s both;
   }
+  .odo-band.revealed .odo-inf-base {
+    stroke-dasharray: 100;
+    animation: inf-draw 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  /* A pen that never lifts: a short accent dash laps the loop forever */
+  .odo-band.revealed .odo-inf-trace {
+    display: inline;
+    stroke-dasharray: 12 88;
+    animation: inf-in 0.4s 1.2s both, inf-trace 6s linear 1.2s infinite;
+  }
+}
+
+/* ── Landing ∞ stat — the drawn loop is the static default (prerender, no-JS,
+   reduced motion); only a revealed band with motion draws and traces it. */
+.odo-inf {
+  display: inline-block;
+  vertical-align: middle; /* matches the .odo line box, so both stats align */
+  height: 1.15em;
+  width: 2.3em;
+  overflow: visible;
+}
+.odo-inf-trace { display: none; }
+@keyframes inf-draw {
+  from { stroke-dashoffset: 100; }
+}
+@keyframes inf-in {
+  from { opacity: 0; }
+}
+@keyframes inf-trace {
+  to { stroke-dashoffset: -100; }
 }
 
 @keyframes odo-roll {
