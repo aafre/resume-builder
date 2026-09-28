@@ -244,16 +244,20 @@
     transform-origin: left;
     animation: odo-fill 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.2s both;
   }
+  /* Gap > dash and start past 100, so no round cap dots the path pre-draw */
   .odo-band.revealed .odo-inf-base {
-    stroke-dasharray: 100;
+    stroke-dasharray: 100 110;
     animation: inf-draw 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
-  /* A pen that never lifts: a short accent dash laps the loop forever */
-  .odo-band.revealed .odo-inf-trace {
-    display: inline;
-    stroke-dasharray: 12 88;
-    animation: inf-in 0.4s 1.2s both, inf-trace 6s linear 1.2s infinite;
+  .odo-band.revealed .odo-inf-comet { display: inline; }
+  /* Lead comet rides the pen tip on the same curve, then fades out */
+  .odo-band.revealed .odo-inf-lead { animation: inf-fade 1.9s linear both; }
+  .odo-band.revealed .odo-inf-lead path {
+    animation: inf-run 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
+  /* Then a heartbeat, not a spinner: one eased lap every 7s, then rest */
+  .odo-band.revealed .odo-inf-pulse { animation: inf-glow 7s linear 2.4s infinite both; }
+  .odo-band.revealed .odo-inf-pulse path { animation: inf-lap 7s 2.4s infinite both; }
 }
 
 /* ── Landing ∞ stat — the drawn loop is the static default (prerender, no-JS,
@@ -265,33 +269,34 @@
   width: 2.3em;
   overflow: visible;
 }
-.odo-inf-trace { display: none; }
-/* The tracer is infinite; pause it while the band is off screen. Same
-   specificity as the .revealed rule and later, so it wins (cf. .hero-frame). */
-.odo-band.offscreen .odo-inf-trace {
+.odo-inf-comet { display: none; }
+/* The pulse is infinite; pause it while the band is off screen. Same
+   specificity as the .revealed rules and later, so it wins (cf. .hero-frame). */
+.odo-band.offscreen .odo-inf-comet,
+.odo-band.offscreen .odo-inf-comet path {
   animation-play-state: paused;
 }
 @keyframes inf-draw {
-  from { stroke-dashoffset: 100; }
+  from { stroke-dashoffset: 105; }
+  to { stroke-dashoffset: 0; }
 }
-@keyframes inf-in {
-  from { opacity: 0; }
+/* --l = the layer's dash length; offset L - H puts every layer's head at H */
+@keyframes inf-run {
+  from { stroke-dashoffset: calc(var(--l) * 1px); }
+  to { stroke-dashoffset: calc((var(--l) - 100) * 1px); }
 }
-@keyframes inf-trace {
-  to { stroke-dashoffset: -100; }
+@keyframes inf-lap {
+  0% { stroke-dashoffset: calc(var(--l) * 1px); animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
+  40%, 100% { stroke-dashoffset: calc((var(--l) - 100) * 1px); }
 }
-
-@keyframes odo-roll {
-  /* --p: previous digit on a live tick (Odometer `from`); reveal starts on --n */
-  from { transform: translateY(calc(var(--p, var(--n)) * -1 * var(--h))); }
-  45%  { filter: blur(0.04em); } /* motion blur at top speed */
-  to   { transform: translateY(calc((var(--n) + var(--t) * 10) * -1 * var(--h))); }
+@keyframes inf-fade {
+  74% { opacity: 1; }
+  to { opacity: 0; }
 }
-@keyframes odo-drop {
-  from { opacity: 0; transform: translateY(-0.35em); }
-}
-@keyframes odo-fill {
-  from { transform: scaleX(0); }
+@keyframes inf-glow {
+  0% { opacity: 0; }
+  6%, 32% { opacity: 1; }
+  40%, 100% { opacity: 0; }
 }
 
 /* ── Scroll-Reveal System ── */
