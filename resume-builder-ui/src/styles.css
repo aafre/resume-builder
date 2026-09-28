@@ -255,9 +255,9 @@
   .odo-band.revealed .odo-inf-lead path {
     animation: inf-run 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
-  /* Then a heartbeat, not a spinner: one eased lap every 7s, then rest */
-  .odo-band.revealed .odo-inf-pulse { animation: inf-glow 7s linear 2.4s infinite both; }
-  .odo-band.revealed .odo-inf-pulse path { animation: inf-lap 7s 2.4s infinite both; }
+  /* Then a heartbeat, not a spinner: one eased lap every 4.5s, then rest */
+  .odo-band.revealed .odo-inf-pulse { animation: inf-glow 4.5s linear 2.4s infinite both; }
+  .odo-band.revealed .odo-inf-pulse path { animation: inf-lap 4.5s 2.4s infinite both; }
 }
 
 @keyframes odo-roll {
@@ -300,7 +300,7 @@
 }
 @keyframes inf-lap {
   0% { stroke-dashoffset: calc(var(--l) * 1px); animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
-  40%, 100% { stroke-dashoffset: calc((var(--l) - 100) * 1px); }
+  55%, 100% { stroke-dashoffset: calc((var(--l) - 100) * 1px); }
 }
 @keyframes inf-fade {
   74% { opacity: 1; }
@@ -308,8 +308,8 @@
 }
 @keyframes inf-glow {
   0% { opacity: 0; }
-  6%, 32% { opacity: 1; }
-  40%, 100% { opacity: 0; }
+  8%, 45% { opacity: 1; }
+  55%, 100% { opacity: 0; }
 }
 
 /* ── Scroll-Reveal System ── */
