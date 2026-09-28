@@ -260,6 +260,19 @@
   .odo-band.revealed .odo-inf-pulse path { animation: inf-lap 7s 2.4s infinite both; }
 }
 
+@keyframes odo-roll {
+  /* --p: previous digit on a live tick (Odometer `from`); reveal starts on --n */
+  from { transform: translateY(calc(var(--p, var(--n)) * -1 * var(--h))); }
+  45%  { filter: blur(0.04em); } /* motion blur at top speed */
+  to   { transform: translateY(calc((var(--n) + var(--t) * 10) * -1 * var(--h))); }
+}
+@keyframes odo-drop {
+  from { opacity: 0; transform: translateY(-0.35em); }
+}
+@keyframes odo-fill {
+  from { transform: scaleX(0); }
+}
+
 /* ── Landing ∞ stat — the drawn loop is the static default (prerender, no-JS,
    reduced motion); only a revealed band with motion draws and traces it. */
 .odo-inf {
