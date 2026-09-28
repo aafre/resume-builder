@@ -244,6 +244,20 @@
     transform-origin: left;
     animation: odo-fill 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.2s both;
   }
+  /* Gap > dash and start past 100, so no round cap dots the path pre-draw */
+  .odo-band.revealed .odo-inf-base {
+    stroke-dasharray: 100 110;
+    animation: inf-draw 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .odo-band.revealed .odo-inf-comet { display: inline; }
+  /* Lead comet rides the pen tip on the same curve, then fades out */
+  .odo-band.revealed .odo-inf-lead { animation: inf-fade 1.9s linear both; }
+  .odo-band.revealed .odo-inf-lead path {
+    animation: inf-run 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  /* Then a heartbeat, not a spinner: one eased lap every 4.5s, then rest */
+  .odo-band.revealed .odo-inf-pulse { animation: inf-glow 4.5s linear 2.4s infinite both; }
+  .odo-band.revealed .odo-inf-pulse path { animation: inf-lap 4.5s 2.4s infinite both; }
 }
 
 @keyframes odo-roll {
@@ -252,18 +266,50 @@
   45%  { filter: blur(0.04em); } /* motion blur at top speed */
   to   { transform: translateY(calc((var(--n) + var(--t) * 10) * -1 * var(--h))); }
 }
-/* Live count: the prerendered digits are the build-date value. With JS on,
-   keep them invisible (box kept, so no CLS) until hydration swaps in the
-   current value and drops [data-stale]; 4s fallback if the bundle fails. */
-@media (scripting: enabled) {
-  .odo[data-stale] { visibility: hidden; animation: odo-unhide 0s 4s forwards; }
-}
-@keyframes odo-unhide { to { visibility: visible; } }
 @keyframes odo-drop {
   from { opacity: 0; transform: translateY(-0.35em); }
 }
 @keyframes odo-fill {
   from { transform: scaleX(0); }
+}
+
+/* ── Landing ∞ stat — the drawn loop is the static default (prerender, no-JS,
+   reduced motion); only a revealed band with motion draws and traces it. */
+.odo-inf {
+  display: inline-block;
+  vertical-align: middle; /* matches the .odo line box, so both stats align */
+  height: 1.15em;
+  width: 2.3em;
+  overflow: visible;
+}
+.odo-inf-comet { display: none; }
+/* The pulse is infinite; pause it while the band is off screen. Same
+   specificity as the .revealed rules and later, so it wins (cf. .hero-frame). */
+.odo-band.offscreen .odo-inf-comet,
+.odo-band.offscreen .odo-inf-comet path {
+  animation-play-state: paused;
+}
+@keyframes inf-draw {
+  from { stroke-dashoffset: 105; }
+  to { stroke-dashoffset: 0; }
+}
+/* --l = the layer's dash length; offset L - H puts every layer's head at H */
+@keyframes inf-run {
+  from { stroke-dashoffset: calc(var(--l) * 1px); }
+  to { stroke-dashoffset: calc((var(--l) - 100) * 1px); }
+}
+@keyframes inf-lap {
+  0% { stroke-dashoffset: calc(var(--l) * 1px); animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
+  55%, 100% { stroke-dashoffset: calc((var(--l) - 100) * 1px); }
+}
+@keyframes inf-fade {
+  74% { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes inf-glow {
+  0% { opacity: 0; }
+  8%, 45% { opacity: 1; }
+  55%, 100% { opacity: 0; }
 }
 
 /* ── Scroll-Reveal System ── */
