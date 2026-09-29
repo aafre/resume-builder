@@ -101,7 +101,7 @@ export function DuplicateResumeModal({
                 type="button"
                 onClick={onCancel}
                 disabled={isDuplicating}
-                className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:bg-chalk-dark text-ink font-medium py-2 px-4 rounded-lg transition-colors"
+                className="flex-1 bg-chalk-dark hover:bg-ink/[0.08] disabled:bg-chalk-dark text-ink font-medium py-2 px-4 rounded-lg transition-colors"
               >
                 Cancel
               </button>

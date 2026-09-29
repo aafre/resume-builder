@@ -66,7 +66,7 @@ export default function FeatureGrid({
             >
               {/* Icon */}
               <div className="mb-5">
-                <FeatureIcon emoji={feature.icon} index={index} />
+                <FeatureIcon emoji={feature.icon} />
               </div>
 
               {/* Title */}
@@ -75,7 +75,7 @@ export default function FeatureGrid({
               </h3>
 
               {/* Description */}
-              <p className="text-ink/60 leading-relaxed">{feature.description}</p>
+              <p className="font-extralight text-ink/60 leading-relaxed">{feature.description}</p>
             </div>
           ))}
         </div>

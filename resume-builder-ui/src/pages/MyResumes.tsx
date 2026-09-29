@@ -11,6 +11,7 @@ import PreviewModal from '../components/PreviewModal';
 import SignInRequiredGate from '../components/SignInRequiredGate';
 import { apiClient, ApiError } from '../lib/api-client';
 import { toast } from 'react-hot-toast';
+import { toastDownloaded, toastFailure } from '../utils/toasts';
 import { useThumbnailRefresh } from '../hooks/useThumbnailRefresh';
 import { useResumes } from '../hooks/useResumes';
 import { useAuth } from '../contexts/AuthContext';
@@ -130,7 +131,7 @@ export default function MyResumes() {
       // Use centralized API client (handles auth, 401/403 interceptor)
       await apiClient.delete(`/api/resumes/${resumeToDelete.id}`);
 
-      toast.success('Resume deleted successfully');
+      toast.success('Resume deleted.');
       refetch(); // Refetch to update the list
 
       // Invalidate count cache to update header badge
@@ -141,8 +142,7 @@ export default function MyResumes() {
       setDeleteModalOpen(false);
       setResumeToDelete(null);
     } catch (err) {
-      console.error('Error deleting resume:', err);
-      toast.error('Failed to delete resume');
+      toastFailure('delete this resume', err);
     } finally {
       setIsDeleting(false);
     }
@@ -167,7 +167,7 @@ export default function MyResumes() {
         new_title: newTitle
       });
 
-      toast.success('Resume duplicated successfully');
+      toast.success('Copy created.');
       refetch(); // Refetch to update the list
 
       // Invalidate count cache to update header badge
@@ -182,11 +182,11 @@ export default function MyResumes() {
 
       // Check for resume limit error
       if (err instanceof ApiError && err.data?.error_code === 'RESUME_LIMIT_REACHED') {
-        toast.error('You have reached the 5 resume limit. Delete a resume to continue.');
+        toast.error("You're at the 5-resume limit. Delete one to make a copy.");
         return;
       }
 
-      toast.error('Failed to duplicate resume');
+      toastFailure('copy this resume', err);
     } finally {
       setIsDuplicating(false);
     }
@@ -209,10 +209,8 @@ export default function MyResumes() {
         ) || []
       );
 
-      toast.success('Resume renamed');
     } catch (err) {
-      console.error('Error renaming resume:', err);
-      toast.error('Failed to rename resume');
+      toastFailure('rename this resume', err);
       throw err; // Re-throw so ResumeCard can revert
     }
   };
@@ -234,13 +232,14 @@ export default function MyResumes() {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `${resumes.find(r => r.id === id)?.title || 'Resume'}.pdf`;
+        const fileName = `${resumes.find(r => r.id === id)?.title || 'Resume'}.pdf`;
+        a.download = fileName;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
 
-        toast.success('Resume downloaded successfully');
+        toastDownloaded(fileName);
         trackPdfDownloaded({
           template_id: resumes.find(r => r.id === id)?.template_id || 'unknown',
           source: 'my_resumes',
@@ -255,16 +254,15 @@ export default function MyResumes() {
 
         // Special handling for missing icons error
         if (err instanceof ApiError && err.data?.missing_icons) {
+          const n = err.data.missing_icons.length;
           toast.error(
-            `Cannot generate PDF: Missing ${err.data.missing_icons.length} icon(s)\n\n` +
-            `Missing: ${err.data.missing_icons.join(', ')}\n\n` +
-            `Please edit this resume to upload the missing icons or remove them.`,
+            `This resume uses ${n} icon${n === 1 ? '' : 's'} we can't find, so the PDF wasn't made. Open it in the editor to see which.`,
             { duration: 8000 }
           );
           return;
         }
 
-        toast.error('Failed to download resume');
+        toastFailure('download this resume', err);
       } finally {
         setDownloadingId(null);
         downloadPromiseRef.current = null;
@@ -408,7 +406,6 @@ export default function MyResumes() {
               isAtLimit={resumes.length >= 5}
               resumeCount={resumes.length}
               onCreateNew={handleCreateNew}
-              onUpgrade={() => toast('Pricing coming soon!')}
             />
 
             {/* Existing resume cards */}

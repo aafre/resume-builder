@@ -166,7 +166,7 @@ export default function ContextAwareTour({
               <span
                 aria-hidden="true"
                 className={`block h-2 rounded-full transition-[width,background-color] duration-200 ${
-                  index === currentStep ? 'bg-accent w-8' : 'bg-gray-300 w-2'
+                  index === currentStep ? 'bg-accent w-8' : 'bg-ink/20 w-2'
                 }`}
               />
             </button>

@@ -1,0 +1,250 @@
+# Forward Deployed Engineer Resume Example
+# Category: Technology (Role batch R1)
+# Sources: seo-tracking research brief #1 + R1 posting evidence ledger (F1-F3), checked 2026-09-24.
+
+meta:
+  slug: forward-deployed-engineer
+  title: Forward Deployed Engineer
+  metaTitle: "Free Forward Deployed Engineer Resume Example & Template (2026)"
+  metaDescription: "Forward deployed engineer resume example that takes a customer problem from discovery to production, with skills and keywords from real FDE postings."
+  category: tech
+  priority: 0.7
+  lastmod: "2026-09-25"
+
+answerBlock: >
+  A forward deployed engineer resume has to show you can take a customer problem from
+  discovery to production and then get people using what you built. For each engagement,
+  name the workflow you scoped, the system you shipped, how you tested it, and what changed
+  for its users. Internal feature work alone reads as a software engineer resume.
+
+postingEvidence:
+  asOf: "2026-09"
+  postings:
+    - employer: OpenAI
+      title: "Forward Deployed Engineer (FDE) - SF"
+      location: San Francisco
+      asks: "Take customer problems through discovery, scoping, system design and build to a production rollout, with evals along the way."
+      skills:
+        - Python
+        - Production deployment
+        - Customer discovery
+        - Stakeholder management
+        - Evals
+        - Scoping
+        - System design
+        - Full-stack
+    - employer: Anthropic
+      title: Forward Deployed Engineer
+      location: London, UK
+      asks: "Build production Claude applications inside customer systems, starting from discovery with the customer's team."
+      skills:
+        - Python
+        - Production deployment
+        - Customer discovery
+        - Stakeholder management
+        - Evals
+        - LLM applications
+        - TypeScript
+        - Java
+        - Prompt engineering
+        - Agents
+    - employer: Palantir
+      title: Forward Deployed AI Engineer
+      location: London, UK
+      asks: "Shape a customer's generative AI strategy, get LLM workflows into production, and feed what you learn in the field back into the product."
+      skills:
+        - Python
+        - Production deployment
+        - LLM applications
+        - TypeScript
+        - Java
+        - C++
+        - Product feedback
+
+howToWrite:
+  - "Write each engagement as one story: the customer problem, what you scoped in discovery, what you built, and whether it reached production. The postings behind this page describe that whole arc, so a resume that only covers the build leaves most of the job out."
+  - "Say plainly whether each system reached production. A demo, a pilot and a production rollout are different claims, and an interviewer will ask which one yours was."
+  - "Name the people you worked with by role rather than by company, such as \"claims operations lead\" or \"customer IT team\". That shows the stakeholder work without giving away who the client was."
+  - "Put each language next to the work you did in it. Every posting sampled here names Python, and some accept TypeScript, Java or C++ as alternatives, so list what you actually shipped in rather than everything you've touched."
+  - "If you built evals, say what they measured against: the customer's acceptance criteria, a held-out set of real cases, or a cost or latency limit."
+  - "Show seniority through scope, not years. Junior bullets deliver a scoped task. Senior ones define the engagement, make the architecture calls, settle disagreements between customer leads, and turn repeated field requests into product features."
+
+summaryExamples:
+  - level: entry
+    summary: >
+      Software engineer moving into forward deployed work, with [number] years building
+      full-stack features in Python and TypeScript. Joined customer calls for [product],
+      scoped [feature] from what users reported, and shipped it to production. Ready to
+      own a customer deployment end to end.
+  - level: mid
+    summary: >
+      Forward deployed engineer with [number] years in software engineering and [number]
+      customer deployments shipped to production. Runs discovery with customer
+      stakeholders, builds LLM applications in Python, and writes evals against the
+      customer's acceptance criteria before anything goes live.
+  - level: senior
+    summary: >
+      Senior forward deployed engineer who defines engagements as well as delivering them.
+      Has led [number] deployments from first customer meeting to production, made the
+      architecture trade-offs, and turned repeated field requests into [number] reusable
+      product capabilities used in later deployments.
+
+skills:
+  hard:
+    - Python
+    - TypeScript, Java or C++ (whichever you shipped in)
+    - LLM Applications & Agents
+    - Evals
+    - Full-Stack Development
+    - System Design
+    - Production Deployment & Rollout
+  soft:
+    - Customer Discovery
+    - Scoping Ambiguous Problems
+    - Stakeholder Management
+    - Bringing Field Learnings Back to the Product
+
+keywords:
+  - Python
+  - TypeScript
+  - Java
+  - C++
+  - LLM Applications
+  - Generative AI
+  - Prompt Engineering
+  - Agents
+  - Evals
+  - Full-Stack Development
+  - System Design
+  - Customer Discovery
+  - Scoping
+  - Production Deployment
+  - Stakeholder Management
+
+mistakes:
+  - mistake: "A consulting resume with no shipped code"
+    fix: "Every engagement needs a line on what you built and shipped. Without it, the resume reads as a pre-sales or advisory role."
+  - mistake: "A coding resume with no customer context"
+    fix: "Say who the system was for and how you found out what they needed. Otherwise it looks like internal feature work."
+  - mistake: "Calling a demo a production deployment"
+    fix: "Use \"demo\", \"pilot\" and \"production\" precisely. Expect to be asked how many people used it and who ran it after you left."
+  - mistake: "Claiming the account's revenue as your own"
+    fix: "Describe your technical contribution, such as unblocking the deployment or reaching [number] active users, not the contract value the sales team booked."
+  - mistake: "Naming confidential client details"
+    fix: "Describe the customer by sector and size (\"a regional insurer\") and leave out names, data and internal systems you aren't cleared to share."
+  - mistake: "Assuming every FDE role uses the same stack"
+    fix: "The postings differ. One is built around a single vendor's models, another lists several languages as alternatives. Match your resume to the languages and tools in each posting you apply to."
+
+bulletRewrites:
+  - weak: "Built a demo of an AI assistant for a customer"
+    improved: "Took a customer's [workflow] assistant from demo to production for [number] users in [timeframe], adding evals, monitoring and a rollback path before launch"
+    reason: "A demo and a production system are different claims. This one says it reached production and names what made it safe to ship."
+  - weak: "Worked closely with customers to understand their needs"
+    improved: "Ran discovery with [customer]'s operations and IT leads, narrowed [number] requested features to one [workflow], and got the architecture signed off in [timeframe]"
+    reason: "Anyone can say they worked with customers. This shows a decision you drove and what came of it, which is where the interview will go."
+  - weak: "Supported the rollout to end users"
+    improved: "Led rollout of [system] to [number] users across [number] teams, ran weekly feedback sessions, and raised completed workflows from [baseline] to [result] over [period]"
+    reason: "Adoption is part of the job. The rewrite names who used the system and how you measured whether they kept using it."
+  - weak: "Passed customer feedback to the product team"
+    improved: "Turned a request repeated across [number] deployments into a reusable [product capability], cutting setup time for later deployments from [X] to [Y]"
+    reason: "Field work that becomes product is something one of the sampled postings asks for by name, and the rewrite puts a number on it."
+
+customFaqs:
+  - question: "How is a forward deployed engineer resume different from a software engineer or solutions engineer resume?"
+    answer: "A software engineer resume can focus on internal feature delivery. A forward deployed engineer resume also needs customer discovery, stakeholder decisions and adoption. A solutions engineer (pre-sales) resume centres on demos and winning the deal, while an FDE resume has to show what you built and got into production. If a bullet would fit either of those roles unchanged, add the customer context or the production result."
+  - question: "Can I get an FDE job without corporate client-facing experience?"
+    answer: "You can make a credible case without it, as long as you show the same work another way. Internal users count as customers: a platform team serving other engineers, a tool built with an operations team, or open-source work where you took requests from users. Write those up as discovery, build and rollout, and say who the users were."
+  - question: "How do I show problem structuring and business translation on a student resume?"
+    answer: "Use projects that started from someone else's problem rather than a spec, such as a student society, a local business or a research group. Write down what they asked for, what you decided to build and why, and whether they used it. That's the same discovery-to-adoption shape the role asks for, just smaller."
+  - question: "Should I include customer deployments or side projects on my FDE resume?"
+    answer: "Lead with customer deployments that reached production, because that's the core of the role. Side projects help when other people actually use them, or when they show a skill your paid work doesn't, such as building an agent or writing evals. Put them in a short projects section below your experience."
+  - question: "How do I describe confidential client work on my resume?"
+    answer: "Describe the client by sector and size, such as \"a regional insurer\" or \"a logistics operator with four sites\", and leave out the name. Keep the parts that are yours to share: the problem type, the system you built, the stack, and the scope. If you're unsure what your contract allows, ask your employer before you publish anything."
+  - question: "What metrics should a forward deployed engineer put on a resume?"
+    answer: "Useful ones include production users, time from discovery to production, completed workflows, eval results against the customer's criteria, and setup time saved by reusable components. If a result wasn't measured, don't guess. Describe the scope you can verify instead: how many users, teams or sites, and what you owned."
+
+resume:
+  template: modern
+  contact:
+    name: Sam Okafor
+    title: Forward Deployed Engineer
+    email: sam.okafor@email.com
+    phone: "+44 20 7946 0321"
+    location: London, UK
+    linkedin: linkedin.com/in/samokafor
+    github: github.com/samokafor
+
+  summary: >
+    Forward deployed engineer with 7 years in software engineering, the last 3 embedded with
+    customer teams. Took two LLM applications from discovery to production: a claims-triage
+    agent for an insurer and a document-review workflow for a logistics operator. Works in
+    Python and TypeScript, writes evals against customer acceptance criteria, and turns
+    repeated field requests into product features.
+
+  experience:
+    - company: Northgate Labs
+      title: Forward Deployed Engineer
+      dates: Mar 2023 - Present
+      location: London, UK
+      bullets:
+        - Ran discovery with a regional insurer's claims, IT and compliance leads, scoped a claims-triage agent, and got the architecture signed off in 3 weeks
+        - Built the agent in Python and TypeScript on the insurer's claims system and shipped it to production for 180 claims handlers after an 11-week pilot
+        - Wrote an eval suite of 600 anonymised historical claims mapped to the insurer's acceptance criteria, run on every prompt change before release
+        - Added monitoring, a rollback path and a support runbook, then handed day-to-day ownership to the insurer's platform team
+        - Delivered a second deployment, a document-review workflow for a logistics operator's customs team, now live at 4 sites; ran weekly feedback sessions with its users through rollout
+        - Turned a customer-specific document parser into a reusable product component that later deployments now start from
+
+    - company: Ledgerline
+      title: Software Engineer
+      dates: Jul 2019 - Feb 2023
+      location: Manchester, UK
+      bullets:
+        - Built full-stack features in TypeScript and Python for an internal finance-operations platform used by 250 staff
+        - Owned the invoice-matching service from system design through to on-call
+        - Sat in on user research with the operations team and rebuilt the exceptions queue around the problems they raised
+        - Mentored 2 graduate engineers through code review and pairing
+
+  education:
+    - school: University of Leeds
+      degree: BSc Computer Science
+      year: "2019"
+
+  skills:
+    - Python
+    - TypeScript
+    - LLM Applications
+    - Agents
+    - Prompt Engineering
+    - Evals
+    - Full-Stack Development
+    - System Design
+    - Production Deployment
+    - Customer Discovery
+    - Scoping
+    - Stakeholder Management
+
+bulletBank:
+  - category: Discovery & Scoping
+    bullets:
+      - "Translated [customer workflow] into [deployed system], changing [end-to-end processing time] from [baseline] to [measured result] over [period]"
+      - "Owned [discovery-to-rollout engagement] across [stakeholder groups], reaching [production milestones] within [elapsed time]"
+
+  - category: Build & Deployment
+    bullets:
+      - "Connected [system] to [customer data systems/APIs] using [stack], reducing [manual handoffs or failure rate] from [baseline] to [result]"
+      - "Resolved [identity, networking or data-access blocker], enabling [customer deployment] for [number] approved users"
+      - "Hardened [pilot] with [monitoring, rollback and support handover], achieving [SLO or incident measure] over [observation window]"
+
+  - category: Evals & Quality
+    bullets:
+      - "Built [evaluation suite] around [customer acceptance criteria], improving [task pass rate] on [held-out sample] without exceeding [cost/latency limit]"
+
+  - category: Adoption & Product Feedback
+    bullets:
+      - "Converted [customer-specific component] into [reusable product capability], reducing implementation effort across [number] later deployments"
+      - "Led [user enablement and feedback cycle], increasing [active adoption or completed workflows] among [eligible users]"
+
+relatedJobs:
+  - software-engineer
+  - mlops-engineer
+  - staff-software-engineer

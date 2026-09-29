@@ -181,7 +181,7 @@ export default function FreeResumeBuilderNoPayment() {
                 ))}
               </ul>
             </div>
-            <div className="bg-green-50 border border-green-200 rounded-2xl p-8">
+            <div className="bg-accent/[0.06] border border-accent/30 rounded-2xl p-8">
               <h3 className="font-display text-xl font-bold text-ink mb-4">
                 Truly Free Model (EasyFreeResume)
               </h3>

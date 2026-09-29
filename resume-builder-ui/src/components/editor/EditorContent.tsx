@@ -2,7 +2,8 @@
 // Main content area for the Editor, including sections, drag-drop, toolbars
 
 import React, { RefObject, useMemo } from 'react';
-import { AlertCircle, X } from 'lucide-react';
+import { AlertCircle, TriangleAlert, X } from 'lucide-react';
+import type { MissingIconsNotice } from '../../types/editor';
 import {
   DndContext,
   DragOverlay,
@@ -124,6 +125,8 @@ export interface EditorContentEditorActionsProps {
   isDownloading: boolean;
   downloadPhase: string | null;
   isOpeningPreview: boolean;
+  missingIconsNotice: MissingIconsNotice | null;
+  dismissMissingIconsNotice: () => void;
 }
 
 /**
@@ -299,6 +302,45 @@ export const EditorContent: React.FC<EditorContentProps> = ({
             <X className="w-4 h-4" />
           </button>
         </div>
+      )}
+
+      {/* Missing icons — persistent, because fixing them means visiting the
+          entries listed; a toast would vanish mid-fix. Amber: nothing is lost,
+          the PDF just can't be made yet. Cleared on the next valid attempt. */}
+      {editorActions.missingIconsNotice && (
+        <section
+          aria-labelledby="missing-icons-title"
+          className="mb-4 flex items-start gap-3 rounded-xl border border-amber-300 bg-amber-50 p-4"
+        >
+          <TriangleAlert className="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-700" aria-hidden="true" />
+          <div className="min-w-0 flex-1">
+            <h2 id="missing-icons-title" className="text-sm font-bold text-ink">
+              {editorActions.missingIconsNotice.icons.length === 1
+                ? '1 icon is missing, so your PDF can’t be made yet'
+                : `${editorActions.missingIconsNotice.icons.length} icons are missing, so your PDF can’t be made yet`}
+            </h2>
+            <p className="mt-1 text-sm text-ink/80">
+              {editorActions.missingIconsNotice.fromCloud
+                ? 'They didn’t load from your account. Upload each one again in the entry below, or remove it; it will save with your resume.'
+                : 'Upload each one again in the entry below, or remove the icon from that entry.'}
+            </p>
+            <ul className="mt-2 space-y-1 text-sm text-ink">
+              {editorActions.missingIconsNotice.icons.map(({ file, usedIn }) => (
+                <li key={file} className="break-words">
+                  <span className="font-mono text-xs">{file}</span>
+                  {usedIn.length > 0 && <span className="text-ink/80"> · {usedIn.join(', ')}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <button
+            onClick={editorActions.dismissMissingIconsNotice}
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-ink/60 hover:text-ink hover:bg-black/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
+            aria-label="Dismiss missing icons notice"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </section>
       )}
 
       {/* Contact Information Section — the one .section-card with no drag grip

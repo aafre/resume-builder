@@ -29,7 +29,7 @@ export const getSingleLineExtensions = (placeholder: string = '') => {
     Link.configure({
       openOnClick: false, // We handle click ourselves for double-click edit
       HTMLAttributes: {
-        class: 'text-blue-600 hover:text-blue-800 underline cursor-pointer',
+        class: 'text-accent-text hover:text-ink underline underline-offset-2 cursor-pointer',
       },
     }),
     Placeholder.configure({
@@ -63,7 +63,7 @@ export const getMultiLineExtensions = (placeholder: string = '') => {
     Link.configure({
       openOnClick: false,
       HTMLAttributes: {
-        class: 'text-blue-600 hover:text-blue-800 underline cursor-pointer',
+        class: 'text-accent-text hover:text-ink underline underline-offset-2 cursor-pointer',
       },
     }),
     Placeholder.configure({

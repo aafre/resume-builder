@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 
 /**
- * Drives the single ink pill behind the header's primary nav.
+ * Drives the single accent bar under the header's primary nav.
  *
  * The pill is one element that travels between links rather than a background
  * on each link, so a route change reads as movement instead of a swap. It is

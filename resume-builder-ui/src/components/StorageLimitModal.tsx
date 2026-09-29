@@ -27,7 +27,7 @@ export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
           <div className="flex items-center gap-3 mb-4">
             <div className="flex-shrink-0">
               <svg
-                className="w-12 h-12 text-yellow-500"
+                className="w-12 h-12 text-amber-600"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -60,7 +60,7 @@ export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
             </button>
             <button
               onClick={onClose}
-              className="flex-1 bg-gray-200 hover:bg-gray-300 text-ink font-medium py-2 px-4 rounded-lg transition-colors"
+              className="flex-1 bg-chalk-dark hover:bg-ink/[0.08] text-ink font-medium py-2 px-4 rounded-lg transition-colors"
             >
               Cancel
             </button>

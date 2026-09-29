@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useId, useRef } from "react";
 import ModalShell from "./shared/ModalShell";
 import { MdEditNote, MdPreview, MdClose, MdArrowForward } from "react-icons/md";
-import { DocumentArrowUpIcon, CheckCircleIcon, ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import { DocumentArrowUpIcon, CheckCircleIcon, ExclamationTriangleIcon, ClockIcon } from "@heroicons/react/24/solid";
+import { useNavigate } from "react-router-dom";
 import { useResumeParser } from "../hooks/useResumeParser";
+import { useAuth } from "../contexts/AuthContext";
+import { apiClient } from "../lib/api-client";
 
 interface TemplateStartModalProps {
   isOpen: boolean;
@@ -44,7 +47,34 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
     autoImportTimer.current = null;
   };
 
-  const { parseResume, parsing, progress, progressMessage, error, clearError } = useResumeParser();
+  const { parseResume, parsing, progress, progressMessage, error, errorKind, clearError } = useResumeParser();
+  const { session } = useAuth();
+  const navigate = useNavigate();
+  // Most recent saved resume, looked up only once the daily import cap is hit.
+  // undefined = still looking, null = none.
+  const [latestResume, setLatestResume] = useState<{ id: string; title: string } | null | undefined>();
+
+  useEffect(() => {
+    if (errorKind !== 'rate_limit') return;
+    let cancelled = false;
+    setLatestResume(undefined);
+    apiClient
+      .get('/api/resumes?limit=50', { session })
+      .then((data: any) => {
+        const resumes: any[] = data?.resumes || [];
+        const latest = resumes.reduce<any>(
+          (a, b) => (!a || new Date(b.updated_at) > new Date(a.updated_at) ? b : a),
+          null
+        );
+        if (!cancelled) setLatestResume(latest ? { id: latest.id, title: latest.title } : null);
+      })
+      .catch(() => {
+        if (!cancelled) setLatestResume(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [errorKind, session]);
 
   // Reset state when modal closes
   useEffect(() => {
@@ -256,13 +286,71 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
         </div>
       )}
 
-      {/* Error */}
-      {error && !parsing && (
+      {/* Daily import cap: a limit, not a failure, so no alarm colors and no retry */}
+      {error && !parsing && errorKind === 'rate_limit' && (
+        <div className="rounded-xl border border-black/[0.06] bg-chalk-dark p-6" role="status">
+          <div className="flex items-start gap-3">
+            <ClockIcon className="w-6 h-6 text-ink/60 shrink-0" aria-hidden="true" />
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-base text-ink mb-1">You've used today's imports</h3>
+              <p className="text-sm font-extralight text-ink/60">
+                {latestResume
+                  ? 'Imports reset tomorrow. Meanwhile, you can keep working on your latest resume.'
+                  : latestResume === null
+                    ? 'Imports reset tomorrow. Meanwhile, start from scratch or with example content below.'
+                    : 'Imports reset tomorrow.'}
+              </p>
+            </div>
+          </div>
+          {latestResume !== null && (
+            <button
+              type="button"
+              disabled={!latestResume}
+              onClick={() => latestResume && navigate(`/editor/${latestResume.id}`)}
+              className="btn-primary w-full mt-5 py-3 inline-flex items-center justify-center gap-2 disabled:opacity-50"
+            >
+              {latestResume ? (
+                <>
+                  <span className="truncate">Open {latestResume.title || 'your latest resume'}</span>
+                  <MdArrowForward className="text-lg shrink-0" aria-hidden="true" />
+                </>
+              ) : (
+                'Checking your resumes…'
+              )}
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* Bot check: a refresh gets a fresh Turnstile token */}
+      {error && !parsing && errorKind === 'bot_check' && (
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-6" role="alert">
+          <div className="flex items-start gap-3">
+            <ExclamationTriangleIcon className="w-6 h-6 text-amber-700 shrink-0" aria-hidden="true" />
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-base text-amber-900 mb-1">We couldn't verify your browser</h3>
+              <p className="text-sm text-amber-800">Refreshing the page usually fixes this. Then drop your file in again.</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="btn-secondary w-full mt-5 py-3"
+          >
+            Refresh Page
+          </button>
+        </div>
+      )}
+
+      {/* Bad file or server failure: retrying (with another file) can help */}
+      {error && !parsing && (errorKind === 'invalid_file' || errorKind === 'generic') && (
         <div className="rounded-xl border border-red-200 bg-red-50 p-6" role="alert">
           <div className="flex items-start gap-3">
             <ExclamationTriangleIcon className="w-6 h-6 text-red-600 shrink-0" aria-hidden="true" />
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-base text-red-900 mb-1">Upload failed</h3>
+              <h3 className="font-semibold text-base text-red-900 mb-1">
+                {errorKind === 'invalid_file' ? "We couldn't import this file" : 'Upload failed'}
+              </h3>
               <p className="text-sm text-red-700">{error}</p>
             </div>
           </div>
@@ -275,7 +363,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
             }}
             className="btn-secondary w-full mt-5 py-3"
           >
-            Try Again
+            {errorKind === 'invalid_file' ? 'Choose Another File' : 'Try Again'}
           </button>
         </div>
       )}

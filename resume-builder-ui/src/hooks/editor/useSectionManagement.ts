@@ -163,8 +163,7 @@ export const useSectionManagement = ({
    * The confirmation is kept on purpose, even now that undo exists. An entry
    * delete loses one row; a section delete loses every role, bullet and date
    * inside it, and the only thing standing between that and permanence is a
-   * five-second toast that the mobile action bar can sit on top of and that a
-   * mid-application interruption will outlast. Undo beats confirmation when the
+   * short-lived toast that a mid-application interruption will outlast. Undo beats confirmation when the
    * two costs are comparable; here they are not.
    */
   const handleDeleteSection = useCallback(
@@ -179,7 +178,7 @@ export const useSectionManagement = ({
   );
 
   /**
-   * Delete an entry within a section immediately, with a 5-second undo toast.
+   * Delete an entry within a section immediately, with an undo toast.
    *
    * Every entry delete in the editor routes through here — experience roles,
    * education entries, certifications, and every list item. Putting the undo

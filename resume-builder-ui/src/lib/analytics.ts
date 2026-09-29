@@ -295,3 +295,36 @@ export function trackPdfDownloadFailed(props: {
 }): void {
   run((ph) => ph.capture('pdf_download_failed', props));
 }
+
+// ─── Job listings ────────────────────────────────────────────────────
+// Job clicks per 100 pdf_downloaded is the jobs keep-or-kill metric (#818).
+
+/** Where job listings were shown. */
+export type JobContext = 'post_download' | 'jobs_page';
+
+/** Once per rendered result set. feed_mix counts listings per job feed. */
+export function trackJobImpression(props: {
+  context: JobContext;
+  count: number;
+  feed_mix: Record<string, number>;
+}): void {
+  run((ph) => ph.capture('job_impression', props));
+}
+
+/** A job listing was opened. position is 1-based. */
+export function trackJobClick(props: {
+  context: JobContext;
+  feed: string;
+  position: number;
+  match_score: number | null;
+}): void {
+  run((ph) => ph.capture('job_click', props));
+}
+
+/** A job search came back stale or refreshing because the job feeds are out of quota or failing. */
+export function trackJobQuotaExhausted(props: {
+  context: JobContext;
+  status: 'stale' | 'refreshing';
+}): void {
+  run((ph) => ph.capture('job_quota_exhausted', props));
+}

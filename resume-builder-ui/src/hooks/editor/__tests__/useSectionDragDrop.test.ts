@@ -234,7 +234,7 @@ describe('useSectionDragDrop', () => {
       expect(reorderedSections[2].name).toBe('Education');
     });
 
-    it('should show success toast when position changes', () => {
+    it('should not toast when position changes (the moved section is the feedback)', () => {
       const { result } = renderHook(() =>
         useSectionDragDrop({ sections, setSections })
       );
@@ -243,8 +243,7 @@ describe('useSectionDragDrop', () => {
         result.current.handleDragEnd(createDragEndEvent('0', '1'));
       });
 
-      expect(toast.success).toHaveBeenCalledTimes(1);
-      expect(toast.success).toHaveBeenCalledWith('Section reordered successfully!');
+      expect(toast.success).not.toHaveBeenCalled();
     });
 
     it('should clear drag state after drag end', () => {
@@ -459,7 +458,6 @@ describe('useSectionDragDrop', () => {
       expect(result.current.activeId).toBeNull();
       expect(result.current.draggedSection).toBeNull();
       expect(setSections).toHaveBeenCalledTimes(1);
-      expect(toast.success).toHaveBeenCalledTimes(1);
     });
 
     it('should handle complete drag lifecycle (start -> cancel)', () => {

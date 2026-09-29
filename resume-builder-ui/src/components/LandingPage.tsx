@@ -13,7 +13,28 @@ import {
   ChevronDownIcon,
 } from "@heroicons/react/24/solid";
 import { TUTORIAL_VIDEO } from "../config/videoContent";
-import { Odometer, ResumeCount } from "./Odometer";
+import { Odometer } from "./Odometer";
+
+// Figure-eight in a 100x50 box; one continuous stroke crossing at the centre
+const INFINITY_PATH = "M50 25C62 8 90 6 90 25C90 44 62 42 50 25C38 8 10 6 10 25C10 44 38 42 50 25";
+// Comet of light inside the ink: stacked dashes share one head, so the tail
+// fades as the layers thin out (tail → head: dash length, opacity).
+const COMET: [number, number][] = [[34, 0.06], [26, 0.1], [19, 0.16], [13, 0.26], [8, 0.42], [4, 1]];
+const InfinityComet = ({ className }: { className: string }) => (
+  <g className={`odo-inf-comet ${className}`}>
+    {COMET.map(([len, opacity], i) => (
+      <path
+        key={len}
+        d={INFINITY_PATH}
+        pathLength={100}
+        opacity={opacity}
+        strokeDasharray={`${len} ${100 - len}`}
+        strokeLinecap={i === COMET.length - 1 ? "round" : "butt"}
+        style={{ "--l": len } as React.CSSProperties}
+      />
+    ))}
+  </g>
+);
 
 // Animation-delay for the hero build sequence (consumed by hero-* classes in styles.css).
 // Static values only — the landing route must prerender/hydrate byte-identical.
@@ -69,7 +90,8 @@ const LandingPage: React.FC = () => {
   const heroFrameRef = useScrollReveal<HTMLElement>({ once: false, rootMargin: '0px' });
 
   // Triggers the stats odometer roll (.odo-band.revealed in styles.css)
-  const statsRef = useScrollReveal<HTMLDivElement>({ threshold: 0.5 });
+  // once:false so .offscreen can pause the ∞ tracer loop (styles.css)
+  const statsRef = useScrollReveal<HTMLDivElement>({ threshold: 0.5, once: false });
 
   // Features data
   const features = [
@@ -327,10 +349,18 @@ const LandingPage: React.FC = () => {
       <section className="bg-chalk-dark py-16 md:py-20">
         <div ref={statsRef} className="odo-band max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-12 sm:gap-0 sm:divide-x sm:divide-ink/10">
           <div className="text-center sm:px-16">
-            <p className="font-mono text-5xl md:text-7xl font-normal text-ink tracking-tight">
-              <ResumeCount bandRef={statsRef} />
+            <p className="inline-block font-mono text-5xl md:text-7xl font-normal text-ink tracking-tight">
+              {/* Ink loop draws on reveal behind a green comet, which then pulses through it (.odo-inf in styles.css) */}
+              <svg className="odo-inf" viewBox="0 0 100 50" role="img" aria-label="Unlimited" fill="none" strokeWidth={3.6} strokeLinecap="round">
+                <path className="odo-inf-base" d={INFINITY_PATH} pathLength={100} stroke="currentColor" />
+                <g className="stroke-accent" strokeWidth={1.6}>
+                  <InfinityComet className="odo-inf-lead" />
+                  <InfinityComet className="odo-inf-pulse" />
+                </g>
+              </svg>
+              <span aria-hidden="true" className="odo-rule block h-0.5 mt-3 bg-accent-text" />
             </p>
-            <p className="mt-5 font-mono text-xs tracking-[0.15em] uppercase text-ink/60">Resumes Created</p>
+            <p className="mt-2 font-mono text-xs tracking-[0.15em] uppercase text-ink/60">Free Downloads</p>
           </div>
           <div className="text-center sm:px-16">
             <p className="inline-block font-mono text-5xl md:text-7xl font-normal text-ink tracking-tight">

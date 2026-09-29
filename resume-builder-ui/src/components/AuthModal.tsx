@@ -2,6 +2,7 @@ import React, { useState, useId } from 'react';
 import ModalShell from './shared/ModalShell';
 import { useAuth } from '../contexts/AuthContext';
 import { toast } from 'react-hot-toast';
+import { toastFailure } from '../utils/toasts';
 import { FcGoogle } from 'react-icons/fc';
 import { FaLinkedin } from 'react-icons/fa';
 import { MdEmail, MdClose } from 'react-icons/md';
@@ -25,7 +26,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
       await signInWithGoogle();
       onSuccess?.();
     } catch (error: any) {
-      toast.error(error.message || 'Failed to sign in with Google');
+      toastFailure('sign in with Google', error);
     } finally {
       setLoading(false);
     }
@@ -37,7 +38,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
       await signInWithLinkedIn();
       onSuccess?.();
     } catch (error: any) {
-      toast.error(error.message || 'Failed to sign in with LinkedIn');
+      toastFailure('sign in with LinkedIn', error);
     } finally {
       setLoading(false);
     }
@@ -47,7 +48,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
     e.preventDefault();
 
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      toast.error('Please enter a valid email address');
+      toast.error('Enter your email address, like name@example.com.');
       return;
     }
 
@@ -55,9 +56,9 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
       setLoading(true);
       await signInWithEmail(email);
       setEmailSent(true);
-      toast.success('Magic link sent! Check your email to continue.');
+      toast.success('Check your email for your sign-in link.');
     } catch (error: any) {
-      toast.error(error.message || 'Failed to send magic link');
+      toastFailure('send your sign-in link', error);
     } finally {
       setLoading(false);
     }
@@ -89,7 +90,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
         <div className="p-6 overflow-y-auto">
           {!emailSent ? (
             <>
-              <p className="text-gray-600 mb-6">
+              <p className="text-ink/60 mb-6">
                 Save your resume to the cloud and access it from anywhere. No cost, no limits on editing.
               </p>
 
@@ -162,18 +163,18 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
             </>
           ) : (
             <div className="text-center py-8">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <MdEmail className="text-green-600" size={32} />
+              <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <MdEmail className="text-accent-text" size={32} />
               </div>
               <h3 className="text-xl font-semibold text-ink mb-2">Check Your Email</h3>
-              <p className="text-gray-600 mb-6">
+              <p className="text-ink/60 mb-6">
                 We've sent a magic link to <strong>{email}</strong>.
                 <br />
                 Click the link in the email to sign in.
               </p>
               <button
                 onClick={onClose}
-                className="px-6 py-2 bg-chalk-dark text-ink rounded-lg hover:bg-gray-200 transition-colors"
+                className="px-6 py-2 bg-chalk-dark text-ink rounded-lg hover:bg-ink/[0.08] transition-colors"
               >
                 Got it
               </button>

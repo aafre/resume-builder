@@ -11,6 +11,7 @@ ARG VITE_AFFILIATE_RESUME_REVIEW_ENABLED
 ARG VITE_AFFILIATE_RESUME_REVIEW_URL
 ARG VITE_POSTHOG_KEY
 ARG VITE_POSTHOG_HOST
+ARG VITE_TURNSTILE_SITE_KEY
 
 # Set as environment variables for Vite build process
 ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL
@@ -22,6 +23,7 @@ ENV VITE_AFFILIATE_RESUME_REVIEW_ENABLED=$VITE_AFFILIATE_RESUME_REVIEW_ENABLED
 ENV VITE_AFFILIATE_RESUME_REVIEW_URL=$VITE_AFFILIATE_RESUME_REVIEW_URL
 ENV VITE_POSTHOG_KEY=$VITE_POSTHOG_KEY
 ENV VITE_POSTHOG_HOST=$VITE_POSTHOG_HOST
+ENV VITE_TURNSTILE_SITE_KEY=$VITE_TURNSTILE_SITE_KEY
 
 WORKDIR /app/react
 COPY resume-builder-ui/package*.json ./
@@ -72,7 +74,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # Copy only necessary application files (excludes resume-builder-ui via .dockerignore patterns)
 # Copy Python files
-COPY --chown=appuser:appuser app.py resume_generator*.py job_engine.py jobs_pseo.py jobs_content.py generate_jobs_matrix.py ./
+COPY --chown=appuser:appuser app.py resume_generator*.py job_engine.py job_feeds.py jobs_pseo.py jobs_content.py generate_jobs_matrix.py ./
 COPY --chown=appuser:appuser jobs_matrix.json ./
 
 # Copy directories needed for the application
@@ -111,6 +113,7 @@ ENV PYTHONUNBUFFERED=1
 #   - SUPABASE_DB_PASSWORD
 #   - ADZUNA_APP_ID (required for Jobs feature)
 #   - ADZUNA_APP_KEY (required for Jobs feature)
+#   - JOBS_PSEO_ENABLED (off by default, see ADR-0001)
 
 # Add security labels
 LABEL security.non-root=true

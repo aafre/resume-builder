@@ -152,6 +152,37 @@ export interface SalaryOutlook {
 }
 
 /**
+ * One real job posting cited as posting evidence (see CONTEXT.md). Rendered
+ * as text only: posting URLs live in the evidence ledger, never on the page.
+ */
+export interface EvidencePosting {
+  employer: string;     // "OpenAI"
+  title: string;        // exact posting title, as published
+  location: string;     // "London" | "San Francisco" | "Remote (EU/UK)"
+  asks: string;         // one line, paraphrased: what the posting asks for
+  skills: string[];     // skills this posting mentions; drives the counts
+  group?: string;       // role-variant name (e.g. "AI Platform Engineer"); omit = main role
+}
+
+export interface PostingEvidence {
+  asOf: string;               // "YYYY-MM"; rendered "as seen Sep 2026"
+  postings: EvidencePosting[];
+}
+
+/**
+ * A neighbouring title with no URL of its own, covered as a labelled section
+ * inside the page (see CONTEXT.md "Role variant").
+ */
+export interface RoleVariant {
+  id: string;           // anchor, e.g. "ai-platform"
+  title: string;        // "AI Platform Engineer"
+  difference: string;   // one paragraph: how it differs from the page's main role
+  summary: string;      // one sample summary line
+  bullets: string[];    // ~5 achievement bullets
+  faqs: FAQConfig[];    // exactly 2; shown as visible Q&A, not in the FAQ schema
+}
+
+/**
  * Complete job example data structure (matches YAML file format)
  */
 export interface JobExampleData {
@@ -173,6 +204,10 @@ export interface JobExampleData {
   mistakes?: RoleMistake[];
   bulletRewrites?: BulletRewrite[]; // minimum 3
   salaryOutlook?: SalaryOutlook;    // omit rather than guess a mapping
+
+  // Role batch R1 (2026-09). Optional; existing pages are unaffected.
+  postingEvidence?: PostingEvidence;
+  roleVariant?: RoleVariant;
 }
 
 /**

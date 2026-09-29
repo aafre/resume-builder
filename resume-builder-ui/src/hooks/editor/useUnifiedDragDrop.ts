@@ -2,7 +2,6 @@
 // Unified drag-and-drop hook managing all drag levels (sections, items, subitems)
 
 import { useState, useCallback, useRef } from 'react';
-import { toast } from 'react-hot-toast';
 import {
   KeyboardSensor,
   PointerSensor,
@@ -335,7 +334,6 @@ export const useUnifiedDragDrop = ({
             oldIndex !== newIndex
           ) {
             setSections((prevSections) => arrayMove(prevSections, oldIndex!, newIndex!));
-            toast.success('Section reordered successfully!');
           }
           break;
         }

@@ -24,6 +24,7 @@ import { calculateSHA256 } from './utils/hash.ts';
 import { isLikelyResume } from './utils/resume-detector.ts';
 import { convertToYAML } from './utils/yaml-converter.ts';
 import { validateFile } from './utils/file-validator.ts';
+import { verifyTurnstileToken } from './utils/turnstile.ts';
 
 // Extractors
 import { extractTextFromPDF } from './extractors/pdf-extractor.ts';
@@ -39,6 +40,103 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Headers': 'authorization, content-type, x-client-info, apikey',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
+
+const FN_NAME = 'parse-resume';
+const MAX_PER_USER_PER_DAY = 10;
+const MAX_PER_IP_PER_DAY = 20;
+const MAX_BODY_BYTES = 11 * 1024 * 1024; // 10 MB file limit + multipart overhead
+const RATE_LIMIT_MESSAGE =
+  "You've imported several resumes today. Try again tomorrow, or edit your current resume in the editor.";
+const TURNSTILE_ERROR_MESSAGE = "Couldn't verify your browser, please refresh and try again";
+
+function getClientIp(req: Request): string | null {
+  const cf = req.headers.get('cf-connecting-ip');
+  if (cf) return cf;
+  const xff = req.headers.get('x-forwarded-for');
+  if (xff) return xff.split(',')[0].trim();
+  return null;
+}
+
+// Fail open: any error here must never block a legitimate user, just log it.
+async function isRateLimited(
+  supabaseAdmin: ReturnType<typeof createClient>,
+  userId: string,
+  ip: string | null
+): Promise<boolean> {
+  try {
+    const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+
+    const userCountPromise = supabaseAdmin
+      .from('ai_usage')
+      .select('id', { count: 'exact', head: true })
+      .eq('fn', FN_NAME)
+      .eq('user_id', userId)
+      .gte('created_at', since);
+
+    const ipCountPromise = ip
+      ? supabaseAdmin
+          .from('ai_usage')
+          .select('id', { count: 'exact', head: true })
+          .eq('fn', FN_NAME)
+          .eq('ip', ip)
+          .gte('created_at', since)
+      : null;
+
+    const [userResult, ipResult] = await Promise.all([
+      userCountPromise,
+      ipCountPromise ?? Promise.resolve({ count: 0, error: null }),
+    ]);
+
+    if (userResult.error || ipResult.error) {
+      console.error('ai_usage count check failed, failing open:', userResult.error || ipResult.error);
+      return false;
+    }
+
+    return (userResult.count ?? 0) >= MAX_PER_USER_PER_DAY || (ipResult.count ?? 0) >= MAX_PER_IP_PER_DAY;
+  } catch (error) {
+    console.error('ai_usage count check threw, failing open:', error);
+    return false;
+  }
+}
+
+// Records a successful parse for rate-limiting, then opportunistically purges old rows.
+// Never throws - usage tracking must not break a successful response.
+async function recordUsage(
+  supabaseAdmin: ReturnType<typeof createClient>,
+  userId: string,
+  ip: string | null
+): Promise<void> {
+  try {
+    const { error } = await supabaseAdmin.from('ai_usage').insert({ fn: FN_NAME, user_id: userId, ip });
+    if (error) {
+      console.error('ai_usage insert failed (non-fatal):', error);
+    }
+
+    // ponytail: 1-in-10 chance keeps cleanup cheap without a cron job; fine at this volume.
+    if (Math.random() < 0.1) {
+      const cutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+      const { error: purgeError } = await supabaseAdmin.from('ai_usage').delete().lt('created_at', cutoff);
+      if (purgeError) {
+        console.error('ai_usage purge failed (non-fatal):', purgeError);
+      }
+    }
+  } catch (error) {
+    console.error('ai_usage recordUsage threw (non-fatal):', error);
+  }
+}
+
+// Early responses must consume the whole body first: responding while the client
+// is still uploading leaves the fetch hanging (the response never arrives) - verified
+// on the edge runtime, where even a partial read + cancel still hangs the client.
+// Streams and discards chunks (O(chunk) memory, no multipart parse); total time is
+// bounded by the platform's wall-clock limit.
+async function drainBody(req: Request): Promise<void> {
+  try {
+    if (req.body) for await (const _chunk of req.body) { /* discard */ }
+  } catch (error) {
+    console.warn('Draining request body failed:', error);
+  }
+}
 
 /**
  * Main Edge Function handler
@@ -109,7 +207,34 @@ serve(async (req: Request) => {
     const userId = user.id;
     console.log('✅ Authenticated user:', userId);
 
-    // === 2. Parse multipart form data ===
+    // === 2. Reject oversized bodies before parsing them ===
+    const contentLength = Number(req.headers.get('content-length'));
+    if (contentLength > MAX_BODY_BYTES) {
+      await drainBody(req);
+      return new Response(
+        JSON.stringify({ success: false, error: 'File too large (max 10MB)' }),
+        {
+          status: 413,
+          headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
+    // === 2a. Rate limit: cap daily imports per user and per IP ===
+    const clientIp = getClientIp(req);
+    if (await isRateLimited(supabaseAdmin, userId, clientIp)) {
+      console.warn('Rate limit hit for user', userId, 'ip', clientIp);
+      await drainBody(req);
+      return new Response(
+        JSON.stringify({ success: false, error: RATE_LIMIT_MESSAGE }),
+        {
+          status: 429,
+          headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
+    // Parse multipart form data (only once the caller is under the cap)
     const formData = await req.formData();
     const file = formData.get('file') as File;
 
@@ -124,6 +249,28 @@ serve(async (req: Request) => {
     }
 
     console.log('File uploaded:', file.name, file.type, file.size, 'bytes');
+
+    // === 2b. Verify Turnstile token (bot check) ===
+    // Skipped (fail-open) until TURNSTILE_SECRET is set, so deploying this
+    // code before the owner sets the secret never breaks imports. Once set,
+    // a missing/invalid token is rejected before any hashing/extraction/AI work.
+    const turnstileSecret = Deno.env.get('TURNSTILE_SECRET');
+    if (turnstileSecret) {
+      const turnstileToken = formData.get('turnstile_token') as string | null;
+      const verified = await verifyTurnstileToken(turnstileToken, turnstileSecret, clientIp);
+      if (!verified) {
+        console.warn('Turnstile verification failed for user', userId, 'ip', clientIp);
+        return new Response(
+          JSON.stringify({ success: false, error: TURNSTILE_ERROR_MESSAGE }),
+          {
+            status: 403,
+            headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+          }
+        );
+      }
+    } else {
+      console.warn('TURNSTILE_SECRET not set - skipping Turnstile verification');
+    }
 
     // === 3. Calculate file hash for caching ===
     const fileBuffer = await file.arrayBuffer();
@@ -140,6 +287,7 @@ serve(async (req: Request) => {
 
     if (cached) {
       console.log('Cache hit! Returning cached result.');
+      await recordUsage(supabaseAdmin, userId, clientIp);
 
       // Hallucination check for cached results
       const cachedWarnings = [...(cached.warnings || [])];
@@ -335,6 +483,8 @@ serve(async (req: Request) => {
     } else {
       console.log('Result cached successfully');
     }
+
+    await recordUsage(supabaseAdmin, userId, clientIp);
 
     // === 13. Hallucination Check ===
     // Add warning about AI-generated content that should be reviewed

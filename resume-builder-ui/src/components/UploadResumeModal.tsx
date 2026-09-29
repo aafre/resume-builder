@@ -117,22 +117,22 @@ export function UploadResumeModal({
             <div
               className={`mb-4 p-4 rounded-lg border-2 ${
                 parseResult.ui_message.type === 'success'
-                  ? 'bg-green-50 border-green-200'
-                  : 'bg-yellow-50 border-yellow-200'
+                  ? 'bg-accent/[0.06] border-accent/30'
+                  : 'bg-amber-50 border-amber-200'
               }`}
             >
               <div className="flex items-start gap-3">
                 {parseResult.ui_message.type === 'success' ? (
-                  <CheckCircleIcon className="w-6 h-6 text-green-600 flex-shrink-0" />
+                  <CheckCircleIcon className="w-6 h-6 text-accent-text flex-shrink-0" />
                 ) : (
-                  <ExclamationTriangleIcon className="w-6 h-6 text-yellow-600 flex-shrink-0" />
+                  <ExclamationTriangleIcon className="w-6 h-6 text-amber-600 flex-shrink-0" />
                 )}
                 <div className="flex-1">
                   <h3
                     className={`font-semibold ${
                       parseResult.ui_message.type === 'success'
-                        ? 'text-green-900'
-                        : 'text-yellow-900'
+                        ? 'text-ink'
+                        : 'text-amber-900'
                     }`}
                   >
                     {parseResult.ui_message.title}
@@ -140,8 +140,8 @@ export function UploadResumeModal({
                   <p
                     className={`text-sm mt-1 ${
                       parseResult.ui_message.type === 'success'
-                        ? 'text-green-700'
-                        : 'text-yellow-700'
+                        ? 'text-ink/80'
+                        : 'text-amber-700'
                     }`}
                   >
                     {parseResult.ui_message.description}
@@ -152,15 +152,15 @@ export function UploadResumeModal({
                     <ul className="mt-3 text-sm space-y-1">
                       {parseResult.warnings.map((warning: string, idx: number) => (
                         <li key={idx} className="flex items-start gap-2">
-                          <span className="text-yellow-600">•</span>
-                          <span className="text-yellow-700">{warning}</span>
+                          <span className="text-amber-600">•</span>
+                          <span className="text-amber-700">{warning}</span>
                         </li>
                       ))}
                     </ul>
                   )}
 
                   {/* Confidence & Cache Info */}
-                  <div className="mt-3 flex items-center gap-4 text-xs text-gray-600">
+                  <div className="mt-3 flex items-center gap-4 text-xs text-ink/60">
                     <span>
                       Confidence: {(parseResult.confidence * 100).toFixed(0)}%
                     </span>
@@ -233,9 +233,9 @@ export function UploadResumeModal({
                 <span className="text-sm font-medium text-ink">
                   Parsing your resume...
                 </span>
-                <span className="text-sm text-gray-600">{progress}%</span>
+                <span className="text-sm text-ink/60">{progress}%</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+              <div className="w-full bg-ink/[0.08] rounded-full h-2 overflow-hidden">
                 <div
                   className="bg-accent h-2 rounded-full transition-all duration-300"
                   style={{ width: `${progress}%` }}

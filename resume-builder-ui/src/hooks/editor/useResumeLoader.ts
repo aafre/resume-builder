@@ -3,7 +3,6 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Session } from '@supabase/supabase-js';
-import { toast } from 'react-hot-toast';
 import yaml from 'js-yaml';
 import { ContactInfo, Section } from '../../types';
 import { UseResumeLoaderReturn } from '../../types/editor';
@@ -274,11 +273,6 @@ export const useResumeLoader = ({
           setShowAIWarning(true);
           setAIWarnings(resume.ai_import_warnings || []);
           setAIConfidence(resume.ai_import_confidence || 0);
-        }
-
-        // Only show toast if NOT loading after migration from tour sign-in
-        if (!isSigningInFromTour) {
-          toast.success('Resume loaded successfully');
         }
 
         setIsLoadingFromUrl(false);

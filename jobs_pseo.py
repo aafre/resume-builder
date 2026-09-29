@@ -24,6 +24,7 @@ from typing import Any
 from jinja2 import Environment, FileSystemLoader
 
 from job_engine import JobMatchEngine, MatchContext, TITLE_SYNONYMS
+from job_feeds import AdzunaFeed
 from jobs_content import get_intro_copy, get_faqs, format_salary_insight
 from generate_jobs_matrix import (
     FILTER_MODIFIERS,
@@ -837,7 +838,7 @@ class PseoRenderer:
         )
 
     def _get_engine(self) -> JobMatchEngine:
-        return JobMatchEngine(self.adzuna_app_id, self.adzuna_app_key, supabase=self.supabase)
+        return JobMatchEngine([AdzunaFeed(self.adzuna_app_id, self.adzuna_app_key)], supabase=self.supabase)
 
     def _clean_jobs(self, jobs: list[dict]) -> list[dict]:
         """Clean job data for rendering (keep _description temporarily for skill extraction)."""

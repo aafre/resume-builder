@@ -1,6 +1,7 @@
 import atexit
 import base64
 import copy
+import dataclasses
 import hashlib
 import json
 import logging
@@ -24,6 +25,7 @@ from dotenv import load_dotenv
 from flask import (
     Flask,
     jsonify,
+    make_response,
     redirect,
     request,
     send_file,
@@ -44,6 +46,14 @@ load_dotenv()
 
 # pSEO imports (lazy — only used in production or when ADZUNA keys present)
 from jobs_pseo import PageType, PseoRenderer, load_vite_manifest
+from job_feeds import (
+    ADZUNA_COUNTRIES,
+    AdzunaFeed,
+    FeedError,
+    FeedQuotaExceeded,
+    is_exhausted,
+    mark_exhausted,
+)
 
 # Configure logging based on environment variable
 # Set DEBUG_LOGGING=true to enable detailed debug logs for troubleshooting
@@ -57,6 +67,7 @@ TRANSIENT_ERROR_KEYWORDS = (
     "server disconnected",
     "connection",
     "timeout",
+    "timed out",
     "reset",
     "network",
 )
@@ -1223,8 +1234,15 @@ _pseo_renderer = None
 
 
 def _get_pseo_renderer():
-    """Lazy-init the pSEO renderer on first use."""
+    """Lazy-init the pSEO renderer on first use.
+
+    Off unless JOBS_PSEO_ENABLED is true, even with Adzuna credentials set
+    (ADR-0001). When off, /jobs* crawlers get the SPA shell and the jobs
+    sitemap 404s.
+    """
     global _pseo_renderer
+    if os.getenv("JOBS_PSEO_ENABLED", "").strip().lower() not in ("1", "true", "yes"):
+        return None
     if _pseo_renderer is not None:
         return _pseo_renderer
 
@@ -1383,6 +1401,23 @@ def require_auth(f):
 
         # Enhanced logging with context for debugging auth issues
         error_msg = str(last_auth_exception)
+
+        # Upstream flake, not a bad token: 401 would make the client sign out,
+        # wiping an anonymous user's session and orphaning their resumes.
+        if is_transient_error(error_msg):
+            logging.error(
+                f"Auth upstream unavailable: {error_msg} | endpoint={request.path} | "
+                f"method={request.method}"
+            )
+            return (
+                jsonify(
+                    {
+                        "success": False,
+                        "error": "Service temporarily unavailable, please retry",
+                    }
+                ),
+                503,
+            )
         is_expired = "expired" in error_msg.lower()
         user_agent = request.headers.get("User-Agent", "unknown")[:50]
 
@@ -1604,6 +1639,19 @@ def _get_prerendered_path(route_path: str) -> str | None:
 # =============================================================================
 
 
+def _jobs_shell(dev_body: str, status: int = 200):
+    """
+    SPA shell for /jobs*. The shell's own <meta robots> says index, so the
+    noindex travels in the header, which non-JS crawlers also see (ADR-0001).
+    """
+    if FLASK_ENV == "production" and app.static_folder:
+        resp = make_response(send_from_directory(app.static_folder, "index.html"), status)
+    else:
+        resp = make_response(dev_body, status)
+    resp.headers["X-Robots-Tag"] = "noindex, follow"
+    return resp
+
+
 @app.route("/jobs/<path:subpath>", methods=["GET"])
 def jobs_pseo(subpath):
     """
@@ -1614,34 +1662,24 @@ def jobs_pseo(subpath):
 
     # Only serve SSR HTML to bots — humans get the React SPA
     if not _is_bot(user_agent):
-        if FLASK_ENV == "production" and app.static_folder:
-            return send_from_directory(app.static_folder, "index.html")
-        # Dev mode: let Vite handle it
-        return "<!-- dev mode: use Vite -->", 200
+        return _jobs_shell("<!-- dev mode: use Vite -->")
 
     renderer = _get_pseo_renderer()
     if not renderer:
-        # pSEO not configured — serve SPA shell
-        if FLASK_ENV == "production" and app.static_folder:
-            return send_from_directory(app.static_folder, "index.html")
-        return "<!-- pSEO not configured -->", 200
+        return _jobs_shell("<!-- pSEO not configured -->")
 
     segments = [s for s in subpath.strip("/").split("/") if s]
     page_type, params = renderer.resolve_url(segments)
 
     if page_type is None:
-        # Invalid URL — return 404 with SPA shell so React can show 404 page
-        if FLASK_ENV == "production" and app.static_folder:
-            return send_from_directory(app.static_folder, "index.html"), 404
-        return "<!-- 404 -->", 404
+        # Invalid URL — 404 with SPA shell so React can show its 404 page
+        return _jobs_shell("<!-- 404 -->", 404)
 
     page_num = request.args.get("page", 1, type=int)
     html = renderer.get_page(page_type, page=page_num, **params)
 
     if html is None:
-        if FLASK_ENV == "production" and app.static_folder:
-            return send_from_directory(app.static_folder, "index.html"), 404
-        return "<!-- no data -->", 404
+        return _jobs_shell("<!-- no data -->", 404)
 
     return html, 200, {"Content-Type": "text/html; charset=utf-8"}
 
@@ -1651,28 +1689,25 @@ def jobs_main():
     """Serve /jobs main hub page."""
     user_agent = request.headers.get("User-Agent", "")
     if not _is_bot(user_agent):
-        if FLASK_ENV == "production" and app.static_folder:
-            return send_from_directory(app.static_folder, "index.html")
-        return "<!-- dev mode: use Vite -->", 200
+        return _jobs_shell("<!-- dev mode: use Vite -->")
 
     renderer = _get_pseo_renderer()
     if not renderer:
-        if FLASK_ENV == "production" and app.static_folder:
-            return send_from_directory(app.static_folder, "index.html")
-        return "<!-- pSEO not configured -->", 200
+        return _jobs_shell("<!-- pSEO not configured -->")
 
     html = renderer.get_page(PageType.MAIN_HUB)
     if html:
         return html, 200, {"Content-Type": "text/html; charset=utf-8"}
 
-    if FLASK_ENV == "production" and app.static_folder:
-        return send_from_directory(app.static_folder, "index.html")
-    return "<!-- no data -->", 200
+    return _jobs_shell("<!-- no data -->")
 
 
 @app.route("/api/jobs/page/<path:subpath>", methods=["GET"])
 def jobs_pseo_data(subpath):
     """JSON data for React client-side navigation and pagination."""
+    limited = _jobs_rate_limited("jobs_page", JOBS_PAGE_RATE_LIMIT)
+    if limited:
+        return limited
     renderer = _get_pseo_renderer()
     if not renderer:
         return jsonify({"success": False, "error": "pSEO not configured"}), 503
@@ -3140,29 +3175,36 @@ MIGRATE_COMPAT_EXPIRES = datetime(2026, 11, 1, tzinfo=timezone.utc)
 # if we ever run enough workers that a per-process budget stops meaning anything.
 MIGRATE_RATE_LIMIT = 5
 MIGRATE_RATE_WINDOW_SECONDS = 300
-_migrate_attempts: dict[str, list[float]] = {}
+
+# Generic per-bucket fixed-window limiter, shared by the migrate endpoint above
+# and the jobs endpoints below. Each bucket gets its own {key: [timestamps]} dict.
+# ponytail: in-process, per worker, no lock, resets on restart — the Cloudflare
+# edge rule (separate human issue) covers all instances; move to Redis only if a
+# per-process budget stops meaning anything.
+_rate_limit_buckets: dict[str, dict[str, list[float]]] = {}
+# Kept as a name so existing tests can clear it directly without knowing about
+# the generic bucket dict underneath (same dict object, bucket="migrate").
+# Other tests that reset rate-limit state should clear each bucket's contents
+# in place (`for v in _rate_limit_buckets.values(): v.clear()`), not replace
+# _rate_limit_buckets itself — that would orphan this alias.
+_migrate_attempts: dict[str, list[float]] = _rate_limit_buckets.setdefault("migrate", {})
 
 
-def _migrate_rate_limited(caller_uid: str) -> bool:
-    """Record an attempt for caller_uid; True if it exceeds the window budget."""
-    global _migrate_attempts
+def _rate_limited(bucket: str, key: str, limit: int, window_s: int) -> bool:
+    """Record an attempt for key in bucket; True if it exceeds the window budget."""
+    store = _rate_limit_buckets.setdefault(bucket, {})
     now = time.monotonic()
 
-    if len(_migrate_attempts) > 10000:  # bound memory; entries expire anyway
-        _migrate_attempts = {
-            uid: stamps
-            for uid, stamps in _migrate_attempts.items()
-            if stamps and now - stamps[-1] < MIGRATE_RATE_WINDOW_SECONDS
-        }
+    if len(store) > 10000:  # bound memory; entries expire anyway
+        for stale_key in [
+            k for k, stamps in store.items() if not stamps or now - stamps[-1] >= window_s
+        ]:
+            del store[stale_key]
 
-    recent = [
-        t
-        for t in _migrate_attempts.get(caller_uid, [])
-        if now - t < MIGRATE_RATE_WINDOW_SECONDS
-    ]
+    recent = [t for t in store.get(key, []) if now - t < window_s]
     recent.append(now)
-    _migrate_attempts[caller_uid] = recent
-    return len(recent) > MIGRATE_RATE_LIMIT
+    store[key] = recent
+    return len(recent) > limit
 
 
 @app.route("/api/migrate-anonymous-resumes", methods=["POST"])
@@ -3202,7 +3244,7 @@ def migrate_anonymous_resumes():
         if not old_user_id:
             return jsonify({"error": "old_user_id is required"}), 400
 
-        if _migrate_rate_limited(new_user_id):
+        if _rate_limited("migrate", new_user_id, MIGRATE_RATE_LIMIT, MIGRATE_RATE_WINDOW_SECONDS):
             logging.warning(
                 f"Migration rate limited | caller={new_user_id} | source={old_user_id}"
             )
@@ -4126,33 +4168,94 @@ def update_user_preferences():
         return jsonify({"success": False, "error": "Failed to update preferences"}), 500
 
 
-# ===== Adzuna Job Search Proxy =====
+# ===== Job Search (job feeds: see job_feeds.py) =====
 
-ADZUNA_SUPPORTED_COUNTRIES = {
-    "gb",
-    "us",
-    "at",
-    "au",
-    "be",
-    "br",
-    "ca",
-    "ch",
-    "de",
-    "es",
-    "fr",
-    "in",
-    "it",
-    "mx",
-    "nl",
-    "nz",
-    "pl",
-    "sg",
-    "za",
-}
+ADZUNA_SUPPORTED_COUNTRIES = ADZUNA_COUNTRIES
 
-# Simple TTL cache for Adzuna responses (15 minutes)
+# Last good result per search, served as "stale" only when every feed is
+# exhausted or failing. Separate from the 15-minute cache below.
+_saved_job_results: dict = {}
+_SAVED_JOB_RESULTS_TTL = 24 * 3600
+# ponytail: per-worker memory with a fixed cap (oldest evicted first); move to
+# Redis if several workers need to share results.
+_JOB_CACHE_MAX_ENTRIES = 500
+
+
+def _cache_put(cache: dict, key, data, now: float, ttl: float) -> None:
+    """Store {"ts", "data"}, dropping expired entries and the oldest past the cap."""
+    for k in [k for k, v in cache.items() if now - v["ts"] >= ttl]:
+        del cache[k]
+    cache.pop(key, None)
+    while len(cache) >= _JOB_CACHE_MAX_ENTRIES:
+        del cache[next(iter(cache))]
+    cache[key] = {"ts": now, "data": data}
+
+
+def _job_fallback(key: str, feeds: list, context, now: float, engine) -> dict:
+    """No feed could answer: last saved result (stale), else a refreshing state."""
+    saved = _saved_job_results.get(key)
+    if saved and now - saved["ts"] < _SAVED_JOB_RESULTS_TTL:
+        fetched_at = datetime.fromtimestamp(saved["ts"], timezone.utc).isoformat()
+        return {**engine.rank(saved["data"], context), "status": "stale", "fetchedAt": fetched_at}
+    return {
+        "count": 0,
+        "jobs": [],
+        "ai_terms_used": [],
+        "total_available": 0,
+        "status": "refreshing",
+        "searchUrl": feeds[0].search_url(context.query, context.location, context.country),
+    }
+
+
+# MatchContext fields used only for scoring, never sent to a feed
+_RESUME_CONTEXT_FIELDS = {"skills", "seniority_level", "years_experience"}
+
+# Freshness cache for job search responses, GET and POST (15 minutes)
 _adzuna_cache = {}
 _ADZUNA_CACHE_TTL = 900  # seconds
+
+# Per-IP rate limits so scripted callers can't burn the Adzuna daily quota or
+# the OpenAI tier-3 fallback. Uses the generic _rate_limited() bucket limiter.
+JOBS_SEARCH_RATE_LIMIT = 60
+JOBS_SUGGEST_ROLES_RATE_LIMIT = 20
+JOBS_PAGE_RATE_LIMIT = 60
+JOBS_RATE_WINDOW_SECONDS = 600
+_JOBS_RATE_LIMIT_ERROR = "Too many searches — try again in a few minutes"
+
+
+def _client_ip() -> str:
+    """Cloudflare's client IP header, else the socket address (local dev)."""
+    return request.headers.get("CF-Connecting-IP") or request.remote_addr or "unknown"
+
+
+def _jobs_rate_limited(bucket: str, limit: int):
+    """None if under budget, else the 429 response to return."""
+    if _rate_limited(bucket, _client_ip(), limit, JOBS_RATE_WINDOW_SECONDS):
+        return jsonify({"success": False, "error": _JOBS_RATE_LIMIT_ERROR}), 429
+    return None
+
+
+def _capped_str(value, max_len: int = 100) -> str:
+    return (value or "")[:max_len]
+
+
+def _clamped_int(value: int, low: int, high: int) -> int:
+    return max(low, min(high, value))
+
+
+@app.route("/api/jobs/availability", methods=["GET"])
+def jobs_availability():
+    """
+    Whether the jobs feature should show for this visitor, from Cloudflare's
+    CF-IPCountry. No header (local dev, not behind Cloudflare) fails open.
+    XX (unknown) and T1 (Tor) match no feed, so they come out unsupported.
+    """
+    country = (request.headers.get("CF-IPCountry") or "").strip().lower() or None
+    if country is None:
+        return jsonify({"available": True, "country": None})
+    # Cloudflare sends GB; Adzuna's code is also gb, so no mapping needed.
+    available = any(f.configured and country in f.countries for f in (AdzunaFeed.from_env(),))
+    return jsonify({"available": available, "country": country})
 
 
 @app.route("/api/jobs/search", methods=["GET", "POST"])
@@ -4163,6 +4266,9 @@ def search_jobs():
     GET: Legacy passthrough (backward compat, no re-ranking)
     POST: 3-tier search with scoring via JobMatchEngine
     """
+    limited = _jobs_rate_limited("jobs_search", JOBS_SEARCH_RATE_LIMIT)
+    if limited:
+        return limited
     if request.method == "POST":
         return _search_jobs_post()
     return _search_jobs_get()
@@ -4173,7 +4279,7 @@ def _search_jobs_post():
     from job_engine import JobMatchEngine, MatchContext
 
     body = request.get_json(silent=True) or {}
-    query = (body.get("query") or "").strip()
+    query = _capped_str((body.get("query") or "").strip())
     if not query:
         return jsonify({"success": False, "error": "query is required"}), 400
 
@@ -4181,10 +4287,9 @@ def _search_jobs_post():
     if country not in ADZUNA_SUPPORTED_COUNTRIES:
         country = "us"
 
-    app_id = os.getenv("ADZUNA_APP_ID")
-    app_key = os.getenv("ADZUNA_APP_KEY")
-    if not app_id or not app_key:
-        logging.warning("Adzuna API credentials not configured")
+    feeds = [f for f in (AdzunaFeed.from_env(),) if f.configured]
+    if not feeds:
+        logging.warning("No job feed configured")
         return jsonify({"success": False, "error": "Job search not configured"}), 502
 
     sort_by = (body.get("sort_by") or "relevance").strip()
@@ -4194,10 +4299,10 @@ def _search_jobs_post():
     try:
         context = MatchContext(
             query=query,
-            location=(body.get("location") or "").strip(),
+            location=_capped_str((body.get("location") or "").strip()),
             country=country,
             category=(body.get("category") or "").strip().lower(),
-            skills=body.get("skills") or [],
+            skills=(body.get("skills") or [])[:30],
             seniority_level=(body.get("seniority_level") or "").strip(),
             years_experience=int(body.get("years_experience") or 0),
             salary_min=int(body.get("salary_min") or 0),
@@ -4207,23 +4312,42 @@ def _search_jobs_post():
             permanent=bool(body.get("permanent")),
             sort_by=sort_by,
             # Advanced filters
-            distance=int(body.get("distance") or 0),
+            distance=_clamped_int(int(body.get("distance") or 0), 0, 200),
             contract=bool(body.get("contract")),
             part_time=bool(body.get("part_time")),
             salary_max=int(body.get("salary_max") or 0),
             sort_dir=(body.get("sort_dir") or "").strip(),
-            what_exclude=(body.get("what_exclude") or "").strip(),
-            company=(body.get("company") or "").strip(),
+            what_exclude=_capped_str((body.get("what_exclude") or "").strip()),
+            company=_capped_str((body.get("company") or "").strip()),
             what_phrase=(body.get("what_phrase") or "").strip(),
-            page=int(body.get("page") or 1),
+            page=_clamped_int(int(body.get("page") or 1), 1, 10),
             results_per_page=min(max(int(body.get("results_per_page") or 20), 1), 50),
         )
     except (ValueError, TypeError) as e:
         return jsonify({"success": False, "error": f"Invalid parameter: {e}"}), 400
 
+    # Cache and saved results hold unscored feed results, keyed on the feed
+    # query only, and are ranked per resume on the way out. Key before
+    # fetching: the engine relaxes title_only on the context.
+    query_key = json.dumps(
+        {k: v for k, v in dataclasses.asdict(context).items() if k not in _RESUME_CONTEXT_FIELDS},
+        sort_keys=True,
+    )
+    engine = JobMatchEngine(feeds, supabase=supabase)
     try:
-        engine = JobMatchEngine(app_id, app_key, supabase=supabase)
-        data = engine.search_and_rank(context)
+        cached = _adzuna_cache.get(query_key)
+        if cached and (time.time() - cached["ts"]) < _ADZUNA_CACHE_TTL:
+            fetched = cached["data"]
+        else:
+            fetched = engine.fetch(context)
+            now = time.time()
+            if not fetched["jobs"] and not engine.feed_answered:
+                data = _job_fallback(query_key, feeds, context, now, engine)
+                return jsonify({"success": True, "data": data})
+            _cache_put(_saved_job_results, query_key, fetched, now, _SAVED_JOB_RESULTS_TTL)
+            _cache_put(_adzuna_cache, query_key, fetched, now, _ADZUNA_CACHE_TTL)
+        data = engine.rank(fetched, context)
+        data["status"] = "fresh"
         return jsonify({"success": True, "data": data})
     except Exception as e:
         logging.error(f"Job match engine error: {e}")
@@ -4235,117 +4359,73 @@ def _search_jobs_post():
 
 def _search_jobs_get():
     """GET handler: legacy passthrough (backward compat, no re-ranking)."""
-    query = request.args.get("query", "").strip()
+    from job_engine import MatchContext
+
+    query = _capped_str(request.args.get("query", "").strip())
     if not query:
         return jsonify({"success": False, "error": "query parameter is required"}), 400
 
-    location = request.args.get("location", "").strip()
-    category = request.args.get("category", "").strip().lower()
-    what_or = request.args.get("what_or", "").strip()
     country = request.args.get("country", "us").strip().lower()
-    page = min(max(int(request.args.get("page", "1")), 1), 5)
-
     if country not in ADZUNA_SUPPORTED_COUNTRIES:
         country = "us"
 
-    app_id = os.getenv("ADZUNA_APP_ID")
-    app_key = os.getenv("ADZUNA_APP_KEY")
-    if not app_id or not app_key:
-        logging.warning("Adzuna API credentials not configured")
+    feed = AdzunaFeed.from_env()
+    if not feed.configured:
+        logging.warning("No job feed configured")
         return jsonify({"success": False, "error": "Job search not configured"}), 502
 
-    # Optional passthrough params
-    title_only = request.args.get("title_only", "").strip()
-    max_days_old = request.args.get("max_days_old", "").strip()
-    salary_min = request.args.get("salary_min", "").strip()
-    full_time = request.args.get("full_time", "").strip()
-    permanent = request.args.get("permanent", "").strip()
-    sort_by = request.args.get("sort_by", "relevance").strip()
-    if sort_by not in ("relevance", "salary", "date"):
-        sort_by = "relevance"
+    arg = lambda name: request.args.get(name, "").strip()  # noqa: E731
+    sort_by = arg("sort_by") or "relevance"
+    try:
+        context = MatchContext(
+            query=query,
+            location=_capped_str(arg("location")),
+            country=country,
+            category=arg("category").lower(),
+            what_or=arg("what_or"),
+            title_only=bool(arg("title_only")),
+            max_days_old=int(arg("max_days_old") or 0),
+            salary_min=int(arg("salary_min") or 0),
+            full_time=bool(arg("full_time")),
+            permanent=bool(arg("permanent")),
+            sort_by=sort_by if sort_by in ("relevance", "salary", "date") else "relevance",
+            page=min(max(int(arg("page") or 1), 1), 5),
+            results_per_page=10,
+        )
+    except ValueError as e:
+        return jsonify({"success": False, "error": f"Invalid parameter: {e}"}), 400
 
-    # Check cache
-    cache_key = (
-        query.lower(),
-        location.lower(),
-        country,
-        category,
-        what_or.lower(),
-        page,
-        title_only,
-        max_days_old,
-        salary_min,
-        full_time,
-        permanent,
-        sort_by,
-    )
+    cache_key = (query.lower(), context.location.lower(), context.what_or.lower(),
+                 *(str(getattr(context, f)) for f in (
+                     "country", "category", "page", "title_only", "max_days_old",
+                     "salary_min", "full_time", "permanent", "sort_by")))
     now = time.time()
     cached = _adzuna_cache.get(cache_key)
     if cached and (now - cached["ts"]) < _ADZUNA_CACHE_TTL:
         return jsonify({"success": True, "data": cached["data"]})
 
     try:
-        params = {
-            "app_id": app_id,
-            "app_key": app_key,
-            "what": query,
-            "results_per_page": 10,
-            "sort_by": sort_by,
-            "salary_include_unknown": "1",
-        }
-        if location:
-            params["where"] = location
-        if category:
-            params["category"] = category
-        if what_or:
-            params["what_or"] = what_or
-        if title_only:
-            params["title_only"] = title_only
-        if max_days_old:
-            params["max_days_old"] = max_days_old
-        if salary_min:
-            params["salary_min"] = salary_min
-        if full_time:
-            params["full_time"] = full_time
-        if permanent:
-            params["permanent"] = permanent
-
-        resp = http_requests.get(
-            f"https://api.adzuna.com/v1/api/jobs/{country}/search/{page}",
-            params=params,
-            timeout=5,
-        )
-        resp.raise_for_status()
-        raw = resp.json()
-
-        jobs = []
-        for r in raw.get("results", []):
-            jobs.append(
-                {
-                    "title": r.get("title", ""),
-                    "company": (r.get("company", {}) or {}).get("display_name", ""),
-                    "location": (r.get("location", {}) or {}).get("display_name", ""),
-                    "salary_min": r.get("salary_min"),
-                    "salary_max": r.get("salary_max"),
-                    "salary_is_predicted": bool(r.get("salary_is_predicted")),
-                    "url": r.get("redirect_url", ""),
-                    "created": r.get("created", ""),
-                }
-            )
-
-        data = {"count": raw.get("count", 0), "jobs": jobs}
-
-        # Store in cache
-        _adzuna_cache[cache_key] = {"ts": now, "data": data}
-
-        return jsonify({"success": True, "data": data})
-
-    except http_requests.RequestException as e:
-        logging.error(f"Adzuna API error: {e}")
+        if is_exhausted(feed.name):
+            raise FeedError("quota exhausted for today")
+        jobs, count = feed.search(context, query)
+    except FeedQuotaExceeded:
+        mark_exhausted(feed.name)
         return (
             jsonify({"success": False, "error": "Job search temporarily unavailable"}),
             502,
         )
+    except FeedError as e:
+        logging.error(f"Job feed error: {e}")
+        return (
+            jsonify({"success": False, "error": "Job search temporarily unavailable"}),
+            502,
+        )
+
+    for job in jobs:
+        job.pop("_description", None)
+    data = {"count": count, "jobs": jobs, "status": "fresh"}
+    _cache_put(_adzuna_cache, cache_key, data, now, _ADZUNA_CACHE_TTL)
+    return jsonify({"success": True, "data": data})
 
 
 # ===== AI Role Suggestions =====
@@ -4361,6 +4441,9 @@ def suggest_roles():
     Calls the suggest-roles Supabase Edge Function with 15-min in-memory cache.
     Gracefully returns the original title on any failure.
     """
+    limited = _jobs_rate_limited("jobs_suggest_roles", JOBS_SUGGEST_ROLES_RATE_LIMIT)
+    if limited:
+        return limited
     body = request.get_json(silent=True) or {}
     title = (body.get("title") or "").strip()
     if not title:
@@ -4395,18 +4478,20 @@ def suggest_roles():
 
     fallback = {"primary_role": title, "alternative_roles": [], "confidence": 0}
 
-    if not supabase:
+    internal_key = os.environ.get("INTERNAL_FN_KEY")
+    if not supabase or not internal_key:
         return jsonify({"success": True, **fallback})
 
     try:
         response = supabase.functions.invoke(
             "suggest-roles",
             invoke_options={
+                "headers": {"x-internal-key": internal_key},
                 "body": {
                     "title": title,
                     "skills": skills,
                     "experience_titles": experience_titles,
-                }
+                },
             },
         )
 

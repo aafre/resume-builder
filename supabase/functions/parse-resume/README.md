@@ -72,6 +72,12 @@ Set the required secrets:
 # Set OpenAI API key (required - not auto-injected)
 supabase secrets set OPENAI_API_KEY=sk-your-api-key-here
 
+# Set Cloudflare Turnstile secret (bot check on resume import).
+# Optional at deploy time: if unset, verification is skipped (logged as a
+# warning) so deploying this function before the secret exists never breaks
+# imports. Once set, a missing/invalid `turnstile_token` gets a 403.
+supabase secrets set TURNSTILE_SECRET=0x-your-turnstile-secret-here
+
 # Verify secrets
 supabase secrets list
 ```
@@ -79,6 +85,7 @@ supabase secrets list
 **Expected output:**
 ```
 OPENAI_API_KEY
+TURNSTILE_SECRET
 ```
 
 **Note**: `SUPABASE_SERVICE_ROLE_KEY` is **automatically available** in Edge Functions and won't appear in the secrets list. Supabase auto-injects this along with:
@@ -194,6 +201,8 @@ file: <File> (PDF or DOCX, max 10MB)
 
 - **400**: Invalid file type, file too large, not a resume, low confidence
 - **401**: Missing or invalid JWT token
+- **403**: Missing/invalid Turnstile token (only enforced once `TURNSTILE_SECRET` is set)
+- **429**: Daily import cap hit (per user or per IP - see #838)
 - **500**: Text extraction failed, AI parsing failed, internal error
 
 ---

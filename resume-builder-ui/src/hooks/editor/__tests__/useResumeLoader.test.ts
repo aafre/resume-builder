@@ -326,7 +326,7 @@ sections:
       expect(props.setShowAIWarning).toHaveBeenCalledWith(true);
       expect(props.setAIWarnings).toHaveBeenCalledWith(['Warning 1']);
       expect(props.setAIConfidence).toHaveBeenCalledWith(0.85);
-      expect(toast.success).toHaveBeenCalledWith('Resume loaded successfully');
+      expect(toast.success).not.toHaveBeenCalled();
       expect(result.current.isLoadingFromUrl).toBe(false);
       expect(result.current.hasLoadedFromUrl).toBe(true);
     });

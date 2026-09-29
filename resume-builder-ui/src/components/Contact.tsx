@@ -203,17 +203,17 @@ export default function Contact() {
                   status icons are Lucide marks now, at one stroke weight. */}
               <div aria-live="polite">
                 {justSubmittedNow ? (
-                  <div className="flex items-start gap-3 bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-6">
+                  <div className="flex items-start gap-3 bg-accent/[0.06] border border-accent/30 rounded-lg p-4 mb-6">
                     <CheckCircle2
-                      className="w-5 h-5 mt-0.5 flex-none text-emerald-700"
+                      className="w-5 h-5 mt-0.5 flex-none text-accent-text"
                       strokeWidth={2}
                       aria-hidden="true"
                     />
                     <div>
-                      <h3 className="font-semibold text-emerald-900">
+                      <h3 className="font-semibold text-ink">
                         Message Sent Successfully!
                       </h3>
-                      <p className="text-emerald-800 text-sm mt-1">
+                      <p className="text-ink text-sm mt-1">
                         We’ll respond within 24 hours. Thank you!
                       </p>
                     </div>
@@ -243,17 +243,17 @@ export default function Contact() {
                 ) : null}
 
                 {submitStatus === "error" && (
-                  <div className="flex items-start gap-3 bg-rose-50 border border-rose-200 rounded-lg p-4 mb-6">
+                  <div className="flex items-start gap-3 bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
                     <AlertCircle
-                      className="w-5 h-5 mt-0.5 flex-none text-rose-700"
+                      className="w-5 h-5 mt-0.5 flex-none text-red-700"
                       strokeWidth={2}
                       aria-hidden="true"
                     />
                     <div>
-                      <h3 className="font-semibold text-rose-900">
+                      <h3 className="font-semibold text-red-900">
                         Failed to send message
                       </h3>
-                      <p className="text-rose-800 text-sm mt-1">
+                      <p className="text-red-800 text-sm mt-1">
                         Please try again or contact us directly via email.
                       </p>
                     </div>

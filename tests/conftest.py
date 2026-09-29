@@ -239,3 +239,23 @@ sections:
 """
 
 
+
+
+@pytest.fixture(autouse=True)
+def _no_real_job_feed_calls():
+    """
+    Fail any test that would reach a real job feed. Adzuna has a small daily
+    quota and Jooble test keys a 500-request lifetime limit. Tests fake
+    requests.get themselves; this catches the ones that forget.
+    """
+    import requests
+
+    real_request = requests.Session.request
+
+    def guarded(self, method, url, *args, **kwargs):
+        if any(host in str(url) for host in ("adzuna.com", "jooble.org")):
+            raise AssertionError(f"test tried to call a real job feed: {method} {url}")
+        return real_request(self, method, url, *args, **kwargs)
+
+    with patch.object(requests.Session, "request", guarded):
+        yield

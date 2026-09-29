@@ -237,4 +237,13 @@ export interface UseEditorActionsReturn {
   loadingStartFresh: boolean;
   handleStartFresh: () => void;
   confirmStartFresh: () => Promise<void>;
+  /** Icons blocking the PDF; shown as an inline notice until the next valid attempt */
+  missingIconsNotice: MissingIconsNotice | null;
+  dismissMissingIconsNotice: () => void;
+}
+
+/** Icons the PDF needs but the editor doesn't have, and where each is used. */
+export interface MissingIconsNotice {
+  fromCloud: boolean;
+  icons: { file: string; usedIn: string[] }[];
 }

@@ -25,7 +25,7 @@ export default function AnonymousStorageBadge({ onSignInClick }: AnonymousStorag
       <Popover.Button
         className="
           flex min-h-11 items-center gap-2 px-3 py-1.5 rounded-full
-          bg-white border border-gray-200
+          bg-white border border-black/[0.08]
           text-ink/60 font-medium text-xs
           hover:bg-black/5 hover:text-ink
           transition-all duration-200
@@ -33,7 +33,9 @@ export default function AnonymousStorageBadge({ onSignInClick }: AnonymousStorag
         "
         aria-label="Storage details — this resume is saved on this device"
       >
-        <Check className="w-3.5 h-3.5" aria-hidden="true" />
+        <span className="flex h-4 w-4 items-center justify-center rounded-full bg-accent text-ink" aria-hidden="true">
+          <Check className="h-2.5 w-2.5" strokeWidth={3.5} />
+        </span>
         <span className="sm:hidden">Saved</span>
         <span className="hidden sm:inline">Saved on device</span>
       </Popover.Button>

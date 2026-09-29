@@ -157,7 +157,7 @@ describe('useFileOperations', () => {
         await exportPromise;
       });
 
-      expect(mockSaveBeforeAction).toHaveBeenCalledWith('export YAML');
+      expect(mockSaveBeforeAction).toHaveBeenCalledWith('exporting your file', { blocking: false });
     });
 
     it('should not export if saveBeforeAction returns false', async () => {
@@ -216,7 +216,7 @@ describe('useFileOperations', () => {
         await exportPromise;
       });
 
-      expect(toast.success).toHaveBeenCalledWith('Resume saved successfully!');
+      expect(toast.success).toHaveBeenCalledWith('Exported resume.yaml.');
     });
 
     it('should show success toast with icon count (singular)', async () => {
@@ -233,7 +233,7 @@ describe('useFileOperations', () => {
         await exportPromise;
       });
 
-      expect(toast.success).toHaveBeenCalledWith('Resume saved successfully with 1 embedded icon!');
+      expect(toast.success).toHaveBeenCalledWith('Exported resume.yaml with 1 icon.');
     });
 
     it('should show success toast with icon count (plural)', async () => {
@@ -250,7 +250,7 @@ describe('useFileOperations', () => {
         await exportPromise;
       });
 
-      expect(toast.success).toHaveBeenCalledWith('Resume saved successfully with 3 embedded icons!');
+      expect(toast.success).toHaveBeenCalledWith('Exported resume.yaml with 3 icons.');
     });
 
     it('should trigger file download', async () => {
@@ -283,7 +283,9 @@ describe('useFileOperations', () => {
         await exportPromise;
       });
 
-      expect(toast.error).toHaveBeenCalledWith('Save failed. Check browser settings and try again.');
+      expect(toast.error).toHaveBeenCalledWith(
+        "Couldn't export your file. Check that your browser allows downloads, then try again."
+      );
       expect(result.current.loadingSave).toBe(false);
     });
   });
@@ -434,7 +436,7 @@ describe('useFileOperations', () => {
         await importPromise;
       });
 
-      expect(mockSaveBeforeAction).toHaveBeenCalledWith('import YAML');
+      expect(mockSaveBeforeAction).toHaveBeenCalledWith('importing a file');
       cleanup();
     });
 
@@ -523,7 +525,7 @@ describe('useFileOperations', () => {
       cleanup();
     });
 
-    it('should show success toast with icon count', async () => {
+    it('should not toast after import (the loaded resume is the feedback)', async () => {
       const mockFile = createMockFile('test: yaml');
       const cleanup = mockFileReader('test: yaml');
 
@@ -549,7 +551,7 @@ describe('useFileOperations', () => {
         await importPromise;
       });
 
-      expect(toast.success).toHaveBeenCalledWith('Resume loaded successfully with 2 icons!');
+      expect(toast.success).not.toHaveBeenCalled();
       cleanup();
     });
 
@@ -582,8 +584,8 @@ describe('useFileOperations', () => {
       });
 
       expect(toast).toHaveBeenCalledWith(
-        expect.stringContaining("This template doesn't support icons"),
-        expect.objectContaining({ duration: 8000, icon: '⚠️' })
+        expect.stringContaining("This template doesn't show icons"),
+        expect.objectContaining({ duration: 7000 })
       );
       cleanup();
     });
@@ -610,7 +612,9 @@ describe('useFileOperations', () => {
         await importPromise;
       });
 
-      expect(toast.error).toHaveBeenCalledWith('Invalid file format. Please upload a valid resume file.');
+      expect(toast.error).toHaveBeenCalledWith(
+        "That file isn't one we can read. Choose a .yaml file exported from EasyFreeResume."
+      );
       expect(result.current.loadingLoad).toBe(false);
       cleanup();
     });

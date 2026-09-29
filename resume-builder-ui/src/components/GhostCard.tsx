@@ -4,7 +4,6 @@ interface GhostCardProps {
   isAtLimit: boolean;
   resumeCount: number;
   onCreateNew: () => void;
-  onUpgrade: () => void;
 }
 
 /** Shared frame so all three states sit in the grid as the same object. */

@@ -142,7 +142,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
               className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-md text-sm font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text
                 ${selectedPosition === 'top'
                   ? 'bg-accent text-ink shadow-sm'
-                  : 'text-gray-600 hover:bg-accent/[0.06] hover:text-ink/80'
+                  : 'text-ink/60 hover:bg-accent/[0.06] hover:text-ink/80'
                 }`}
             >
               <MdVerticalAlignTop className="w-5 h-5" />
@@ -154,7 +154,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
               className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-md text-sm font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text
                 ${selectedPosition === 'bottom'
                   ? 'bg-accent text-ink shadow-sm'
-                  : 'text-gray-600 hover:bg-accent/[0.06] hover:text-ink/80'
+                  : 'text-ink/60 hover:bg-accent/[0.06] hover:text-ink/80'
                 }`}
             >
               <MdVerticalAlignBottom className="w-5 h-5" />
@@ -187,7 +187,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
                       className={`px-3 py-1.5 text-xs rounded-full border transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text
                         ${selectedPosition === index + 1
                           ? 'bg-accent text-ink border-accent'
-                          : 'bg-white text-gray-600 border-gray-300 hover:border-accent/40 hover:text-ink/80'
+                          : 'bg-white text-ink/60 border-gray-300 hover:border-accent/40 hover:text-ink/80'
                         }`}
                     >
                       After: {section.name || `Section ${index + 1}`}
@@ -236,7 +236,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
         <div className="mt-4 sm:mt-6 flex gap-3">
           <button
             type="button"
-            className="flex-1 bg-chalk-dark text-ink px-4 py-2.5 rounded-lg font-medium hover:bg-gray-200 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text"
+            className="flex-1 bg-chalk-dark text-ink px-4 py-2.5 rounded-lg font-medium hover:bg-ink/[0.08] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text"
             onClick={onClose}
           >
             Cancel
@@ -248,7 +248,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
             className={`flex-1 px-4 py-2.5 rounded-lg font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text
                        ${selectedType
                          ? 'bg-accent text-ink hover:bg-accent/90'
-                         : 'bg-gray-200 text-ink/60 cursor-not-allowed'
+                         : 'bg-ink/[0.08] text-ink/60 cursor-not-allowed'
                        }`}
           >
             Add Section

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaShieldAlt, FaLock, FaStar } from "react-icons/fa";
-import { affiliateConfig } from "../config/affiliate";
+import { useJobsAvailable } from "../hooks/useJobsAvailable";
 
 // Footer link definitions for maintainability
 const footerLinks = {
@@ -30,9 +30,7 @@ const footerLinks = {
   resources: [
     { path: '/resume-keywords', label: 'Resume Keywords' },
     { path: '/resume-keyword-scanner', label: 'ATS Keyword Scanner' },
-    ...(affiliateConfig.jobSearch.enabled
-      ? [{ path: '/jobs', label: 'Job Search' }]
-      : []),
+    { path: '/jobs', label: 'Job Search' },
     { path: '/blog', label: 'Career Blog' },
     { path: '/blog/ai-resume-prompts-hub', label: 'AI Resume Prompts' },
     { path: '/blog/ats-resume-optimization', label: 'ATS Optimization Guide' },
@@ -95,6 +93,8 @@ function FooterColumn({
 }
 
 export default function Footer() {
+  // Optimistic, like the header link: only a definite "unsupported" hides it
+  const jobsAvailable = useJobsAvailable() !== false;
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -114,7 +114,11 @@ export default function Footer() {
           <FooterColumn title="Resume Builder" links={footerLinks.resumeBuilder} scrollToTop={scrollToTop} />
           <FooterColumn title="Resume Templates" links={footerLinks.resumeTemplates} scrollToTop={scrollToTop} />
           <FooterColumn title="Resume Examples" links={footerLinks.resumeExamples} scrollToTop={scrollToTop} />
-          <FooterColumn title="Resources" links={footerLinks.resources} scrollToTop={scrollToTop} />
+          <FooterColumn
+            title="Resources"
+            links={jobsAvailable ? footerLinks.resources : footerLinks.resources.filter((l) => l.path !== '/jobs')}
+            scrollToTop={scrollToTop}
+          />
           <FooterColumn title="Company" links={footerLinks.company} scrollToTop={scrollToTop} />
         </div>
 
@@ -123,20 +127,20 @@ export default function Footer() {
           <div className="flex flex-col items-center gap-4">
             {/* Copyright */}
             <div className="text-center">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-ink/60">
                 © {new Date().getFullYear()}{" "}
                 <span className="font-semibold">EasyFreeResume.com</span>
               </p>
-              <p className="text-xs text-gray-600 mt-1">
+              <p className="text-xs text-ink/60 mt-1">
                 Build professional resumes effortlessly
               </p>
             </div>
 
             {/* Trust Badges */}
             <div className="flex flex-wrap justify-center gap-4 text-xs">
-              <div className="flex items-center gap-2 bg-green-50 px-3 py-2 rounded-lg">
-                <FaShieldAlt className="text-green-600" />
-                <span className="text-green-700 font-medium">GDPR</span>
+              <div className="flex items-center gap-2 bg-accent/[0.06] px-3 py-2 rounded-lg">
+                <FaShieldAlt className="text-accent-text" />
+                <span className="text-ink/80 font-medium">GDPR</span>
               </div>
               <div className="flex items-center gap-2 bg-accent/[0.06] px-3 py-2 rounded-lg">
                 <FaLock className="text-accent-text" />
@@ -146,10 +150,10 @@ export default function Footer() {
                 href="https://www.trustpilot.com/review/easyfreeresume.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-emerald-50 px-3 py-2 rounded-lg hover:bg-emerald-100 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
+                className="flex items-center gap-2 bg-accent/[0.06] px-3 py-2 rounded-lg hover:bg-accent/[0.12] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
               >
-                <FaStar className="text-emerald-600" />
-                <span className="text-emerald-700 font-medium">Trustpilot</span>
+                <FaStar className="text-accent-text" />
+                <span className="text-ink/80 font-medium">Trustpilot</span>
               </a>
             </div>
           </div>

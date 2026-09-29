@@ -49,7 +49,7 @@ export default function FreeResumeBuilderDownload() {
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <div className="bg-white rounded-2xl p-8 shadow-premium border border-black/[0.06]">
               <div className="flex items-center gap-3 mb-4">
-                <span className="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center text-2xl">
+                <span className="w-12 h-12 bg-accent/10 text-accent-text font-mono font-bold rounded-xl flex items-center justify-center text-sm">
                   PDF
                 </span>
                 <h3 className="font-display text-xl font-bold text-ink">PDF Download</h3>
@@ -75,7 +75,7 @@ export default function FreeResumeBuilderDownload() {
             </div>
             <div className="bg-white rounded-2xl p-8 shadow-premium border border-black/[0.06]">
               <div className="flex items-center gap-3 mb-4">
-                <span className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-2xl">
+                <span className="w-12 h-12 bg-accent/10 text-accent-text font-mono font-bold rounded-xl flex items-center justify-center text-sm">
                   DOC
                 </span>
                 <h3 className="font-display text-xl font-bold text-ink">DOCX Download</h3>

@@ -12,6 +12,7 @@ import DownloadCTA from '../shared/DownloadCTA';
 import BulletPointBank from '../shared/BulletPointBank';
 import BreadcrumbsWithSchema from '../shared/BreadcrumbsWithSchema';
 import RevealSection from '../shared/RevealSection';
+import { PostingTrustLine, PostingEvidenceTable } from './PostingEvidence';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { loadJobExample, convertToEditorFormat, getCachedJobExample } from '../../utils/yamlLoader';
 import { getPrerenderPayload } from '../../utils/prerenderPayload';
@@ -39,6 +40,11 @@ import type { Section } from '../../types';
 export function isA5Page(data: JobExampleData | null): boolean {
   return !!data?.answerBlock;
 }
+
+// "an" before a vowel sound: vowel letters, or initialisms spoken with one (MLOps, HVAC).
+// ponytail: letter heuristic, misses "U"-as-"you" titles; none exist yet.
+export const an = (title: string) =>
+  /^[aeiou]/i.test(title) || /^[AEFHILMNORSX][A-Z]/.test(title) ? 'an' : 'a';
 
 // Supabase Storage CDN base URL for pre-generated resume preview images
 const PREVIEW_BASE_URL = import.meta.env.VITE_SUPABASE_URL
@@ -288,8 +294,8 @@ export default function JobExamplePage() {
     ...(data.howToWrite && data.howToWrite.length > 0
       ? [
           generateHowToSchema(
-            `How to Write a ${data.meta.title} Resume`,
-            `Step-by-step guide to writing a ${data.meta.title.toLowerCase()} resume.`,
+            `How to Write ${an(data.meta.title)} ${data.meta.title} Resume`,
+            `Step-by-step guide to writing ${an(data.meta.title)} ${data.meta.title.toLowerCase()} resume.`,
             data.howToWrite.map((step, i) => ({ name: `Step ${i + 1}`, text: step })),
             undefined,
             data.meta.lastmod
@@ -421,6 +427,7 @@ export default function JobExamplePage() {
             {data.answerBlock}
           </p>
         )}
+        <PostingTrustLine evidence={data.postingEvidence} />
         <p className="mt-5 text-lg md:text-xl font-extralight text-ink/60 leading-relaxed max-w-3xl">
           {heroConfig.subtitle}
         </p>
@@ -623,7 +630,7 @@ export default function JobExamplePage() {
           <section className="my-16 max-w-3xl mx-auto cv-auto cv-h-400">
             <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4">Step by Step</span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 text-center">
-              How to Write a {data.meta.title} Resume
+              How to Write {an(data.meta.title)} {data.meta.title} Resume
             </h2>
             <ol className="space-y-4">
               {data.howToWrite.map((step, index) => (
@@ -686,7 +693,7 @@ export default function JobExamplePage() {
           <section className="my-16 cv-auto cv-h-400">
             <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4">What to Highlight</span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 text-center">
-              Skills for a {data.meta.title} Resume
+              Skills for {an(data.meta.title)} {data.meta.title} Resume
             </h2>
             <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
               {data.skills && (
@@ -705,6 +712,15 @@ export default function JobExamplePage() {
               )}
             </div>
           </section>
+        </RevealSection>
+      )}
+
+      {/* Posting evidence (Role batch R1): the real postings the page is built on */}
+      {data.postingEvidence && (
+        <RevealSection>
+          <div className="cv-auto cv-h-400">
+            <PostingEvidenceTable evidence={data.postingEvidence} roleTitle={data.meta.title} />
+          </div>
         </RevealSection>
       )}
 
@@ -772,6 +788,38 @@ export default function JobExamplePage() {
         categories={data.bulletBank}
         jobTitle={data.meta.title}
       />
+
+      {/* Role variant: a neighbouring title with no URL of its own. Its FAQs
+          are visible Q&A only, deliberately kept out of the FAQ schema. */}
+      {data.roleVariant && (
+        <RevealSection>
+          <section id={data.roleVariant.id} className="my-16 max-w-3xl mx-auto scroll-mt-24 cv-auto cv-h-600">
+            <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4">Role Variant</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 text-center">
+              Applying for {data.roleVariant.title} roles?
+            </h2>
+            <p className="text-ink/75 leading-relaxed">{data.roleVariant.difference}</p>
+            <div className="mt-6 bg-white rounded-xl p-6 border border-black/[0.06]">
+              <p className="font-mono text-[0.6875rem] tracking-[0.15em] uppercase text-accent-text mb-3">Sample Summary</p>
+              <p className="text-sm text-ink/75 leading-relaxed">{data.roleVariant.summary}</p>
+              <p className="font-mono text-[0.6875rem] tracking-[0.15em] uppercase text-accent-text mt-6 mb-3">Sample Bullets</p>
+              <ul className="ex-doc__bullets list-disc pl-5 space-y-1.5 text-sm text-ink/75">
+                {data.roleVariant.bullets.map((bullet, index) => (
+                  <li key={index}>{bullet}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="mt-8 space-y-5">
+              {data.roleVariant.faqs.map((faq, index) => (
+                <div key={index}>
+                  <h3 className="font-bold text-ink mb-2">{faq.question}</h3>
+                  <p className="text-ink/75 leading-relaxed">{faq.answer}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </RevealSection>
+      )}
 
       {/* FAQs */}
       <FAQSection faqs={faqs} />
@@ -867,11 +915,11 @@ export default function JobExamplePage() {
 function generateFAQs(data: JobExampleData): FAQConfig[] {
   return [
     {
-      question: `What skills should I include on a ${data.meta.title.toLowerCase()} resume?`,
-      answer: `Key skills for a ${data.meta.title.toLowerCase()} resume include: ${data.resume.skills.slice(0, 5).join(', ')}. Focus on skills mentioned in the job description and quantify your achievements where possible.`,
+      question: `What skills should I include on ${an(data.meta.title)} ${data.meta.title.toLowerCase()} resume?`,
+      answer: `Key skills for ${an(data.meta.title)} ${data.meta.title.toLowerCase()} resume include: ${data.resume.skills.slice(0, 5).join(', ')}. Focus on skills mentioned in the job description and quantify your achievements where possible.`,
     },
     {
-      question: `How do I write a ${data.meta.title.toLowerCase()} resume with no experience?`,
+      question: `How do I write ${an(data.meta.title)} ${data.meta.title.toLowerCase()} resume with no experience?`,
       answer: `Focus on transferable skills, relevant coursework, volunteer work, and any projects that demonstrate your abilities. Use our bullet point bank above for inspiration on how to frame your experience effectively.`,
     },
     {

@@ -163,7 +163,7 @@ export const FormattingBubbleMenu: React.FC<FormattingBubbleMenuProps> = ({ edit
         </button>
 
         {/* Separator */}
-        <div className="w-px h-6 bg-gray-300 mx-1"></div>
+        <div className="w-px h-6 bg-ink/20 mx-1"></div>
 
         {/* Link Button */}
         <button

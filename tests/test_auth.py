@@ -80,6 +80,19 @@ class TestAuthenticationDecorator:
         assert data['success'] is False
         assert 'invalid' in data['error'].lower() or 'expired' in data['error'].lower()
 
+    def test_auth_upstream_timeout_returns_503_not_401(self, flask_test_client, auth_headers):
+        """A Supabase timeout is not a bad token: 401 makes the client sign out
+        (wiping an anonymous user's session and orphaning their resumes)."""
+        client, mock_sb, _ = flask_test_client
+
+        mock_sb.auth.get_user.side_effect = Exception("The read operation timed out")
+
+        with patch('app.time.sleep'):
+            response = client.get('/api/resumes', headers=auth_headers)
+
+        assert response.status_code == 503
+        assert mock_sb.auth.get_user.call_count == 2  # retried once
+
     def test_valid_token_sets_user_id_on_request(self, flask_test_client, auth_headers):
         """Verify valid token sets request.user_id correctly."""
         client, mock_sb, _ = flask_test_client

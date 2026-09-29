@@ -3,12 +3,12 @@ import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { MdLogout, MdFolder, MdExpandMore } from 'react-icons/md';
 import { useUserAvatar } from '../hooks/useUserAvatar';
-import { useQueryClient } from '@tanstack/react-query';
+import { useSignOut } from '../hooks/useSignOut';
 
 const UserMenu: React.FC = () => {
-  const { user, signOut, isAnonymous, signingOut } = useAuth();
+  const { user, isAnonymous, signingOut } = useAuth();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  const signOut = useSignOut();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   // The panel outlives `isOpen` by the length of its exit transition, so
@@ -53,21 +53,9 @@ const UserMenu: React.FC = () => {
     return () => window.clearTimeout(timer);
   }, [isOpen]);
 
-  const handleSignOut = async () => {
-    try {
-      setIsOpen(false); // Close menu immediately for better UX
-
-      await signOut();
-
-      // Invalidate all queries to clear stale data
-      queryClient.clear();
-
-      // Navigate to home
-      navigate('/', { replace: true });
-    } catch (error) {
-      console.error('Sign out error:', error);
-      // Error toast already shown in AuthContext
-    }
+  const handleSignOut = () => {
+    setIsOpen(false); // Close menu immediately for better UX
+    return signOut();
   };
 
   const handleMyResumes = () => {

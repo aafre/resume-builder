@@ -201,7 +201,7 @@ describe('useEditorActions', () => {
         await vi.runAllTimersAsync();
       });
 
-      expect(mockSaveBeforeAction).toHaveBeenCalledWith('download PDF');
+      expect(mockSaveBeforeAction).toHaveBeenCalledWith('downloading your PDF', { blocking: false });
     });
 
     it('should not proceed if saveBeforeAction returns false', async () => {
@@ -233,7 +233,7 @@ describe('useEditorActions', () => {
       });
 
       expect(toast.error).toHaveBeenCalledWith(
-        'Please enter a valid LinkedIn URL or leave it empty'
+        "That LinkedIn URL doesn't look right. Use linkedin.com/in/your-name, or leave it empty."
       );
       expect(generateResume).not.toHaveBeenCalled();
     });
@@ -310,7 +310,8 @@ describe('useEditorActions', () => {
 
       expect(generateResume).toHaveBeenCalled();
       expect(mockLinkClick).toHaveBeenCalled();
-      expect(toast.success).toHaveBeenCalledWith('Resume downloaded successfully!');
+      // First download: the celebration modal is the peak, no toast under it.
+      expect(toast.success).not.toHaveBeenCalled();
     });
 
     it('should show celebration modal for anonymous users on first download', async () => {
@@ -358,6 +359,10 @@ describe('useEditorActions', () => {
       });
 
       expect(mockOpenDownloadCelebration).not.toHaveBeenCalled();
+      expect(toast.success).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({ id: 'pdf-downloaded' })
+      );
     });
 
     it('should show celebration modal for authenticated users on first download', async () => {
@@ -394,7 +399,10 @@ describe('useEditorActions', () => {
         await vi.runAllTimersAsync();
       });
 
-      expect(toast.error).toHaveBeenCalledWith('Resume generation failed: Network error');
+      // Raw 'Network error' stays in the console; the user gets the recovery.
+      expect(toast.error).toHaveBeenCalledWith(
+        "Couldn't make your PDF. Check your connection and try again."
+      );
       expect(result.current.isDownloading).toBe(false);
     });
 
@@ -466,7 +474,7 @@ describe('useEditorActions', () => {
         await vi.runAllTimersAsync();
       });
 
-      expect(mockSaveBeforeAction).toHaveBeenCalledWith('preview');
+      expect(mockSaveBeforeAction).toHaveBeenCalledWith('previewing', { blocking: false });
     });
 
     it('should not proceed if saveBeforeAction returns false', async () => {
@@ -555,7 +563,7 @@ describe('useEditorActions', () => {
         await vi.runAllTimersAsync();
       });
 
-      expect(mockSaveBeforeAction).toHaveBeenCalledWith('refresh preview');
+      expect(mockSaveBeforeAction).toHaveBeenCalledWith('refreshing the preview', { blocking: false });
     });
 
     it('should not proceed if saveBeforeAction returns false', async () => {
@@ -645,7 +653,7 @@ describe('useEditorActions', () => {
         await vi.runAllTimersAsync();
       });
 
-      expect(mockSaveBeforeAction).toHaveBeenCalledWith('start fresh');
+      expect(mockSaveBeforeAction).toHaveBeenCalledWith('starting fresh');
     });
 
     it('should not save for anonymous users', async () => {
@@ -756,7 +764,7 @@ describe('useEditorActions', () => {
       expect(mockIconRegistry.clearRegistry).toHaveBeenCalled();
     });
 
-    it('should show success toast on completion', async () => {
+    it('should not toast on completion (the emptied page is the feedback)', async () => {
       const { result } = renderHook(() =>
         useEditorActions(createDefaultProps({ isAnonymous: true }))
       );
@@ -766,7 +774,7 @@ describe('useEditorActions', () => {
         await vi.runAllTimersAsync();
       });
 
-      expect(toast.success).toHaveBeenCalledWith('Template cleared successfully!');
+      expect(toast.success).not.toHaveBeenCalled();
     });
 
     it('should handle errors gracefully', async () => {
@@ -788,7 +796,7 @@ describe('useEditorActions', () => {
         await vi.runAllTimersAsync();
       });
 
-      expect(toast.error).toHaveBeenCalledWith('Failed to clear template');
+      expect(toast.error).toHaveBeenCalledWith(expect.stringContaining("Couldn't clear your resume."));
       expect(result.current.loadingStartFresh).toBe(false);
     });
   });
@@ -814,8 +822,12 @@ describe('useEditorActions', () => {
 
       expect(toast.error).toHaveBeenCalled();
       const errorCall = vi.mocked(toast.error).mock.calls[0][0];
-      expect(errorCall).toContain('Unable to load');
-      expect(errorCall).toContain('cloud storage');
+      expect(errorCall).toContain('1 icon is missing');
+      // The detail lives in the inline notice, not the toast.
+      expect(result.current.missingIconsNotice).toEqual({
+        fromCloud: true,
+        icons: [{ file: 'icon1.png', usedIn: [] }],
+      });
     });
 
     it('should show detailed icon locations for regular missing icons', async () => {
@@ -849,8 +861,11 @@ describe('useEditorActions', () => {
 
       expect(toast.error).toHaveBeenCalled();
       const errorCall = vi.mocked(toast.error).mock.calls[0][0];
-      expect(errorCall).toContain('Missing Icons');
-      expect(errorCall).toContain('Experience');
+      expect(errorCall).toContain('1 icon is missing');
+      expect(result.current.missingIconsNotice?.icons[0]).toEqual({
+        file: 'missing.png',
+        usedIn: ['Experience → Entry 1'],
+      });
     });
   });
 });
