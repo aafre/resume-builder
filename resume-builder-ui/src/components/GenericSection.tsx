@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useId } from "react";
 import { SectionHeader } from "./SectionHeader";
 import { MarkdownHint } from "./MarkdownLinkPreview";
 import { RichTextInput } from "./RichTextInput";
@@ -69,6 +69,9 @@ const GenericSection: React.FC<GenericSectionProps> = ({
     }
     return false;
   });
+  const [isBulkAdding, setIsBulkAdding] = useState(false);
+  const [bulkItems, setBulkItems] = useState("");
+  const bulkItemsId = useId();
 
   // Update collapse state on window resize
   useEffect(() => {
@@ -102,6 +105,17 @@ const GenericSection: React.FC<GenericSectionProps> = ({
   const handleAddItem = () => {
     const existing = Array.isArray(section.content) ? section.content : [];
     onUpdate({ ...section, content: [...existing, ""] });
+  };
+
+  const handleBulkAdd = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const items = bulkItems.split(/[,\n]/).map((item) => item.trim()).filter(Boolean);
+    if (items.length === 0) return;
+
+    const existing = Array.isArray(section.content) ? section.content : [];
+    onUpdate({ ...section, content: [...existing, ...items] });
+    setBulkItems("");
+    setIsBulkAdding(false);
   };
 
   const isEmptyList =
@@ -340,6 +354,43 @@ const GenericSection: React.FC<GenericSectionProps> = ({
               <GhostButton onClick={handleAddItem}>Add Item</GhostButton>
             )}
           </>
+        )}
+        {(section.type === "inline-list" || section.type === "dynamic-column-list") && (
+          <div className="mt-edit-field">
+            <button
+              type="button"
+              onClick={() => {
+                setIsBulkAdding(!isBulkAdding);
+                setBulkItems("");
+              }}
+              aria-expanded={isBulkAdding}
+              className="min-h-11 text-sm font-medium text-accent-text underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text"
+            >
+              {isBulkAdding ? "Cancel bulk add" : "Add multiple items"}
+            </button>
+            {isBulkAdding && (
+              <form onSubmit={handleBulkAdd} className="mt-2 space-y-3">
+                <label className="block text-sm font-medium text-ink" htmlFor={bulkItemsId}>
+                  Paste items separated by commas or new lines
+                </label>
+                <textarea
+                  id={bulkItemsId}
+                  value={bulkItems}
+                  onChange={(event) => setBulkItems(event.target.value)}
+                  placeholder="Python, JavaScript, SQL"
+                  rows={3}
+                  className="w-full rounded-lg border border-gray-300 p-3 text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text"
+                />
+                <button
+                  type="submit"
+                  disabled={!bulkItems.split(/[,\n]/).some((item) => item.trim())}
+                  className="min-h-11 rounded-lg bg-accent px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Add items
+                </button>
+              </form>
+            )}
+          </div>
         )}
         </div>
       )}
