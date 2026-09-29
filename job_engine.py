@@ -503,6 +503,10 @@ class JobMatchEngine:
         if len(all_jobs) >= self.TIER1_THRESHOLD:
             return {"jobs": all_jobs, "total_available": total_available, "ai_terms_used": []}
 
+        # No feed answered at all: later tiers can't help (and tier 3 costs an OpenAI call)
+        if not self.feed_answered:
+            return {"jobs": all_jobs, "total_available": total_available, "ai_terms_used": []}
+
         # Tier 1 insufficient — relax title_only for broader fallback searches
         context.title_only = False
 
