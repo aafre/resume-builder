@@ -162,7 +162,7 @@ class AdzunaFeed:
             # from None: the chained exception's message holds the unredacted URL
             raise FeedError(f"adzuna request failed: {_redact(e)}") from None
 
-        # ponytail: Adzuna documents no quota error code; 429 is standard, 401/403 seen on exhaustion.
+        # ponytail: Adzuna documents no quota error code; 429 is standard; 401/403 treated as exhausted too (unconfirmed).
         if resp.status_code in (401, 403, 429):
             raise FeedQuotaExceeded("adzuna quota or rate limit reached")
         try:
