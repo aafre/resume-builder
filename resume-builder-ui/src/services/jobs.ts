@@ -1,4 +1,5 @@
 // src/services/jobs.ts
+import { ensureTurnstilePreClearance } from '../utils/turnstile';
 
 const API_BASE_URL = '/api';
 
@@ -109,6 +110,8 @@ export async function searchJobs(opts: JobSearchOptions): Promise<JobSearchResul
   if (opts.page && opts.page > 1) body.page = opts.page;
   if (opts.resultsPerPage) body.results_per_page = opts.resultsPerPage;
 
+  // WAF 403s /jobs/* without cf_clearance; wait for pre-clearance (no-op without site key).
+  await ensureTurnstilePreClearance();
   const response = await fetch(`${API_BASE_URL}/jobs/search`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -137,6 +140,7 @@ export async function suggestRoles(
   experienceTitles: string[],
 ): Promise<RoleSuggestion | null> {
   try {
+    await ensureTurnstilePreClearance();
     const response = await fetch(`${API_BASE_URL}/jobs/suggest-roles`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

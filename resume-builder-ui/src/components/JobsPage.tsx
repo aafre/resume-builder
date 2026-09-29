@@ -130,13 +130,6 @@ export default function JobsPage() {
     breadcrumbs: jobsConfig.breadcrumbs,
   });
 
-  // Mount the invisible Turnstile widget so this browser earns Cloudflare
-  // pre-clearance for the jobs API WAF rule. No-op when
-  // VITE_TURNSTILE_SITE_KEY is unset.
-  useEffect(() => {
-    ensureTurnstilePreClearance();
-  }, []);
-
   // Restore search state from URL params or sessionStorage on mount
   useEffect(() => {
     // URL params take priority (page reload / shared link)
@@ -510,6 +503,7 @@ export default function JobsPage() {
           <form
             ref={formRef}
             onSubmit={handleSearch}
+            onFocus={() => void ensureTurnstilePreClearance()}
             onDragEnter={handleDragIn}
             onDragOver={handleDrag}
             onDragLeave={handleDragOut}

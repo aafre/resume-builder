@@ -92,3 +92,46 @@ describe('turnstile', () => {
     vi.useRealTimers();
   });
 });
+
+describe('ensureTurnstilePreClearance', () => {
+  beforeEach(() => {
+    vi.resetModules();
+    vi.unstubAllEnvs();
+    delete (window as any).turnstile;
+    document.head.querySelectorAll(SELECTOR).forEach((s) => s.remove());
+    document.querySelectorAll('[data-turnstile-widget]').forEach((e) => e.remove());
+  });
+
+  it('resolves immediately and loads nothing without a site key', async () => {
+    vi.stubEnv('VITE_TURNSTILE_SITE_KEY', '');
+    const { ensureTurnstilePreClearance } = await import('../turnstile');
+    await ensureTurnstilePreClearance();
+    expect(document.head.querySelectorAll(SELECTOR).length).toBe(0);
+  });
+
+  it('is idempotent and resolves only after the widget solves', async () => {
+    vi.stubEnv('VITE_TURNSTILE_SITE_KEY', 'k');
+    const { ensureTurnstilePreClearance } = await import('../turnstile');
+    let solve: () => void = () => {};
+    const render = vi.fn((_el: HTMLElement, o: { callback: () => void }) => {
+      solve = o.callback;
+      return 'w';
+    });
+    const p1 = ensureTurnstilePreClearance();
+    const p2 = ensureTurnstilePreClearance();
+    expect(p2).toBe(p1);
+    expect(document.head.querySelectorAll(SELECTOR).length).toBe(1);
+
+    (window as any).turnstile = { render, remove: vi.fn(), reset: vi.fn() };
+    document.head.querySelector(SELECTOR)!.dispatchEvent(new Event('load'));
+
+    let done = false;
+    p1.then(() => (done = true));
+    await new Promise((r) => setTimeout(r, 0));
+    expect(render).toHaveBeenCalledTimes(1);
+    expect(done).toBe(false);
+    solve();
+    await p1;
+    expect(done).toBe(true);
+  });
+});
