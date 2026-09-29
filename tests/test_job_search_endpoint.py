@@ -199,6 +199,17 @@ def test_quota_error_skips_adzuna_for_rest_of_utc_day(jobs_client, caplog):
     assert data["status"] == "fresh"
 
 
+@pytest.mark.parametrize("status", [401, 403])
+def test_auth_errors_mark_adzuna_exhausted(jobs_client, caplog, status):
+    client, _ = jobs_client
+    fake = FakeAdzuna(NURSES, status=status)
+    with patch("requests.get", fake):
+        post_search(client, query="nurse")
+        post_search(client, query="nurse")
+    assert len(fake.calls) == 1
+    assert "job_quota_exhausted" in caplog.text
+
+
 def test_exhausted_with_saved_result_serves_stale(jobs_client, monkeypatch):
     client, flask_app = jobs_client
     with patch("requests.get", FakeAdzuna(NURSES)):

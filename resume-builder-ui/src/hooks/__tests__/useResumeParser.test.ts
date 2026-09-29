@@ -77,6 +77,25 @@ describe('useResumeParser', () => {
     expect(result.current.errorKind).toBeNull();
   });
 
+  it('shows friendly copy for the server header-invalid 400', async () => {
+    getTurnstileToken.mockResolvedValue(null);
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 400,
+      json: async () => ({ success: false, error: 'File claims to be PDF but header is invalid' }),
+    }) as unknown as typeof fetch;
+
+    const { result } = renderHook(() => useResumeParser());
+    const file = new File(['x'], 'resume.pdf', { type: 'application/pdf' });
+
+    await act(async () => {
+      await expect(result.current.parseResume(file)).rejects.toThrow();
+    });
+
+    expect(result.current.error).toBe("We couldn't read that file. Please upload a valid PDF or DOCX.");
+    expect(result.current.errorKind).toBe('invalid_file');
+  });
+
   it('flags a client-side file-type rejection as invalid_file', async () => {
     const { result } = renderHook(() => useResumeParser());
     const file = new File(['x'], 'resume.txt', { type: 'text/plain' });

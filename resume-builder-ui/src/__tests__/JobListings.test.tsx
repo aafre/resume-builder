@@ -384,3 +384,12 @@ it('/jobs falls back to a generic message for non-429 failures', async () => {
   renderJobsPage();
   expect(await screen.findByText(/unable to fetch jobs/i)).toBeInTheDocument();
 });
+
+it('/jobs offers a keyboard-accessible file picker for the resume upload', async () => {
+  renderJobsPage('/jobs');
+  const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+  expect(input).toHaveAttribute('accept', '.pdf,.docx');
+  const click = vi.spyOn(input, 'click');
+  screen.getByRole('button', { name: /upload your resume/i }).click();
+  expect(click).toHaveBeenCalled();
+});

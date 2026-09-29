@@ -458,6 +458,21 @@ class TestJobMatchEngine:
 
     @patch("job_engine.get_ai_search_terms")
     @patch.object(AdzunaFeed, "search")
+    def test_no_ai_tier_when_no_feed_answered(self, mock_fetch, mock_ai):
+        """Every feed failing in tier 1 skips tier 2 and the OpenAI-backed tier 3."""
+        from job_feeds import FeedError
+        mock_fetch.side_effect = FeedError("down")
+
+        engine = self._make_engine()
+        result = engine.fetch(MatchContext(query="software engineer"))
+
+        assert result["jobs"] == []
+        assert not engine.feed_answered
+        assert mock_fetch.call_count == 1
+        mock_ai.assert_not_called()
+
+    @patch("job_engine.get_ai_search_terms")
+    @patch.object(AdzunaFeed, "search")
     def test_tier3_triggered_with_4_results_after_tier2(self, mock_fetch, mock_ai):
         """3-4 results after Tier 2 should still trigger Tier 3 (threshold=5)."""
         mock_fetch.side_effect = [

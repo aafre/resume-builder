@@ -98,6 +98,7 @@ export default function JobsPage() {
   // Where "Tailor your resume" goes: the editor the user came from, else their saved resumes
   const [returnTo, setReturnTo] = useState('/my-resumes');
   const formRef = useRef<HTMLFormElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const shouldAutoSearch = useRef(false);
   const prefillSkillsRef = useRef<string[]>([]);
   const prefillSeniorityRef = useRef<SeniorityLevel | null>(null);
@@ -129,13 +130,6 @@ export default function JobsPage() {
     faqs: jobsConfig.faqs,
     breadcrumbs: jobsConfig.breadcrumbs,
   });
-
-  // Mount the invisible Turnstile widget so this browser earns Cloudflare
-  // pre-clearance for the jobs API WAF rule. No-op when
-  // VITE_TURNSTILE_SITE_KEY is unset.
-  useEffect(() => {
-    ensureTurnstilePreClearance();
-  }, []);
 
   // Restore search state from URL params or sessionStorage on mount
   useEffect(() => {
@@ -388,7 +382,7 @@ export default function JobsPage() {
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     ];
     if (!allowedTypes.includes(file.type)) {
-      setError('Please drop a PDF or DOCX file.');
+      setError('Please upload a PDF or DOCX file.');
       return;
     }
     if (file.size > 10 * 1024 * 1024) {
@@ -451,6 +445,12 @@ export default function JobsPage() {
     }
   }, [session, parseResume]);
 
+  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleResumeDrop(file);
+    e.target.value = ''; // allow re-picking the same file
+  };
+
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -510,6 +510,7 @@ export default function JobsPage() {
           <form
             ref={formRef}
             onSubmit={handleSearch}
+            onFocus={() => void ensureTurnstilePreClearance()}
             onDragEnter={handleDragIn}
             onDragOver={handleDrag}
             onDragLeave={handleDragOut}
@@ -595,10 +596,28 @@ export default function JobsPage() {
                 </div>
 
                 {/* Drop hint */}
-                <p className="text-xs text-ink/60 text-center mt-2 flex items-center justify-center gap-1">
-                  <Upload className="w-3 h-3" />
-                  Or drag &amp; drop your resume (PDF/DOCX) for an instant personalized search
+                <p className="text-xs text-ink/60 text-center mt-2 flex flex-wrap items-center justify-center gap-x-1">
+                  <Upload className="w-3 h-3" aria-hidden="true" />
+                  Or
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    aria-label="Upload your resume (PDF or DOCX)"
+                    className="font-semibold text-accent-text underline underline-offset-2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text"
+                  >
+                    upload
+                  </button>
+                  or drag &amp; drop your resume (PDF/DOCX) for an instant personalized search
                 </p>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".pdf,.docx"
+                  className="hidden"
+                  onChange={handleFileInput}
+                  tabIndex={-1}
+                  aria-hidden="true"
+                />
               </>
             )}
           </form>

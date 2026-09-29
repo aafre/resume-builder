@@ -344,7 +344,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
 
               {/* Close button for authenticated users when affiliate is shown */}
               {!isAnonymous && (
-                <div className="sticky bottom-0 -mx-6 sm:-mx-8 -mb-6 sm:-mb-8 mt-6 px-6 sm:px-8 py-4 bg-white border-t border-black/[0.06] shadow-[0_-8px_16px_-8px_rgba(12,12,12,0.12)] flex justify-center">
+                <div className="sticky -bottom-6 sm:-bottom-8 -mx-6 sm:-mx-8 -mb-6 sm:-mb-8 mt-6 px-6 sm:px-8 py-4 bg-white border-t border-black/[0.06] shadow-[0_-8px_16px_-8px_rgba(12,12,12,0.12)] flex justify-center">
                   <button
                     ref={!isAnonymous ? primaryButtonRef : undefined}
                     onClick={onClose}

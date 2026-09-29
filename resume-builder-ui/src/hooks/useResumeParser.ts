@@ -30,6 +30,12 @@ const kindForStatus = (status: number): ParseErrorKind =>
   : status === 400 ? 'invalid_file'
   : 'generic';
 
+// Edge function's magic-byte check (utils/file-validator.ts) returns raw text
+// like "File claims to be PDF but header is invalid"; show friendly copy instead.
+const INVALID_FILE_MESSAGE = "We couldn't read that file. Please upload a valid PDF or DOCX.";
+const friendlyServerError = (raw: string | undefined) =>
+  raw && /header is invalid/i.test(raw) ? INVALID_FILE_MESSAGE : raw;
+
 // Progress stages with corresponding messages
 const PROGRESS_STAGES = [
   { threshold: 0, message: 'Preparing upload...' },
@@ -215,7 +221,7 @@ export function useResumeParser(options?: { source?: ParseSource }) {
 
       if (!response.ok || !data.success) {
         kind = kindForStatus(response.status);
-        throw new Error(data.error || 'Failed to parse resume');
+        throw new Error(friendlyServerError(data.error) || 'Failed to parse resume');
       }
 
       // Stop animation and jump to 100%

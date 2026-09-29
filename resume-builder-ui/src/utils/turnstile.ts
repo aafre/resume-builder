@@ -109,17 +109,39 @@ export function getTurnstileToken(): Promise<string | null> {
 /**
  * Mount a persistent, invisible Turnstile widget so the browser earns
  * Cloudflare pre-clearance (the `cf_clearance` cookie) for the jobs API WAF
- * rule. Call once from the /jobs page and the editor - no backend change
- * needed; a passed widget just sets the cookie for subsequent same-origin
- * fetches. No-op when no site key is configured. Idempotent per page load.
+ * rule. No backend change needed; a passed widget just sets the cookie for
+ * subsequent same-origin fetches. Idempotent: every caller shares one promise,
+ * which resolves once the widget solves/fails/times out (never rejects), so
+ * callers can await it before the first WAF-protected request. Resolves
+ * immediately when no site key is configured.
  */
-let preClearanceMounted = false;
-export function ensureTurnstilePreClearance(): void {
-  if (!SITE_KEY || typeof document === 'undefined' || preClearanceMounted) return;
-  preClearanceMounted = true;
-  ensureScriptLoaded().then(() => {
-    if (!window.turnstile) return;
-    const container = mountWidgetContainer();
-    window.turnstile.render(container, { sitekey: SITE_KEY, appearance: 'interaction-only' });
-  });
+let preClearancePromise: Promise<void> | null = null;
+export function ensureTurnstilePreClearance(): Promise<void> {
+  if (!SITE_KEY || typeof document === 'undefined') return Promise.resolve();
+  if (preClearancePromise) return preClearancePromise;
+  preClearancePromise = ensureScriptLoaded().then(
+    () =>
+      new Promise<void>((resolve) => {
+        if (!window.turnstile) return resolve();
+        const container = mountWidgetContainer();
+        let timer = setTimeout(resolve, TOKEN_TIMEOUT_MS);
+        window.turnstile.render(container, {
+          sitekey: SITE_KEY,
+          appearance: 'interaction-only',
+          callback: () => {
+            clearTimeout(timer);
+            resolve();
+          },
+          'error-callback': () => {
+            clearTimeout(timer);
+            resolve();
+          },
+          'before-interactive-callback': () => {
+            clearTimeout(timer);
+            timer = setTimeout(resolve, INTERACTIVE_TIMEOUT_MS);
+          },
+        });
+      })
+  );
+  return preClearancePromise;
 }
