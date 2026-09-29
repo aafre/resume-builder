@@ -2,6 +2,161 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.31.0] - 2026-09-29
+
+### 🚀 Features
+
+- **jobs:** Return listing feed and fresh status from job search
+- **jobs:** Gate job SEO pages behind JOBS_PSEO_ENABLED
+- **analytics:** Add job impression and click events
+- **jobs:** Shared job card with feed label and impression/click events
+- **jobs:** Skip exhausted feeds, serve saved or refreshing results
+- **analytics:** Add job_quota_exhausted event
+- **jobs:** Show stale age label and refreshing state on /jobs
+- **seo:** Mark /jobs noindex, follow via SEO config robots
+- **jobs:** Expose visitor job availability from CF-IPCountry
+- **jobs:** Add useJobsAvailable hook backed by the availability endpoint
+- **nav:** Show Jobs link to everyone where jobs are available
+- **jobs:** Hide job listings where no job feed serves the country
+- **examples:** Add postingEvidence and roleVariant to job example types
+- **examples:** Add PostingEvidence trust line and evidence table
+- **examples:** Render posting evidence and role variant on example pages
+- **examples:** Add forward deployed engineer example page data
+- **examples:** Register forward-deployed-engineer in example index
+- **examples:** Add staff software engineer example content
+- **examples:** Register /examples/staff-software-engineer
+- **examples:** Add MLOps engineer example with AI platform variant
+- **examples:** Register mlops-engineer in job examples index
+- **jobs:** Add per-IP rate limits and input caps to jobs endpoints
+- **jobs:** Surface the server's 429 rate-limit message on /jobs
+- **db:** Add ai_usage table for parse-resume rate limiting
+- **parse-resume:** Cap daily imports per user/IP with 429
+- **parse-resume:** Verify Cloudflare Turnstile token before AI parsing
+- **turnstile:** Send bot-check token with resume import
+- **turnstile:** Mount pre-clearance widget on jobs page and editor
+- **download-modal:** Move Trustpilot ask above fold, cap job list
+- **header:** Resolve auth state instantly from stored session
+- **nav:** Unify mobile menu and account into unfolding header sheet
+- **editor:** Simplify job match badge
+- **nav:** Accent underline rail and promise tag on desktop header
+- **editor:** Replace emoji save status with icon chip
+- **nav:** Editorial index sheet with bottom-docked CTA on mobile
+- **nav:** Add custom glyphs that act out each destination
+- **nav:** Show Career Blog in desktop nav from xl
+- **import:** Expose errorKind from useResumeParser
+- **import:** Per-kind error states in TemplateStartModal
+- **toast:** Restyle toasts as ink surface with per-kind glyphs
+- **toast:** Make download success the peak toast
+- **editor:** Show missing icons as an inline notice, not a toast
+- **landing:** Replace resume count with animated infinity stat
+- **landing:** Make infinity tracer a pulsing comet inside the ink
+- **landing:** Pulse infinity comet every 4.5s
+- **jobs:** Add file picker button to resume upload
+
+### 🐛 Bug Fixes
+
+- **jobs:** Show a single salary figure when min equals max
+- **jobs:** Label and outline /jobs search fields, pad search button
+- **jobs:** Render nav link optimistically to avoid layout shift
+- **jobs:** Render editor sidebar jobs links optimistically
+- **docker:** Copy job_feeds.py into the runtime image
+- **jobs:** Run /jobs searches once availability resolves
+- **jobs:** Name the searched title in the refreshing state
+- **jobs:** Hide empty What's Next block after download
+- **seo:** Send X-Robots-Tag noindex on /jobs app shell responses
+- **jobs:** Key job search cache on feed query and rank per resume
+- **jobs:** Prune and cap job search caches
+- **jobs:** Redact feed credentials from logged errors
+- **examples:** Use rowgroup scope for posting subgroup headers
+- **examples:** Align FDE summary tenure with employment dates
+- **examples:** Use 'an' before vowel-sound job titles
+- **examples:** Align staff SWE summary tenure with employment dates
+- **jobs:** Show submitted query in results heading, not live input
+- **jobs:** Skip AI title fallback for non-job-title queries
+- **jobs:** Mark Adzuna affiliate links rel=sponsored
+- **jobs:** Require internal key and cap inputs on job AI edge functions
+- **jobs:** Send internal key to job AI edge functions, skip when unset
+- **turnstile:** Pass VITE_TURNSTILE_SITE_KEY into Docker build
+- **suggest-roles:** Force json_object output to stop fenced-JSON 500s
+- **turnstile:** Drop deprecated size:'invisible' render param
+- **turnstile:** Time out token wait after 15s so import can't hang
+- **auth:** Return 503 not 401 when Supabase auth times out
+- **parse-resume:** Log why Turnstile verification failed
+- **parse-resume:** Read upload before 429 so the response reaches the browser
+- **import:** Show generic error when parse-resume returns non-JSON
+- **turnstile:** Render interaction-only widget so managed challenges are solvable
+- **parse-resume:** Check rate limit before buffering the upload
+- **editor:** Never block download on a failed cloud save
+- **toast:** Give undo 8s and pause it while focused
+- **toast:** Say what failed and how to recover, never raw errors
+- **editor:** Treat a null pre-action save as a failure
+- **ui:** Drop rainbow icon tiles from feature cards
+- **ads:** Give in-feed ad container full width so AdSense fills it
+- **ui:** Give show-more-jobs its own button space above sticky footer
+- **seo:** Align theme-color meta with chalk token
+- **ui:** Replace rainbow celebration disc/particles with accent
+- **ui:** Use accent-text for rich-text and markdown links
+- **blog:** Migrate teal/blue/yellow/orange callouts to tokens
+- **ui:** Match footer trust chips to accent token
+- **ui:** Map success green/emerald to accent, rose to red
+- **ui:** Normalise warning yellow/gradient to flat amber
+- **ads:** Tokenise ad placeholder and surface colours
+- **ui:** Make show-more-jobs read as an action, not a clipped card
+- **landing:** Restore odometer keyframes dropped by comet change
+- **download-modal:** Pin sticky footer to panel edge
+- **jobs:** Skip AI tiers when no job feed answered
+- **jobs:** Treat adzuna 401/403 as quota exhausted
+- **jobs:** Show friendly copy for invalid resume file
+
+### 🚜 Refactor
+
+- **jobs:** Move Adzuna search behind a job feed interface
+- **jobs:** Split engine search into fetch and rank
+- **jobs:** Generalize migrate rate limiter into _rate_limited
+- **auth:** Extract useSignOut hook
+- **nav:** Drop unused nav link icons
+- **header:** Drop redundant 'Free · No sign-up' tagline
+- **toast:** Cut toasts for changes the user can already see
+- **ui:** Migrate gray text/bg to ink tokens
+- **ui:** Neutralise section-visual illustration greys to ink tints
+- **landing:** Remove fabricated resume count
+
+### 📚 Documentation
+
+- **jobs:** Add jobs R1 ADR, revenue research and glossary
+- **privacy:** Name Adzuna and the AI title functions and what they receive
+- **privacy:** Disclose OpenAI processing in AI features
+- **claude:** Exempt /examples* from brand-first title rule
+- **env:** Document INTERNAL_FN_KEY for job AI edge functions
+- **turnstile:** Document VITE_TURNSTILE_SITE_KEY and TURNSTILE_SECRET
+- **design:** Document editorial index navigation
+- **ops:** Add job feed log alert runbook
+- **jobs:** Clarify adzuna 401/403 exhaustion is unconfirmed
+
+### ⚡ Performance
+
+- **jobs:** Cache ranked job searches for 15 minutes to save quota
+- **landing:** Pause infinity tracer while stats band is off screen
+- **jobs:** Defer turnstile pre-clearance until needed
+
+### 🧪 Testing
+
+- **analytics:** Type the idle-callback stub in job event test
+- **jobs:** Fail any test that reaches a real job feed
+- **examples:** Assert page without R1 fields renders no new blocks
+- **hook:** Lock in 429 rate-limit message surfacing in useResumeParser
+- **download-modal:** Cover job cap and review-first order
+- **nav:** Mock useSignOut in header chrome test
+- **turnstile:** Assert timed-out widget is removed, always restore timers
+- **ads:** Update in-feed placeholder colour expectations
+
+### ⚙️ Miscellaneous Tasks
+
+- **build:** Pass VITE_AFFILIATE_JOB_SEARCH_ENABLED build arg
+- **dev:** Enable jobs search by default in dev builds
+- **gitignore:** Ignore revenue-tracking, point to private repo
+- **dev:** Pass VITE_TURNSTILE_SITE_KEY in DEV build scripts
+
 ## [3.30.1] - 2026-09-24
 
 ### 🐛 Bug Fixes
