@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.31.1] - 2026-09-30
+
+### 🐛 Bug Fixes
+
+- **jobs:** Retry adzuna once on 502/503/504
+
 ## [3.31.0] - 2026-09-29
 
 ### 🚀 Features
