@@ -21,6 +21,7 @@ salary_max, salary_is_predicted, url, created, feed, plus the internal
 import logging
 import os
 import re
+import time
 from datetime import datetime, timezone
 from typing import Protocol
 from urllib.parse import urlencode
@@ -152,15 +153,20 @@ class AdzunaFeed:
 
     def search(self, context, query: str) -> tuple[list[dict], int]:
         page = max(context.page, 1)
-        try:
-            resp = http_requests.get(
-                f"https://api.adzuna.com/v1/api/jobs/{context.country}/search/{page}",
-                params=self.params(context, query),
-                timeout=5,
-            )
-        except http_requests.RequestException as e:
-            # from None: the chained exception's message holds the unredacted URL
-            raise FeedError(f"adzuna request failed: {_redact(e)}") from None
+        # ponytail: one retry on 502/503/504 (Adzuna blips are transient); no backoff ladder.
+        for attempt in (1, 2):
+            try:
+                resp = http_requests.get(
+                    f"https://api.adzuna.com/v1/api/jobs/{context.country}/search/{page}",
+                    params=self.params(context, query),
+                    timeout=5,
+                )
+            except http_requests.RequestException as e:
+                # from None: the chained exception's message holds the unredacted URL
+                raise FeedError(f"adzuna request failed: {_redact(e)}") from None
+            if resp.status_code not in (502, 503, 504) or attempt == 2:
+                break
+            time.sleep(0.5)
 
         # ponytail: Adzuna documents no quota error code; 429 is standard; 401/403 treated as exhausted too (unconfirmed).
         if resp.status_code in (401, 403, 429):

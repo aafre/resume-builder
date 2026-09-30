@@ -935,3 +935,27 @@ class TestAICacheTTL:
 
     def test_ai_cache_ttl_is_24_hours(self):
         assert _AI_CACHE_TTL == 86400
+
+
+class TestAdzunaRetry:
+    def _resp(self, status):
+        r = MagicMock(status_code=status)
+        r.json.return_value = {"results": [], "count": 0}
+        r.raise_for_status.side_effect = None if status == 200 else __import__("requests").HTTPError(f"{status}")
+        return r
+
+    @patch("job_feeds.time.sleep")
+    @patch("job_feeds.http_requests.get")
+    def test_503_then_200_succeeds(self, mock_get, _sleep):
+        mock_get.side_effect = [self._resp(503), self._resp(200)]
+        assert AdzunaFeed("i", "k").search(MatchContext(query="dev", country="us"), "dev") == ([], 0)
+        assert mock_get.call_count == 2
+
+    @patch("job_feeds.time.sleep")
+    @patch("job_feeds.http_requests.get")
+    def test_persistent_503_raises_after_one_retry(self, mock_get, _sleep):
+        from job_feeds import FeedError
+        mock_get.return_value = self._resp(503)
+        with pytest.raises(FeedError):
+            AdzunaFeed("i", "k").search(MatchContext(query="dev", country="us"), "dev")
+        assert mock_get.call_count == 2
