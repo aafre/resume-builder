@@ -24,6 +24,66 @@ vi.mock("../components/RichTextArea", () => {
   };
 });
 
+describe.each(["inline-list", "dynamic-column-list"])(
+  "GenericSection bulk add (%s)",
+  (type) => {
+    it("adds trimmed pasted items without replacing existing entries", () => {
+      const onUpdate = vi.fn();
+      render(
+        <GenericSection
+          section={{ name: "Key Skills", type, content: ["Existing skill"] }}
+          onUpdate={onUpdate}
+          onEditTitle={vi.fn()}
+          onSaveTitle={vi.fn()}
+          onCancelTitle={vi.fn()}
+          onDelete={vi.fn()}
+          isEditing={false}
+          temporaryTitle=""
+          setTemporaryTitle={vi.fn()}
+        />,
+        { wrapper: DndWrapper }
+      );
+
+      fireEvent.click(screen.getByRole("button", { name: "Add multiple items" }));
+      fireEvent.change(screen.getByRole("textbox", { name: /paste items/i }), {
+        target: { value: " Python, JavaScript, ,\n SQL  " },
+      });
+      fireEvent.click(screen.getByRole("button", { name: "Add items" }));
+
+      expect(onUpdate).toHaveBeenCalledWith({
+        name: "Key Skills",
+        type,
+        content: ["Existing skill", "Python", "JavaScript", "SQL"],
+      });
+      expect(screen.queryByRole("textbox", { name: /paste items/i })).not.toBeInTheDocument();
+    });
+
+    it("keeps the single-item control and does not add blank bulk input", () => {
+      const onUpdate = vi.fn();
+      render(
+        <GenericSection
+          section={{ name: "Key Skills", type, content: [] }}
+          onUpdate={onUpdate}
+          onEditTitle={vi.fn()}
+          onSaveTitle={vi.fn()}
+          onCancelTitle={vi.fn()}
+          onDelete={vi.fn()}
+          isEditing={false}
+          temporaryTitle=""
+          setTemporaryTitle={vi.fn()}
+        />,
+        { wrapper: DndWrapper }
+      );
+
+      expect(screen.getByRole("button", { name: "Add Item" })).toBeInTheDocument();
+      fireEvent.click(screen.getByRole("button", { name: "Add multiple items" }));
+      expect(screen.getByRole("button", { name: "Add items" })).toBeDisabled();
+      fireEvent.click(screen.getByRole("button", { name: "Cancel bulk add" }));
+      expect(onUpdate).not.toHaveBeenCalled();
+    });
+  }
+);
+
 // --- Mock RichTextInput to return a simple input for testing ---
 vi.mock("../components/RichTextInput", () => {
   return {
