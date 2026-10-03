@@ -20,6 +20,9 @@ interface Section {
  * card learns nothing from it, so each list type says what belongs in it and
  * what a good entry looks like. Keyed by section type.
  */
+const parseBulkItems = (input: string): string[] =>
+  input.split(/[,\n]/).map((item) => item.trim()).filter(Boolean);
+
 const LIST_EMPTY_COPY: Record<string, { headline: string; hint: string }> = {
   "bulleted-list": {
     headline: "No bullet points yet.",
@@ -109,7 +112,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
 
   const handleBulkAdd = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const items = bulkItems.split(/[,\n]/).map((item) => item.trim()).filter(Boolean);
+    const items = parseBulkItems(bulkItems);
     if (items.length === 0) return;
 
     const existing = Array.isArray(section.content) ? section.content : [];
@@ -371,7 +374,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
             {isBulkAdding && (
               <form onSubmit={handleBulkAdd} className="mt-2 space-y-3">
                 <label className="block text-sm font-medium text-ink" htmlFor={bulkItemsId}>
-                  Paste items separated by commas or new lines
+                  Paste items separated by commas or new lines (commas separate items)
                 </label>
                 <textarea
                   id={bulkItemsId}
@@ -383,8 +386,8 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                 />
                 <button
                   type="submit"
-                  disabled={!bulkItems.split(/[,\n]/).some((item) => item.trim())}
-                  className="min-h-11 rounded-lg bg-accent px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
+                  disabled={parseBulkItems(bulkItems).length === 0}
+                  className="min-h-11 rounded-lg bg-accent px-4 py-2 text-ink disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Add items
                 </button>
