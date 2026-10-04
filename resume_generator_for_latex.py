@@ -152,8 +152,12 @@ def generate_pdf(
         html_file.write(html_content)
     print("HTML written to temporary file:", temp_html_file)
 
-    # Convert the HTML file to PDF with the enable-local-file-access option
-    options = {"enable-local-file-access": ""}
+    # Convert the HTML file to PDF restricted to template CSS and icons
+    options = {
+        "disable-local-file-access": "",
+        "allow": [str(css_file), str(icon_base_path)],
+        "disable-javascript": "",
+    }
 
     print("Converting HTML file to PDF...")
     try:

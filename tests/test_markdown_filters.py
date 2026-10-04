@@ -60,3 +60,18 @@ def test_full_render_escapes_plain_fields():
     assert "&lt;b&gt;Jane&lt;/b&gt;" in t and "<b>Jane</b>" not in t
     assert "&lt;i&gt;X&lt;/i&gt;" in t and "&lt;u&gt;S&lt;/u&gt;" in t
     assert "hi &lt;b&gt;there&lt;/b&gt; <strong>bold</strong>" in t
+
+
+def test_pdfkit_options_limit_file_access():
+    from unittest import mock
+    data = {
+        "contact_info": {"name": "J", "email": "j@e.com", "phone": "1", "location": "X"},
+        "sections": [{"name": "S", "type": "text", "content": "hi"}],
+    }
+    with mock.patch.object(rg.pdfkit, "from_file") as ff:
+        rg.generate_pdf("modern", data, os.devnull)
+    opts = ff.call_args.kwargs["options"]
+    assert "enable-local-file-access" not in opts
+    assert "disable-local-file-access" in opts and "disable-javascript" in opts
+    assert all(isinstance(a, str) for a in opts["allow"])
+    assert any(a.endswith("styles.css") for a in opts["allow"])

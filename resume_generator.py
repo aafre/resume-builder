@@ -340,9 +340,11 @@ def generate_pdf(
     logging.debug(f"Icon base path: {icon_base_path}")
     logging.debug(f"Output path: {output_file}")
 
-    # Convert the HTML file to PDF with the enable-local-file-access option
+    # Convert the HTML file to PDF restricted to template CSS and icons
     options = {
-        "enable-local-file-access": "",
+        "disable-local-file-access": "",
+        "allow": [str(css_file), str(icon_base_path)],
+        "disable-javascript": "",
         "load-error-handling": "abort",  # fail fast on missing assets
         "quiet": "",  # keep stderr tidy
     }
