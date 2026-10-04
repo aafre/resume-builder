@@ -810,16 +810,19 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
         # Compile LaTeX to PDF using xelatex
         compile_command = [
             "xelatex",
+            "-no-shell-escape",
             "-interaction=nonstopmode",
-            "-output-directory",
-            str(temp_dir),
-            str(temp_tex_file),
+            temp_tex_file.name,
         ]
 
         logging.debug(f"Running LaTeX compilation: {' '.join(compile_command)}")
 
         result = subprocess.run(
-            compile_command, capture_output=True, text=True, cwd=str(temp_dir)
+            compile_command,
+            capture_output=True,
+            text=True,
+            cwd=str(temp_dir),
+            env={**os.environ, "openin_any": "p"},
         )
 
         # Check if PDF was generated successfully (primary success indicator)

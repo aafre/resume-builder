@@ -309,3 +309,24 @@ class TestPdfGenerationMetadata:
     def test_generate_pdf_preserves_updated_at(self, flask_test_client, auth_headers, sample_resume_data):
         """Verify updated_at is preserved when only generating PDF."""
         pass
+
+
+def test_xelatex_run_without_shell_escape(monkeypatch, tmp_path):
+    import resume_generator_latex as g
+
+    calls = []
+
+    def fake_run(cmd, **kw):
+        calls.append((cmd, kw))
+        raise RuntimeError("stop")
+
+    monkeypatch.setattr(g.subprocess, "run", fake_run)
+    try:
+        g.generate_latex_pdf("classic", {"contact_info": {"name": "A"}, "sections": []}, tmp_path / "o.pdf")
+    except Exception:
+        pass
+    cmd, kw = calls[0]
+    assert "-no-shell-escape" in cmd
+    assert cmd[-1] == "o.tex"
+    assert kw["cwd"] == str(tmp_path)
+    assert kw["env"]["openin_any"] == "p"

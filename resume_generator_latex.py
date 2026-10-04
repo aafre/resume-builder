@@ -1,3 +1,4 @@
+import os
 import subprocess
 from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
@@ -444,12 +445,13 @@ def generate_latex_pdf(template_name: str, data: dict, output_file: Path):
         result1 = subprocess.run(
             [
                 "xelatex",
-                "-output-directory",
-                str(output_dir),
+                "-no-shell-escape",
                 "-interaction=nonstopmode",
-                str(temp_tex_file_path),
+                temp_tex_file_name,
             ],
+            cwd=str(output_dir),
             capture_output=True,
+            env={**os.environ, "openin_any": "p"},
             check=True,  # Will raise CalledProcessError if xelatex returns a non-zero exit status
             text=True,  # Decode stdout/stderr as text
         )
@@ -460,12 +462,13 @@ def generate_latex_pdf(template_name: str, data: dict, output_file: Path):
         result2 = subprocess.run(
             [
                 "xelatex",
-                "-output-directory",
-                str(output_dir),
+                "-no-shell-escape",
                 "-interaction=nonstopmode",
-                str(temp_tex_file_path),
+                temp_tex_file_name,
             ],
+            cwd=str(output_dir),
             capture_output=True,
+            env={**os.environ, "openin_any": "p"},
             check=True,
             text=True,
         )
