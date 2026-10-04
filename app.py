@@ -649,6 +649,23 @@ def _escape_remaining_latex_chars(text):
     return text
 
 
+_SUPPORTED_SECTION_TYPES = {
+    "text",
+    "bulleted-list",
+    "inline-list",
+    "icon-list",
+    "dynamic-column-list",
+    "experience",
+    "education",
+}
+
+
+def _normalize_section_type(value):
+    """Return the lowercase section type if supported, else empty string."""
+    value = value.strip().lower() if isinstance(value, str) else ""
+    return value if value in _SUPPORTED_SECTION_TYPES else ""
+
+
 def _prepare_latex_data(data):
     """Recursively applies LaTeX escaping to all string values in the data dictionary."""
     logging.info(
@@ -660,7 +677,7 @@ def _prepare_latex_data(data):
     def apply_escaping_recursive(item, current_key=None):
         if isinstance(item, str):
             if current_key == "type":
-                return item
+                return _normalize_section_type(item)
             return _escape_latex(item)
         elif isinstance(item, dict):
             return {k: apply_escaping_recursive(v, k) for k, v in item.items()}
