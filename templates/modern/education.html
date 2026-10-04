@@ -6,10 +6,10 @@
                 {% if edu.icon %}
                     <img src="{{ icon_path }}/{{ edu.icon }}" alt="School Icon" class="school-icon">
                 {% endif %}
-                <strong>{{ edu.degree | markdown_links | markdown_formatting | safe }}</strong>, {{ edu.school | markdown_links | markdown_formatting | safe }} - {{ edu.year | markdown_links | markdown_formatting | safe }}
+                <strong>{{ edu.degree | markdown_links | markdown_formatting }}</strong>, {{ edu.school | markdown_links | markdown_formatting }} - {{ edu.year | markdown_links | markdown_formatting }}
             </p>
             {% if edu.field_of_study %}
-                <p style="font-size: 13px; color: #555; margin: 2px 0 0 0; font-style: italic;">{{ edu.field_of_study | markdown_links | markdown_formatting | safe }}</p>
+                <p style="font-size: 13px; color: #555; margin: 2px 0 0 0; font-style: italic;">{{ edu.field_of_study | markdown_links | markdown_formatting }}</p>
             {% endif %}
         </div>
     {% endfor %}
