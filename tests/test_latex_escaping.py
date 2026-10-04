@@ -453,3 +453,56 @@ class TestLatexCompilationSafety:
         # These are valid LaTeX escape sequences
         assert r"\_" in result  # escaped underscore
         assert r"\textasciitilde{}" in result  # escaped tilde
+
+
+class TestSectionTypeAllowlist:
+    """Section types are limited to the supported set before rendering."""
+
+    @staticmethod
+    def _render(section_type):
+        from jinja2 import Environment, FileSystemLoader
+
+        env = Environment(
+            loader=FileSystemLoader(
+                os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "templates", "classic")
+            ),
+            block_start_string="\BLOCK{",
+            block_end_string="}",
+            variable_start_string="\VAR{",
+            variable_end_string="}",
+            comment_start_string="\#{",
+            comment_end_string="}",
+            line_statement_prefix="%%",
+            line_comment_prefix="%#",
+            trim_blocks=True,
+            autoescape=False,
+        )
+        env.filters["markdown_links"] = app.convert_markdown_links_to_latex
+        env.filters["markdown_formatting"] = app.convert_markdown_formatting_to_latex
+        data = app._prepare_latex_data(
+            {
+                "contact_info": {"name": "A B"},
+                "sections": [{"name": "Misc", "type": section_type, "content": "hello body"}],
+            }
+        )
+        return env.get_template("resume.tex").render(**data)
+
+    def test_unknown_section_type_not_rendered(self):
+        out = self._render(r"\input{/nonexistent/x}")
+        assert "\input" not in out
+        assert "nonexistent" not in out
+
+    def test_unknown_section_type_normalized_in_both_prepare_functions(self):
+        for fn in (app._prepare_latex_data, resume_generator_latex._prepare_latex_data):
+            d = fn({"sections": [{"name": "x", "type": r"\input{/nonexistent/x}"}]})
+            assert d["sections"][0]["type"] == ""
+
+    def test_valid_section_type_still_rendered(self):
+        assert "hello body" in self._render("text")
+        assert "hello body" in self._render("TEXT")
+
+    def test_hyphenated_types_preserved(self):
+        for t in ("bulleted-list", "inline-list", "icon-list", "dynamic-column-list"):
+            for fn in (app._prepare_latex_data, resume_generator_latex._prepare_latex_data):
+                d = fn({"sections": [{"name": "x", "type": t.upper()}]})
+                assert d["sections"][0]["type"] == t

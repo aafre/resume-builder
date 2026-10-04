@@ -649,6 +649,23 @@ def _escape_remaining_latex_chars(text):
     return text
 
 
+_SUPPORTED_SECTION_TYPES = {
+    "text",
+    "bulleted-list",
+    "inline-list",
+    "icon-list",
+    "dynamic-column-list",
+    "experience",
+    "education",
+}
+
+
+def _normalize_section_type(value):
+    """Return the lowercase section type if supported, else empty string."""
+    value = value.strip().lower() if isinstance(value, str) else ""
+    return value if value in _SUPPORTED_SECTION_TYPES else ""
+
+
 def _prepare_latex_data(data):
     """Recursively applies LaTeX escaping to all string values in the data dictionary."""
     logging.info(
@@ -660,7 +677,7 @@ def _prepare_latex_data(data):
     def apply_escaping_recursive(item, current_key=None):
         if isinstance(item, str):
             if current_key == "type":
-                return item
+                return _normalize_section_type(item)
             return _escape_latex(item)
         elif isinstance(item, dict):
             return {k: apply_escaping_recursive(v, k) for k, v in item.items()}
@@ -793,16 +810,19 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
         # Compile LaTeX to PDF using xelatex
         compile_command = [
             "xelatex",
+            "-no-shell-escape",
             "-interaction=nonstopmode",
-            "-output-directory",
-            str(temp_dir),
-            str(temp_tex_file),
+            temp_tex_file.name,
         ]
 
         logging.debug(f"Running LaTeX compilation: {' '.join(compile_command)}")
 
         result = subprocess.run(
-            compile_command, capture_output=True, text=True, cwd=str(temp_dir)
+            compile_command,
+            capture_output=True,
+            text=True,
+            cwd=str(temp_dir),
+            env={**os.environ, "openin_any": "p"},
         )
 
         # Check if PDF was generated successfully (primary success indicator)
@@ -903,6 +923,18 @@ def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
             return cols - 1
 
     return max_columns  # Default to max columns if all checks pass
+
+
+def _path_within(base_dir, name):
+    """Return base_dir/name if it resolves inside base_dir, else None."""
+    base = Path(base_dir).resolve()
+    path = Path(base_dir) / name
+    try:
+        target = path.resolve()
+        target.relative_to(base)
+    except ValueError:
+        return None
+    return None if target == base else path
 
 
 def extract_icons_from_yaml(data):
@@ -2045,6 +2077,8 @@ def generate_resume():
             session_id = request.form.get("session_id")
             if not session_id:
                 raise ValueError("No session ID provided")
+            if not re.fullmatch(r"[A-Za-z0-9-]{1,64}", session_id):
+                raise ValueError("Invalid session ID")
 
             # Create session-specific icon directory
             session_icons_dir = Path("/tmp") / "sessions" / session_id / "icons"
@@ -2097,9 +2131,12 @@ def generate_resume():
                     if icon_name in base_contact_icons:
                         continue
 
-                    default_icon_path = ICONS_DIR / icon_name
+                    default_icon_path = _path_within(ICONS_DIR, icon_name)
+                    session_icon_path = _path_within(session_icons_dir, icon_name)
+                    if not default_icon_path or not session_icon_path:
+                        logging.warning(f"Skipping invalid icon name: {icon_name}")
+                        continue
                     if default_icon_path.exists():
-                        session_icon_path = session_icons_dir / icon_name
                         shutil.copy2(default_icon_path, session_icon_path)
                         logging.debug(
                             f"Copied default icon: {icon_name} to session directory"
@@ -2130,7 +2167,10 @@ def generate_resume():
                         )
 
                     # Save icon to the session-specific icons directory
-                    icon_path = session_icons_dir / icon_file.filename
+                    icon_path = _path_within(session_icons_dir, icon_file.filename)
+                    if not icon_path:
+                        logging.warning("Skipping icon with invalid filename")
+                        continue
                     icon_file.save(icon_path)
             else:
                 logging.debug(
@@ -3616,7 +3656,10 @@ def generate_pdf_for_saved_resume(resume_id):
             # Download icons from storage
             failed_icons = []
             for icon in icons_result.data:
-                icon_path = session_icons_dir / icon["filename"]
+                icon_path = _path_within(session_icons_dir, icon["filename"] or "")
+                if not icon_path:
+                    failed_icons.append(icon["filename"])
+                    continue
                 success = download_icon_from_storage(
                     icon["storage_path"], str(icon_path)
                 )
@@ -3692,7 +3735,11 @@ def generate_pdf_for_saved_resume(resume_id):
                         continue
 
                     # Check if user uploaded this icon (already downloaded from storage above)
-                    user_icon_path = session_icons_dir / icon_name
+                    user_icon_path = _path_within(session_icons_dir, icon_name)
+                    default_icon_path = _path_within(ICONS_DIR, icon_name)
+                    if not user_icon_path or not default_icon_path:
+                        missing_icons.append(icon_name)
+                        continue
                     if user_icon_path.exists():
                         logging.debug(
                             f"Icon already in session: {icon_name} (user-uploaded)"
@@ -3700,7 +3747,6 @@ def generate_pdf_for_saved_resume(resume_id):
                         continue
 
                     # Try to copy from default icons directory
-                    default_icon_path = ICONS_DIR / icon_name
                     if default_icon_path.exists():
                         session_icon_path = session_icons_dir / icon_name
                         shutil.copy2(default_icon_path, session_icon_path)
@@ -3853,7 +3899,10 @@ def generate_thumbnail_for_resume(resume_id):
             # Download icons from storage
             failed_icons = []
             for icon in icons_result.data:
-                icon_path = session_icons_dir / icon["filename"]
+                icon_path = _path_within(session_icons_dir, icon["filename"] or "")
+                if not icon_path:
+                    failed_icons.append(icon["filename"])
+                    continue
                 success = download_icon_from_storage(
                     icon["storage_path"], str(icon_path)
                 )
@@ -3929,7 +3978,11 @@ def generate_thumbnail_for_resume(resume_id):
                         continue
 
                     # Check if user uploaded this icon (already downloaded from storage above)
-                    user_icon_path = session_icons_dir / icon_name
+                    user_icon_path = _path_within(session_icons_dir, icon_name)
+                    default_icon_path = _path_within(ICONS_DIR, icon_name)
+                    if not user_icon_path or not default_icon_path:
+                        missing_icons.append(icon_name)
+                        continue
                     if user_icon_path.exists():
                         logging.debug(
                             f"Icon already in session: {icon_name} (user-uploaded)"
@@ -3937,7 +3990,6 @@ def generate_thumbnail_for_resume(resume_id):
                         continue
 
                     # Try to copy from default icons directory
-                    default_icon_path = ICONS_DIR / icon_name
                     if default_icon_path.exists():
                         session_icon_path = session_icons_dir / icon_name
                         shutil.copy2(default_icon_path, session_icon_path)

@@ -1,3 +1,4 @@
+import os
 import subprocess
 from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
@@ -214,6 +215,23 @@ def _get_social_media_handle(url):
     return ""
 
 
+_SUPPORTED_SECTION_TYPES = {
+    "text",
+    "bulleted-list",
+    "inline-list",
+    "icon-list",
+    "dynamic-column-list",
+    "experience",
+    "education",
+}
+
+
+def _normalize_section_type(value):
+    """Return the lowercase section type if supported, else empty string."""
+    value = value.strip().lower() if isinstance(value, str) else ""
+    return value if value in _SUPPORTED_SECTION_TYPES else ""
+
+
 def _prepare_latex_data(data):
     """
     Recursively applies LaTeX escaping to all string values in the data dictionary
@@ -237,9 +255,8 @@ def _prepare_latex_data(data):
     # Apply LaTeX escaping recursively, but preserve section types for logic
     def apply_escaping_recursive(item, current_key=None):
         if isinstance(item, str):
-            # Don't escape section types as they're used for template logic
             if current_key == "type":
-                return item
+                return _normalize_section_type(item)
             return _escape_latex(item)
         elif isinstance(item, dict):
             return {k: apply_escaping_recursive(v, k) for k, v in item.items()}
@@ -428,12 +445,13 @@ def generate_latex_pdf(template_name: str, data: dict, output_file: Path):
         result1 = subprocess.run(
             [
                 "xelatex",
-                "-output-directory",
-                str(output_dir),
+                "-no-shell-escape",
                 "-interaction=nonstopmode",
-                str(temp_tex_file_path),
+                temp_tex_file_name,
             ],
+            cwd=str(output_dir),
             capture_output=True,
+            env={**os.environ, "openin_any": "p"},
             check=True,  # Will raise CalledProcessError if xelatex returns a non-zero exit status
             text=True,  # Decode stdout/stderr as text
         )
@@ -444,12 +462,13 @@ def generate_latex_pdf(template_name: str, data: dict, output_file: Path):
         result2 = subprocess.run(
             [
                 "xelatex",
-                "-output-directory",
-                str(output_dir),
+                "-no-shell-escape",
                 "-interaction=nonstopmode",
-                str(temp_tex_file_path),
+                temp_tex_file_name,
             ],
+            cwd=str(output_dir),
             capture_output=True,
+            env={**os.environ, "openin_any": "p"},
             check=True,
             text=True,
         )

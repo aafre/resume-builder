@@ -411,7 +411,7 @@ class TestGenerateEndpoint:
                 data={
                     'yaml_file': (f, 'resume.yml'),
                     'template': 'modern',
-                    'session_id': 'endpoint-test-123'
+                    'session_id': '123e4567-e89b-42d3-a456-426614174000'
                 },
                 content_type='multipart/form-data'
             )

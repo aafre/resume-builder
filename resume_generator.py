@@ -10,6 +10,7 @@ from pathlib import Path
 import pdfkit
 import yaml
 from jinja2 import Environment, FileSystemLoader
+from markupsafe import Markup, escape
 
 from utils.yaml_converter import fast_yaml_load
 
@@ -78,6 +79,9 @@ def normalize_sections(data):
     return data
 
 
+_LINK_SCHEMES = ("http://", "https://", "mailto:")
+
+
 def convert_markdown_links_to_html(text):
     """
     Convert Markdown-style links [text](url) to HTML <a> tags.
@@ -94,13 +98,16 @@ def convert_markdown_links_to_html(text):
     if not text or not isinstance(text, str):
         return text
 
-    # Regex to match [text](url) pattern
-    pattern = r"\[([^\]]+)\]\(([^\)]+)\)"
+    # Escape once (no-op for Markup); the anchor is built from already-escaped parts
+    text = escape(text)
 
-    # Replace with HTML anchor tag
-    html_text = re.sub(pattern, r'<a href="\2">\1</a>', text)
+    def _anchor(m):
+        label, url = m.group(1), m.group(2)
+        if not url.strip().lower().startswith(_LINK_SCHEMES):
+            return label
+        return f'<a href="{url}">{label}</a>'
 
-    return html_text
+    return Markup(re.sub(r"\[([^\]]+)\]\(([^\)]+)\)", _anchor, text))
 
 
 def convert_markdown_formatting_to_html(text):
@@ -125,6 +132,8 @@ def convert_markdown_formatting_to_html(text):
     if not text or not isinstance(text, str):
         return text
 
+    text = str(escape(text))
+
     # Process in specific order to avoid conflicts
     # 1. Bold with ** (must come before single *)
     text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
@@ -144,7 +153,7 @@ def convert_markdown_formatting_to_html(text):
     # 6. Underline with ++ (custom syntax)
     text = re.sub(r"\+\+(.+?)\+\+", r"<u>\1</u>", text)
 
-    return text
+    return Markup(text)
 
 
 def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
@@ -204,7 +213,7 @@ def generate_pdf(
     data["css_path"] = f"file://{css_file.as_posix()}"
 
     # Set up Jinja2 environment
-    env = Environment(loader=FileSystemLoader(template_dir))
+    env = Environment(loader=FileSystemLoader(template_dir), autoescape=True)
 
     # Register custom filters for markdown links and formatting
     env.filters["markdown_links"] = convert_markdown_links_to_html
@@ -331,9 +340,11 @@ def generate_pdf(
     logging.debug(f"Icon base path: {icon_base_path}")
     logging.debug(f"Output path: {output_file}")
 
-    # Convert the HTML file to PDF with the enable-local-file-access option
+    # Convert the HTML file to PDF restricted to template CSS and icons
     options = {
-        "enable-local-file-access": "",
+        "disable-local-file-access": "",
+        "allow": [str(css_file), str(icon_base_path)],
+        "disable-javascript": "",
         "load-error-handling": "abort",  # fail fast on missing assets
         "quiet": "",  # keep stderr tidy
     }
