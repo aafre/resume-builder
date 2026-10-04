@@ -60,25 +60,36 @@ def test_legacy_session_id_format_accepted(flask_test_client):
     assert resp.status_code == 200
 
 
-def test_icon_filename_stays_in_session_dir(flask_test_client, tmp_path):
-    saved = []
-    real_within = app_module._path_within
+def test_icon_with_parent_ref_is_skipped(flask_test_client):
+    seen = []
 
-    def spy(base, name):
-        p = real_within(base, name)
-        saved.append((Path(base), p))
-        return p
+    def dispatch(template, yaml_path, output_path, icons_dir, session_id):
+        seen.append(sorted(p.name for p in Path(icons_dir).iterdir()))
+        _fake_dispatch(template, yaml_path, output_path, icons_dir, session_id)
 
     icon = (io.BytesIO(b"png"), "../x.png")
-    with patch.object(app_module, "_dispatch_html_pdf_generation", _fake_dispatch), \
-         patch.object(app_module, "send_file", _fake_send_file),          patch.object(app_module, "_path_within", spy):
+    with patch.object(app_module, "_dispatch_html_pdf_generation", dispatch),          patch.object(app_module, "send_file", _fake_send_file):
         resp = _post(flask_test_client, str(uuid.uuid4()), icons=[icon])
     assert resp.status_code == 200
-    for base, p in saved:
-        assert p is None or p.resolve().is_relative_to(base.resolve())
-    assert any(p and p.name == "x.png" for _, p in saved)
+    assert "x.png" not in seen[0] and len(seen) == 1
 
 
-def test_path_within_rejects_escape(tmp_path):
-    assert app_module._path_within(tmp_path, "../x.png") is None
+def test_icon_keeps_exact_name(flask_test_client):
+    seen = []
+
+    def dispatch(template, yaml_path, output_path, icons_dir, session_id):
+        seen.append(sorted(p.name for p in Path(icons_dir).iterdir()))
+        _fake_dispatch(template, yaml_path, output_path, icons_dir, session_id)
+
+    icon = (io.BytesIO(b"png"), "my icon é.png")
+    with patch.object(app_module, "_dispatch_html_pdf_generation", dispatch),          patch.object(app_module, "send_file", _fake_send_file):
+        resp = _post(flask_test_client, str(uuid.uuid4()), icons=[icon])
+    assert resp.status_code == 200
+    assert "my icon é.png" in seen[0]
+
+
+def test_path_within_cases(tmp_path):
     assert app_module._path_within(tmp_path, "a.png") == tmp_path / "a.png"
+    assert app_module._path_within(tmp_path, "a b.png") == tmp_path / "a b.png"
+    for bad in ("../x", "/etc/x", "", "."):
+        assert app_module._path_within(tmp_path, bad) is None

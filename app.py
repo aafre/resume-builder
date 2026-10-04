@@ -927,10 +927,14 @@ def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
 
 def _path_within(base_dir, name):
     """Return base_dir/name if it resolves inside base_dir, else None."""
+    base = Path(base_dir).resolve()
     path = Path(base_dir) / name
-    if path.resolve().is_relative_to(Path(base_dir).resolve()):
-        return path
-    return None
+    try:
+        target = path.resolve()
+        target.relative_to(base)
+    except ValueError:
+        return None
+    return None if target == base else path
 
 
 def extract_icons_from_yaml(data):
@@ -2163,8 +2167,7 @@ def generate_resume():
                         )
 
                     # Save icon to the session-specific icons directory
-                    safe_name = secure_filename(icon_file.filename)
-                    icon_path = safe_name and _path_within(session_icons_dir, safe_name)
+                    icon_path = _path_within(session_icons_dir, icon_file.filename)
                     if not icon_path:
                         logging.warning("Skipping icon with invalid filename")
                         continue
@@ -3653,10 +3656,8 @@ def generate_pdf_for_saved_resume(resume_id):
             # Download icons from storage
             failed_icons = []
             for icon in icons_result.data:
-                icon_path = _path_within(
-                    session_icons_dir, secure_filename(icon["filename"] or "")
-                )
-                if not icon_path or icon_path == session_icons_dir:
+                icon_path = _path_within(session_icons_dir, icon["filename"] or "")
+                if not icon_path:
                     failed_icons.append(icon["filename"])
                     continue
                 success = download_icon_from_storage(
@@ -3898,10 +3899,8 @@ def generate_thumbnail_for_resume(resume_id):
             # Download icons from storage
             failed_icons = []
             for icon in icons_result.data:
-                icon_path = _path_within(
-                    session_icons_dir, secure_filename(icon["filename"] or "")
-                )
-                if not icon_path or icon_path == session_icons_dir:
+                icon_path = _path_within(session_icons_dir, icon["filename"] or "")
+                if not icon_path:
                     failed_icons.append(icon["filename"])
                     continue
                 success = download_icon_from_storage(
