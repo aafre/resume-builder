@@ -253,6 +253,8 @@
           s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8976874751886843';
           s.crossOrigin = 'anonymous';
           s.async = true;
+          // Test ads off the prod host; keep in sync with isAdTestHost (config/ads.ts)
+          if (location.hostname !== 'easyfreeresume.com') s.setAttribute('data-adtest', 'on');
           document.head.appendChild(s);
         }
         if (typeof requestIdleCallback === 'function') {

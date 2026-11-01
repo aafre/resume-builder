@@ -17,7 +17,7 @@ import EnvironmentBanner from "./components/EnvironmentBanner";
 import ScrollToTop from "./components/ScrollToTop";
 import { EditorProvider } from "./contexts/EditorContext";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
-import { SideRailLayout, InContentAd, AD_CONFIG, isExplicitAdsEnabled } from "./components/ads";
+import { SideRailLayout } from "./components/ads";
 import { affiliateConfig } from "./config/affiliate";
 import { ConversionProvider } from "./contexts/ConversionContext";
 import usePreferencePersistence from "./hooks/usePreferencePersistence";
@@ -1084,13 +1084,6 @@ function AppContent() {
         </Routes>
         </SideRailLayout>
       </main>
-
-      {/* Above-footer ad — all non-editor pages (only when explicit ads enabled) */}
-      {!isEditorPage && (isExplicitAdsEnabled() || AD_CONFIG.debug) && (
-        <div className="container mx-auto max-w-4xl px-4">
-          <InContentAd adSlot={AD_CONFIG.slots.aboveFooter} marginY={32} />
-        </div>
-      )}
 
       {/* Footer - Always visible, static positioning */}
       <footer id="app-footer" data-nosnippet className="bg-chalk-dark text-ink/60 border-t border-black/[0.06] mt-auto">

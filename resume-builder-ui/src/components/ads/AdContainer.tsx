@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback, CSSProperties, ReactNode } from "react";
-import { AD_CONFIG, AD_SLOT_NAMES, isExplicitAdsEnabled } from "../../config/ads";
+import { AD_CONFIG, AD_SLOT_NAMES, isExplicitAdsEnabled, isAdTestHost } from "../../config/ads";
 
 declare global {
   interface Window {
@@ -283,6 +283,7 @@ export const AdContainer = ({
           style={{ display: "block", ...adLayoutProps.style }}
           data-ad-client={AD_CONFIG.clientId}
           data-ad-slot={adSlot}
+          data-adtest={isAdTestHost() ? "on" : undefined}
           {...adLayoutProps}
         />
       )}

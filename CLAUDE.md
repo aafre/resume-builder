@@ -107,51 +107,23 @@ The `usePreview` hook follows React best practices for dependency arrays to ensu
 
 ### Ads Configuration
 
-The app uses Google AdSense with two ad strategies:
-- **Auto Ads**: Enabled by default, Google automatically places ads
-- **Explicit Ads**: Manual ad placements in specific locations (disabled by default)
+Google AdSense runs two ways at once, both **live in prod**:
+- **Auto Ads**: Google places in-page and overlay formats (Anchor, Side rail, Vignette), controlled in the AdSense UI. Check the overlay settings monthly; Anchor and Side rail were silently off Feb–Oct 2026.
+- **Explicit ads**: manual units, gated by `VITE_ENABLE_EXPLICIT_ADS` (`true` in prod). Slot IDs live in `resume-builder-ui/src/config/ads.ts`.
 
-#### Enabling Explicit Ads
-
-Explicit ads are controlled by the `VITE_ENABLE_EXPLICIT_ADS` environment variable (default: `false`).
-
-**Before enabling, complete these steps:**
-
-1. **Add page exclusions in AdSense** (to prevent double-ads from Auto Ads + Explicit):
-   - Go to: AdSense → Ads → Auto ads → Excluded pages
-   - Add exclusions for pages with explicit ads:
-     - `/` (landing page)
-     - `/templates`
-     - `/blog`
-     - `/blog/*`
-     - `/editor/*`
-     - `/free-resume-builder-no-sign-up`
-     - `/ats-resume-templates`
-     - `/resume-keywords`
-
-2. **Set the environment variable in production**:
-   ```bash
-   VITE_ENABLE_EXPLICIT_ADS=true
-   ```
-
-3. **Monitor for a few days**:
-   - Check ad density doesn't violate AdSense policies
-   - Monitor revenue impact
-   - Consider pausing any running experiments while testing
+Off the prod host (`isAdTestHost()` in `config/ads.ts`, mirrored in the `index.html` loader), ads render with `data-adtest="on"`: test ads that aren't counted or paid, so dev traffic can't trigger invalid-traffic flags.
 
 #### Ad Slot Reference
 
 | Location | Slot ID | Ad Unit Name |
 |----------|---------|--------------|
-| Landing page (below stats) | `1232650916` | efr-landing-incontent |
-| Free Resume Builder page | `3994545622` | efr-freepage-incontent |
 | Templates Hub page | `6343391269` | efr-templates-incontent |
-| Resume Keywords page | `9055300614` | efr-keywords-incontent |
-| Blog index (in-feed) | `7742218947` | efr-blog-infeed |
 | Template carousel (in-feed) | `3806186822` | efr-carousel-infeed |
-| Editor sidebar | `3691293294` | efr-editor-sidebar |
-| Mobile top (all non-editor pages) | `2808813237` | efr-mobile-top |
+| Side rail left / right | `2941074550` / `4121894901` | efr-siderail-left / right |
+| My Resumes | `1958765996` | efr-myresumes-incontent |
+| Mobile top (all non-editor pages) | `2808813237` | efr-landing-mobile-top |
 
+Removed 2026-11 for earning ~$0 (revenue-recovery plan): landing in-content, free-page, keywords, blog in-feed and in-content, above-footer.
 
 ### Blog Page Update Checklist
 

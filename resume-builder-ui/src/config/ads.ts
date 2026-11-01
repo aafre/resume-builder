@@ -2,20 +2,22 @@ export const AD_CONFIG = {
   debug: import.meta.env.VITE_ADS_DEBUG_MODE === "true",
   clientId: "ca-pub-8976874751886843",
   slots: {
-    landingIncontent: "1232650916",
-    freepageIncontent: "3994545622",
     templatesIncontent: "6343391269",
-    keywordsIncontent: "9055300614",
-    blogInfeed: "7742218947",
     carouselInfeed: "3806186822",
     sideRailLeft: "2941074550",
     sideRailRight: "4121894901",
-    blogIncontent: "3576273453",
     myresumesIncontent: "1958765996",
     mobileTop: "2808813237",
-    aboveFooter: "8825866171",
   },
 } as const;
+
+/**
+ * Off the prod host (dev, previews, localhost) ads render as test ads:
+ * not counted or paid, so dev traffic can't trip invalid-traffic checks.
+ * Keep in sync with the Auto ads loader in index.html.
+ */
+export const isAdTestHost = (host: string = window.location.hostname): boolean =>
+  host !== "easyfreeresume.com";
 
 /** Reverse lookup: slot ID → human-readable name (for debug labels) */
 export const AD_SLOT_NAMES: Record<string, string> = Object.fromEntries(

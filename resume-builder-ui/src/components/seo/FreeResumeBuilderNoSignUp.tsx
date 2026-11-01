@@ -13,7 +13,6 @@ import FeatureGrid from '../shared/FeatureGrid';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
 import RevealSection from '../shared/RevealSection';
-import { InContentAd, AD_CONFIG } from '../ads';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { generateVideoObjectSchema } from '../../utils/schemaGenerators';
 import { SEO_PAGES } from '../../config/seoPages';
@@ -42,9 +41,6 @@ export default function FreeResumeBuilderNoSignUp() {
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
       <PageHero config={config.hero} showcase />
-
-      {/* In-content Ad - Below hero */}
-      <InContentAd adSlot={AD_CONFIG.slots.freepageIncontent} marginY={32} />
 
       {config.steps && <StepByStep steps={config.steps} />}
 

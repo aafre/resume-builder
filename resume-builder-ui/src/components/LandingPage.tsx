@@ -372,11 +372,6 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ═══════════ AD SLOT ═══════════ */}
-      <div className="container mx-auto max-w-4xl px-4">
-        <InContentAd adSlot={AD_CONFIG.slots.landingIncontent} marginY={32} />
-      </div>
-
       {/* ═══════════ COMPANY MARQUEE — light ═══════════ */}
       <section className="bg-chalk py-20 px-4 cv-auto cv-h-300">
         <div className="max-w-6xl mx-auto">
