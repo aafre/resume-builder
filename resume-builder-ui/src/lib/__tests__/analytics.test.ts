@@ -320,6 +320,25 @@ describe('analytics', () => {
 
       window.requestIdleCallback = originalRIC;
     });
+
+    it('trackWebVital sends web_vital via sendBeacon with the landing path', async () => {
+      const { trackWebVital, initAnalytics } = await import('../analytics');
+
+      const originalRIC = window.requestIdleCallback;
+      window.requestIdleCallback = vi.fn((cb: any) => { cb(); return 1; }) as any;
+      initAnalytics();
+      await vi.dynamicImportSettled();
+
+      trackWebVital({ name: 'INP', value: 212.4, rating: 'needs-improvement', path: '/templates' });
+
+      expect(mockCapture).toHaveBeenCalledWith(
+        'web_vital',
+        { name: 'INP', value: 212.4, rating: 'needs-improvement', path: '/templates' },
+        { transport: 'sendBeacon' },
+      );
+
+      window.requestIdleCallback = originalRIC;
+    });
   });
 
   describe('when POSTHOG_KEY is not set', () => {
