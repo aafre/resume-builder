@@ -1,7 +1,7 @@
 import { render, screen, waitFor, act } from "@testing-library/react";
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { AdContainer } from "../components/ads/AdContainer";
-import { AD_CONFIG } from "../config/ads";
+import { AD_CONFIG, isAdTestHost } from "../config/ads";
 
 // Mock IntersectionObserver
 const mockIntersectionObserver = vi.fn();
@@ -176,6 +176,26 @@ describe("AdContainer", () => {
 
     await waitFor(() => {
       expect(pushSpy).toHaveBeenCalledWith({});
+    });
+  });
+
+  it("isAdTestHost is false only on the prod host", () => {
+    expect(isAdTestHost("easyfreeresume.com")).toBe(false);
+    expect(isAdTestHost("dev.easyfreeresume.com")).toBe(true);
+    expect(isAdTestHost("localhost")).toBe(true);
+  });
+
+  it("marks ins as a test ad off the prod host", async () => {
+    mockIntersectionObserver.mockImplementation((callback) => {
+      setTimeout(() => callback([{ isIntersecting: true }]), 0);
+      return { observe: mockObserve, disconnect: mockDisconnect, unobserve: vi.fn() };
+    });
+
+    render(<AdContainer adSlot="1234567890" />);
+
+    // jsdom runs on localhost
+    await waitFor(() => {
+      expect(document.querySelector("ins.adsbygoogle")).toHaveAttribute("data-adtest", "on");
     });
   });
 

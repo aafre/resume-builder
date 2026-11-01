@@ -11,6 +11,14 @@ export const AD_CONFIG = {
   },
 } as const;
 
+/**
+ * Off the prod host (dev, previews, localhost) ads render as test ads:
+ * not counted or paid, so dev traffic can't trip invalid-traffic checks.
+ * Keep in sync with the Auto ads loader in index.html.
+ */
+export const isAdTestHost = (host: string = window.location.hostname): boolean =>
+  host !== "easyfreeresume.com";
+
 /** Reverse lookup: slot ID → human-readable name (for debug labels) */
 export const AD_SLOT_NAMES: Record<string, string> = Object.fromEntries(
   Object.entries(AD_CONFIG.slots).map(([name, id]) => [id, name])
