@@ -24,6 +24,8 @@ jobs:
     environment: ${{ inputs.environment }}
     
     steps:
+      - uses: actions/checkout@v4
+
       - name: Validate inputs
         run: |
           echo "🚀 **Deploying to ${{ inputs.environment }}**" >> $GITHUB_STEP_SUMMARY
@@ -92,3 +94,10 @@ jobs:
             echo "⚠️ Health check failed - please verify deployment manually"
             echo "**Health Check:** ⚠️ Failed - manual verification needed" >> $GITHUB_STEP_SUMMARY
           fi
+
+      # Bing lever (revenue recovery): tell IndexNow about recently changed
+      # pages. Never fails the deploy.
+      - name: IndexNow ping
+        if: inputs.environment == 'production'
+        continue-on-error: true
+        run: python3 scripts/indexnow_ping.py --days 14
