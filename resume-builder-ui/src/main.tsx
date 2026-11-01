@@ -2,15 +2,20 @@ import { StrictMode } from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
 import { flushSync } from "react-dom";
 import { HelmetProvider } from 'react-helmet-async';
-import { onCLS } from 'web-vitals/attribution';
+import { onCLS, onINP, onLCP, type Metric } from 'web-vitals/attribution';
 import App from "./App.tsx";
 import { capturePrerenderPayloads } from "./utils/prerenderPayload";
+import { trackWebVital } from "./lib/analytics";
 
 import "./styles.css";
 
-// Log CLS with attribution for field debugging.
-// Wire to PostHog when that integration ships.
+// Field web vitals → PostHog (queued until it loads). CLS attribution stays
+// in the console for debugging.
+const landingPath = window.location.pathname;
+const reportVital = (m: Metric) =>
+  trackWebVital({ name: m.name as 'CLS' | 'INP' | 'LCP', value: m.value, rating: m.rating, path: landingPath });
 onCLS((metric) => {
+  reportVital(metric);
   console.log('[CLS]', {
     value: metric.value,
     rating: metric.rating,
@@ -19,6 +24,8 @@ onCLS((metric) => {
     loadState: metric.attribution?.loadState,
   });
 });
+onINP(reportVital);
+onLCP(reportVital);
 
 const rootEl = document.getElementById("root")!;
 

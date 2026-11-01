@@ -193,6 +193,24 @@ export function trackPageView(path: string): void {
   });
 }
 
+// ─── Web vitals ──────────────────────────────────────────────────────
+// Guards the Anchor/Side rail ad formats (kill if p75 INP rises >50ms).
+// Filter insights to $host = easyfreeresume.com; dev shares the key.
+
+/**
+ * One Core Web Vital. `path` is the landing path: web-vitals measures per hard
+ * load, so CLS/INP span every soft navigation after it.
+ * sendBeacon because CLS and INP report on page hide, when XHR is dropped.
+ */
+export function trackWebVital(props: {
+  name: 'CLS' | 'INP' | 'LCP';
+  value: number;
+  rating: 'good' | 'needs-improvement' | 'poor';
+  path: string;
+}): void {
+  run((ph) => ph.capture('web_vital', props, { transport: 'sendBeacon' }));
+}
+
 // ─── Funnel events ───────────────────────────────────────────────────
 
 export function trackResumeCreated(props: {
