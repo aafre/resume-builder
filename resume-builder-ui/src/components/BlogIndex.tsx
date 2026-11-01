@@ -1,7 +1,6 @@
 import React, { useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import SEOHead from "./SEOHead";
-import { InFeedAd, InContentAd, AD_CONFIG } from "./ads";
 import { blogPosts } from "../data/blogPosts";
 import RevealSection from "./shared/RevealSection";
 import { withViewTransition } from "../lib/viewTransition";
@@ -184,13 +183,6 @@ export default function BlogIndex() {
             </RevealSection>
           )}
 
-          {/* In-content ad between featured and grid */}
-          <InContentAd
-            adSlot={AD_CONFIG.slots.blogIncontent}
-            size="standard"
-            marginY={32}
-          />
-
           {/* All Articles Grid */}
           <section>
             <div className="flex flex-wrap items-baseline justify-between gap-4 mb-8">
@@ -231,7 +223,7 @@ export default function BlogIndex() {
                 className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
                 data-reveal-stagger
               >
-                {visiblePosts.map((post, index) => (
+                {visiblePosts.map((post) => (
                   <React.Fragment key={post.slug}>
                     <article
                       className="post-card flex flex-col bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
@@ -301,15 +293,6 @@ export default function BlogIndex() {
                         )}
                       </div>
                     </article>
-                    {/* Insert in-feed ad after every 4 posts, starting from position 3 (0-indexed) */}
-                    {(index + 1) % 4 === 0 && index >= 3 && (
-                      <InFeedAd
-                        key={`ad-${post.slug}`}
-                        adSlot={AD_CONFIG.slots.blogInfeed}
-                        layout="card"
-                        className="rounded-2xl"
-                      />
-                    )}
                   </React.Fragment>
                 ))}
               </div>

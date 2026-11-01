@@ -13,7 +13,6 @@ import DownloadCTA from '../shared/DownloadCTA';
 import StepByStep from '../shared/StepByStep';
 import RevealSection from '../shared/RevealSection';
 import JobCategorySection from './JobCategorySection';
-import { InContentAd, AD_CONFIG } from '../ads';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
 import { JOBS_DATABASE, getJobsByCategory } from '../../data/jobKeywords';
@@ -74,9 +73,6 @@ export default function ResumeKeywordsHub() {
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
       <PageHero config={config.hero} showcase />
-
-      {/* In-content Ad - Below hero */}
-      <InContentAd adSlot={AD_CONFIG.slots.keywordsIncontent} marginY={32} />
 
       {/* Long-form intro for SEO ranking */}
       <RevealSection>
