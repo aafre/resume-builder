@@ -15,3 +15,4 @@ python-dotenv
 requests
 pdf2image
 Pillow
+typst==0.15.2
