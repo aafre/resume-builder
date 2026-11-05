@@ -736,11 +736,101 @@ def _process_social_links(contact_info):
     return contact_info
 
 
+# --- PROTOTYPE (wayfinder typst-latex ticket 03): Typst engine for classic ---
+# Selected by ?engine=typst or env CLASSIC_ENGINE=typst; LaTeX stays default.
+_MD_OPEN = {"b": "", "i": "", "s": "", "u": ""}
+_MD_CLOSE = {k: chr(ord(v) + 0x10) for k, v in _MD_OPEN.items()}
+_MD_LINK = ("", "", "")  # start, url|text sep, end
+_MD_RULE_STYLE = ["b", "b", "i", "i", "s", "u"]  # parallel to _MARKDOWN_FORMATTING_RULES
+# hide markdown chars inside URLs from the formatting regexes (a_b_c must not become italic)
+_MD_URL_HIDE = str.maketrans("*_~+", "")
+_MD_URL_SHOW = str.maketrans("", "*_~+")
+_TYPST_FONTS = None
+
+
+def _markdown_to_runs(text):
+    """Same regexes as the HTML/LaTeX paths, emitted as styled runs for Typst."""
+    text = re.sub("[-]", "", str(text))
+    text = re.sub(_MARKDOWN_LINK_PATTERN, lambda m: f"{_MD_LINK[0]}{m[2].translate(_MD_URL_HIDE)}{_MD_LINK[1]}{m[1]}{_MD_LINK[2]}", text)
+    for (pattern, *_), style in zip(_MARKDOWN_FORMATTING_RULES, _MD_RULE_STYLE):
+        text = re.sub(pattern, lambda m, s=style: _MD_OPEN[s] + m[1] + _MD_CLOSE[s], text)
+    runs, buf, state, href, in_url = [], "", dict.fromkeys("bisu", False), None, False
+
+    def flush():
+        nonlocal buf
+        if buf:
+            runs.append({"t": buf, **state, "l": href})
+        buf = ""
+
+    for ch in text:
+        style = next((k for k, v in _MD_OPEN.items() if v == ch), None) or next((k for k, v in _MD_CLOSE.items() if v == ch), None)
+        if in_url:
+            if ch == _MD_LINK[1]:
+                in_url = False
+            elif not style:
+                href += ch.translate(_MD_URL_SHOW)
+        elif style:
+            flush()
+            state[style] = ch == _MD_OPEN[style]
+        elif ch == _MD_LINK[0]:
+            flush()
+            href, in_url = "", True
+        elif ch == _MD_LINK[2]:
+            flush()
+            href = None
+        else:
+            buf += ch
+    flush()
+    return runs
+
+
+def _to_runs(item):
+    if isinstance(item, dict):
+        return {k: _to_runs(v) for k, v in item.items()}
+    if isinstance(item, list):
+        return [_to_runs(v) for v in item]
+    return item if item is None else _markdown_to_runs(item)
+
+
+def generate_typst_pdf(yaml_data, output_path, template_name="classic"):
+    import typst
+
+    global _TYPST_FONTS
+    if _TYPST_FONTS is None:
+        _TYPST_FONTS = typst.Fonts(include_system_fonts=False)
+    data = copy.deepcopy(normalize_sections(yaml_data))
+    ci = _process_social_links(data.get("contact_info") or {})
+    for s in ci.get("social_links", []):
+        s["text"] = s.get("display_text") or s.get("handle") or s.get("platform")
+    data["contact_info"] = ci
+    for sec in data.get("sections", []):
+        sec["content"] = _to_runs(sec.get("content") or [])
+    template_dir = PROJECT_ROOT / "templates" / template_name
+    files = {"main.typ": (template_dir / "resume.typ").read_bytes(), "data.json": json.dumps(data, default=str).encode()}
+    for icon in (template_dir / "icons").glob("*.svg"):
+        files[f"icons/{icon.name}"] = icon.read_bytes()
+    t = time.perf_counter()
+    pdf = typst.compile(files, format="pdf", font_paths=_TYPST_FONTS, ignore_system_fonts=True)
+    logging.info(f"typst compile {(time.perf_counter() - t) * 1000:.1f} ms")
+    Path(output_path).write_bytes(pdf)
+    return str(output_path)
+
+
+def _use_typst():
+    from flask import has_request_context
+
+    if has_request_context() and request.args.get("engine"):
+        return request.args["engine"] == "typst"
+    return os.environ.get("CLASSIC_ENGINE") == "typst"
+
+
 def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic"):
     """
     Generate PDF from YAML data using LaTeX template and XeLaTeX compilation.
     Used for classic templates that require LaTeX formatting.
     """
+    if _use_typst():
+        return generate_typst_pdf(yaml_data, output_path, template_name)
     # Generate session ID for tracking this request
     session_id = str(uuid.uuid4())
 
