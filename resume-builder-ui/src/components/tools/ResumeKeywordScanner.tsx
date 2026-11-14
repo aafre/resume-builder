@@ -654,11 +654,15 @@ export default function ResumeKeywordScanner() {
                 </button>
               )}
             </div>
-            <ModelStatusIndicator
-              status={modelStatus}
-              progress={modelProgress}
-              statusText={modelStatusText}
-            />
+            {/* Reserve the loading state's two-line height (status row + statusText)
+                so idle → loading → ready never shifts the content below (CLS). */}
+            <div className="min-h-[52px] flex items-start justify-center">
+              <ModelStatusIndicator
+                status={modelStatus}
+                progress={modelProgress}
+                statusText={modelStatusText}
+              />
+            </div>
           </div>
         </div>
       </RevealSection>
