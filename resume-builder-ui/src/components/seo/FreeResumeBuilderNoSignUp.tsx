@@ -19,6 +19,29 @@ import { generateVideoObjectSchema } from '../../utils/schemaGenerators';
 import { SEO_PAGES } from '../../config/seoPages';
 import { TUTORIAL_VIDEO } from '../../config/videoContent';
 
+// Captured from prod in a fresh, cookie-free browser. Re-capture if the start modal or editor UI changes.
+const LOGGED_OUT_TEST_DATE = '14 Nov 2026';
+const LOGGED_OUT_STEPS = [
+  {
+    src: '/no-sign-up/1-start.webp', width: 1200, height: 912,
+    title: 'Pick a start',
+    alt: 'Start screen offering upload, start from scratch or example content, with no email or password field',
+    caption: 'Upload an old resume, start blank, or use example text. There is no email or password field on this screen.',
+  },
+  {
+    src: '/no-sign-up/2-editor.webp', width: 800, height: 1488,
+    title: 'Edit',
+    alt: 'Resume editor showing "Saved on device" and a "Sign In" link, meaning no account is active',
+    caption: 'Top right reads "Saved on device" next to "Sign In": no account exists, and the draft stays in this browser.',
+  },
+  {
+    src: '/no-sign-up/3-pdf.webp', width: 900, height: 1164,
+    title: 'Download',
+    alt: 'The one-page PDF downloaded in the logged-out session, with no watermark',
+    caption: 'The actual PDF from that session. One page, no watermark, no payment step.',
+  },
+];
+
 export default function FreeResumeBuilderNoSignUp() {
   const config = SEO_PAGES.noSignUp;
   const [videoPlaying, setVideoPlaying] = useState(false);
@@ -49,6 +72,49 @@ export default function FreeResumeBuilderNoSignUp() {
       {config.steps && <StepByStep steps={config.steps} />}
 
       {config.features && <FeatureGrid features={config.features} />}
+
+      {/* Logged-out proof: real captures from a fresh browser on prod */}
+      <RevealSection variant="fade-up">
+      <div className="mb-16 cv-auto cv-h-800">
+        <div className="text-center mb-12 md:mb-16">
+          <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4">
+            Tested logged out · {LOGGED_OUT_TEST_DATE}
+          </p>
+          <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">
+            The whole flow, with no account
+          </h2>
+          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-3xl mx-auto leading-relaxed mt-5">
+            We opened easyfreeresume.com in a fresh browser with no cookies, built a resume and
+            downloaded it. These are the screens from that session, cropped to the relevant area and otherwise unedited.
+          </p>
+        </div>
+        <ol className="max-w-3xl mx-auto space-y-12 list-none">
+          {LOGGED_OUT_STEPS.map((step, i) => (
+            <li key={step.src}>
+              <figure>
+                <img
+                  src={step.src}
+                  alt={step.alt}
+                  width={step.width}
+                  height={step.height}
+                  loading="lazy"
+                  decoding="async"
+                  className={`w-full h-auto rounded-xl border border-black/[0.06] shadow-premium bg-white ${step.width < 1000 ? 'max-w-md mx-auto' : ''}`}
+                />
+                <figcaption className="mt-4 text-center">
+                  <span className="font-display font-bold text-ink">{i + 1}. {step.title}</span>
+                  <span className="block text-ink/60 text-sm leading-relaxed mt-1">{step.caption}</span>
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ol>
+        <p className="text-center text-sm text-ink/60 mt-8 max-w-2xl mx-auto">
+          Before a download, a Cloudflare check may ask you to confirm you are human. That is a
+          bot filter, not a sign-up.
+        </p>
+      </div>
+      </RevealSection>
 
       {/* Video section — moved below features to keep LCP content above fold */}
       <RevealSection variant="fade-up">
