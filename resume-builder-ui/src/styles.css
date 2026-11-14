@@ -1101,6 +1101,15 @@ footer {
   -webkit-overflow-scrolling: touch;
 }
 
+/* Phone fills for in-content slots come back ~412px tall (measured 2026-11-14 at 412px
+   viewport), so a 250px "standard" reservation shifts everything below by ~164px when
+   the ad paints. Reserve the real fill height on phones; desktop keeps 250. */
+@media (max-width: 767px) {
+  .in-content-ad--standard > .ad-container {
+    min-height: 414px !important;
+  }
+}
+
 /* Isolate ad containers for layout performance and style encapsulation */
 .in-content-ad,
 .ad-container {
