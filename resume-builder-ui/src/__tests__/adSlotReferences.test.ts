@@ -57,4 +57,12 @@ describe("ad slot references", () => {
     const scannerSlot = scanner.indexOf("AD_CONFIG.slots.mobileTop");
     expect(scannerSlot, "scanner mobile top slot").toBeGreaterThan(scanner.indexOf("{/* Results */}"));
   });
+
+  it("runs no explicit ad slots on the low-ad student page (seo-growth ticket 07)", () => {
+    const app = readFileSync(join(srcDir, "App.tsx"), "utf8");
+    expect(app).toContain('const LOW_AD_ROUTES = new Set(["/free-resume-builder-for-students"]);');
+    expect(app).toContain("enabled={!isEditorPage && !LOW_AD_ROUTES.has(location.pathname)}");
+    const page = readFileSync(join(srcDir, "components/seo/ResumeBuilderForStudents.tsx"), "utf8");
+    expect(page).not.toMatch(/InContentAd|InFeedAd|AdContainer/);
+  });
 });
