@@ -364,7 +364,7 @@ export default function FreeResumeBuilderNoPayment() {
               </p>
             </Link>
             <Link
-              to="/free-resume-builder-download"
+              to="/free-resume-builder-no-sign-up"
               className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
             >
               <h3 className="font-display text-lg font-bold text-ink mb-2">Free Download Guide</h3>

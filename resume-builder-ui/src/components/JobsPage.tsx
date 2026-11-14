@@ -970,7 +970,7 @@ export default function JobsPage() {
               </p>
             </Link>
             <Link
-              to="/blog/job-interview-guide"
+              to="/blog/behavioral-interview-questions"
               className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300 group"
             >
               <div className="flex items-center gap-3 mb-2">

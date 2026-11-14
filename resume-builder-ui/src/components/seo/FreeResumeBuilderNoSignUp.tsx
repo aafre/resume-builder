@@ -301,18 +301,6 @@ export default function FreeResumeBuilderNoSignUp() {
               <h3 className="font-bold text-ink mb-1">Students</h3>
               <p className="text-ink/60 text-xs">No experience? No problem.</p>
             </Link>
-            <Link to="/free-resume-builder-for-veterans" className="bg-chalk-dark rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04] text-center">
-              <h3 className="font-bold text-ink mb-1">Veterans</h3>
-              <p className="text-ink/60 text-xs">Military-to-civilian translation.</p>
-            </Link>
-            <Link to="/free-resume-builder-for-it-professionals" className="bg-chalk-dark rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04] text-center">
-              <h3 className="font-bold text-ink mb-1">IT Professionals</h3>
-              <p className="text-ink/60 text-xs">Tech stack, scale, impact.</p>
-            </Link>
-            <Link to="/free-resume-builder-for-nurses" className="bg-chalk-dark rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04] text-center">
-              <h3 className="font-bold text-ink mb-1">Nurses</h3>
-              <p className="text-ink/60 text-xs">Certifications, EHR, clinical skills.</p>
-            </Link>
           </div>
         </div>
       </RevealSection>
@@ -328,7 +316,7 @@ export default function FreeResumeBuilderNoSignUp() {
             <h3 className="font-display text-lg font-bold text-ink mb-2">Tailor for each application</h3>
             <p className="text-ink/60 text-sm leading-relaxed">
               Don't use one generic resume for every job. Read the job description, identify the key skills and
-              keywords, and adjust your resume to match. Our <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">keyword optimization guide</Link> shows
+              keywords, and adjust your resume to match. Our <Link to="/resume-keywords" className="text-accent-text hover:underline">keyword optimization guide</Link> shows
               you exactly how.
             </p>
           </div>
@@ -336,14 +324,14 @@ export default function FreeResumeBuilderNoSignUp() {
             <h3 className="font-display text-lg font-bold text-ink mb-2">Lead with achievements, not duties</h3>
             <p className="text-ink/60 text-sm leading-relaxed">
               Instead of "Responsible for managing social media," write "Grew social media engagement 40% in
-              6 months by implementing a data-driven content strategy." Learn more in our <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">guide to quantifying accomplishments</Link>.
+              6 months by implementing a data-driven content strategy." Learn more in our <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">guide to quantifying accomplishments</Link>.
             </p>
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-accent">
             <h3 className="font-display text-lg font-bold text-ink mb-2">Keep it to one page (usually)</h3>
             <p className="text-ink/60 text-sm leading-relaxed">
               Unless you have 10+ years of highly relevant experience, a one-page resume is ideal. Recruiters spend
-              an average of 7 seconds on initial review — a concise resume respects their time. Read our <Link to="/blog/resume-length-guide" className="text-accent-text hover:underline">resume length guide</Link> for exceptions.
+              an average of 7 seconds on initial review — a concise resume respects their time. Read our <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">resume length guide</Link> for exceptions.
             </p>
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-accent">

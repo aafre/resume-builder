@@ -103,7 +103,7 @@ export default function ProfessionalSummaryExamples() {
           </Link>{" "}
           and include at least one{" "}
           <Link
-            to="/blog/quantify-resume-accomplishments"
+            to="/blog/resume-action-verbs"
             className="text-accent-text hover:underline"
           >
             quantified accomplishment
@@ -630,7 +630,7 @@ export default function ProfessionalSummaryExamples() {
             <p className="text-accent-text">
               <strong>Fix:</strong> Support claims with specific examples and{" "}
               <Link
-                to="/blog/quantify-resume-accomplishments"
+                to="/blog/resume-action-verbs"
                 className="text-accent-text hover:underline"
               >
                 quantifiable achievements
@@ -855,7 +855,7 @@ export default function ProfessionalSummaryExamples() {
           reviewing what the job description emphasizes, then cross-reference
           with our{" "}
           <Link
-            to="/blog/how-to-list-skills"
+            to="/blog/how-to-write-a-resume-guide"
             className="text-accent-text hover:underline"
           >
             guide to listing skills on a resume
@@ -1035,31 +1035,7 @@ export default function ProfessionalSummaryExamples() {
             </p>
           </Link>
 
-          <Link
-            to="/blog/quantify-resume-accomplishments"
-            className="bg-chalk-dark rounded-xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300 block"
-          >
-            <h4 className="font-bold text-ink mb-2">
-              How to Quantify Resume Accomplishments
-            </h4>
-            <p className="text-ink/60 text-sm">
-              Turn vague claims into measurable results that prove your impact
-              with numbers and metrics.
-            </p>
-          </Link>
 
-          <Link
-            to="/blog/how-to-list-skills"
-            className="bg-chalk-dark rounded-xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300 block"
-          >
-            <h4 className="font-bold text-ink mb-2">
-              How to List Skills on a Resume
-            </h4>
-            <p className="text-ink/60 text-sm">
-              Choose, organize, and format the skills section so it aligns with
-              what ATS and hiring managers prioritize.
-            </p>
-          </Link>
         </div>
       </div>
     </BlogLayout>

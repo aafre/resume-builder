@@ -370,7 +370,7 @@ export default function ZetyVsEasyFreeResume() {
                   </Link>{" "}
                   or{" "}
                   <Link
-                    to="/blog/ai-resume-review"
+                    to="/blog/ai-resume-writing-guide"
                     className="text-accent-text underline"
                   >
                     AI Resume Review Guide

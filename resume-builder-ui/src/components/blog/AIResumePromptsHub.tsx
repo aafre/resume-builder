@@ -183,10 +183,6 @@ const MODEL_SECTIONS = [
     before: "Worked on product analytics and created dashboards for business teams.",
     after:
       "Built self-serve product analytics dashboards for activation, retention, and funnel health, aligning roadmap decisions with Senior PM growth metrics.",
-    cta: {
-      text: "See the full Gemini resume prompts guide",
-      href: "/blog/gemini-resume-prompts",
-    },
   },
   {
     id: "grok",
@@ -398,7 +394,6 @@ const INTERNAL_LINKS = [
   { href: "/templates", label: "Browse resume templates" },
   { href: "/free-resume-builder-no-sign-up", label: "Build a resume without sign-up" },
   { href: "/blog/claude-resume-prompts", label: "Claude resume prompts" },
-  { href: "/blog/gemini-resume-prompts", label: "Gemini resume prompts" },
   { href: "/blog/best-free-resume-builders-2026", label: "Best free resume builders" },
   { href: "/blog/ai-cover-letter-prompts", label: "AI cover letter prompts" },
   { href: "/blog/ai-resume-writing-guide", label: "AI resume writing guide" },

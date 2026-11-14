@@ -380,7 +380,7 @@ export default function ResumeActionVerbs() {
           Scale, ownership, improvement, and rescue cover most bullets. For
           verbs specific to communication, technical execution, analysis, or
           strategy — including for your{" "}
-          <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
+          <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
             skills section
           </Link>{" "}
           or{" "}
@@ -470,11 +470,6 @@ export default function ResumeActionVerbs() {
             </h3>
             <p className="tone-do mb-3">
               Action verbs become powerful when combined with specific metrics.
-              For a deep dive on adding numbers to your bullets, see our guide
-              on{" "}
-              <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
-                quantifying resume accomplishments
-              </Link>.
             </p>
             <div className="space-y-2 tone-do">
               <div className="bg-white p-3 rounded text-sm">
@@ -798,22 +793,10 @@ export default function ResumeActionVerbs() {
               &mdash; the pillar guide covering every section of your resume
             </li>
             <li>
-              <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
-                How to Quantify Accomplishments on Your Resume
-              </Link>{' '}
-              &mdash; pair action verbs with numbers for stronger bullets
-            </li>
-            <li>
               <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
                 Professional Summary Examples
               </Link>{' '}
               &mdash; see action verbs used in real summary statements
-            </li>
-            <li>
-              <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
-                How to List Skills on a Resume
-              </Link>{' '}
-              &mdash; use action verbs to describe skill proficiency
             </li>
             <li>
               <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">

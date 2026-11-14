@@ -156,7 +156,7 @@ export default function ResumeBuilderForStudents() {
             <ResourceCard to="/examples/college-student" title="College Student Resume Example" description="Full resume example with education-first layout" />
             <ResourceCard to="/examples/internship" title="Internship Resume Example" description="Tailored for internship applications" />
             <ResourceCard to="/examples/entry-level-marketing" title="Entry-Level Resume Example" description="How to stand out with limited experience" />
-            <ResourceCard to="/blog/how-to-list-skills" title="How to List Skills on a Resume" description="Structure your skills section for maximum impact" />
+            <ResourceCard to="/blog/how-to-write-a-resume-guide" title="How to List Skills on a Resume" description="Structure your skills section for maximum impact" />
             <ResourceCard to="/resume-keyword-scanner" title="ATS Keyword Scanner" description="Check if your resume matches the job description" />
           </div>
         </div>

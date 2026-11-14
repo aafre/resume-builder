@@ -496,7 +496,7 @@ const LandingPage: React.FC = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
                 {
-                  href: "/actual-free-resume-builder",
+                  href: "/free-resume-builder-no-payment",
                   title: "Actual Free Resume Builder",
                   desc: "Learn why our builder is truly free - no paywalls, no watermarks, no hidden fees.",
                 },
@@ -516,7 +516,7 @@ const LandingPage: React.FC = () => {
                   desc: "Industry-specific keywords that help your resume pass ATS and impress recruiters.",
                 },
                 {
-                  href: "/free-resume-builder-download",
+                  href: "/free-resume-builder-no-sign-up",
                   title: "Free Resume Download",
                   desc: "Download your resume as PDF or DOCX instantly — no payment, no sign-up, no watermarks.",
                 },
@@ -563,7 +563,7 @@ const LandingPage: React.FC = () => {
                 <h3 className="font-display text-xl font-extrabold text-ink mb-3">Truly Free Downloads — No Surprises</h3>
                 <p className="font-display font-extralight text-ink/60 leading-relaxed">
                   Other resume builders advertise "free" but charge $2–$25 the moment you try to download your PDF. EasyFreeResume is different: every template, every download, and every feature is 100% free. No credit card, no trial, no paywall.{' '}
-                  <Link to="/free-resume-builder-download" className="text-accent-text hover:underline">Download your resume for free</Link> as many times as you need.
+                  <Link to="/free-resume-builder-no-sign-up" className="text-accent-text hover:underline">Download your resume for free</Link> as many times as you need.
                 </p>
               </div>
               <div>
@@ -589,7 +589,7 @@ const LandingPage: React.FC = () => {
                   <Link to="/resume-keywords" className="text-accent-text hover:underline">resume keywords</Link>{' '}
                   for your industry. Powered by{' '}
                   <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">Claude</Link>,{' '}
-                  <Link to="/blog/gemini-resume-prompts" className="text-accent-text hover:underline">Gemini</Link>, and ChatGPT — all free.
+                  <Link to="/blog/ai-resume-prompts-hub" className="text-accent-text hover:underline">Gemini</Link>, and ChatGPT — all free.
                 </p>
               </div>
             </div>

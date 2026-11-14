@@ -29,12 +29,12 @@ const STUDENT_RESOURCES = [
     note: 'Powerful words to describe your achievements',
   },
   {
-    to: '/blog/how-to-list-skills',
+    to: '/blog/how-to-write-a-resume-guide',
     title: 'How to List Skills on Your Resume',
     note: 'Showcase your abilities effectively',
   },
   {
-    to: '/blog/job-interview-guide',
+    to: '/blog/behavioral-interview-questions',
     title: 'Job Interview Guide',
     note: 'Nail your first professional interview',
   },

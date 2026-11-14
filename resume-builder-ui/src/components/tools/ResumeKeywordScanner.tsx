@@ -931,7 +931,7 @@ export default function ResumeKeywordScanner() {
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="text-accent-text mt-0.5">&bull;</span>
-                        <span>Include your <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">skills section</Link> even if it feels repetitive. ATS systems scan the entire document.</span>
+                        <span>Include your <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">skills section</Link> even if it feels repetitive. ATS systems scan the entire document.</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="text-accent-text mt-0.5">&bull;</span>
@@ -1018,7 +1018,7 @@ export default function ResumeKeywordScanner() {
                     Add Missing Keywords Naturally to Your Resume
                   </h3>
                   <p className="text-lg font-extralight text-ink/60 leading-relaxed mb-4">
-                    Now comes the critical step. Open your resume and start incorporating the missing keywords. The scanner provides placement suggestions for each term &mdash; use these as a guide. The goal is to integrate keywords in a way that reads naturally to a human recruiter while satisfying ATS requirements. For detailed strategies, see our <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">complete guide to using resume keywords</Link>.
+                    Now comes the critical step. Open your resume and start incorporating the missing keywords. The scanner provides placement suggestions for each term &mdash; use these as a guide. The goal is to integrate keywords in a way that reads naturally to a human recruiter while satisfying ATS requirements. For detailed strategies, see our <Link to="/resume-keywords" className="text-accent-text hover:underline">complete guide to using resume keywords</Link>.
                   </p>
                   <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-4">
                     <p className="text-sm text-ink font-medium mb-2">Tips for this step:</p>
@@ -1107,7 +1107,7 @@ export default function ResumeKeywordScanner() {
                 Resumes that score below the threshold &mdash; typically around 60&ndash;75% match depending on the company &mdash; are automatically filtered out. The recruiter never sees them. That means your resume could be perfect in every other way, but without the right keywords, it disappears into a digital void.
               </p>
               <p className="text-lg font-extralight text-ink/60 leading-relaxed">
-                Keywords are only one failure mode, though. Want the full manual ATS check beyond keywords? See our <Link to="/blog/free-ats-resume-check" className="text-accent-text hover:underline">free ATS resume check guide</Link> for the plain-text paste test and structural audit that catch what a keyword scan alone can&rsquo;t.
+                Keywords are only one failure mode, though. Want the full manual ATS check beyond keywords? See our <Link to="/blog/ats-resume-optimization" className="text-accent-text hover:underline">ATS optimization guide</Link> for the plain-text paste test and structural audit that catch what a keyword scan alone can&rsquo;t.
               </p>
             </div>
 
@@ -1136,7 +1136,7 @@ export default function ResumeKeywordScanner() {
                 Keyword density refers to how frequently a keyword appears relative to your total resume content. A certain level of repetition signals to the ATS that a skill is genuinely central to your experience &mdash; not just mentioned in passing. If &ldquo;project management&rdquo; appears three times across your summary, experience bullets, and skills section, that&rsquo;s a stronger signal than a single mention.
               </p>
               <p className="text-lg font-extralight text-ink/60 leading-relaxed mb-4">
-                However, keyword stuffing &mdash; cramming the same term dozens of times or hiding white text filled with keywords &mdash; backfires badly. Modern ATS platforms have anti-spam algorithms that flag unnatural repetition. Worse, even if the ATS lets it through, a human recruiter will immediately reject a resume that reads like a keyword dump. Our <Link to="/blog/resume-keywords-guide" className="text-accent-text hover:underline">comprehensive keyword guide</Link> walks through the right balance.
+                However, keyword stuffing &mdash; cramming the same term dozens of times or hiding white text filled with keywords &mdash; backfires badly. Modern ATS platforms have anti-spam algorithms that flag unnatural repetition. Worse, even if the ATS lets it through, a human recruiter will immediately reject a resume that reads like a keyword dump. Our <Link to="/resume-keywords" className="text-accent-text hover:underline">comprehensive keyword guide</Link> walks through the right balance.
               </p>
               <p className="text-lg font-extralight text-ink/60 leading-relaxed">
                 The sweet spot is 2&ndash;4 mentions of your most important keywords distributed across different sections, with each mention providing genuine context. Mention &ldquo;project management&rdquo; in your summary, demonstrate it in an experience bullet with a specific achievement, and list it in your skills section. That pattern satisfies both algorithms and human readers.
@@ -1175,24 +1175,6 @@ export default function ResumeKeywordScanner() {
               <h3 className="font-bold text-ink mb-1">Software Engineer Keywords</h3>
               <p className="text-ink/60 text-sm">
                 Top ATS keywords for software engineering roles with usage examples
-              </p>
-            </Link>
-            <Link
-              to="/blog/resume-keywords-guide"
-              className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04] hover:-translate-y-0.5"
-            >
-              <h3 className="font-bold text-ink mb-1">The Complete Keywords Guide</h3>
-              <p className="text-ink/60 text-sm">
-                Everything you need to know about finding, choosing, and placing resume keywords
-              </p>
-            </Link>
-            <Link
-              to="/blog/how-to-use-resume-keywords"
-              className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04] hover:-translate-y-0.5"
-            >
-              <h3 className="font-bold text-ink mb-1">How to Use Resume Keywords</h3>
-              <p className="text-ink/60 text-sm">
-                Step-by-step guide to strategic keyword placement in every resume section
               </p>
             </Link>
             <Link

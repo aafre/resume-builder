@@ -480,13 +480,7 @@ export default function ReturnToWorkPrograms() {
               &mdash; detailed strategies for every type of gap
             </li>
             <li>
-              <Link to="/blog/resume-after-career-break" className="text-accent-text hover:underline">
-                How to Write a Resume After a Career Break
-              </Link>{' '}
-              &mdash; format choice, framing a multi-year gap, and returnship-specific application tips
-            </li>
-            <li>
-              <Link to="/blog/career-change-resume-guide" className="text-accent-text hover:underline">
+              <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
                 Career Change Resume Guide
               </Link>{' '}
               &mdash; if you are returning to a different field
