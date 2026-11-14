@@ -33,10 +33,10 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "claude-resume-prompts",
-    title: "25+ Claude AI Resume Prompts (Copy-Paste Ready) 2026",
-    description: "Best Claude prompts for resume writing: professional summary, experience bullets, cover letters, career change, ATS optimization. Copy-paste ready for Claude 3.5 Sonnet and Opus.",
+    title: "Claude Resume Prompts: 25 Tested, Real Outputs (2026)",
+    description: "25 copy-paste Claude prompts for resume summaries, bullets, cover letters and LinkedIn. Each one run through Claude on a sample resume, with the unedited output shown.",
     publishDate: "2026-01-21",
-    lastUpdated: "2026-02-17",
+    lastUpdated: "2026-11-14",
     readTime: "18 min",
     category: "AI & Tools",
   },
