@@ -1037,114 +1037,54 @@ export const SEO_PAGES: Record<string, PageConfig> = {
   // /best-free-resume-builder-reddit
   redditRecommended: {
     seo: {
-      title: `EasyFreeResume: The Free Resume Builder Reddit Actually Recommends (${CURRENT_YEAR})`,
+      title: `EasyFreeResume: Free Resume Builders Reddit Recommends (${CURRENT_YEAR})`,
       description:
-        `Looking for a free resume builder Reddit actually trusts? Most "free" builders charge $20+ at download. EasyFreeResume downloads free with no watermark, no sign-up, and ATS-friendly output.`,
+        'We read every comment in 16 Reddit threads asking for a free resume builder. The top answer: a Google Docs or Word template. Every tool named, counted and linked.',
       keywords: [
         'free resume builder reddit',
         'reddit free resume builder',
         'best free resume builder reddit',
         'reddit resume builder',
-        'free resume builder no paywall',
         'actually free resume builder',
-        `best free resume builder ${CURRENT_YEAR}`,
       ],
       canonicalUrl: '/best-free-resume-builder-reddit',
     },
     hero: {
-      h1: `The Free Resume Builder Reddit Recommends (${CURRENT_YEAR})`,
-      subtitle: `The free resume builder Reddit keeps pointing people to — because it downloads free, with no watermark and no forced sign-up.`,
+      h1: `Free Resume Builders Reddit Recommends (${CURRENT_YEAR})`,
+      subtitle: 'What people on Reddit actually say when someone asks for a free resume builder, with links to every thread.',
       description:
-        `We read the recurring threads in r/resumes, r/jobs, and r/cscareerquestions. The pattern is consistent: job seekers want a truly free download, ATS compatibility, no watermarks, and no forced account. Here is how EasyFreeResume meets every one.`,
+        'We pulled the threads from r/resumes, r/jobs, r/jobsearchhacks and others where someone asks which builder to use, read every comment, and counted which tools got named and upvoted.',
       primaryCTA: {
         text: 'Try It Free',
         href: '/templates',
         variant: 'primary',
       },
     },
-    features: [
-      {
-        icon: '✅',
-        title: 'Truly Free Exports',
-        description:
-          'Reddit #1 complaint: "free" builders that lock downloads. We offer unlimited free PDF and DOCX downloads with zero restrictions.',
-      },
-      {
-        icon: '🤖',
-        title: 'ATS-Friendly Templates',
-        description:
-          'Redditors emphasize ATS compatibility. Our templates use clean formatting, standard fonts, and proper sections that pass automated screening.',
-      },
-      {
-        icon: '🚫',
-        title: 'No Watermarks',
-        description:
-          'Users hate "Created with..." branding on their resumes. Your downloaded resume is 100% yours with no attribution required.',
-      },
-      {
-        icon: '🔒',
-        title: 'Privacy First',
-        description:
-          'Reddit values privacy. No account required, no data storage, no tracking. Your information stays on your device.',
-      },
-      {
-        icon: '⚡',
-        title: 'Fast & Simple',
-        description:
-          'No bloat, no upsell popups. Clean editor that works immediately. Reddit appreciates straightforward tools that respect users.',
-      },
-      {
-        icon: '📱',
-        title: 'Open Source Spirit',
-        description:
-          'While not fully open source, we share our approach transparently and listen to community feedback.',
-      },
-    ],
     faqs: [
       {
-        question: 'What do Reddit users value most in resume builders?',
+        question: 'What free resume builder does Reddit recommend?',
         answer:
-          'Truly free exports, ATS compatibility, no watermarks, privacy/no signup, and no aggressive upselling. Users want straightforward tools without dark patterns.',
+          'Mostly none. In the threads we read, the most upvoted replies say to use a Google Docs or Word template, or LaTeX in Overleaf for tech jobs. Of the dedicated builders, Novoresume got the most upvotes.',
       },
       {
-        question: 'Are free resume builders safe to use?',
+        question: 'Is Canva good for a resume, according to Reddit?',
         answer:
-          'Use tools with clear privacy policies and local export options. Avoid builders that require accounts with excessive personal data. Read reviews on Reddit for unbiased opinions.',
+          'Opinions are split. Some comments say a Canva template is enough. Others, including a commenter who says they are a recruiter, tell people not to use Canva for resumes.',
+      },
+      {
+        question: 'Does Reddit recommend EasyFreeResume?',
+        answer:
+          'Not much. In the threads we read, EasyFreeResume was mentioned once, and that comment was voted down. We say so on this page and link to the comment.',
+      },
+      {
+        question: 'How did you count the mentions?',
+        answer:
+          'We pulled the threads from the Arctic Shift Reddit archive, kept the ones where the poster asks which builder to use, and matched tool names in every comment. Upvotes are summed per tool, and copied comments count once. The scripts are in our public repository.',
       },
       {
         question: 'Do recruiters care which resume builder I used?',
         answer:
-          'No. Recruiters care about content quality, formatting, and ATS compatibility. The tool used is irrelevant as long as the final resume is professional.',
-      },
-      {
-        question: 'How do I identify fake "free" resume builders?',
-        answer:
-          'Red flags: requiring credit card for "free trial," adding watermarks on free plans, locking templates behind paywall, charging to remove branding. Actually free means no catches. We offer both guest mode (no signup) and free cloud accounts with auto-save and multi-resume management - all at $0.',
-      },
-      {
-        question: 'Is DOCX or PDF better for ATS?',
-        answer:
-          'DOCX is safest for ATS. Use PDF only when job posting specifically requests it. Modern ATS handle both, but DOCX parsing is more reliable.',
-      },
-      {
-        question: 'Can I save multiple resume versions for different jobs?',
-        answer:
-          'Yes. Create a free account to unlock the My Resumes dashboard where you can save up to 5 different resume versions. Perfect for tailoring your resume to different industries or job types.',
-      },
-      {
-        question: 'Can I import my existing resume?',
-        answer:
-          'Yes. You can export a data file for a resume you have created or worked on before. Upload it to continue editing without starting from scratch.',
-      },
-      {
-        question: 'What subreddits discuss resume builders?',
-        answer:
-          'The most active subreddits for resume advice are r/resumes (resume reviews and feedback), r/jobs (general job search), r/cscareerquestions (tech careers), and r/careerguidance (career transitions). Each community has strong opinions on which tools are genuinely free.',
-      },
-      {
-        question: 'Do I need a different resume for each job application?',
-        answer:
-          'Yes, tailoring your resume for each application significantly improves your chances. Focus on matching keywords from the job description. Use our free ATS keyword scanner to check your match rate before submitting.',
+          'No. In these threads the advice is about the result: a single-column PDF or Word file with strong bullet points. Which tool made it does not matter.',
       },
     ],
   },

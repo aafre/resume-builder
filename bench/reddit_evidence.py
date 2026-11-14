@@ -14,7 +14,7 @@ OUT = Path(__file__).resolve().parents[1] / "resume-builder-ui/src/data/redditEv
 
 ASK_THREADS = [
     "1psx5ju", "1jrpq4p", "1h3idq5", "1sfs9i5", "1x9ffma", "1k233ov", "1x7bwxb",
-    "1wsuhuj", "1lf1fp1", "1q4cdgu", "1hjukgb", "1iin1y4", "1jdft4r", "1jns6bb", "1m4tbrk",
+    "1wsuhuj", "1lf1fp1", "1q4cdgu", "1hjukgb", "1iin1y4", "1jdft4r", "1jns6bb", "1m4tbrk", "1kmbco1",
 ]
 # id -> group shown on the page: "skip" = use no builder, "builder" = names one, "us" = mentions EasyFreeResume
 QUOTES = {"nve3nsv": "skip", "m39obzi": "skip", "nvdosvl": "skip", "lzrfr72": "skip", "oeznk1w": "skip",
