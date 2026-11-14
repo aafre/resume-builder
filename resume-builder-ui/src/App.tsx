@@ -40,6 +40,8 @@ if (window.location.pathname.startsWith('/resume-keywords')) {
   import('./components/seo/CustomerServiceKeywords');
 }
 
+import { PRUNE_REDIRECTS } from "./data/pruneRedirects";
+
 // Lazy-loaded route components
 const TemplatesPage = lazy(() => import("./components/seo/TemplatesPage"));
 const Editor = lazy(() => import("./components/Editor"));
@@ -47,23 +49,16 @@ const MyResumes = lazy(() => import("./pages/MyResumes"));
 const AuthCallback = lazy(() => import("./components/AuthCallback"));
 
 // SEO landing pages - lazy loaded
-const ActualFreeResumeBuilder = lazy(() => import("./components/seo/ActualFreeResumeBuilder"));
 const FreeResumeBuilderNoSignUp = lazy(() => import("./components/seo/FreeResumeBuilderNoSignUp"));
 const TemplatesHub = lazy(() => import("./components/seo/TemplatesHub"));
 const AtsFriendlyTemplate = lazy(() => import("./components/seo/AtsFriendlyTemplate"));
 const ResumeKeywordsHub = lazy(() => import("./components/seo/ResumeKeywordsHub"));
 const CustomerServiceKeywords = lazy(() => import("./components/seo/CustomerServiceKeywords"));
 const JobKeywordsPage = lazy(() => import("./components/seo/JobKeywordsPage"));
-const FreeResumeBuilderDownload = lazy(() => import("./components/seo/FreeResumeBuilderDownload"));
 const FreeResumeBuilderNoPayment = lazy(() => import("./components/seo/FreeResumeBuilderNoPayment"));
-const AIResumeBuilderFree = lazy(() => import("./components/seo/AIResumeBuilderFree"));
-const ZetyFreeAlternative = lazy(() => import("./components/seo/ZetyFreeAlternative"));
 const BestFreeResumeBuilderReddit = lazy(() => import("./components/seo/BestFreeResumeBuilderReddit"));
 const ResumeKeywordScanner = lazy(() => import("./components/tools/ResumeKeywordScanner"));
 const ResumeBuilderForStudents = lazy(() => import("./components/seo/ResumeBuilderForStudents"));
-const ResumeBuilderForVeterans = lazy(() => import("./components/seo/ResumeBuilderForVeterans"));
-const ResumeBuilderForITProfessionals = lazy(() => import("./components/seo/ResumeBuilderForITProfessionals"));
-const ResumeBuilderForNurses = lazy(() => import("./components/seo/ResumeBuilderForNurses"));
 const FreeCVBuilder = lazy(() => import("./components/seo/FreeCVBuilder"));
 const CVTemplatesHub = lazy(() => import("./components/seo/CVTemplatesHub"));
 const CVTemplatesPage = lazy(() => import("./components/seo/CVTemplatesPage"));
@@ -88,49 +83,29 @@ const TermsOfService = lazy(() => import("./components/TermsOfService"));
 
 // Blog components - lazy loaded
 const BlogIndex = lazy(() => import("./components/BlogIndex"));
-const ResumeMistakesToAvoid = lazy(() => import("./components/blog/ResumeMistakesToAvoid"));
 const ATSOptimization = lazy(() => import("./components/blog/ATSOptimization"));
-const ATSFormattingRules = lazy(() => import("./components/blog/ATSFormattingRules"));
-const FreeATSResumeCheck = lazy(() => import("./components/blog/FreeATSResumeCheck"));
 const ResumeNoExperience = lazy(() => import("./components/blog/ResumeNoExperience"));
-const FirstJobResumeTeenager = lazy(() => import("./components/blog/FirstJobResumeTeenager"));
 const ProfessionalSummaryExamples = lazy(() => import("./components/blog/ProfessionalSummaryExamples"));
-const ResumeKeywordsGuide = lazy(() => import("./components/blog/ResumeKeywordsGuide"));
-const HumanizeAIResume = lazy(() => import("./components/blog/HumanizeAIResume"));
 const CoverLetterGuide = lazy(() => import("./components/blog/CoverLetterGuide"));
 const RemoteWorkResume = lazy(() => import("./components/blog/RemoteWorkResume"));
-const ResumeLengthGuide = lazy(() => import("./components/blog/ResumeLengthGuide"));
 const TechResumeGuide = lazy(() => import("./components/blog/TechResumeGuide"));
 const ResumeVsCvDifference = lazy(() => import("./components/blog/ResumeVsCvDifference"));
-const AIResumeBuilder = lazy(() => import("./components/blog/AIResumeBuilder"));
-const JobInterviewGuide = lazy(() => import("./components/blog/JobInterviewGuide"));
 const BehavioralInterviewQuestions = lazy(() => import("./components/blog/BehavioralInterviewQuestions"));
-const IntroducingPrepAI = lazy(() => import("./components/blog/IntroducingPrepAI"));
 const HowToWriteResumeGuide = lazy(() => import("./components/blog/HowToWriteResumeGuide"));
 const BestFreeResumeBuilders2026 = lazy(() => import("./components/blog/BestFreeResumeBuilders2026"));
 const ResumeActionVerbs = lazy(() => import("./components/blog/ResumeActionVerbs"));
-const HowToUseResumeKeywords = lazy(() => import("./components/blog/HowToUseResumeKeywords"));
-const ResumeBuilderHiddenCosts = lazy(() => import("./components/blog/ResumeBuilderHiddenCosts"));
 // SoftwareEngineerResumeKeywords removed - route now redirects to /resume-keywords/software-engineer
 const EasyFreeResumeFreeBlog = lazy(() => import("./components/blog/EasyFreeResumeFreeBlog"));
 const ZetyVsEasyFreeResume = lazy(() => import("./components/blog/ZetyVsEasyFreeResume"));
-const HowToListSkills = lazy(() => import("./components/blog/HowToListSkills"));
-const QuantifyResumeAccomplishments = lazy(() => import("./components/blog/QuantifyResumeAccomplishments"));
 
 // New AI blog posts
 const AIResumePromptsHub = lazy(() => import("./components/blog/AIResumePromptsHub"));
 const AIResumeWritingGuide = lazy(() => import("./components/blog/AIResumeWritingGuide"));
 const ClaudeResumePrompts = lazy(() => import("./components/blog/ClaudeResumePrompts"));
-const GeminiResumePrompts = lazy(() => import("./components/blog/GeminiResumePrompts"));
 const AICoverLetterPrompts = lazy(() => import("./components/blog/AICoverLetterPrompts"));
-const CareerChangeResumeGuide = lazy(() => import("./components/blog/CareerChangeResumeGuide"));
 const ResumeEmploymentGaps = lazy(() => import("./components/blog/ResumeEmploymentGaps"));
-const ResumeAfterCareerBreak = lazy(() => import("./components/blog/ResumeAfterCareerBreak"));
 const ReturnToWorkPrograms = lazy(() => import("./components/blog/ReturnToWorkPrograms"));
-const AIJobDescriptionAnalyzer = lazy(() => import("./components/blog/AIJobDescriptionAnalyzer"));
-const AIResumeReview = lazy(() => import("./components/blog/AIResumeReview"));
-const CustomerServiceResumeKeywordsGuide = lazy(() => import("./components/blog/CustomerServiceResumeKeywordsGuide"));
-// ResumeKeywordsByIndustry removed - route now redirects to /blog/resume-keywords-guide
+// ResumeKeywordsByIndustry removed - route now redirects to /resume-keywords
 
 // Competitor comparison blog posts
 const ResumeIOVsEasyFreeResume = lazy(() => import("./components/blog/ResumeIOVsEasyFreeResume"));
@@ -306,14 +281,6 @@ function AppContent() {
 
           {/* SEO Landing Pages */}
           <Route
-            path="/actual-free-resume-builder"
-            element={
-              <Suspense fallback={<LoadingSpinner />}>
-                <ActualFreeResumeBuilder />
-              </Suspense>
-            }
-          />
-          <Route
             path="/free-resume-builder-no-sign-up"
             element={
               <Suspense fallback={<LoadingSpinner />}>
@@ -322,34 +289,10 @@ function AppContent() {
             }
           />
           <Route
-            path="/free-resume-builder-download"
-            element={
-              <Suspense fallback={<LoadingSpinner />}>
-                <FreeResumeBuilderDownload />
-              </Suspense>
-            }
-          />
-          <Route
             path="/free-resume-builder-no-payment"
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <FreeResumeBuilderNoPayment />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/ai-resume-builder-free"
-            element={
-              <Suspense fallback={<LoadingSpinner />}>
-                <AIResumeBuilderFree />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/zety-free-alternative"
-            element={
-              <Suspense fallback={<LoadingSpinner />}>
-                <ZetyFreeAlternative />
               </Suspense>
             }
           />
@@ -366,30 +309,6 @@ function AppContent() {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <ResumeBuilderForStudents />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/free-resume-builder-for-veterans"
-            element={
-              <Suspense fallback={<LoadingSpinner />}>
-                <ResumeBuilderForVeterans />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/free-resume-builder-for-it-professionals"
-            element={
-              <Suspense fallback={<LoadingSpinner />}>
-                <ResumeBuilderForITProfessionals />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/free-resume-builder-for-nurses"
-            element={
-              <Suspense fallback={<LoadingSpinner />}>
-                <ResumeBuilderForNurses />
               </Suspense>
             }
           />
@@ -626,34 +545,10 @@ function AppContent() {
             }
           />
           <Route
-            path="/blog/resume-mistakes-to-avoid"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <ResumeMistakesToAvoid />
-              </Suspense>
-            }
-          />
-          <Route
             path="/blog/ats-resume-optimization"
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <ATSOptimization />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/blog/ats-formatting-rules"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <ATSFormattingRules />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/blog/free-ats-resume-check"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <FreeATSResumeCheck />
               </Suspense>
             }
           />
@@ -666,34 +561,10 @@ function AppContent() {
             }
           />
           <Route
-            path="/blog/first-job-resume-teenager"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <FirstJobResumeTeenager />
-              </Suspense>
-            }
-          />
-          <Route
             path="/blog/professional-summary-examples"
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <ProfessionalSummaryExamples />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/blog/resume-keywords-guide"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <ResumeKeywordsGuide />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/blog/humanize-ai-resume"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <HumanizeAIResume />
               </Suspense>
             }
           />
@@ -713,14 +584,6 @@ function AppContent() {
               </Suspense>
             }
           />
-          <Route
-            path="/blog/resume-length-guide"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <ResumeLengthGuide />
-              </Suspense>
-            }
-          />
           <Route 
             path="/blog/tech-resume-guide" 
             element={
@@ -737,37 +600,13 @@ function AppContent() {
               </Suspense>
             }
           />
-          <Route 
-            path="/blog/ai-resume-builder" 
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <AIResumeBuilder />
-              </Suspense>
-            }
-          />
 
           {/* New blog routes */}
-          <Route
-            path="/blog/job-interview-guide"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <JobInterviewGuide />
-              </Suspense>
-            }
-          />
           <Route
             path="/blog/behavioral-interview-questions"
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <BehavioralInterviewQuestions />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/blog/introducing-prepai-ai-interview-coach"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <IntroducingPrepAI />
               </Suspense>
             }
           />
@@ -795,33 +634,18 @@ function AppContent() {
               </Suspense>
             }
           />
-          <Route
-            path="/blog/how-to-use-resume-keywords"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <HowToUseResumeKeywords />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/blog/resume-builder-hidden-costs"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <ResumeBuilderHiddenCosts />
-              </Suspense>
-            }
-          />
           {/* Client-side redirect fallbacks — server-side 301s in app.py are primary */}
           {[
-            { from: "/blog/software-engineer-resume-keywords", to: "/resume-keywords/software-engineer" },
-            { from: "/blog/resume-keywords-by-industry", to: "/blog/resume-keywords-guide" },
-            { from: "/blog/customer-service-resume-keywords", to: "/resume-keywords/customer-service" },
-            { from: "/blog/how-to-use-resume-keywords-to-beat-ats", to: "/blog/how-to-use-resume-keywords" },
-            { from: "/blog/how-to-list-skills-on-resume", to: "/blog/how-to-list-skills" },
+            { from: "/blog/software-engineer-resume-keywords", to: "/resume-keywords" },
+            { from: "/blog/resume-keywords-by-industry", to: "/resume-keywords" },
+            { from: "/blog/customer-service-resume-keywords", to: "/resume-keywords" },
+            { from: "/blog/how-to-use-resume-keywords-to-beat-ats", to: "/resume-keywords" },
+            { from: "/blog/how-to-list-skills-on-resume", to: "/blog/how-to-write-a-resume-guide" },
             { from: "/blog/zety-vs-easy-free-resume", to: "/easyfreeresume-vs-zety" },
-            { from: "/blog/career-change-resume", to: "/blog" },
+            { from: "/blog/career-change-resume", to: "/blog/how-to-write-a-resume-guide" },
             { from: "/privacy", to: "/privacy-policy" },
             { from: "/terms", to: "/terms-of-service" },
+            ...Object.entries(PRUNE_REDIRECTS).map(([from, to]) => ({ from, to })),
           ].map(({ from, to }) => (
             <Route key={from} path={from} element={<Navigate to={to} replace />} />
           ))}
@@ -838,22 +662,6 @@ function AppContent() {
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <ZetyVsEasyFreeResume />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/blog/how-to-list-skills"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <HowToListSkills />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/blog/quantify-resume-accomplishments"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <QuantifyResumeAccomplishments />
               </Suspense>
             }
           />
@@ -888,14 +696,6 @@ function AppContent() {
             }
           />
           <Route
-            path="/blog/gemini-resume-prompts"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <GeminiResumePrompts />
-              </Suspense>
-            }
-          />
-          <Route
             path="/blog/grok-resume-prompts"
             element={<Navigate to="/blog/ai-resume-prompts-hub" replace />}
           />
@@ -916,14 +716,6 @@ function AppContent() {
             }
           />
           <Route
-            path="/blog/career-change-resume-guide"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <CareerChangeResumeGuide />
-              </Suspense>
-            }
-          />
-          <Route
             path="/blog/resume-employment-gaps"
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
@@ -932,42 +724,10 @@ function AppContent() {
             }
           />
           <Route
-            path="/blog/resume-after-career-break"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <ResumeAfterCareerBreak />
-              </Suspense>
-            }
-          />
-          <Route
             path="/blog/return-to-work-programs"
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <ReturnToWorkPrograms />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/blog/ai-job-description-analyzer"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <AIJobDescriptionAnalyzer />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/blog/ai-resume-review"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <AIResumeReview />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/blog/customer-service-resume-keywords-guide"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <CustomerServiceResumeKeywordsGuide />
               </Suspense>
             }
           />

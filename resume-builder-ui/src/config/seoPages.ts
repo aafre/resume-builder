@@ -976,6 +976,8 @@ export const SEO_PAGES: Record<string, PageConfig> = {
         'customer service skills for resume',
       ],
       canonicalUrl: '/resume-keywords/customer-service',
+      // Recovery prune 2026-12: live but out of the index (hub stays indexed).
+      robots: 'noindex, follow',
     },
     breadcrumbs: [
       { label: 'Home', href: '/' },

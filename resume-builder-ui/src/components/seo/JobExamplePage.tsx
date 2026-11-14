@@ -245,11 +245,14 @@ export default function JobExamplePage() {
       `free ${data.meta.title.toLowerCase()} resume`,
     ],
     canonicalUrl: `/examples/${slug}`,
+    // Recovery prune 2026-12: role pages stay live but out of the index (hub stays indexed).
+    robots: 'noindex, follow',
   } : {
     title: 'Resume Example',
     description: 'Professional resume example',
     keywords: [],
     canonicalUrl: `/examples/${slug || ''}`,
+    robots: 'noindex, follow',
   };
 
   // Create schema (must be called unconditionally to maintain hook order).
