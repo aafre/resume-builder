@@ -29,14 +29,14 @@ export default function JobInterviewGuide() {
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
           <h3 className="font-bold text-ink mb-3">📝 Need a resume first?</h3>
           <p className="text-ink/80">
-            Check out our{" "}
+            See{" "}
             <a
               href="/best-free-resume-builder-reddit"
               className="text-accent-text hover:text-ink underline font-medium"
             >
-              best free resume builder
+              which free resume builders Reddit recommends
             </a>{" "}
-            - consistently recommended by Reddit users for being truly free, ATS-friendly, and easy to use.
+            - with links to every thread.
           </p>
         </div>
 

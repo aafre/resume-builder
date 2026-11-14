@@ -106,7 +106,7 @@ export default function ResumeGeniusVsEasyFreeResume() {
               to="/best-free-resume-builder-reddit"
               className="text-accent underline"
             >
-              the builder r/resumes keeps pointing people to
+              what Reddit recommends instead
             </Link>.
           </p>
         </div>
