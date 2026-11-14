@@ -15,6 +15,7 @@ import PageHero from '../shared/PageHero';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
 import RevealSection from '../shared/RevealSection';
+import { InContentAd, AD_CONFIG } from '../ads';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
 import { useSemanticMatcher } from '../../hooks/useSemanticMatcher';
@@ -803,6 +804,11 @@ export default function ResumeKeywordScanner() {
           </div>
         </RevealSection>
       )}
+
+      {/* Mobile-top slot moved below the tool and results on this route (App.tsx SELF_MOBILE_TOP_ROUTES) */}
+      <div className="block md:hidden">
+        <InContentAd adSlot={AD_CONFIG.slots.mobileTop} size="large" marginY={16} />
+      </div>
 
       {/* How It Works */}
       <RevealSection variant="fade-up">

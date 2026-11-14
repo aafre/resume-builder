@@ -42,6 +42,8 @@ if (window.location.pathname.startsWith('/resume-keywords')) {
 
 import { PRUNE_REDIRECTS } from "./data/pruneRedirects";
 
+const SELF_MOBILE_TOP_ROUTES = new Set(["/", "/resume-keyword-scanner"]);
+
 // Lazy-loaded route components
 const TemplatesPage = lazy(() => import("./components/seo/TemplatesPage"));
 const Editor = lazy(() => import("./components/Editor"));
@@ -273,8 +275,9 @@ function AppContent() {
           isEditorPage ? "px-0" : "px-4 sm:px-6 md:px-8"
         }`}
       >
-        {/* Landing page renders its own mobile-top ad below the hero */}
-        <SideRailLayout enabled={!isEditorPage} showMobileTop={location.pathname !== "/"}>
+        {/* These routes render their own mobile-top ad lower down (landing: below the
+            hero; scanner: below the tool, so the tool stays above the fold on phones) */}
+        <SideRailLayout enabled={!isEditorPage} showMobileTop={!SELF_MOBILE_TOP_ROUTES.has(location.pathname)}>
         <Routes>
           {/* Landing page — inlined to eliminate Suspense CLS */}
           <Route path="/" element={<LandingPage />} />
