@@ -79,7 +79,7 @@ export const InContentAd = ({
 
   return (
     <div
-      className={`in-content-ad ${className}`}
+      className={`in-content-ad in-content-ad--${size} ${className}`}
       style={containerStyle}
       data-testid="in-content-ad-wrapper"
     >
