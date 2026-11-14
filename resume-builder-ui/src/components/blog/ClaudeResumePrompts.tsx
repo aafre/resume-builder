@@ -1,14 +1,18 @@
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 import CopyablePrompt from "../shared/CopyablePrompt";
+import ClaudePromptRun from "./ClaudePromptRun";
+import runs from "../../data/claudePromptRuns.json";
+
+const RUN_DATE = runs.results.map((r) => r.ran_utc).sort().pop();
 
 export default function ClaudeResumePrompts() {
   return (
     <BlogLayout
-      title="25+ Claude AI Resume Prompts (Copy-Paste Ready) 2026"
-      description="Best Claude prompts for resume writing: professional summary, experience bullets, cover letters, career change, ATS optimization. Copy-paste ready for Claude 3.5 Sonnet and Opus."
+      title="Claude Resume Prompts: 25 Tested, Real Outputs (2026)"
+      description="25 copy-paste Claude prompts for resume summaries, bullets, cover letters and LinkedIn. Each one run through Claude on a sample resume, with the unedited output shown."
       publishDate="2026-01-21"
-      lastUpdated="2026-02-17"
+      lastUpdated="2026-11-14"
       readTime="18 min"
       keywords={[
         "claude resume prompts",
@@ -24,7 +28,7 @@ export default function ClaudeResumePrompts() {
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-ink/60 font-medium">
-          Claude by Anthropic is one of the best AI tools for resume writing in 2026. Unlike other AI assistants that produce generic, obviously-AI-written text, Claude creates nuanced, professional content that sounds like you — just polished. These 25+ prompts are organized by task so you can jump straight to what you need.
+          These are 25 copy-paste Claude prompts for resume summaries, bullets, cover letters, career changes and LinkedIn. We ran every one through Claude on a sample resume, and you can open the real, unedited output under each prompt to see what you will get before you paste in your own details.
         </p>
 
         {/* Table of Contents */}
@@ -33,7 +37,7 @@ export default function ClaudeResumePrompts() {
             Table of Contents
           </h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#which-claude-model" className="text-accent-text hover:underline">Which Claude Model to Use for Resumes</a></li>
+            <li><a href="#what-we-found" className="text-accent-text hover:underline">What We Found Running All 25</a></li>
             <li><a href="#professional-summary" className="text-accent-text hover:underline">Professional Summary Prompts (#1-2)</a></li>
             <li><a href="#experience-bullets" className="text-accent-text hover:underline">Experience Bullet Prompts (#3-5)</a></li>
             <li><a href="#job-analysis" className="text-accent-text hover:underline">Job Description Analysis Prompts (#6-7)</a></li>
@@ -43,7 +47,6 @@ export default function ClaudeResumePrompts() {
             <li><a href="#career-change" className="text-accent-text hover:underline">Career Change Prompts (#15-17)</a></li>
             <li><a href="#polish-review" className="text-accent-text hover:underline">Polish & Review Prompts (#18-22)</a></li>
             <li><a href="#linkedin" className="text-accent-text hover:underline">LinkedIn Optimization Prompts (#23-25)</a></li>
-            <li><a href="#before-after" className="text-accent-text hover:underline">Before & After Examples</a></li>
             <li><a href="#claude-vs-chatgpt" className="text-accent-text hover:underline">Claude vs ChatGPT for Resumes</a></li>
             <li><a href="#tips" className="text-accent-text hover:underline">Tips for Better Results</a></li>
           </ol>
@@ -51,63 +54,34 @@ export default function ClaudeResumePrompts() {
 
         {/* Quick Answer Box */}
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-ink mb-3">
-            Why Claude for Resume Writing?
-          </h3>
+          <h2 className="font-bold text-ink mb-3 text-lg">
+            How we tested these prompts
+          </h2>
           <ul className="space-y-2 text-ink/80">
-            <li><strong>Professional Tone:</strong> Naturally produces polished, professional language without sounding robotic</li>
-            <li><strong>Instruction Following:</strong> Excellent at following complex, multi-step prompts with specific constraints</li>
-            <li><strong>200K Context Window:</strong> Can analyze your entire resume, cover letter, AND job description in one prompt</li>
-            <li><strong>Nuance:</strong> Better at subtle distinctions in wording — the difference between "managed" and "spearheaded"</li>
-            <li><strong>Honest Output:</strong> Less likely to fabricate achievements or exaggerate your experience</li>
+            <li><strong>Every prompt, as published:</strong> our test script reads the 25 prompts straight from this page, so the text you copy is the text we ran.</li>
+            <li><strong>One sample candidate:</strong> brackets were filled with a made-up backend developer (and, for the career-change prompts, a made-up teacher moving into UX). No real person's resume was used.</li>
+            <li><strong>One model, one run each:</strong> Claude Sonnet 5.5 (<code>claude-sonnet-5-5</code>), run on {RUN_DATE} through Anthropic&apos;s Claude Code CLI with no tools and a one-line system prompt. The claude.ai chat app adds its own system prompt, so your output will vary a little, and so will a second run of the same prompt.</li>
+            <li><strong>Nothing edited:</strong> open &ldquo;See Claude&apos;s real output&rdquo; under any prompt to read the exact input and the full, unedited reply.</li>
           </ul>
         </div>
 
-        {/* Which Claude Model */}
-        <h2 id="which-claude-model" className="text-3xl font-bold text-ink mt-12 mb-6">
-          Which Claude Model to Use for Resumes
+        <h2 id="what-we-found" className="text-3xl font-bold text-ink mt-12 mb-6">
+          What we found running all 25
         </h2>
-
-        <p className="text-lg leading-relaxed text-ink/60">
-          Anthropic offers several Claude models. Here's which one to pick for resume writing:
-        </p>
-
-        <div className="overflow-x-auto my-6">
-          <table className="w-full bg-white border border-black/[0.06] rounded-xl shadow-sm">
-            <thead>
-              <tr className="bg-chalk-dark">
-                <th className="px-6 py-4 text-left font-bold text-ink">Model</th>
-                <th className="px-6 py-4 text-left font-bold text-ink">Best For</th>
-                <th className="px-6 py-4 text-left font-bold text-ink">Cost</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-black/[0.06]">
-              <tr>
-                <td className="px-6 py-4 text-ink font-medium">Claude 3.5 Sonnet</td>
-                <td className="px-6 py-4 text-ink">Most resume tasks — summaries, bullets, tailoring. Best balance of quality and speed.</td>
-                <td className="px-6 py-4 text-ink">Free tier available</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 text-ink font-medium">Claude 3 Opus</td>
-                <td className="px-6 py-4 text-ink">Complex career narratives, executive resumes, nuanced tone adjustments.</td>
-                <td className="px-6 py-4 text-ink">Pro plan ($20/mo)</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 text-ink font-medium">Claude 3.5 Haiku</td>
-                <td className="px-6 py-4 text-ink">Quick proofreading, simple formatting fixes, keyword extraction.</td>
-                <td className="px-6 py-4 text-ink">Free tier available</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div className="callout callout-note rounded-xl p-6 my-6">
-          <h4 className="font-bold tone-note mb-2">Recommendation</h4>
-          <p className="tone-note">
-            Start with <strong>Claude 3.5 Sonnet</strong> (free on claude.ai). It handles 90% of resume writing tasks perfectly. Only upgrade to Opus if you need help with complex career transitions or C-suite positioning.
-          </p>
-        </div>
-
+        <ul className="list-disc pl-6 space-y-3 text-lg leading-relaxed text-ink/60">
+          <li>
+            <strong className="text-ink">It asked rather than invented when the prompt allowed it.</strong> Prompt #3 says &ldquo;don&apos;t invent metrics&rdquo;, and Claude returned a template with brackets plus questions instead of a made-up percentage. Where it did use numbers we never gave it (#4, #6, #9), they were labelled as examples.
+          </li>
+          <li>
+            <strong className="text-ink">It still embellished stories.</strong> Given &ldquo;I worked in a warehouse in college&rdquo;, the cover letter (#12) wrote about summers on the warehouse floor and mislabeled pallets. The career-change summary (#16) opened with &ldquo;Designer with six years of experience&rdquo; for a teacher. Read every line as if a recruiter will ask you about it.
+          </li>
+          <li>
+            <strong className="text-ink">It flagged its own stretches, sometimes.</strong> The cover letter upgraded &ldquo;moved 6 services to AWS&rdquo; to &ldquo;led the migration&rdquo;, and then added a note telling you to change it if you only supported the work.
+          </li>
+          <li>
+            <strong className="text-ink">Analysis prompts were blunt.</strong> The resume-vs-job check (#7) scored our deliberately vague sample 4/10 and listed the requirements the resume doesn&apos;t prove. That is more useful than flattery.
+          </li>
+        </ul>
         {/* Professional Summary Prompts */}
         <h2 id="professional-summary" className="text-3xl font-bold text-ink mt-12 mb-6">
           Professional Summary Prompts for Claude
@@ -130,6 +104,7 @@ export default function ClaudeResumePrompts() {
               3. Ends with what I bring to potential employers<br /><br />
               Tone: Confident but not boastful. Professional but not stiff.
           </CopyablePrompt>
+          <ClaudePromptRun n={1} />
 
           <CopyablePrompt title="Prompt #2: Senior/Executive Summary" bestFor="Directors, VPs, and C-suite candidates">
               Write an executive summary for a [TITLE] with [X]+ years in [INDUSTRY].<br /><br />
@@ -138,6 +113,7 @@ export default function ClaudeResumePrompts() {
               - [ACHIEVEMENT 2 with metric]<br /><br />
               The summary should convey strategic thinking and leadership impact without being verbose. Target: 50-60 words. Use language appropriate for board-level communication.
           </CopyablePrompt>
+          <ClaudePromptRun n={2} />
         </div>
 
         {/* Experience Bullets */}
@@ -161,6 +137,7 @@ export default function ClaudeResumePrompts() {
               - Don't invent metrics I didn't provide<br /><br />
               If you need more information to quantify the achievement, ask me.
           </CopyablePrompt>
+          <ClaudePromptRun n={3} />
 
           <CopyablePrompt title="Prompt #4: Bullet Point Refinement" bestFor="Polishing existing resume bullets">
               Improve these resume bullet points while maintaining truthfulness:<br /><br />
@@ -172,6 +149,7 @@ export default function ClaudeResumePrompts() {
               4. Ensure parallel structure across all bullets<br /><br />
               Show me the original and revised version side by side.
           </CopyablePrompt>
+          <ClaudePromptRun n={4} />
 
           <CopyablePrompt title="Prompt #5: Role-Specific Bullets" bestFor="Writing bullets from scratch for a specific position">
               Generate 5 resume bullets for a [JOB TITLE] role.<br /><br />
@@ -181,6 +159,7 @@ export default function ClaudeResumePrompts() {
               [LIST ANY OUTCOMES OR METRICS]<br /><br />
               Write bullets that emphasize impact over activity. Each bullet should demonstrate a different skill or competency relevant to [TARGET ROLE].
           </CopyablePrompt>
+          <ClaudePromptRun n={5} />
         </div>
 
         {/* Job Description Analysis */}
@@ -215,6 +194,7 @@ export default function ClaudeResumePrompts() {
               5. **Company culture signals** (what values do they seem to prioritize?)<br />
               6. **Red flags or concerns** (anything unusual in the posting)
           </CopyablePrompt>
+          <ClaudePromptRun n={6} />
 
           <CopyablePrompt title="Prompt #7: Resume-Job Fit Analysis" bestFor="Checking how well your resume matches before submitting">
               Compare my resume against this job description:<br /><br />
@@ -228,6 +208,7 @@ export default function ClaudeResumePrompts() {
               3. Gaps to address or minimize<br />
               4. Specific changes to make my resume more competitive
           </CopyablePrompt>
+          <ClaudePromptRun n={7} />
         </div>
 
         {/* Skills Section */}
@@ -249,12 +230,14 @@ export default function ClaudeResumePrompts() {
               3. Which skills to omit entirely<br />
               4. How to group/categorize them effectively
           </CopyablePrompt>
+          <ClaudePromptRun n={8} />
 
           <CopyablePrompt title="Prompt #9: Technical Skills Description" bestFor="Software engineers, data scientists, and other technical roles">
               For each of these technical skills, write a brief phrase showing my proficiency level in a way that's more meaningful than "intermediate" or "advanced":<br /><br />
               Skills: [LIST SKILLS]<br /><br />
               Example format: "Python - built production ETL pipelines" rather than "Python - advanced"
           </CopyablePrompt>
+          <ClaudePromptRun n={9} />
         </div>
 
         <p className="text-lg leading-relaxed text-ink/60">
@@ -288,6 +271,7 @@ export default function ClaudeResumePrompts() {
               4. Keywords to incorporate naturally<br /><br />
               Don't rewrite everything — focus on high-impact changes.
           </CopyablePrompt>
+          <ClaudePromptRun n={10} />
 
           <CopyablePrompt title="Prompt #11: ATS Keyword Optimization" bestFor="Ensuring your resume passes automated screening">
               Review my resume for ATS (Applicant Tracking System) compatibility:<br /><br />
@@ -302,6 +286,7 @@ export default function ClaudeResumePrompts() {
               5. Skills mentioned in the JD but missing from my resume<br /><br />
               For each issue, suggest the exact fix and where to place it.
           </CopyablePrompt>
+          <ClaudePromptRun n={11} />
         </div>
 
         {/* NEW: Cover Letter Prompts */}
@@ -330,6 +315,7 @@ export default function ClaudeResumePrompts() {
               - Do NOT start with "I am writing to apply for..."<br />
               - Do NOT use "I believe I would be a great fit" or similar cliches
           </CopyablePrompt>
+          <ClaudePromptRun n={12} />
 
           <CopyablePrompt title="Prompt #13: Cold Outreach / Networking Cover Letter" bestFor="Reaching out when there's no posted opening">
               Write a concise email/letter for reaching out to [ROLE/PERSON] at [COMPANY] about potential opportunities.<br /><br />
@@ -338,6 +324,7 @@ export default function ClaudeResumePrompts() {
               What I could contribute: [SPECIFIC VALUE]<br /><br />
               Tone: Warm and direct, not salesy. This should read like a confident professional reaching out, not a form letter. Keep it under 150 words.
           </CopyablePrompt>
+          <ClaudePromptRun n={13} />
 
           <CopyablePrompt title="Prompt #14: Thank You / Follow-Up Email" bestFor="Post-interview follow-ups that reinforce your candidacy">
               Write a thank-you email after my interview for [JOB TITLE] at [COMPANY].<br /><br />
@@ -352,6 +339,7 @@ export default function ClaudeResumePrompts() {
               - Reaffirm my interest without being pushy<br />
               - Be under 100 words
           </CopyablePrompt>
+          <ClaudePromptRun n={14} />
         </div>
 
         {/* NEW: Career Change Prompts */}
@@ -377,6 +365,7 @@ export default function ClaudeResumePrompts() {
               4. Experience I should highlight vs. downplay<br /><br />
               Be honest about gaps — don't stretch connections that aren't there.
           </CopyablePrompt>
+          <ClaudePromptRun n={15} />
 
           <CopyablePrompt title="Prompt #16: Career Change Summary" bestFor="Writing a professional summary that explains the pivot">
               Write a professional summary for someone transitioning from [OLD ROLE] to [NEW ROLE].<br /><br />
@@ -391,6 +380,7 @@ export default function ClaudeResumePrompts() {
               - Position me as someone who brings a unique perspective<br />
               - Be 3 sentences, under 60 words
           </CopyablePrompt>
+          <ClaudePromptRun n={16} />
 
           <CopyablePrompt title="Prompt #17: Reframe Experience Bullets for New Industry" bestFor="Making old experience relevant to your target field">
               Rewrite these experience bullets from my [CURRENT INDUSTRY] role to be relevant for [TARGET INDUSTRY] applications:<br /><br />
@@ -404,6 +394,7 @@ export default function ClaudeResumePrompts() {
               - Keep the metrics and achievements intact<br />
               - Show me original vs. rewritten version
           </CopyablePrompt>
+          <ClaudePromptRun n={17} />
         </div>
 
         {/* Polish and Review */}
@@ -427,6 +418,7 @@ export default function ClaudeResumePrompts() {
               5. Any red flags or concerns<br /><br />
               Be honest and specific. I want to improve, not just hear positives.
           </CopyablePrompt>
+          <ClaudePromptRun n={18} />
 
           <CopyablePrompt title="Prompt #19: Tone Adjustment" bestFor="Fixing a resume that sounds too humble, too boastful, or too generic">
               The tone of my resume feels [too humble/too boastful/too generic/too casual].<br /><br />
@@ -437,6 +429,7 @@ export default function ClaudeResumePrompts() {
               - Specific but not verbose<br /><br />
               Show me before/after for key sections.
           </CopyablePrompt>
+          <ClaudePromptRun n={19} />
 
           <CopyablePrompt title="Prompt #20: Conciseness Edit" bestFor="Trimming a resume that's too long">
               My resume is too long. Help me cut it down:<br /><br />
@@ -449,6 +442,7 @@ export default function ClaudeResumePrompts() {
               4. Sections that could be shortened<br /><br />
               Prioritize keeping my strongest achievements and most relevant experience.
           </CopyablePrompt>
+          <ClaudePromptRun n={20} />
 
           <CopyablePrompt title="Prompt #21: Proofread" bestFor="Final check before submission">
               Proofread my resume carefully for:<br /><br />
@@ -461,6 +455,7 @@ export default function ClaudeResumePrompts() {
               5. Capitalization consistency<br /><br />
               List every issue found with the exact location and correction.
           </CopyablePrompt>
+          <ClaudePromptRun n={21} />
 
           <CopyablePrompt title="Prompt #22: De-AI Your Resume" bestFor="Removing AI-sounding language that recruiters flag">
               Review my resume and flag any phrases that sound obviously AI-generated:<br /><br />
@@ -473,6 +468,7 @@ export default function ClaudeResumePrompts() {
               - Phrases that no human would naturally write<br /><br />
               For each flagged phrase, suggest a more natural-sounding alternative that still conveys the same point.
           </CopyablePrompt>
+          <ClaudePromptRun n={22} />
         </div>
 
         {/* NEW: LinkedIn Optimization */}
@@ -497,6 +493,7 @@ export default function ClaudeResumePrompts() {
               - Mix formats: some with the pipe separator, some narrative style<br />
               - Make at least one option that leads with the value I deliver, not my title
           </CopyablePrompt>
+          <ClaudePromptRun n={23} />
 
           <CopyablePrompt title="Prompt #24: LinkedIn About Section" bestFor="Converting resume content into a conversational profile summary">
               Convert my resume summary and top achievements into a LinkedIn About section.<br /><br />
@@ -511,6 +508,7 @@ export default function ClaudeResumePrompts() {
               - Include a soft call-to-action at the end (e.g., "reach out if...")<br />
               - Sound like a real person, not a corporate bio
           </CopyablePrompt>
+          <ClaudePromptRun n={24} />
 
           <CopyablePrompt title="Prompt #25: LinkedIn Experience Adaptation" bestFor="Making resume bullets work on LinkedIn">
               Adapt these resume bullets for my LinkedIn Experience section:<br /><br />
@@ -521,124 +519,17 @@ export default function ClaudeResumePrompts() {
               - Keep metrics and achievements front and center<br />
               - Make it readable to people outside my specific field
           </CopyablePrompt>
-        </div>
-
-        {/* Before & After Examples */}
-        <h2 id="before-after" className="text-3xl font-bold text-ink mt-12 mb-6">
-          Before & After: Real Claude Output Examples
-        </h2>
-
-        <p className="text-lg leading-relaxed text-ink/60 mb-6">
-          Here's what Claude actually produces when you use these prompts. These are real outputs (with personal details changed) showing the quality difference.
-        </p>
-
-        <div className="space-y-8">
-          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-4">Example 1: Professional Summary (Prompt #1)</h3>
-            <div className="space-y-4">
-              <div className="callout callout-dont p-4 rounded-r-lg">
-                <p className="font-medium tone-dont mb-1">Before (user's original):</p>
-                <p className="tone-dont text-sm italic">"I am a marketing professional with 8 years experience. I have worked in digital marketing, content strategy, and brand management. I am looking for a senior marketing role."</p>
-              </div>
-              <div className="callout callout-do p-4 rounded-r-lg">
-                <p className="font-medium tone-do mb-1">After (Claude's output):</p>
-                <p className="tone-do text-sm italic">"Results-driven digital marketing strategist with 8 years of experience scaling content programs that drive measurable revenue growth. Proven track record in brand positioning, demand generation, and cross-channel campaign optimization for B2B SaaS companies. Combines analytical rigor with creative storytelling to build marketing engines that convert."</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-4">Example 2: Achievement Bullet (Prompt #3)</h3>
-            <div className="space-y-4">
-              <div className="callout callout-dont p-4 rounded-r-lg">
-                <p className="font-medium tone-dont mb-1">Before:</p>
-                <p className="tone-dont text-sm italic">"Responsible for managing the company's social media accounts and posting content regularly."</p>
-              </div>
-              <div className="callout callout-do p-4 rounded-r-lg">
-                <p className="font-medium tone-do mb-1">After:</p>
-                <p className="tone-do text-sm italic">"Grew company social media following from 5K to 28K across three platforms by implementing a data-driven content calendar and engagement strategy."</p>
-              </div>
-              <p className="text-ink/60 text-sm">Note: Claude asked for the specific metrics before writing the improved version — it didn't invent the numbers.</p>
-            </div>
-          </div>
-
-          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-4">Example 3: Career Change Summary (Prompt #16)</h3>
-            <div className="space-y-4">
-              <div className="callout callout-dont p-4 rounded-r-lg">
-                <p className="font-medium tone-dont mb-1">Before (teacher transitioning to UX):</p>
-                <p className="tone-dont text-sm italic">"High school teacher looking to transition into UX design. Completed Google UX certificate. Passionate about creating user-friendly experiences."</p>
-              </div>
-              <div className="callout callout-do p-4 rounded-r-lg">
-                <p className="font-medium tone-do mb-1">After:</p>
-                <p className="tone-do text-sm italic">"UX designer with a unique background in education, bringing 6 years of experience designing learning experiences for diverse audiences of 150+ students. Google UX certified with a portfolio of three end-to-end case studies. Applies research-backed instructional design principles to create intuitive digital products."</p>
-              </div>
-            </div>
-          </div>
+          <ClaudePromptRun n={25} />
         </div>
 
         {/* Claude vs ChatGPT */}
         <h2 id="claude-vs-chatgpt" className="text-3xl font-bold text-ink mt-12 mb-6">
-          Claude vs ChatGPT for Resume Writing
+          Claude vs ChatGPT for resume writing
         </h2>
 
         <p className="text-lg leading-relaxed text-ink/60 mb-6">
-          Both are capable resume assistants, but they have different strengths. Here's an honest comparison based on our testing with hundreds of prompts:
+          We have only run these 25 prompts through Claude so far, so we won&apos;t rank it against ChatGPT or Gemini here. All of these prompts work in any chat assistant. If you test one side by side, give both models the same input and check each answer for details you never gave it. For prompts written for other tools, see the <Link to="/blog/ai-resume-prompts-hub" className="text-accent-text hover:underline font-medium">AI Resume Prompts Hub</Link>.
         </p>
-
-        <div className="overflow-x-auto my-6">
-          <table className="w-full bg-white border border-black/[0.06] rounded-xl shadow-sm">
-            <thead>
-              <tr className="bg-chalk-dark">
-                <th className="px-6 py-4 text-left font-bold text-ink">Criteria</th>
-                <th className="px-6 py-4 text-left font-bold text-ink">Claude</th>
-                <th className="px-6 py-4 text-left font-bold text-ink">ChatGPT</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-black/[0.06]">
-              <tr>
-                <td className="px-6 py-4 text-ink font-medium">Writing quality</td>
-                <td className="px-6 py-4 text-ink">More natural, less "AI-sounding." Better at nuanced professional tone.</td>
-                <td className="px-6 py-4 text-ink">Good but tends toward buzzwords. Can sound formulaic.</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 text-ink font-medium">Instruction following</td>
-                <td className="px-6 py-4 text-ink">Excellent. Follows multi-step constraints precisely.</td>
-                <td className="px-6 py-4 text-ink">Good but sometimes ignores specific constraints in long prompts.</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 text-ink font-medium">Context window</td>
-                <td className="px-6 py-4 text-ink">200K tokens. Easily handles full resume + JD + cover letter.</td>
-                <td className="px-6 py-4 text-ink">128K tokens (GPT-4o). Sufficient for most tasks.</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 text-ink font-medium">Honesty about gaps</td>
-                <td className="px-6 py-4 text-ink">Will tell you when something doesn't work. Less likely to fabricate.</td>
-                <td className="px-6 py-4 text-ink">More likely to generate plausible-sounding but invented achievements.</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 text-ink font-medium">Speed</td>
-                <td className="px-6 py-4 text-ink">Slightly slower for long outputs.</td>
-                <td className="px-6 py-4 text-ink">Faster response generation.</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 text-ink font-medium">Free access</td>
-                <td className="px-6 py-4 text-ink">Free tier on claude.ai (limited messages/day).</td>
-                <td className="px-6 py-4 text-ink">Free tier available (GPT-4o mini + limited GPT-4o).</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-ink mb-3">Our recommendation</h4>
-          <p className="text-ink/80">
-            Use <strong>Claude for writing and tailoring</strong> (summaries, bullets, cover letters, career change narratives) where tone and nuance matter most. Use <strong>ChatGPT for analysis tasks</strong> (keyword extraction, ATS scanning, formatting checks) where speed matters more than prose quality. Or use both — many successful job seekers draft with Claude and verify with ChatGPT.
-          </p>
-          <p className="text-ink/80 mt-3">
-            Want prompts for other AI tools? See our <Link to="/blog/ai-resume-prompts-hub" className="text-accent-text hover:underline font-medium">AI Resume Prompts Hub</Link>.
-          </p>
-        </div>
 
         {/* Tips for Better Results */}
         <h2 id="tips" className="text-3xl font-bold text-ink mt-12 mb-6">
@@ -651,7 +542,7 @@ export default function ClaudeResumePrompts() {
               1. Give Claude your full context
             </h3>
             <p className="text-ink/80">
-              Claude's 200K context window is its biggest advantage. Paste your entire resume AND the full job description in a single prompt. The more context Claude has, the more tailored its suggestions will be.
+              Paste your entire resume and the full job description in one message. In our test, the prompts that had both (#7, #10, #11) gave the most specific advice.
             </p>
           </div>
 
@@ -669,7 +560,7 @@ export default function ClaudeResumePrompts() {
               3. Ask for multiple versions
             </h3>
             <p className="text-ink/80">
-              Add "Give me 3 versions" to any prompt. Claude will produce meaningfully different options (not just slight rewording). Pick your favorite, then ask Claude to refine it further.
+              Add "Give me 3 versions" to any prompt, pick the closest one, then ask Claude to refine it. Outputs vary from run to run anyway, so one answer is never the only option.
             </p>
           </div>
 
