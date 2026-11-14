@@ -7,6 +7,7 @@ import { STATIC_URLS } from '../data/sitemapUrls';
 import { JOBS_DATABASE } from '../data/jobKeywords';
 import { JOB_EXAMPLES_DATABASE } from '../data/jobExamples';
 import { blogPosts } from '../data/blogPosts';
+import { PRUNE_REDIRECTS, PRUNE_NOINDEX, PRUNE_NOINDEX_PREFIXES } from '../data/pruneRedirects';
 import {
   HREFLANG_PAIRS,
   CV_REGIONS,
@@ -204,24 +205,27 @@ describe('Sitemap XML Generation', () => {
       });
     });
 
-    it('should include all non-noindexed job keyword URLs', () => {
-      JOBS_DATABASE.filter(job => !job.noindex).forEach(job => {
-        expect(xml).toContain(`<loc>${baseUrl}/resume-keywords/${job.slug}</loc>`);
-      });
-    });
-
-    it('should exclude noindexed job keyword URLs (B5 consolidation)', () => {
-      const noindexed = JOBS_DATABASE.filter(job => job.noindex);
-      expect(noindexed.length).toBeGreaterThan(0);
-      noindexed.forEach(job => {
+    // Recovery prune 2026-12: role pages are noindexed, so none are in the sitemap.
+    it('should exclude every job keyword role URL', () => {
+      JOBS_DATABASE.forEach(job => {
         expect(xml).not.toContain(`<loc>${baseUrl}/resume-keywords/${job.slug}</loc>`);
       });
     });
 
-    it('should include all job example URLs', () => {
+    it('should exclude every job example role URL', () => {
       JOB_EXAMPLES_DATABASE.forEach(job => {
-        expect(xml).toContain(`<loc>${baseUrl}/examples/${job.slug}</loc>`);
+        expect(xml).not.toContain(`<loc>${baseUrl}/examples/${job.slug}</loc>`);
       });
+    });
+
+    it('should list exactly the 44-page KEEP set, with no pruned URL', () => {
+      const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1].replace(baseUrl, ''));
+      expect(locs).toHaveLength(44);
+      for (const src of Object.keys(PRUNE_REDIRECTS)) expect(locs).not.toContain(src);
+      for (const p of PRUNE_NOINDEX) expect(locs).not.toContain(p);
+      for (const loc of locs) {
+        for (const prefix of PRUNE_NOINDEX_PREFIXES) expect(loc.startsWith(prefix)).toBe(false);
+      }
     });
   });
 

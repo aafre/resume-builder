@@ -13,16 +13,6 @@ export interface BlogPost {
 }
 
 export const blogPosts: BlogPost[] = [
-  {
-    slug: "resume-builder-hidden-costs",
-    title: 'The Real Cost of "Free" Resume Builders (2026)',
-    description:
-      'How much do "free" resume builders actually cost in 2026? Real trial prices, post-trial charges, the 13-charge billing trap, and a genuinely free, no-watermark alternative.',
-    publishDate: "2026-06-18",
-    readTime: "11 min",
-    category: "Comparisons",
-    featured: true,
-  },
   // New AI Blog Content (Featured)
   {
     slug: "ai-resume-prompts-hub",
@@ -42,30 +32,12 @@ export const blogPosts: BlogPost[] = [
     category: "AI & Tools",
   },
   {
-    slug: "humanize-ai-resume",
-    title: "How to Humanize an AI-Written Resume (Beat AI Detectors)",
-    description: "AI resumes get rejected when they read as generic and machine-written. Learn the tells recruiters and AI detectors catch, and how to rewrite them into specific, human copy.",
-    publishDate: "2026-07-01",
-    lastUpdated: "2026-07-01",
-    readTime: "9 min",
-    category: "AI & Tools",
-  },
-  {
     slug: "claude-resume-prompts",
     title: "25+ Claude AI Resume Prompts (Copy-Paste Ready) 2026",
     description: "Best Claude prompts for resume writing: professional summary, experience bullets, cover letters, career change, ATS optimization. Copy-paste ready for Claude 3.5 Sonnet and Opus.",
     publishDate: "2026-01-21",
     lastUpdated: "2026-02-17",
     readTime: "18 min",
-    category: "AI & Tools",
-  },
-  {
-    slug: "gemini-resume-prompts",
-    title: "Google Gemini Prompts for Resume Writing (2026)",
-    description: "Best Gemini AI prompts for resume writing. Leverage Google's AI for job description analysis, keyword extraction, and resume optimization.",
-    publishDate: "2026-01-21",
-    lastUpdated: "2026-03-22",
-    readTime: "8 min",
     category: "AI & Tools",
   },
   {
@@ -78,14 +50,6 @@ export const blogPosts: BlogPost[] = [
     category: "Job Applications",
   },
   {
-    slug: "resume-after-career-break",
-    title: "How to Write a Resume After a Career Break (2026 Guide)",
-    description: "How to write a resume after a multi-year career break: functional vs chronological format, how to frame the gap line, what to do with volunteer and freelance work, and how returnship applications differ from ordinary ones.",
-    publishDate: "2026-09-22",
-    readTime: "10 min",
-    category: "Resume Tips",
-  },
-  {
     slug: "resume-employment-gaps",
     title: "How to Explain Employment Gaps on Your Resume (2026 Guide)",
     description: "How to explain employment gaps on your resume: honest framing for layoffs, caregiving, health, travel, and career changes. Format strategies, example language, and what not to do.",
@@ -93,42 +57,10 @@ export const blogPosts: BlogPost[] = [
     readTime: "10 min",
     category: "Resume Tips",
   },
-  {
-    slug: "career-change-resume-guide",
-    title: "How to Write a Career Change Resume (2026 Guide + Examples)",
-    description: "Career change resume guide: how to write a resume when switching careers. Transferable skills framework, functional vs hybrid formats, real examples, and common mistakes to avoid.",
-    publishDate: "2026-03-05",
-    readTime: "12 min",
-    category: "Resume Writing",
-  },
   // ai-cover-letter-prompts intentionally removed from index/sitemap — the page is
   // noindexed as a thin, near-duplicate prompt-cluster sibling (post-Apr-2026 core-update
   // quality pruning). Route kept in App.tsx so the live URL still serves the noindex tag.
-  {
-    slug: "ai-job-description-analyzer",
-    title: "How to Use AI to Analyze Job Descriptions (Extract Keywords & Requirements)",
-    description: "Learn to use AI tools like ChatGPT and Claude to extract keywords, identify requirements, and decode what employers really want from job descriptions.",
-    publishDate: "2026-01-21",
-    readTime: "9 min",
-    category: "AI & Tools",
-  },
-  {
-    slug: "ai-resume-review",
-    title: "How to Use AI to Review Your Resume (Get Feedback Before Applying)",
-    description: "Learn to use ChatGPT, Claude, and other AI tools to review your resume for errors, improvements, and ATS optimization before submitting applications.",
-    publishDate: "2026-01-21",
-    readTime: "8 min",
-    category: "AI & Tools",
-  },
   // Existing posts
-  {
-    slug: "job-interview-guide",
-    title: "The Ultimate Guide to Nailing Your Next Job Interview",
-    description: "A comprehensive guide covering everything from pre-interview research and common questions to post-interview follow-up etiquette.",
-    publishDate: "2025-09-05",
-    readTime: "7 min",
-    category: "Interview Prep",
-  },
   {
     slug: "behavioral-interview-questions",
     title: "15+ Behavioral Interview Questions (and How to Answer with the STAR Method)",
@@ -137,14 +69,6 @@ export const blogPosts: BlogPost[] = [
     lastUpdated: "2026-03-22",
     readTime: "6 min",
     category: "Interview Prep",
-  },
-  {
-    slug: "introducing-prepai-ai-interview-coach",
-    title: "Don't Just Prepare, PrepAI: Introducing Your AI Interview Coach",
-    description: "Move beyond standard interview advice. Discover how PrepAI, our new AI-powered tool, provides instant, personalized feedback to help you ace your next interview.",
-    publishDate: "2025-08-30",
-    readTime: "6 min",
-    category: "AI & Tools",
   },
   {
     slug: "how-to-write-a-resume-guide",
@@ -173,24 +97,6 @@ export const blogPosts: BlogPost[] = [
     category: "Resume Sections",
   },
   {
-    slug: "ai-resume-builder",
-    title: `AI Resume Builders: Your Secret Weapon for Job Search in ${CURRENT_YEAR}?`,
-    description:
-      "Explore how AI can revolutionize your resume writing, from drafting content to optimizing for ATS, and learn best practices for smart usage in today's job market.",
-    publishDate: "2025-07-27",
-    readTime: "11 min",
-    category: "AI & Tools",
-  },
-  {
-    slug: "resume-mistakes-to-avoid",
-    title: "10 Critical Resume Mistakes That Kill Your Job Prospects",
-    description:
-      "Discover the most common resume errors that send your application straight to the rejection pile and learn how to avoid them.",
-    publishDate: "2025-07-25",
-    readTime: "7 min",
-    category: "Resume Tips",
-  },
-  {
     slug: "ats-resume-optimization",
     title: "ATS Resume Optimization: Beat the Bots and Land Interviews",
     description:
@@ -201,41 +107,12 @@ export const blogPosts: BlogPost[] = [
     featured: false,
   },
   {
-    slug: "ats-formatting-rules",
-    title: "ATS Formatting Rules 2026: The Invisible Rejection",
-    description:
-      "The ATS formatting rules that decide whether a recruiter ever sees your resume. What breaks parsers, the exact rules to follow, and how to avoid the invisible rejection in 2026.",
-    publishDate: "2026-07-01",
-    lastUpdated: "2026-07-01",
-    readTime: "9 min",
-    category: "ATS Optimization",
-  },
-  {
-    slug: "free-ats-resume-check",
-    title: "How to Check Your Resume Against ATS (4 Free Methods)",
-    description:
-      "Four genuinely free ways to test whether your resume survives applicant tracking systems, including an unlimited keyword scanner that runs in your browser.",
-    publishDate: "2026-07-13",
-    readTime: "8 min",
-    category: "ATS Optimization",
-  },
-  {
     slug: "resume-no-experience",
     title: "Resume with No Experience: Real Examples + Free Template",
     description:
       "How to write an ATS-friendly, confidence-boosting resume when you're just starting out. Includes copy-paste examples and free template.",
     publishDate: "2025-07-20",
     readTime: "10\u201314 min",
-    category: "Entry Level",
-  },
-  {
-    slug: "first-job-resume-teenager",
-    title: "First Job Resume for Teenagers: What to Put When You've Never Worked (2026)",
-    description:
-      "A resume guide for 15-18 year olds applying for their first job. What counts as experience, working papers and age rules, what employers actually screen for, and a before/after example.",
-    publishDate: "2026-09-23",
-    lastUpdated: "2026-09-23",
-    readTime: "8 min",
     category: "Entry Level",
   },
   {
@@ -250,54 +127,6 @@ export const blogPosts: BlogPost[] = [
     featured: false,
   },
   {
-    slug: "resume-keywords-guide",
-    title: `Resume Keywords by Industry: The Complete ${CURRENT_YEAR} Guide`,
-    description:
-      `The definitive guide to resume keywords recruiters and ATS systems are scanning for in ${CURRENT_YEAR}.`,
-    publishDate: "2025-07-15",
-    lastUpdated: "2026-03-22",
-    readTime: "9\u201311 min",
-    category: "Keywords",
-  },
-  {
-    slug: "cover-letter-guide",
-    title: `How to Write a Cover Letter That Gets Read in ${CURRENT_YEAR}`,
-    description:
-      "Master the art of writing cover letters that stand out, get noticed, and support your resume in the modern job market.",
-    publishDate: "2025-07-12",
-    readTime: "7 min",
-    category: "Job Applications",
-    featured: false,
-  },
-  {
-    slug: "remote-work-resume",
-    title: "Remote Work Resume: Stand Out in the Digital Job Market",
-    description:
-      "Optimize your resume for remote positions and showcase the skills that remote employers value most.",
-    publishDate: "2025-07-10",
-    readTime: "7 min",
-    category: "Remote Work",
-  },
-  {
-    slug: "resume-length-guide",
-    title: `Resume Length: How Long Should Your Resume Be in ${CURRENT_YEAR}?`,
-    description:
-      "Discover the optimal resume length for your experience level and industry, with specific guidelines.",
-    publishDate: "2025-07-08",
-    lastUpdated: "2026-03-22",
-    readTime: "6 min",
-    category: "Resume Format",
-  },
-  {
-    slug: "tech-resume-guide",
-    title: `Tech Resume Guide: Land Your Dream Developer Job in ${CURRENT_YEAR}`,
-    description:
-      "Create a standout tech resume with industry-specific tips, project showcases, and skill presentations.",
-    publishDate: "2025-07-05",
-    readTime: "9 min",
-    category: "Tech Industry",
-  },
-  {
     slug: "resume-vs-cv-difference",
     title: "Resume vs CV: Understanding the Key Differences",
     description:
@@ -305,40 +134,6 @@ export const blogPosts: BlogPost[] = [
     publishDate: "2025-07-02",
     readTime: "5 min",
     category: "Resume Basics",
-  },
-  {
-    slug: "how-to-use-resume-keywords",
-    title: `How to Use Resume Keywords to Beat the ATS (The Ultimate ${CURRENT_YEAR} Guide)`,
-    description: "A deep dive into finding and using the right keywords to ensure your resume gets past applicant tracking systems and into human hands. Your master guide to ATS optimization.",
-    publishDate: "2025-08-15",
-    lastUpdated: "2026-02-10",
-    readTime: "11 min",
-    category: "Keywords",
-    featured: false,
-  },
-  {
-    slug: "software-engineer-resume-keywords",
-    title: "75+ Essential Keywords for a Software Engineer Resume (2026)",
-    description: "The complete list of software engineer resume keywords for 2026: programming languages, AI/ML, cloud, DevOps, security, and more. Organized by category with ATS tips.",
-    publishDate: "2025-08-10",
-    readTime: "14 min",
-    category: "Tech Industry",
-  },
-  {
-    slug: "customer-service-resume-keywords",
-    title: "Top Keywords for Customer Service Resumes (with Examples)",
-    description: "Elevate your customer service resume by including the keywords recruiters are searching for, from CRM platforms to conflict resolution skills.",
-    publishDate: "2025-08-05",
-    readTime: "9 min",
-    category: "Keywords",
-  },
-  {
-    slug: "customer-service-resume-keywords-guide",
-    title: "Customer Service Resume Keywords: The Complete 2026 Guide",
-    description: "Customer service resume keywords that get you hired: CRM platforms, soft skills, industry terms, and ATS-optimized phrases. Includes examples for every experience level.",
-    publishDate: "2026-02-17",
-    readTime: "14 min",
-    category: "Keywords",
   },
   // resume-keywords-by-industry retired 2026-09-23 — 301'd to resume-keywords-guide
   // (title-collision genuine merge, PR #803: loser was unindexed, 0 external inbound
@@ -350,6 +145,7 @@ export const blogPosts: BlogPost[] = [
     publishDate: "2025-08-01",
     readTime: "8 min",
     category: "Company",
+    featured: true,
   },
   {
     slug: "zety-vs-easy-free-resume",
@@ -412,23 +208,5 @@ export const blogPosts: BlogPost[] = [
     lastUpdated: "2026-05-12",
     readTime: "7 min",
     category: "Comparisons",
-  },
-  {
-    slug: "how-to-list-skills",
-    title: "How to List Skills on a Resume: A Step-by-Step Guide (100+ Examples)",
-    description: "Master the art of creating a powerful skills section. Learn what to include, how to format it, and get inspired with over 100 examples for any industry.",
-    publishDate: "2025-07-23",
-    lastUpdated: "2026-09-22",
-    readTime: "12 min",
-    category: "Resume Sections",
-  },
-  {
-    slug: "quantify-resume-accomplishments",
-    title: "How to Quantify Your Resume Accomplishments (Even If You're Not a Numbers Person)",
-    description: "Learn simple formulas and strategies to turn your job duties into powerful, data-driven achievements that impress recruiters and demonstrate your true impact.",
-    publishDate: "2025-07-16",
-    lastUpdated: "2026-03-22",
-    readTime: "7 min",
-    category: "Resume Writing",
   },
 ];

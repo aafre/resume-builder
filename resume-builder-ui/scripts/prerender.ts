@@ -26,8 +26,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 import { STATIC_URLS } from '../src/data/sitemapUrls';
-import { JOBS_DATABASE } from '../src/data/jobKeywords/index';
-import { JOB_EXAMPLES_DATABASE } from '../src/data/jobExamples/index';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -45,7 +43,7 @@ const PRERENDER_EXCLUDE = new Set([
 
 /**
  * Build the prerender route list dynamically from the same data sources
- * that generate the sitemap (STATIC_URLS + JOBS_DATABASE + JOB_EXAMPLES_DATABASE).
+ * that generate the sitemap (STATIC_URLS).
  * This prevents drift between the sitemap and prerendered pages.
  */
 function buildRoutesToPrerender(): string[] {
@@ -58,15 +56,9 @@ function buildRoutesToPrerender(): string[] {
     }
   }
 
-  // Programmatic SEO: job keyword pages
-  for (const job of JOBS_DATABASE) {
-    routes.add(`/resume-keywords/${job.slug}`);
-  }
-
-  // Programmatic SEO: job example pages
-  for (const example of JOB_EXAMPLES_DATABASE) {
-    routes.add(`/examples/${example.slug}`);
-  }
+  // /resume-keywords/<role> (301 into the hub) and /examples/<role> (noindexed)
+  // are not prerendered since the 2026-12 recovery prune: the validator below
+  // rejects noindex HTML, and the server's X-Robots-Tag covers bots.
 
   return Array.from(routes);
 }

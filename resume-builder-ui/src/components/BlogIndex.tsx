@@ -17,8 +17,6 @@ const cardTransitionName = (slug: string) =>
 // orchestrator, so this hub links straight to the destination instead of
 // waiting on the registry to drop the stale slug.
 const CANONICAL_LINK_OVERRIDE: Record<string, string> = {
-  "software-engineer-resume-keywords": "/resume-keywords/software-engineer",
-  "customer-service-resume-keywords": "/resume-keywords/customer-service",
   "zety-vs-easy-free-resume": "/easyfreeresume-vs-zety",
 };
 
