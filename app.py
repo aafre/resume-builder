@@ -1616,8 +1616,9 @@ NOINDEX_ROUTES = {
     "blog/remote-work-resume",
     "blog/tech-resume-guide",
 }
-# Every /examples/<role> page is noindexed; the /examples hub stays indexable.
-NOINDEX_PREFIXES = ("examples/",)
+# Every /examples/<role> and /resume-keywords/<role> page is noindexed but stays
+# live (hubs link to them); the /examples and /resume-keywords hubs stay indexable.
+NOINDEX_PREFIXES = ("examples/", "resume-keywords/")
 
 # Recovery prune 2026-12: thin/duplicate URLs 301'd into a relevant kept page.
 # Exact slash-stripped paths. Targets must be KEEP pages, never another source.
@@ -1652,17 +1653,6 @@ PRUNE_REDIRECTS = {
     "blog/first-job-resume-teenager": "/blog/resume-no-experience",
     "blog/resume-builder-hidden-costs": "/blog/how-why-easyfreeresume-completely-free",
 }
-# Every /resume-keywords/<role> child folds into the hub.
-PRUNE_REDIRECT_PREFIXES = {"resume-keywords/": "/resume-keywords"}
-
-
-def _prune_redirect_target(clean_path: str) -> str | None:
-    if clean_path in PRUNE_REDIRECTS:
-        return PRUNE_REDIRECTS[clean_path]
-    for prefix, target in PRUNE_REDIRECT_PREFIXES.items():
-        if clean_path.startswith(prefix):
-            return target
-    return None
 
 # ponytail: explicit allowlist — expand only after per-route dev/field CWV validation
 PRERENDER_TO_ALL_ROUTES = frozenset({
@@ -1877,7 +1867,7 @@ def serve(path):
             clean = path.rstrip("/")
             return redirect(f"/{clean}" if clean else "/", code=301)
 
-        prune_target = _prune_redirect_target(path)
+        prune_target = PRUNE_REDIRECTS.get(path)
         if prune_target:
             return redirect(prune_target, code=301)
 

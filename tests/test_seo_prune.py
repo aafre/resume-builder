@@ -33,6 +33,7 @@ KEEP = [
 
 NOINDEX = [
     "/examples/receptionist", "/examples/registered-nurse", "/examples/high-school-student",
+    "/resume-keywords/software-engineer", "/resume-keywords/customer-service",
     "/blog/cover-letter-guide", "/blog/remote-work-resume", "/blog/tech-resume-guide",
 ]
 
@@ -67,10 +68,7 @@ def test_pruned_page_is_noindexed_but_live(client, path):
 
 def test_every_redirect_lands_on_a_kept_page(client):
     c, flask_app = client
-    sources = [f"/{p}" for p in flask_app.PRUNE_REDIRECTS] + [
-        "/resume-keywords/software-engineer", "/resume-keywords/customer-service",
-    ]
-    for src in sources:
+    for src in (f"/{p}" for p in flask_app.PRUNE_REDIRECTS):
         resp = c.get(src, base_url=PROD)
         assert resp.status_code == 301, src
         target = resp.headers["Location"].replace(PROD, "")
@@ -87,3 +85,16 @@ def test_legacy_redirects_skip_pruned_hops(client, legacy):
     resp = c.get(legacy, base_url=PROD)
     assert resp.status_code == 301
     assert resp.headers["Location"].replace(PROD, "") in KEEP
+
+
+def test_client_prune_map_matches_server(flask_test_client):
+    """The client <Navigate> fallbacks (pruneRedirects.ts) must mirror app.py."""
+    import re
+    from pathlib import Path
+
+    _, _, flask_app = flask_test_client
+    ts = (Path(__file__).parent.parent / "resume-builder-ui/src/data/pruneRedirects.ts").read_text(encoding="utf8")
+    client = dict(re.findall(r"  '/([^']+)': '([^']+)',", ts))
+    assert client == flask_app.PRUNE_REDIRECTS
+    noindex = set(re.findall(r"  '/([^']+)',\n", ts))
+    assert noindex == flask_app.NOINDEX_ROUTES - {"blog/ai-cover-letter-prompts"}
