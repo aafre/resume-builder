@@ -516,9 +516,9 @@ const LandingPage: React.FC = () => {
                   desc: "Industry-specific keywords that help your resume pass ATS and impress recruiters.",
                 },
                 {
-                  href: "/free-resume-builder-no-sign-up",
-                  title: "Free Resume Download",
-                  desc: "Download your resume as PDF or DOCX instantly — no payment, no sign-up, no watermarks.",
+                  href: "/resume-keyword-scanner",
+                  title: "Free ATS Resume Checker",
+                  desc: "Paste your resume and a job description to see your keyword match score. No sign-up.",
                 },
                 {
                   href: "/free-resume-builder-no-payment",
