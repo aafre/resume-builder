@@ -1074,7 +1074,7 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       {
         question: 'Does Reddit recommend EasyFreeResume?',
         answer:
-          'Not much. In the threads we read, EasyFreeResume was mentioned once, and that comment was voted down. We say so on this page and link to the comment.',
+          'No. In the threads we read, the only mention of EasyFreeResume is a comment our founder posted, and it was voted down. We show it on this page and link to it.',
       },
       {
         question: 'How did you count the mentions?',

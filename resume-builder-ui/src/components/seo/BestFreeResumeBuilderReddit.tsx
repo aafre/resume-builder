@@ -136,7 +136,8 @@ export default function BestFreeResumeBuilderReddit() {
           </div>
           <p className="text-xs text-ink/60 text-center max-w-3xl mx-auto mt-4">
             Upvotes are summed, with negative scores counted as zero. A comment that names two tools
-            counts for both. Comments copied and pasted word for word count once.
+            counts for both. Comments copied and pasted word for word count once. The EasyFreeResume
+            row is a comment our founder posted.
           </p>
         </div>
       </RevealSection>
@@ -148,8 +149,9 @@ export default function BestFreeResumeBuilderReddit() {
             <p className={EYEBROW}>Our own row</p>
             <h2 className={H2}>Where EasyFreeResume fits</h2>
             <p className={SUB}>
-              We make EasyFreeResume, so you should weigh this section accordingly. In these threads
-              we were mentioned once, and that comment was voted down.
+              We make EasyFreeResume, so you should weigh this section accordingly. The only mention
+              of us in these threads is the comment below, which our founder posted. It was voted down,
+              and it isn&apos;t an independent recommendation.
             </p>
           </div>
           <div className="max-w-3xl mx-auto space-y-6">
