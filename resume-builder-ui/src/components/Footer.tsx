@@ -7,10 +7,9 @@ import { useJobsAvailable } from "../hooks/useJobsAvailable";
 const footerLinks = {
   resumeBuilder: [
     { path: '/free-resume-builder-no-sign-up', label: 'Free Resume Builder' },
-    { path: '/actual-free-resume-builder', label: '100% Free Builder' },
+    { path: '/free-resume-builder-no-payment', label: '100% Free Builder' },
     { path: '/best-free-resume-builder-reddit', label: 'Best Free Builder' },
     { path: '/free-resume-builder-for-students', label: 'Resume Builder for Students' },
-    { path: '/free-resume-builder-for-nurses', label: 'Resume Builder for Nurses' },
     { path: '/ats-resume-templates', label: 'ATS Resume Templates' },
   ],
   resumeTemplates: [

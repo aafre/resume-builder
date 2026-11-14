@@ -90,6 +90,8 @@ export default function JobKeywordsPage() {
           ...jobData.keywords.technical.slice(0, 5),
         ],
         canonicalUrl: `/resume-keywords/${jobData.slug}`,
+        // Recovery prune 2026-12: role pages stay live but out of the index (hub stays indexed).
+        robots: 'noindex, follow',
       }}
       schemas={schemas}
     >

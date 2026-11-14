@@ -237,7 +237,7 @@ export default function GrokResumePrompts() {
               <h3 className="font-bold text-ink mb-1">Claude Resume Prompts</h3>
               <p className="text-sm text-ink/60">Best for analysis, structured output, and nuance</p>
             </Link>
-            <Link to="/blog/gemini-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+            <Link to="/blog/ai-resume-prompts-hub" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Gemini Resume Prompts</h3>
               <p className="text-sm text-ink/60">Best for research and Google ecosystem integration</p>
             </Link>

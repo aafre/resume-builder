@@ -52,12 +52,7 @@ export default function BehavioralInterviewQuestions() {
           into how you'll perform on the job. Updated for 2026, this guide
           breaks down the STAR method with a full walkthrough example, organizes
           15+ questions by category, and gives you a practice framework so you
-          walk into every interview ready. If you're also preparing your
-          resume, our{" "}
-          <Link to="/blog/job-interview-guide" className="text-accent-text hover:underline">
-            comprehensive interview guide
-          </Link>{" "}
-          covers the full preparation process from application to offer.
+          walk into every interview ready.
         </p>
 
         {/* Table of Contents */}
@@ -830,16 +825,6 @@ export default function BehavioralInterviewQuestions() {
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6 my-6">
-          <Link
-            to="/blog/job-interview-guide"
-            className="block bg-chalk-dark rounded-xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
-          >
-            <h4 className="font-bold text-ink mb-2">Complete Job Interview Guide</h4>
-            <p className="text-ink/60 text-sm">
-              End-to-end preparation: research, common questions, follow-up
-              emails, and salary negotiation.
-            </p>
-          </Link>
 
           <Link
             to="/blog/resume-no-experience"

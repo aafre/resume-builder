@@ -13,7 +13,9 @@ import { getStaticUrlPaths } from '../../resume-builder-ui/src/data/sitemapUrls'
 const staticUrls = getStaticUrlPaths();
 const jobKeywordUrls = JOBS_DATABASE.map((job) => `/resume-keywords/${job.slug}`);
 const jobExampleUrls = JOB_EXAMPLES_DATABASE.map((job) => `/examples/${job.slug}`);
-const allUrls = [...staticUrls, ...jobKeywordUrls, ...jobExampleUrls];
+// Recovery prune 2026-12: role pages are noindexed (live, out of the sitemap), so the
+// sitemap is the static KEEP set only. The role-page getters stay for targeted checks.
+const allUrls = [...staticUrls];
 
 /**
  * Get only static URLs (useful for faster subset testing)

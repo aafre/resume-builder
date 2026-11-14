@@ -4,6 +4,7 @@ import BlogLayout from "../BlogLayout";
 export default function CoverLetterGuide() {
   return (
     <BlogLayout
+      noindex
       title="How to Write a Cover Letter That Gets Read in 2026"
       description="Master the art of writing cover letters that stand out, get noticed, and support your resume in the modern job market."
       publishDate="2026-01-12"

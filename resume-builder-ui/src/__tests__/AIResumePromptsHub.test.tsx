@@ -68,7 +68,6 @@ describe("AIResumePromptsHub", () => {
       "/templates",
       "/free-resume-builder-no-sign-up",
       "/blog/claude-resume-prompts",
-      "/blog/gemini-resume-prompts",
       "/blog/best-free-resume-builders-2026",
       "/blog/ai-cover-letter-prompts",
       "/blog/ai-resume-writing-guide",

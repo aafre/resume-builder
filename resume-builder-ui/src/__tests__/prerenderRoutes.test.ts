@@ -21,22 +21,14 @@ function buildRoutesToPrerender(): string[] {
     }
   }
 
-  for (const job of JOBS_DATABASE) {
-    routes.add(`/resume-keywords/${job.slug}`);
-  }
-
-  for (const example of JOB_EXAMPLES_DATABASE) {
-    routes.add(`/examples/${example.slug}`);
-  }
-
   return Array.from(routes);
 }
 
 describe('Prerender route generation', () => {
   const routes = buildRoutesToPrerender();
 
-  it('generates a reasonable number of routes (100+)', () => {
-    expect(routes.length).toBeGreaterThanOrEqual(100);
+  it('generates the KEEP set minus the excluded legal pages', () => {
+    expect(routes.length).toBe(42);
   });
 
   it('includes all routes from STATIC_URLS except excluded ones', () => {
@@ -49,15 +41,13 @@ describe('Prerender route generation', () => {
     }
   });
 
-  it('includes all job keyword routes', () => {
+  // Noindexed role pages are not prerendered: the prerender validator rejects noindex HTML.
+  it('excludes noindexed job keyword and example role routes', () => {
     for (const job of JOBS_DATABASE) {
-      expect(routes).toContain(`/resume-keywords/${job.slug}`);
+      expect(routes).not.toContain(`/resume-keywords/${job.slug}`);
     }
-  });
-
-  it('includes all job example routes', () => {
     for (const example of JOB_EXAMPLES_DATABASE) {
-      expect(routes).toContain(`/examples/${example.slug}`);
+      expect(routes).not.toContain(`/examples/${example.slug}`);
     }
   });
 

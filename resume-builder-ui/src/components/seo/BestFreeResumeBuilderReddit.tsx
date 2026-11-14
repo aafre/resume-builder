@@ -382,13 +382,13 @@ export default function BestFreeResumeBuilderReddit() {
             <h3 className="font-display text-lg font-bold text-ink mb-2">Quantify everything</h3>
             <p className="text-ink/60 text-sm leading-relaxed">
               "Led team" → "Led team of 8 engineers." "Improved sales" → "Increased Q4 revenue 23% ($1.2M)."
-              Numbers stand out and are harder to fake. See our <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">quantification guide</Link> for help.
+              Numbers stand out and are harder to fake. See our <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">quantification guide</Link> for help.
             </p>
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-accent">
             <h3 className="font-display text-lg font-bold text-ink mb-2">One page unless you have 10+ years</h3>
             <p className="text-ink/60 text-sm leading-relaxed">
-              Nearly unanimous Reddit advice: keep it to one page for most roles. Two pages only for senior executives or academics. Check our <Link to="/blog/resume-length-guide" className="text-accent-text hover:underline">resume length guide</Link> for industry-specific exceptions.
+              Nearly unanimous Reddit advice: keep it to one page for most roles. Two pages only for senior executives or academics. Check our <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">resume length guide</Link> for industry-specific exceptions.
             </p>
           </div>
         </div>

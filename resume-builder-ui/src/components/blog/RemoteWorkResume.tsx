@@ -4,6 +4,7 @@ import BlogLayout from "../BlogLayout";
 export default function RemoteWorkResume() {
   return (
     <BlogLayout
+      noindex
       title="Remote Work Resume: Stand Out in the Digital Job Market"
       description="Optimize your resume for remote positions and showcase the skills that remote employers value most."
       publishDate="2026-01-10"
@@ -160,7 +161,7 @@ export default function RemoteWorkResume() {
           handle ambiguity. Highlight achievements that demonstrate remote work
           capabilities. For tips on presenting your skills effectively, read
           our guide on{" "}
-          <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline font-semibold">
+          <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline font-semibold">
             how to list skills on a resume
           </Link>.
         </p>

@@ -477,7 +477,7 @@ export default function ATSOptimization() {
           to instantly check whether your resume includes the right terms for
           your target role.
           {" "}For the complete workflow, follow all four methods in our{" "}
-          <Link to="/blog/free-ats-resume-check" className="text-accent-text hover:underline font-medium">free ATS resume check guide</Link>.
+          <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">free ATS resume check guide</Link>.
         </p>
 
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">

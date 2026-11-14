@@ -8,8 +8,6 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import { JOBS_DATABASE } from '../src/data/jobKeywords/index';
-import { JOB_EXAMPLES_DATABASE } from '../src/data/jobExamples/index';
 import { STATIC_URLS } from '../src/data/sitemapUrls';
 import { blogPosts } from '../src/data/blogPosts';
 import {
@@ -27,25 +25,9 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Job keywords data imported from single source of truth.
-// Excludes roles noindexed as B5 keyword-cluster consolidation (content
-// migrated to a matching /examples/<role> page) — a noindexed URL has no
-// business in the sitemap (see seo-tracking/mistakes-learned.md precedent:
-// ai-cover-letter-prompts).
-const JOBS = JOBS_DATABASE.filter(job => !job.noindex).map(job => ({
-  slug: job.slug,
-  priority: job.priority,
-  lastmod: job.lastmod || new Date().toISOString().split('T')[0],
-}));
-
-// Job examples data for pSEO pages. `lastmod` reads the role's curated date
-// (A5) when set, falling back to today's date — unchanged behavior for the
-// 23 roles that don't have one yet.
-const JOB_EXAMPLES = JOB_EXAMPLES_DATABASE.map(job => ({
-  slug: job.slug,
-  priority: job.priority,
-  lastmod: job.lastmod || new Date().toISOString().split('T')[0],
-}));
+// /resume-keywords/<role> (301 into the hub) and /examples/<role> (noindexed) are
+// out of the sitemap since the 2026-12 recovery prune — see src/data/pruneRedirects.ts.
+// A redirected or noindexed URL has no business in the sitemap (mistakes-learned #1).
 
 // Blog lastmod precedence: explicit lastUpdated wins (it's the real edit signal),
 // then the curated sitemapUrls.ts value (may capture a content update lastUpdated
@@ -123,24 +105,6 @@ export function generateSitemap(): string {
     });
   });
 
-  // Add programmatic SEO job keywords pages
-  JOBS.forEach(job => {
-    addUrl(`/resume-keywords/${job.slug}`, {
-      lastmod: job.lastmod,
-      changefreq: 'monthly',
-      priority: job.priority
-    });
-  });
-
-  // Add programmatic SEO job example pages
-  JOB_EXAMPLES.forEach(job => {
-    addUrl(`/examples/${job.slug}`, {
-      lastmod: job.lastmod,
-      changefreq: 'monthly',
-      priority: job.priority
-    });
-  });
-
   // Check if we have any hreflang pairs that need the xhtml namespace
   const hasHreflangPairs = HREFLANG_PAIRS.length > 0;
 
@@ -206,9 +170,8 @@ function writeSitemap(): void {
       locations.push(distSitemapPath);
     }
 
-    const totalUrls = STATIC_URLS.length + JOBS.length + JOB_EXAMPLES.length;
     console.log(`✅ Sitemap generated successfully!`);
-    console.log(`   📄 Total URLs: ${totalUrls} (${STATIC_URLS.length} static + ${JOBS.length} keyword pages + ${JOB_EXAMPLES.length} example pages)`);
+    console.log(`   📄 Total URLs: ${STATIC_URLS.length}`);
     console.log(`   📍 Locations: ${locations.join(', ')}`);
   } catch (error) {
     console.error('❌ Error generating sitemap:', error);

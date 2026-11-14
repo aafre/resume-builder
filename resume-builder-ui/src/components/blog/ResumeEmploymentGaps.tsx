@@ -172,7 +172,7 @@ export default function ResumeEmploymentGaps() {
             </div>
             <p className="text-ink/60 text-sm mt-3">
               For a full guide on transitioning, see our{' '}
-              <Link to="/blog/career-change-resume-guide" className="text-accent-text hover:underline">
+              <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
                 career change resume guide
               </Link>.
             </p>
@@ -430,13 +430,7 @@ export default function ResumeEmploymentGaps() {
               &mdash; paid returnships at top companies for career returners
             </li>
             <li>
-              <Link to="/blog/resume-after-career-break" className="text-accent-text hover:underline">
-                How to Write a Resume After a Career Break
-              </Link>{' '}
-              &mdash; format strategy and returnship-specific advice for multi-year gaps
-            </li>
-            <li>
-              <Link to="/blog/career-change-resume-guide" className="text-accent-text hover:underline">
+              <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
                 Career Change Resume Guide
               </Link>{' '}
               &mdash; how to rewrite your resume for a new industry

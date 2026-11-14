@@ -146,7 +146,7 @@ export default function ClaudeResumePrompts() {
         </h2>
 
         <p className="text-lg leading-relaxed text-ink/60 mb-6">
-          The biggest resume mistake is listing responsibilities instead of achievements. These prompts help Claude transform "did X" into "achieved Y by doing X." Check our <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">guide to quantifying accomplishments</Link> for the framework behind these prompts.
+          The biggest resume mistake is listing responsibilities instead of achievements. These prompts help Claude transform "did X" into "achieved Y by doing X." Check our <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">guide to quantifying accomplishments</Link> for the framework behind these prompts.
         </p>
 
         <div className="space-y-6">
@@ -189,7 +189,7 @@ export default function ClaudeResumePrompts() {
         </h2>
 
         <p className="text-lg leading-relaxed text-ink/60 mb-6">
-          Claude's long context window makes it ideal for analyzing job descriptions. You can paste the entire JD and your full resume in a single prompt — something most AI tools struggle with. For a deeper dive, read our <Link to="/blog/ai-job-description-analyzer" className="text-accent-text hover:underline">AI job description analysis guide</Link>.
+          Claude's long context window makes it ideal for analyzing job descriptions. You can paste the entire JD and your full resume in a single prompt — something most AI tools struggle with. For a deeper dive, read our <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">AI job description analysis guide</Link>.
         </p>
 
         <div className="space-y-6">
@@ -225,7 +225,7 @@ export default function ClaudeResumePrompts() {
         </h2>
 
         <p className="text-lg leading-relaxed text-ink/60 mb-6">
-          A well-organized skills section helps both ATS systems and human recruiters. These prompts help Claude select the right skills and present them strategically. See also: <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">how to list skills on a resume</Link>.
+          A well-organized skills section helps both ATS systems and human recruiters. These prompts help Claude select the right skills and present them strategically. See also: <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">how to list skills on a resume</Link>.
         </p>
 
         <div className="space-y-6">
@@ -260,7 +260,7 @@ export default function ClaudeResumePrompts() {
         </h2>
 
         <p className="text-lg leading-relaxed text-ink/60 mb-6">
-          Tailoring your resume to each job application is the single most effective way to improve your callback rate. Claude excels here because it can hold your entire resume and the full job description in context simultaneously. Learn more in our <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">ATS keyword optimization guide</Link>, or browse our <Link to="/resume-keywords" className="text-accent-text hover:underline">resume keywords by job title</Link> for role-specific keyword lists.
+          Tailoring your resume to each job application is the single most effective way to improve your callback rate. Claude excels here because it can hold your entire resume and the full job description in context simultaneously. Learn more in our <Link to="/resume-keywords" className="text-accent-text hover:underline">ATS keyword optimization guide</Link>, or browse our <Link to="/resume-keywords" className="text-accent-text hover:underline">resume keywords by job title</Link> for role-specific keyword lists.
         </p>
 
         <div className="space-y-6">
@@ -401,7 +401,7 @@ export default function ClaudeResumePrompts() {
         </h2>
 
         <p className="text-lg leading-relaxed text-ink/60 mb-6">
-          Before you submit, have Claude do a final review. These prompts cover everything from hiring manager perspective checks to proofreading. For more on using AI for review, see our <Link to="/blog/ai-resume-review" className="text-accent-text hover:underline">AI resume review guide</Link>.
+          Before you submit, have Claude do a final review. These prompts cover everything from hiring manager perspective checks to proofreading. For more on using AI for review, see our <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline">AI resume review guide</Link>.
         </p>
 
         <div className="space-y-6">
@@ -690,10 +690,6 @@ export default function ClaudeResumePrompts() {
               <h3 className="font-bold text-ink mb-1">AI Resume Prompts Hub</h3>
               <p className="text-sm text-ink/60">Compare all AI tools side by side</p>
             </Link>
-            <Link to="/blog/gemini-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Gemini Resume Prompts</h3>
-              <p className="text-sm text-ink/60">Best for research and Google ecosystem integration</p>
-            </Link>
             <Link to="/blog/ai-cover-letter-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">AI Cover Letter Prompts</h3>
               <p className="text-sm text-ink/60">Prompts for writing tailored cover letters</p>
@@ -732,7 +728,7 @@ export default function ClaudeResumePrompts() {
             </Link>
           </li>
           <li>
-            <Link to="/blog/gemini-resume-prompts" className="text-accent-text hover:underline">
+            <Link to="/blog/ai-resume-prompts-hub" className="text-accent-text hover:underline">
               Gemini Prompts for Resume Writing
             </Link>
           </li>

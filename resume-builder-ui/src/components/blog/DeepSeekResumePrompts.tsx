@@ -131,7 +131,7 @@ export default function DeepSeekResumePrompts() {
           The most common resume mistake is listing responsibilities instead of achievements. These prompts
           help DeepSeek transform &ldquo;managed X&rdquo; into &ldquo;achieved Y by doing X.&rdquo; For
           the framework behind this, read our{' '}
-          <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
+          <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">
             guide to quantifying accomplishments
           </Link>.
         </p>
@@ -249,7 +249,7 @@ export default function DeepSeekResumePrompts() {
           A well-organized skills section helps both ATS parsers and recruiters quickly assess your
           qualifications. These prompts help categorize and prioritize your skills. For more guidance,
           read our{' '}
-          <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
+          <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
             guide to listing skills on your resume
           </Link>.
         </p>
@@ -459,7 +459,7 @@ export default function DeepSeekResumePrompts() {
           See our guides for{' '}
           <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">Claude resume prompts</Link>
           {' '}and{' '}
-          <Link to="/blog/gemini-resume-prompts" className="text-accent-text hover:underline">Gemini resume prompts</Link>
+          <Link to="/blog/ai-resume-prompts-hub" className="text-accent-text hover:underline">Gemini resume prompts</Link>
           {' '}for model-specific techniques. For a broader overview, read our{' '}
           <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline">complete AI resume writing guide</Link>.
         </p>
@@ -522,7 +522,7 @@ export default function DeepSeekResumePrompts() {
               <h3 className="font-bold text-ink mb-1">Claude Resume Prompts</h3>
               <p className="text-sm text-ink/60">Best for analysis, structured output, and nuance</p>
             </Link>
-            <Link to="/blog/gemini-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+            <Link to="/blog/ai-resume-prompts-hub" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Gemini Resume Prompts</h3>
               <p className="text-sm text-ink/60">Best for research and Google ecosystem integration</p>
             </Link>

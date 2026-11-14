@@ -75,7 +75,7 @@ const RESOURCES = [
     note: 'Beat the bots and land interviews',
   },
   {
-    to: '/blog/how-to-use-resume-keywords',
+    to: '/resume-keywords',
     title: 'How to Use Resume Keywords',
     note: 'The ultimate keyword optimization guide',
   },
@@ -85,7 +85,7 @@ const RESOURCES = [
     note: 'Check your resume against any job description',
   },
   {
-    to: '/blog/resume-mistakes-to-avoid',
+    to: '/blog/how-to-write-a-resume-guide',
     title: '10 Resume Mistakes to Avoid',
     note: 'Critical errors that kill your chances',
   },
@@ -256,7 +256,7 @@ export default function TemplatesHub() {
                   Write "Search Engine Optimization (SEO)" or "Amazon Web Services (AWS)" the first time you mention
                   a term. Some ATS systems search for the acronym, others for the full phrase. Including both ensures
                   you're matched. See our{' '}
-                  <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text font-medium underline underline-offset-4 decoration-accent-text/30 hover:decoration-accent-text">keyword optimization guide</Link> for
+                  <Link to="/resume-keywords" className="text-accent-text font-medium underline underline-offset-4 decoration-accent-text/30 hover:decoration-accent-text">keyword optimization guide</Link> for
                   more tips.
                 </p>
               </div>

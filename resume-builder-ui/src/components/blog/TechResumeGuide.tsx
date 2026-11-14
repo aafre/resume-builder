@@ -3,6 +3,7 @@ import BlogLayout from "../BlogLayout";
 export default function TechResumeGuide() {
   return (
     <BlogLayout
+      noindex
       title="Tech Resume Guide: Land Your Dream Developer Job in 2026"
       description="Create a standout tech resume with industry-specific tips, project showcases, and skill presentations. Updated for 2026."
       publishDate="2026-01-05"

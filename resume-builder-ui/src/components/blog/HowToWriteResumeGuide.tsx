@@ -133,10 +133,10 @@ export default function HowToWriteResumeGuide() {
           </p>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
             <li><strong>Format:</strong> Use reverse-chronological unless you are changing careers</li>
-            <li><strong>Length:</strong> One page for under 10 years of experience, two pages maximum (<Link to="/blog/resume-length-guide" className="text-accent-text hover:underline">full length guide</Link>)</li>
+            <li><strong>Length:</strong> One page for under 10 years of experience, two pages maximum</li>
             <li><strong>Summary:</strong> 2-3 sentences with your title, years, top skills, and target</li>
             <li><strong>Experience:</strong> Lead every bullet with an action verb and a measurable result</li>
-            <li><strong>Keywords:</strong> Mirror the exact language from the job description (<Link to="/blog/resume-keywords-guide" className="text-accent-text hover:underline">keyword guide</Link>)</li>
+            <li><strong>Keywords:</strong> Mirror the exact language from the job description (<Link to="/resume-keywords" className="text-accent-text hover:underline">keyword guide</Link>)</li>
             <li><strong>Save as PDF</strong> and name the file <code className="bg-chalk-dark px-1.5 py-0.5 rounded text-sm">FirstName_LastName_Resume.pdf</code></li>
           </ol>
         </div>
@@ -148,11 +148,7 @@ export default function HowToWriteResumeGuide() {
         <p className="text-lg leading-relaxed text-ink/60">
           Your resume format sets the foundation for everything else. Choose the
           wrong format, and even excellent content might not get the attention
-          it deserves. Not sure how long your resume should be? Our{' '}
-          <Link to="/blog/resume-length-guide" className="text-accent-text hover:underline">
-            resume length guide
-          </Link>{' '}
-          covers when one page is enough and when two pages make sense.
+          it deserves.
         </p>
 
         <div className="space-y-6">
@@ -269,7 +265,7 @@ export default function HowToWriteResumeGuide() {
               </Link>. Quantify your impact wherever possible — numbers are what
               separate a forgettable resume from one that lands interviews. Our
               guide on{' '}
-              <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
+              <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">
                 quantifying resume accomplishments
               </Link>{' '}
               covers exactly how to turn vague duties into measurable achievements.
@@ -323,11 +319,7 @@ export default function HowToWriteResumeGuide() {
               Organize by categories and include both technical and soft skills.
               This section is critical for ATS screening — applicant tracking
               systems scan for exact keyword matches, so use the same terms the
-              job posting uses. Read our{' '}
-              <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
-                guide to listing skills on your resume
-              </Link>{' '}
-              for formatting strategies that work for both humans and machines.
+              job posting uses.
             </p>
             <div className="bg-white border border-black/[0.06] rounded p-4 text-sm">
               <div className="mb-2">
@@ -400,7 +392,7 @@ export default function HowToWriteResumeGuide() {
 
         <p className="text-lg leading-relaxed text-ink/60 mt-6">
           For a deeper walkthrough with more before-and-after examples, see our{' '}
-          <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
+          <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">
             guide to quantifying resume accomplishments
           </Link>.
         </p>
@@ -484,7 +476,7 @@ export default function HowToWriteResumeGuide() {
             <li>Use bullet points for easy scanning — no dense paragraphs</li>
             <li>
               Keep it to 1 page for under 10 years of experience, 2 pages maximum
-              (<Link to="/blog/resume-length-guide" className="text-accent-text hover:underline">when to use 2 pages</Link>)
+             
             </li>
             <li>Save as PDF to preserve formatting across devices</li>
             <li>
@@ -554,7 +546,7 @@ export default function HowToWriteResumeGuide() {
               </Link>{' '}
               has role-specific keyword lists for 25+ job titles, and
               our{' '}
-              <Link to="/blog/resume-keywords-guide" className="text-accent-text hover:underline">
+              <Link to="/resume-keywords" className="text-accent-text hover:underline">
                 resume keywords guide
               </Link>{' '}
               explains how ATS scoring actually works behind the scenes.
@@ -610,7 +602,7 @@ export default function HowToWriteResumeGuide() {
         <p className="text-lg leading-relaxed text-ink/60">
           For a complete ATS strategy including keyword density, formatting
           rules, and testing methods, read our{' '}
-          <Link to="/blog/resume-keywords-guide" className="text-accent-text hover:underline">
+          <Link to="/resume-keywords" className="text-accent-text hover:underline">
             complete resume keywords guide
           </Link>. You can also use our{' '}
           <Link to="/resume-keywords" className="text-accent-text hover:underline">
@@ -666,12 +658,7 @@ export default function HowToWriteResumeGuide() {
 
         <p className="text-lg leading-relaxed text-ink/60">
           Even strong candidates sabotage themselves with avoidable errors. Here
-          are the most common ones we see — and how to fix them. For a deeper
-          dive, read our dedicated{' '}
-          <Link to="/blog/resume-mistakes-to-avoid" className="text-accent-text hover:underline">
-            resume mistakes guide
-          </Link>{' '}
-          with 10 critical errors that cost people interviews.
+          are the most common ones we see — and how to fix them.
         </p>
 
         <div className="grid md:grid-cols-2 gap-6">
@@ -859,12 +846,6 @@ export default function HowToWriteResumeGuide() {
           </h3>
           <ul className="space-y-2 text-ink/80">
             <li>
-              <Link to="/blog/resume-length-guide" className="text-accent-text hover:underline">
-                How Long Should a Resume Be?
-              </Link>{' '}
-              &mdash; when one page is enough and when two pages make sense
-            </li>
-            <li>
               <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
                 25+ Professional Summary Examples
               </Link>{' '}
@@ -877,40 +858,16 @@ export default function HowToWriteResumeGuide() {
               &mdash; the strongest verbs organized by category
             </li>
             <li>
-              <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
-                How to Quantify Resume Accomplishments
-              </Link>{' '}
-              &mdash; turn vague duties into measurable achievements
-            </li>
-            <li>
-              <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
-                How to List Skills on Your Resume
-              </Link>{' '}
-              &mdash; formatting that works for humans and ATS
-            </li>
-            <li>
-              <Link to="/blog/resume-keywords-guide" className="text-accent-text hover:underline">
+              <Link to="/resume-keywords" className="text-accent-text hover:underline">
                 The Complete Resume Keywords Guide
               </Link>{' '}
               &mdash; how ATS scoring works and which keywords matter
-            </li>
-            <li>
-              <Link to="/blog/resume-mistakes-to-avoid" className="text-accent-text hover:underline">
-                10 Resume Mistakes That Kill Your Job Prospects
-              </Link>{' '}
-              &mdash; the most common errors and how to fix them
             </li>
             <li>
               <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">
                 25+ Claude AI Resume Prompts
               </Link>{' '}
               &mdash; copy-paste prompts for AI-assisted resume writing
-            </li>
-            <li>
-              <Link to="/resume-keywords" className="text-accent-text hover:underline">
-                Resume Keywords Hub
-              </Link>{' '}
-              &mdash; role-specific keyword lists for 25+ job titles
             </li>
             <li>
               <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">

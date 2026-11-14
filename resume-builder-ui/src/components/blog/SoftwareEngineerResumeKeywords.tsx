@@ -27,7 +27,7 @@ export default function SoftwareEngineerResumeKeywords() {
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
           <h3 className="font-bold text-ink mb-3">Part of Our Keywords Series</h3>
           <p className="text-ink/80">
-            This guide focuses on software engineering keywords. For the complete strategy on finding and using keywords effectively, read our pillar guide: <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:text-ink underline font-medium">How to Use Resume Keywords to Beat the ATS</Link>. You can also scan your resume instantly with our <Link to="/resume-keyword-scanner" className="text-accent-text hover:text-ink underline font-medium">free ATS keyword scanner</Link>.
+            This guide focuses on software engineering keywords. For the complete strategy on finding and using keywords effectively, read our pillar guide: <Link to="/resume-keywords" className="text-accent-text hover:text-ink underline font-medium">How to Use Resume Keywords to Beat the ATS</Link>. You can also scan your resume instantly with our <Link to="/resume-keyword-scanner" className="text-accent-text hover:text-ink underline font-medium">free ATS keyword scanner</Link>.
           </p>
         </div>
 
@@ -689,7 +689,7 @@ export default function SoftwareEngineerResumeKeywords() {
 
         <ul className="list-disc list-inside space-y-2 text-lg text-ink/60">
           <li>
-            <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">
+            <Link to="/resume-keywords" className="text-accent-text hover:underline">
               How to Use Resume Keywords to Beat the ATS
             </Link>
           </li>
@@ -704,7 +704,7 @@ export default function SoftwareEngineerResumeKeywords() {
             </Link>
           </li>
           <li>
-            <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
+            <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
               How to List Skills on a Resume (100+ Examples)
             </Link>
           </li>

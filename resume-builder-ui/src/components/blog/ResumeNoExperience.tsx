@@ -35,7 +35,7 @@ export default function ResumeNoExperience() {
           step by step, with copy-paste examples, role-specific keywords, and a
           free ATS-friendly template you can use with our{" "}
           <a
-            href="/actual-free-resume-builder"
+            href="/free-resume-builder-no-payment"
             className="text-accent-text hover:underline font-semibold"
           >
             actual free resume builder

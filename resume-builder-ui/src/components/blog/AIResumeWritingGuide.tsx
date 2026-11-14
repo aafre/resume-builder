@@ -414,17 +414,17 @@ export default function AIResumeWritingGuide() {
             </Link>
           </li>
           <li>
-            <Link to="/blog/gemini-resume-prompts" className="text-accent-text hover:underline">
+            <Link to="/blog/ai-resume-prompts-hub" className="text-accent-text hover:underline">
               Gemini Prompts for Resume Writing
             </Link>
           </li>
           <li>
-            <Link to="/blog/ai-resume-builder" className="text-accent-text hover:underline">
+            <Link to="/" className="text-accent-text hover:underline">
               AI Resume Builders: Are They Worth It?
             </Link>
           </li>
           <li>
-            <Link to="/blog/humanize-ai-resume" className="text-accent-text hover:underline">
+            <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline">
               How to Humanize an AI-Written Resume
             </Link>
           </li>

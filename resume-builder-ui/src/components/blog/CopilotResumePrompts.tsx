@@ -127,7 +127,7 @@ export default function CopilotResumePrompts() {
           Listing responsibilities instead of achievements is the most common resume mistake. These
           prompts help Copilot transform what you did into what you accomplished. For the framework
           behind this, read our{' '}
-          <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
+          <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">
             guide to quantifying accomplishments
           </Link>.
         </p>
@@ -245,7 +245,7 @@ export default function CopilotResumePrompts() {
         <p className="text-lg leading-relaxed text-ink/60 mb-6">
           A well-organized skills section helps both ATS parsers and recruiters quickly assess your
           qualifications. For a complete walkthrough, read our{' '}
-          <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
+          <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
             guide to listing skills on your resume
           </Link>.
         </p>
@@ -465,7 +465,7 @@ export default function CopilotResumePrompts() {
           ,{' '}
           <Link to="/blog/deepseek-resume-prompts" className="text-accent-text hover:underline">DeepSeek resume prompts</Link>
           , and{' '}
-          <Link to="/blog/gemini-resume-prompts" className="text-accent-text hover:underline">Gemini resume prompts</Link>
+          <Link to="/blog/ai-resume-prompts-hub" className="text-accent-text hover:underline">Gemini resume prompts</Link>
           . For a broader overview, read our{' '}
           <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline">complete AI resume writing guide</Link>.
         </p>
@@ -528,7 +528,7 @@ export default function CopilotResumePrompts() {
               <h3 className="font-bold text-ink mb-1">Claude Resume Prompts</h3>
               <p className="text-sm text-ink/60">Best for analysis, structured output, and nuance</p>
             </Link>
-            <Link to="/blog/gemini-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+            <Link to="/blog/ai-resume-prompts-hub" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Gemini Resume Prompts</h3>
               <p className="text-sm text-ink/60">Best for research and Google ecosystem integration</p>
             </Link>
