@@ -1,0 +1,349 @@
+{
+ "pulled_utc": "2026-11-14T15:19Z",
+ "source": "arctic-shift.photon-reddit.com",
+ "subs": [
+  "resumes",
+  "jobs",
+  "cscareerquestions",
+  "careerguidance",
+  "jobsearchhacks",
+  "recruitinghell"
+ ],
+ "queries": [
+  "resume builder",
+  "free resume",
+  "resume template",
+  "resume maker"
+ ],
+ "from": "2024-06-01",
+ "to": "2026-11-15",
+ "searches_skipped": 4,
+ "threads": [
+  {
+   "id": "1psx5ju",
+   "sub": "jobs",
+   "title": "Best Resume Builder of 2026? What are People Actually Using Now",
+   "url": "https://www.reddit.com/r/jobs/comments/1psx5ju/best_resume_builder_of_2026_what_are_people/",
+   "score": 114,
+   "comments": 26,
+   "created_utc": 1766402359
+  },
+  {
+   "id": "1jrpq4p",
+   "sub": "resumes",
+   "title": "I am tired of searching for free resume builders",
+   "url": "https://www.reddit.com/r/resumes/comments/1jrpq4p/i_am_tired_of_searching_for_free_resume_builders/",
+   "score": 0,
+   "comments": 36,
+   "created_utc": 1743808993
+  },
+  {
+   "id": "1h3idq5",
+   "sub": "resumes",
+   "title": "Can someone suggest a easy to use resume builder that's is free to use and let's you save at least 3 versions of resume and allow unlimited downloads?",
+   "url": "https://www.reddit.com/r/resumes/comments/1h3idq5/can_someone_suggest_a_easy_to_use_resume_builder/",
+   "score": 10,
+   "comments": 32,
+   "created_utc": 1732989836
+  },
+  {
+   "id": "1sfs9i5",
+   "sub": "jobsearchhacks",
+   "title": "Guys Please Suggest Me a Best Resume Builder",
+   "url": "https://www.reddit.com/r/jobsearchhacks/comments/1sfs9i5/guys_please_suggest_me_a_best_resume_builder/",
+   "score": 19,
+   "comments": 31,
+   "created_utc": 1775653459
+  },
+  {
+   "id": "1x9ffma",
+   "sub": "resumes",
+   "title": "Trying To Find A Resume Builder Site That Has *ZERO* Gen-AI Elements In It",
+   "url": "https://www.reddit.com/r/resumes/comments/1x9ffma/trying_to_find_a_resume_builder_site_that_has/",
+   "score": 2,
+   "comments": 22,
+   "created_utc": 1792360200
+  },
+  {
+   "id": "1k233ov",
+   "sub": "jobs",
+   "title": "Best Free Resume Builder in 2025 for Professional, ATS Friendly Templates – What’s Actually Worth Using?",
+   "url": "https://www.reddit.com/r/jobs/comments/1k233ov/best_free_resume_builder_in_2025_for_professional/",
+   "score": 92,
+   "comments": 19,
+   "created_utc": 1744977305
+  },
+  {
+   "id": "1x7bwxb",
+   "sub": "resumes",
+   "title": "Any good resume builder on pc that I can make my resume that doesn’t require a subscription?",
+   "url": "https://www.reddit.com/r/resumes/comments/1x7bwxb/any_good_resume_builder_on_pc_that_i_can_make_my/",
+   "score": 1,
+   "comments": 13,
+   "created_utc": 1792143959
+  },
+  {
+   "id": "1wsuhuj",
+   "sub": "resumes",
+   "title": "Hey y'all, y'all know a website that'll let you create a resume hassle free, no signing up, just something simple",
+   "url": "https://www.reddit.com/r/resumes/comments/1wsuhuj/hey_yall_yall_know_a_website_thatll_let_you/",
+   "score": 0,
+   "comments": 13,
+   "created_utc": 1790638486
+  },
+  {
+   "id": "1lf1fp1",
+   "sub": "resumes",
+   "title": "Are there any *actually* free online resume builders?",
+   "url": "https://www.reddit.com/r/resumes/comments/1lf1fp1/are_there_any_actually_free_online_resume_builders/",
+   "score": 0,
+   "comments": 12,
+   "created_utc": 1750305992
+  },
+  {
+   "id": "1q4cdgu",
+   "sub": "resumes",
+   "title": "Are there any free resume builders available?",
+   "url": "https://www.reddit.com/r/resumes/comments/1q4cdgu/are_there_any_free_resume_builders_available/",
+   "score": 0,
+   "comments": 11,
+   "created_utc": 1767588433
+  },
+  {
+   "id": "1hjukgb",
+   "sub": "resumes",
+   "title": "Can someone help me with finding a free resume site?",
+   "url": "https://www.reddit.com/r/resumes/comments/1hjukgb/can_someone_help_me_with_finding_a_free_resume/",
+   "score": 0,
+   "comments": 10,
+   "created_utc": 1734856443
+  },
+  {
+   "id": "1iin1y4",
+   "sub": "jobsearchhacks",
+   "title": "Resume Builder",
+   "url": "https://www.reddit.com/r/jobsearchhacks/comments/1iin1y4/resume_builder/",
+   "score": 2,
+   "comments": 13,
+   "created_utc": 1738795026
+  },
+  {
+   "id": "1jdft4r",
+   "sub": "jobsearchhacks",
+   "title": "Best AI resume builder to help with upcoming job search?",
+   "url": "https://www.reddit.com/r/jobsearchhacks/comments/1jdft4r/best_ai_resume_builder_to_help_with_upcoming_job/",
+   "score": 31,
+   "comments": 64,
+   "created_utc": 1742226389
+  },
+  {
+   "id": "1jns6bb",
+   "sub": "jobs",
+   "title": "What’s the best AI resume builder out there?",
+   "url": "https://www.reddit.com/r/jobs/comments/1jns6bb/whats_the_best_ai_resume_builder_out_there/",
+   "score": 11,
+   "comments": 19,
+   "created_utc": 1743385070
+  },
+  {
+   "id": "1m4tbrk",
+   "sub": "jobsearchhacks",
+   "title": "What’s a good resume builder tool that also helps tailor resume for a new job description? Any free tool options.",
+   "url": "https://www.reddit.com/r/jobsearchhacks/comments/1m4tbrk/whats_a_good_resume_builder_tool_that_also_helps/",
+   "score": 2,
+   "comments": 12,
+   "created_utc": 1753029205
+  },
+  {
+   "id": "1kmbco1",
+   "sub": "resumes",
+   "title": "Which resume maker or tool do you use to create your resumes, or do you prefer making them yourself?",
+   "url": "https://www.reddit.com/r/resumes/comments/1kmbco1/which_resume_maker_or_tool_do_you_use_to_create/",
+   "score": 21,
+   "comments": 32,
+   "created_utc": 1747216849
+  }
+ ],
+ "comments_read": 499,
+ "mentions": [
+  {
+   "tool": "Google Docs",
+   "threads": 9,
+   "comments": 46,
+   "upvotes": 84
+  },
+  {
+   "tool": "ChatGPT / AI",
+   "threads": 12,
+   "comments": 42,
+   "upvotes": 61
+  },
+  {
+   "tool": "Microsoft Word",
+   "threads": 10,
+   "comments": 23,
+   "upvotes": 61
+  },
+  {
+   "tool": "LaTeX / Overleaf",
+   "threads": 9,
+   "comments": 20,
+   "upvotes": 48
+  },
+  {
+   "tool": "Canva",
+   "threads": 7,
+   "comments": 27,
+   "upvotes": 31
+  },
+  {
+   "tool": "Novoresume",
+   "threads": 5,
+   "comments": 10,
+   "upvotes": 30
+  },
+  {
+   "tool": "Rezi",
+   "threads": 6,
+   "comments": 9,
+   "upvotes": 11
+  },
+  {
+   "tool": "Zety",
+   "threads": 2,
+   "comments": 4,
+   "upvotes": 11
+  },
+  {
+   "tool": "Kickresume",
+   "threads": 6,
+   "comments": 9,
+   "upvotes": 9
+  },
+  {
+   "tool": "Enhancv",
+   "threads": 6,
+   "comments": 9,
+   "upvotes": 9
+  },
+  {
+   "tool": "FlowCV",
+   "threads": 3,
+   "comments": 8,
+   "upvotes": 9
+  },
+  {
+   "tool": "Teal",
+   "threads": 3,
+   "comments": 4,
+   "upvotes": 5
+  },
+  {
+   "tool": "Reactive Resume (RxResume)",
+   "threads": 1,
+   "comments": 1,
+   "upvotes": 1
+  },
+  {
+   "tool": "Resume Genius",
+   "threads": 1,
+   "comments": 1,
+   "upvotes": 1
+  },
+  {
+   "tool": "Jake's Resume (template)",
+   "threads": 1,
+   "comments": 1,
+   "upvotes": 0
+  },
+  {
+   "tool": "EasyFreeResume",
+   "threads": 1,
+   "comments": 1,
+   "upvotes": 0
+  }
+ ],
+ "quotes": [
+  {
+   "id": "nve3nsv",
+   "group": "skip",
+   "sub": "jobs",
+   "thread": "Best Resume Builder of 2026? What are People Actually Using Now",
+   "score": 12,
+   "body": "The default Docs resume template.",
+   "url": "https://www.reddit.com/r/jobs/comments/1psx5ju/best_resume_builder_of_2026_what_are_people/comment/nve3nsv/"
+  },
+  {
+   "id": "m39obzi",
+   "group": "skip",
+   "sub": "resumes",
+   "thread": "Can someone help me with finding a free resume site?",
+   "score": 10,
+   "body": "I don't get why people feel the need for these resume builders. Just type the stuff in a word doc.",
+   "url": "https://www.reddit.com/r/resumes/comments/1hjukgb/can_someone_help_me_with_finding_a_free_resume/comment/m39obzi/"
+  },
+  {
+   "id": "nvdosvl",
+   "group": "skip",
+   "sub": "jobs",
+   "thread": "Best Resume Builder of 2026? What are People Actually Using Now",
+   "score": 8,
+   "body": "So long as it's PDF or Word and single column then you're good. You overthink these things. Focus on the  content (bullets). A poorly formatted resume can be carried by a strong bullets but poor bullets cannot be carried by great formatting - generally.\n\nI created mine from scratch using Microsoft Office Word. ATS friendly and all that other shit is just preying (profiting) on ignorant, desperate job seekers. It seems to be working b/c there's a f ton of these sites out there.",
+   "url": "https://www.reddit.com/r/jobs/comments/1psx5ju/best_resume_builder_of_2026_what_are_people/comment/nvdosvl/"
+  },
+  {
+   "id": "lzrfr72",
+   "group": "skip",
+   "sub": "resumes",
+   "thread": "Can someone suggest a easy to use resume builder that's is free to use and let's you save at least 3 versions of resume and allow unlimited downloads?",
+   "score": 6,
+   "body": "Use overleaf once you know how it works, I bet you won't use any builder anymore",
+   "url": "https://www.reddit.com/r/resumes/comments/1h3idq5/can_someone_suggest_a_easy_to_use_resume_builder/comment/lzrfr72/"
+  },
+  {
+   "id": "oeznk1w",
+   "group": "skip",
+   "sub": "jobsearchhacks",
+   "thread": "Guys Please Suggest Me a Best Resume Builder",
+   "score": 4,
+   "body": "honestly google docs template or canva is enough, most fancy builders just sell you fonts and hide the download behind a paywall. i just keep one clean doc and tweak per job, faster than any builder. still doesn’t help much when no one’s hiring tho",
+   "url": "https://www.reddit.com/r/jobsearchhacks/comments/1sfs9i5/guys_please_suggest_me_a_best_resume_builder/comment/oeznk1w/"
+  },
+  {
+   "id": "nvcysaj",
+   "group": "builder",
+   "sub": "jobs",
+   "thread": "Best Resume Builder of 2026? What are People Actually Using Now",
+   "score": 6,
+   "body": "Noveresume is really helpful for a resume builder.",
+   "url": "https://www.reddit.com/r/jobs/comments/1psx5ju/best_resume_builder_of_2026_what_are_people/comment/nvcysaj/"
+  },
+  {
+   "id": "nvfg4e9",
+   "group": "builder",
+   "sub": "jobs",
+   "thread": "Best Resume Builder of 2026? What are People Actually Using Now",
+   "score": 2,
+   "body": "Flowcv is my favorite due to how easy it is.",
+   "url": "https://www.reddit.com/r/jobs/comments/1psx5ju/best_resume_builder_of_2026_what_are_people/comment/nvfg4e9/"
+  },
+  {
+   "id": "mb6vxdk",
+   "group": "builder",
+   "sub": "jobsearchhacks",
+   "thread": "Resume Builder",
+   "score": 1,
+   "body": "I didn’t try a to of different options, but I liked FlowCV a lot. Kind of just drag and drop once you e got everything added to their template. Then there’s a ton of customization options for format and whatnot. It was free, too.",
+   "url": "https://www.reddit.com/r/jobsearchhacks/comments/1iin1y4/resume_builder/comment/mb6vxdk/"
+  },
+  {
+   "id": "nxccoes",
+   "group": "us",
+   "sub": "jobs",
+   "thread": "Best Resume Builder of 2026? What are People Actually Using Now",
+   "score": -2,
+   "body": "I’ve been using easyfreeresume.com recently. It’s definitely simpler than flowCV, but I stuck with it because it didn't force me to create an account just to test it out.\n\nThe templates are simple, but for a standard text-based resume that gets through the ATS, it did the job for me. Good option if you want something fast and free.",
+   "url": "https://www.reddit.com/r/jobs/comments/1psx5ju/best_resume_builder_of_2026_what_are_people/comment/nxccoes/"
+  }
+ ]
+}
