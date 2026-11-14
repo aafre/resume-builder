@@ -1853,20 +1853,19 @@ export const SEO_PAGES: Record<string, PageConfig> = {
   // ── ATS Keyword Scanner Tool ──────────────────────────────────────────
   keywordScanner: {
     seo: {
-      title: `Free ATS Resume Keyword Scanner (${CURRENT_YEAR}) | Check Your Match Score`,
-      description: 'Free ATS resume keyword scanner. Paste your resume and job description to see your keyword match score, missing keywords, and placement suggestions. No sign-up required.',
-      keywords: ['resume keyword scanner', 'ATS keyword checker', 'resume keyword match', 'ATS score checker', 'resume scanner free', 'keyword match tool', 'ATS resume checker'],
+      title: 'EasyFreeResume: Free ATS Resume Checker (No Sign-Up)',
+      description: 'Free ATS resume checker. Paste your resume and a job description to get your ATS keyword match score, the missing keywords, and where to add them. No sign-up, runs in your browser.',
+      keywords: ['free ATS resume checker', 'ATS resume checker no sign up', 'ATS resume checker', 'ATS score checker', 'resume keyword scanner', 'ATS keyword checker', 'resume keyword match'],
       canonicalUrl: '/resume-keyword-scanner',
     },
     hero: {
-      h1: 'Free ATS Resume Keyword Scanner',
-      subtitle: 'Paste your resume and a job description to instantly see which keywords you are missing — and where to add them.',
-      secondaryCTA: { text: 'Browse Keywords', href: '/resume-keywords' },
+      h1: 'Free ATS Resume Checker',
+      subtitle: 'Paste your resume and a job description to see your ATS keyword match score, what is missing, and where to add it. No sign-up.',
     },
     breadcrumbs: [
       { label: 'Home', href: '/' },
       { label: 'Resume Keywords', href: '/resume-keywords' },
-      { label: 'Keyword Scanner', href: '/resume-keyword-scanner' },
+      { label: 'ATS Resume Checker', href: '/resume-keyword-scanner' },
     ],
     faqs: [
       { question: 'How does the ATS keyword scanner work?', answer: 'Our scanner uses an AI language model (MiniLM) that runs entirely in your browser. It extracts important keywords from the job description, then uses semantic similarity to check how well your resume covers each term — catching synonyms, related concepts, and phrasing variations that simple text matching would miss. Results are categorized as matched, partial match, or missing, with context showing where each keyword was (or was not) found in your resume.' },
