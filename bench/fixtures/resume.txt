@@ -1,0 +1,27 @@
+JOHN SAMPLE
+john.sample@email.com | 555-0100 | linkedin.com/in/johnsample
+
+SUMMARY
+Hardworking software developer looking for a new opportunity where I can grow and
+use my skills. Team player and quick learner.
+
+EXPERIENCE
+TechCorp — Software Developer (2019 - present)
+- Responsible for developing and maintaining web applications
+- Worked on the backend team and helped with various projects
+- Fixed bugs and did code reviews
+- Helped onboard new team members
+- Was involved in migrating some services to the cloud
+
+PreviousCo — Junior Developer (2016-2019)
+- Wrote code for the company's main product
+- Participated in agile ceremonies
+- Did testing and debugging
+- Helped with database stuff
+
+SKILLS
+Java, Python, JavaScript, problem solving, communication, hard working,
+Microsoft Office, teamwork
+
+EDUCATION
+State University — BS Computer Science, 2016

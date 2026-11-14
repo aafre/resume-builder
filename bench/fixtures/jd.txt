@@ -1,0 +1,11 @@
+Senior Backend Engineer — Platform Team
+
+We're hiring a Senior Backend Engineer to scale our high-traffic distributed systems.
+Requirements:
+- 5+ years building and operating backend services in production
+- Strong Java or Go; experience designing microservices and REST/gRPC APIs
+- Hands-on AWS (EC2, RDS, S3, Lambda) and Kubernetes
+- CI/CD, infrastructure-as-code, and observability (metrics, tracing, logging)
+- Experience scaling systems for high throughput and low latency
+- Mentoring engineers and driving technical design reviews
+Nice to have: event-driven architecture (Kafka), PostgreSQL performance tuning.
