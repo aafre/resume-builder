@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "fs";
 import { resolve } from "path";
 import { blogPosts } from "../data/blogPosts";
+import { PRUNE_REDIRECTS, PRUNE_NOINDEX } from "../data/pruneRedirects";
 
 // app.py lives at the repo root, one level above resume-builder-ui/. Tests
 // run with cwd = resume-builder-ui (npx vitest run), so this resolves the
@@ -50,6 +51,13 @@ function extractInternalPaths(text: string): string[] {
 describe("internal link hygiene", () => {
   const appPySource = readFileSync(APP_PY_PATH, "utf-8");
   const redirectsAndGone = parseRedirectAndGoneRoutes(appPySource);
+  // The prune's 301s live in a dict served by serve(), not @app.route handlers,
+  // so the parser above can't see them. pruneRedirects.ts mirrors that dict
+  // (tests/test_seo_prune.py enforces the sync).
+  for (const [source, target] of Object.entries(PRUNE_REDIRECTS)) {
+    redirectsAndGone.set(source, target);
+  }
+  for (const path of PRUNE_NOINDEX) redirectsAndGone.set(path, "noindex");
 
   it("finds at least the known redirect/410 routes in app.py (parser sanity check)", () => {
     expect(redirectsAndGone.get("/blog/chatgpt-resume-prompts")).toBe("410");
