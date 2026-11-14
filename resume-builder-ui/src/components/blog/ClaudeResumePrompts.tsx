@@ -192,6 +192,17 @@ export default function ClaudeResumePrompts() {
           Claude's long context window makes it ideal for analyzing job descriptions. You can paste the entire JD and your full resume in a single prompt — something most AI tools struggle with. For a deeper dive, read our <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">AI job description analysis guide</Link>.
         </p>
 
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-5 mb-6">
+          <p className="text-ink font-bold mb-1">Want a score, not just a prompt?</p>
+          <p className="text-ink/60 text-sm leading-relaxed">
+            Paste your resume and the job description into our{' '}
+            <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">
+              free ATS resume checker
+            </Link>{' '}
+            to see your keyword match score and exactly which terms are missing. No sign-up, and nothing leaves your browser.
+          </p>
+        </div>
+
         <div className="space-y-6">
           <CopyablePrompt title="Prompt #6: Deep Job Analysis" bestFor="Understanding exactly what a company wants before applying">
               Analyze this job description thoroughly:<br /><br />
@@ -734,7 +745,7 @@ export default function ClaudeResumePrompts() {
           </li>
           <li>
             <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">
-              Free ATS Keyword Scanner
+              Free ATS Resume Checker
             </Link>
           </li>
         </ul>

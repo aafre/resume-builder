@@ -27,7 +27,7 @@ export function getNavLinks(isAuthenticated: boolean, jobsAvailable: boolean): N
       : []),
     { path: "/templates", label: "Templates", blurb: "ATS-friendly designs, free to download" },
     { path: "/examples", label: "Examples", blurb: "Resumes written for real roles" },
-    { path: "/resume-keyword-scanner", label: "ATS Scanner", blurb: "Check your resume against a job post" },
+    { path: "/resume-keyword-scanner", label: "ATS Checker", blurb: "Free ATS check against a job post" },
     ...(jobsAvailable
       ? [{ path: "/jobs", label: "Jobs", blurb: "Openings that match your resume" }]
       : []),
