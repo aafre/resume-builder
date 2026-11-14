@@ -11,6 +11,8 @@ import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
 import RevealSection from '../shared/RevealSection';
 import ResourceCard from '../shared/ResourceCard';
+import TemplateCarousel from '../TemplateCarousel';
+import { Link } from 'react-router-dom';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
 
@@ -63,6 +65,42 @@ export default function ResumeBuilderForStudents() {
       <PageHero config={config.hero} showcase />
 
       {config.features && <FeatureGrid features={config.features} />}
+
+      {/* Student templates — same gallery as /templates/resume-templates-for-students */}
+      <section className="mb-16" aria-labelledby="student-templates">
+        <div className="text-center mb-10">
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block">
+            TEMPLATES
+          </span>
+          <h2 id="student-templates" className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4">
+            Pick a Template and Start Writing
+          </h2>
+          <p className="text-lg md:text-xl font-extralight text-ink/60 max-w-2xl mx-auto">
+            Every template is free to edit and download as a PDF. No account needed.
+          </p>
+        </div>
+        <TemplateCarousel showHeader={false} />
+      </section>
+
+      {/* ATS checker */}
+      <section className="mb-16 max-w-4xl mx-auto" aria-labelledby="student-ats-check">
+        <div className="bg-chalk-dark rounded-2xl p-6 md:p-8">
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-3 block">
+            BEFORE YOU APPLY
+          </span>
+          <h2 id="student-ats-check" className="font-display text-2xl md:text-3xl font-extrabold tracking-tight text-ink mb-3">
+            Check Your Resume Against the Job Post
+          </h2>
+          <p className="text-ink/60 font-extralight leading-relaxed mb-5">
+            Paste your resume and the job or internship description into our free ATS resume checker. It shows
+            your keyword match score, the terms you are missing and where to add them. It runs in your browser,
+            so your resume is not uploaded anywhere.
+          </p>
+          <Link to="/resume-keyword-scanner" className="btn-primary inline-flex items-center px-6">
+            Open the free ATS resume checker
+          </Link>
+        </div>
+      </section>
 
       {/* Student-specific tips */}
       <RevealSection variant="fade-up">
@@ -157,7 +195,6 @@ export default function ResumeBuilderForStudents() {
             <ResourceCard to="/examples/internship" title="Internship Resume Example" description="Tailored for internship applications" />
             <ResourceCard to="/examples/entry-level-marketing" title="Entry-Level Resume Example" description="How to stand out with limited experience" />
             <ResourceCard to="/blog/how-to-write-a-resume-guide" title="How to List Skills on a Resume" description="Structure your skills section for maximum impact" />
-            <ResourceCard to="/resume-keyword-scanner" title="ATS Keyword Scanner" description="Check if your resume matches the job description" />
           </div>
         </div>
       </RevealSection>
@@ -196,6 +233,44 @@ export default function ResumeBuilderForStudents() {
       </RevealSection>
 
       <FAQSection faqs={config.faqs} />
+
+      {/* Plain disclosure for students and career-centre staff (seo-growth ticket 07) */}
+      <section id="privacy-ads-accessibility" className="mb-16 max-w-4xl mx-auto" aria-labelledby="disclosure-heading">
+        <h2 id="disclosure-heading" className="font-display text-2xl md:text-3xl font-extrabold tracking-tight text-ink mb-6">
+          Privacy, Ads and Accessibility
+        </h2>
+        <div className="space-y-5 text-ink/60 font-extralight leading-relaxed">
+          <div>
+            <h3 className="font-display text-lg font-bold text-ink mb-1">Privacy</h3>
+            <p>
+              You can build and download a resume without an account; what you type stays in your browser. If you
+              import an existing resume file, or create a free account so you can open your resumes on other
+              devices, we store that data as the privacy policy describes, and you can delete your account and its
+              data at any time. We use
+              PostHog analytics to see which pages and features are used; we never send your resume content to
+              it. The full details are in our <Link to="/privacy-policy" className="text-accent-text hover:underline">privacy policy</Link>.
+            </p>
+          </div>
+          <div>
+            <h3 className="font-display text-lg font-bold text-ink mb-1">Ads</h3>
+            <p>
+              EasyFreeResume is free because the site shows Google ads. Google may use cookies to choose which
+              ads to show. We run fewer ads on this page than on the rest of the site. Every template, edit and
+              download stays free, with no paid tier and no watermark.
+            </p>
+          </div>
+          <div>
+            <h3 className="font-display text-lg font-bold text-ink mb-1">Accessibility</h3>
+            <p>
+              We aim to meet WCAG 2.2 AA. Text colours are contrast-checked against that standard, and buttons
+              and links show a visible focus outline. We have not had an independent audit, so some parts, such
+              as the drag-and-drop editor, may still fall short. If something does not work with your screen
+              reader, keyboard or other assistive technology, <Link to="/contact" className="text-accent-text hover:underline">tell us</Link> and
+              we will fix it.
+            </p>
+          </div>
+        </div>
+      </section>
 
       <DownloadCTA
         title="Build Your Student Resume Today"
