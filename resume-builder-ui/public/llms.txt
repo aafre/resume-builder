@@ -21,31 +21,18 @@
 
 ## Resume Keywords by Job Title
 - [Keywords Hub](https://easyfreeresume.com/resume-keywords): ATS keyword lists for 25+ job titles
-- [Customer Service](https://easyfreeresume.com/resume-keywords/customer-service)
-- [Software Engineer](https://easyfreeresume.com/resume-keywords/software-engineer)
-- [Product Manager](https://easyfreeresume.com/resume-keywords/product-manager)
-- [Data Analyst](https://easyfreeresume.com/resume-keywords/data-analyst)
-- [Registered Nurse](https://easyfreeresume.com/resume-keywords/registered-nurse)
-- [Project Manager](https://easyfreeresume.com/resume-keywords/project-manager)
-- [Marketing Manager](https://easyfreeresume.com/resume-keywords/marketing-manager)
 
 ## Resume Examples by Job Title
 - [Examples Hub](https://easyfreeresume.com/examples): Real resume examples by role
-- [Software Engineer](https://easyfreeresume.com/examples/software-engineer)
-- [Registered Nurse](https://easyfreeresume.com/examples/registered-nurse)
-- [Teacher](https://easyfreeresume.com/examples/teacher)
-- [Project Manager](https://easyfreeresume.com/examples/project-manager)
-- [College Student](https://easyfreeresume.com/examples/college-student)
 
 ## AI Resume Guides
 - [Claude Resume Prompts](https://easyfreeresume.com/blog/claude-resume-prompts)
-- [Gemini Resume Prompts](https://easyfreeresume.com/blog/gemini-resume-prompts)
+- [AI Resume Prompts Hub](https://easyfreeresume.com/blog/ai-resume-prompts-hub)
 - [AI Resume Writing Guide](https://easyfreeresume.com/blog/ai-resume-writing-guide)
 
 ## Resume Writing Guides
 - [How to Write a Resume](https://easyfreeresume.com/blog/how-to-write-a-resume-guide)
 - [ATS Resume Optimization](https://easyfreeresume.com/blog/ats-resume-optimization)
-- [Resume Keywords Guide](https://easyfreeresume.com/blog/resume-keywords-guide)
 - [Professional Summary Examples](https://easyfreeresume.com/blog/professional-summary-examples)
 - [Resume Action Verbs](https://easyfreeresume.com/blog/resume-action-verbs)
 

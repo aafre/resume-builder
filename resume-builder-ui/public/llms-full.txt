@@ -201,21 +201,9 @@ Browse professional resume examples across 26 job titles. Each example includes 
 **URL:** https://easyfreeresume.com/blog/claude-resume-prompts
 Prompts optimized for Anthropic's Claude AI to help write and improve resume content, including summary generation and keyword optimization.
 
-### Gemini Resume Prompts
-**URL:** https://easyfreeresume.com/blog/gemini-resume-prompts
-Google Gemini prompts for resume writing, including bullet point improvement, skills extraction, and job description matching.
-
 ### AI Resume Writing Guide
 **URL:** https://easyfreeresume.com/blog/ai-resume-writing-guide
 Comprehensive guide to using AI tools (ChatGPT, Claude, Gemini) for resume writing. Covers best practices, prompt engineering, and common pitfalls.
-
-### AI Resume Review
-**URL:** https://easyfreeresume.com/blog/ai-resume-review
-How to use AI to review and improve your existing resume. Includes specific prompts for identifying weaknesses and suggesting improvements.
-
-### AI Job Description Analyzer
-**URL:** https://easyfreeresume.com/blog/ai-job-description-analyzer
-Guide to using AI to analyze job descriptions and extract key requirements, skills, and keywords to tailor your resume.
 
 ---
 
@@ -233,61 +221,21 @@ How Applicant Tracking Systems work and how to optimize your resume to pass ATS 
 **URL:** https://easyfreeresume.com/blog/resume-action-verbs
 Comprehensive list of strong action verbs organized by skill category (leadership, technical, analytical, creative) with usage examples.
 
-### Resume Keywords Guide
-**URL:** https://easyfreeresume.com/blog/resume-keywords-guide
-Complete guide to finding and using resume keywords effectively. Covers hard skills, soft skills, industry terms, and ATS optimization strategies.
-
-### How to Use Resume Keywords
-**URL:** https://easyfreeresume.com/blog/how-to-use-resume-keywords
-Practical guide on where and how to integrate keywords naturally throughout your resume without keyword stuffing.
-
 ### Professional Summary Examples
 **URL:** https://easyfreeresume.com/blog/professional-summary-examples
 20+ professional summary examples for different industries and experience levels, with templates and writing formulas.
-
-### How to List Skills on a Resume
-**URL:** https://easyfreeresume.com/blog/how-to-list-skills
-Guide to selecting, organizing, and presenting skills on your resume. Covers hard skills, soft skills, and ATS-friendly formatting.
-
-### Quantify Resume Accomplishments
-**URL:** https://easyfreeresume.com/blog/quantify-resume-accomplishments
-How to add metrics and numbers to resume bullet points. Includes before/after examples and formulas for quantifying achievements.
 
 ### Resume with No Experience
 **URL:** https://easyfreeresume.com/blog/resume-no-experience
 How to write a compelling resume when you have limited or no work experience. Covers education, projects, volunteering, and transferable skills.
 
-### Resume Length Guide
-**URL:** https://easyfreeresume.com/blog/resume-length-guide
-How long should your resume be? Guidance by experience level (1 page vs 2 pages) with industry-specific recommendations.
-
 ### Resume vs CV Difference
 **URL:** https://easyfreeresume.com/blog/resume-vs-cv-difference
 Explains the difference between a resume and a CV, when to use each, and regional conventions (US resume vs UK CV).
 
-### Tech Resume Guide
-**URL:** https://easyfreeresume.com/blog/tech-resume-guide
-Resume writing guide specifically for technology roles. Covers projects section, technical skills formatting, and what tech recruiters look for.
-
-### Remote Work Resume
-**URL:** https://easyfreeresume.com/blog/remote-work-resume
-How to write a resume for remote positions. Covers highlighting remote work experience, digital collaboration tools, and self-management skills.
-
-### Cover Letter Guide
-**URL:** https://easyfreeresume.com/blog/cover-letter-guide
-How to write an effective cover letter. Includes templates, formatting, and tips for different situations.
-
-### Resume Mistakes to Avoid
-**URL:** https://easyfreeresume.com/blog/resume-mistakes-to-avoid
-Common resume errors that cost candidates interviews, with specific fixes for each mistake.
-
 ---
 
 ## Interview Preparation
-
-### Job Interview Guide
-**URL:** https://easyfreeresume.com/blog/job-interview-guide
-Comprehensive interview preparation guide covering research, common questions, body language, and follow-up strategies.
 
 ### Behavioral Interview Questions
 **URL:** https://easyfreeresume.com/blog/behavioral-interview-questions
