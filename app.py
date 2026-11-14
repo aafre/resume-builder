@@ -1470,19 +1470,19 @@ def redirect_reddit_builder():
 @app.route("/blog/customer-service-resume-keywords")
 def redirect_customer_service_keywords():
     """Redirect blog version to root SEO page"""
-    return redirect("/resume-keywords/customer-service", code=301)
+    return redirect("/resume-keywords", code=301)
 
 
 @app.route("/blog/software-engineer-resume-keywords")
 def redirect_software_engineer_keywords():
     """Redirect blog version to root SEO page to fix keyword cannibalization"""
-    return redirect("/resume-keywords/software-engineer", code=301)
+    return redirect("/resume-keywords", code=301)
 
 
 @app.route("/blog/resume-keywords-by-industry")
 def redirect_resume_keywords_by_industry():
     """Redirect unindexed title-collision post to the canonical survivor"""
-    return redirect("/blog/resume-keywords-guide", code=301)
+    return redirect("/resume-keywords", code=301)
 
 
 @app.route("/editor")
@@ -1522,13 +1522,13 @@ def gone_deepseek_prompts():
 @app.route("/blog/how-to-use-resume-keywords-to-beat-ats")
 def redirect_keywords_beat_ats():
     """Redirect old blog URL to current version"""
-    return redirect("/blog/how-to-use-resume-keywords", code=301)
+    return redirect("/resume-keywords", code=301)
 
 
 @app.route("/blog/how-to-list-skills-on-resume")
 def redirect_list_skills_on_resume():
     """Redirect old blog URL to current version"""
-    return redirect("/blog/how-to-list-skills", code=301)
+    return redirect("/blog/how-to-write-a-resume-guide", code=301)
 
 
 @app.route("/blog/zety-vs-easy-free-resume")
@@ -1539,8 +1539,8 @@ def redirect_zety_comparison():
 
 @app.route("/blog/career-change-resume")
 def redirect_career_change_resume():
-    """Redirect old blog URL to blog index (no equivalent exists)"""
-    return redirect("/blog", code=301)
+    """Redirect old blog URL to the general resume guide"""
+    return redirect("/blog/how-to-write-a-resume-guide", code=301)
 
 
 @app.route("/privacy")
@@ -1611,14 +1611,62 @@ PRERENDER_DIR = os.path.join(app.static_folder, "prerendered")
 # Path form is slash-stripped, matching `path.strip("/")` in serve().
 NOINDEX_ROUTES = {
     "blog/ai-cover-letter-prompts",
-    "resume-keywords/data-analyst",
-    "resume-keywords/registered-nurse",
+    # Recovery prune 2026-12 (seo-tracking/prune-2026-12.md): live, out of the index
+    "blog/cover-letter-guide",
+    "blog/remote-work-resume",
+    "blog/tech-resume-guide",
 }
+# Every /examples/<role> page is noindexed; the /examples hub stays indexable.
+NOINDEX_PREFIXES = ("examples/",)
+
+# Recovery prune 2026-12: thin/duplicate URLs 301'd into a relevant kept page.
+# Exact slash-stripped paths. Targets must be KEEP pages, never another source.
+PRUNE_REDIRECTS = {
+    # landing variants
+    "actual-free-resume-builder": "/free-resume-builder-no-payment",
+    "free-resume-builder-download": "/free-resume-builder-no-sign-up",
+    "free-resume-builder-for-nurses": "/free-resume-builder-no-sign-up",
+    "free-resume-builder-for-it-professionals": "/free-resume-builder-no-sign-up",
+    "free-resume-builder-for-veterans": "/free-resume-builder-no-sign-up",
+    "ai-resume-builder-free": "/",
+    "zety-free-alternative": "/easyfreeresume-vs-zety",
+    # blog merges
+    "blog/gemini-resume-prompts": "/blog/ai-resume-prompts-hub",
+    "blog/ats-formatting-rules": "/blog/ats-resume-optimization",
+    "blog/free-ats-resume-check": "/resume-keyword-scanner",
+    "blog/resume-after-career-break": "/blog/resume-employment-gaps",
+    "blog/job-interview-guide": "/blog/behavioral-interview-questions",
+    "blog/introducing-prepai-ai-interview-coach": "/blog/behavioral-interview-questions",
+    "blog/customer-service-resume-keywords-guide": "/resume-keywords",
+    "blog/how-to-use-resume-keywords": "/resume-keywords",
+    "blog/resume-keywords-guide": "/resume-keywords",
+    "blog/ai-job-description-analyzer": "/resume-keyword-scanner",
+    "blog/humanize-ai-resume": "/blog/ai-resume-writing-guide",
+    "blog/ai-resume-review": "/blog/ai-resume-writing-guide",
+    "blog/ai-resume-builder": "/",
+    "blog/resume-length-guide": "/blog/how-to-write-a-resume-guide",
+    "blog/how-to-list-skills": "/blog/how-to-write-a-resume-guide",
+    "blog/resume-mistakes-to-avoid": "/blog/how-to-write-a-resume-guide",
+    "blog/career-change-resume-guide": "/blog/how-to-write-a-resume-guide",
+    "blog/quantify-resume-accomplishments": "/blog/resume-action-verbs",
+    "blog/first-job-resume-teenager": "/blog/resume-no-experience",
+    "blog/resume-builder-hidden-costs": "/blog/how-why-easyfreeresume-completely-free",
+}
+# Every /resume-keywords/<role> child folds into the hub.
+PRUNE_REDIRECT_PREFIXES = {"resume-keywords/": "/resume-keywords"}
+
+
+def _prune_redirect_target(clean_path: str) -> str | None:
+    if clean_path in PRUNE_REDIRECTS:
+        return PRUNE_REDIRECTS[clean_path]
+    for prefix, target in PRUNE_REDIRECT_PREFIXES.items():
+        if clean_path.startswith(prefix):
+            return target
+    return None
 
 # ponytail: explicit allowlist — expand only after per-route dev/field CWV validation
 PRERENDER_TO_ALL_ROUTES = frozenset({
     "free-resume-builder-no-sign-up",
-    "ai-resume-builder-free",
     "free-cv-builder-no-sign-up",
     "ats-resume-templates",
     "resume-keywords",
@@ -1829,6 +1877,10 @@ def serve(path):
             clean = path.rstrip("/")
             return redirect(f"/{clean}" if clean else "/", code=301)
 
+        prune_target = _prune_redirect_target(path)
+        if prune_target:
+            return redirect(prune_target, code=301)
+
         # If the requested path exists in the static folder, serve it
         # (skip the prerendered directory itself — it's for bot serving only)
         if path != "" and not path.startswith("prerendered/"):
@@ -1865,7 +1917,8 @@ def serve(path):
                 resp = send_from_directory(app.static_folder, "index.html")
 
             # Deindex thin/consolidated pages via header (reaches non-JS crawlers)
-            if path.strip("/") in NOINDEX_ROUTES:
+            clean_path = path.strip("/")
+            if clean_path in NOINDEX_ROUTES or clean_path.startswith(NOINDEX_PREFIXES):
                 resp.headers["X-Robots-Tag"] = "noindex, follow"
             return resp
 
