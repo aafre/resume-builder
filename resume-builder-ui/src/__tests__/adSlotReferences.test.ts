@@ -29,7 +29,7 @@ describe("ad slot references", () => {
     }
   });
 
-  it("keeps the global mobile top slot, suppressed only on landing which places it below the hero", () => {
+  it("keeps the global mobile top slot, suppressed only on routes that render it themselves", () => {
     const landing = readFileSync(join(srcDir, "components/LandingPage.tsx"), "utf8");
     const sideRail = readFileSync(join(srcDir, "components/ads/SideRailLayout.tsx"), "utf8");
     const app = readFileSync(join(srcDir, "App.tsx"), "utf8");
@@ -48,7 +48,13 @@ describe("ad slot references", () => {
     // All other non-editor pages keep the global mobile-top (revenue inventory)
     expect(sideRail).toContain("AD_CONFIG.slots.mobileTop");
 
-    // Landing must opt out of the global one to avoid double-serving the slot
-    expect(app).toContain('showMobileTop={location.pathname !== "/"}');
+    // Opt-out routes must not double-serve the slot, and each must render it itself
+    expect(app).toContain('const SELF_MOBILE_TOP_ROUTES = new Set(["/", "/resume-keyword-scanner"]);');
+    expect(app).toContain("showMobileTop={!SELF_MOBILE_TOP_ROUTES.has(location.pathname)}");
+
+    // Scanner renders it below the tool and results, so the tool stays above the fold on phones
+    const scanner = readFileSync(join(srcDir, "components/tools/ResumeKeywordScanner.tsx"), "utf8");
+    const scannerSlot = scanner.indexOf("AD_CONFIG.slots.mobileTop");
+    expect(scannerSlot, "scanner mobile top slot").toBeGreaterThan(scanner.indexOf("{/* Results */}"));
   });
 });

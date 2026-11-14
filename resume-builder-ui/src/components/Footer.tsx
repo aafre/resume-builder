@@ -28,7 +28,7 @@ const footerLinks = {
   ],
   resources: [
     { path: '/resume-keywords', label: 'Resume Keywords' },
-    { path: '/resume-keyword-scanner', label: 'ATS Keyword Scanner' },
+    { path: '/resume-keyword-scanner', label: 'Free ATS Resume Checker' },
     { path: '/jobs', label: 'Job Search' },
     { path: '/blog', label: 'Career Blog' },
     { path: '/blog/ai-resume-prompts-hub', label: 'AI Resume Prompts' },

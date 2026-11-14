@@ -81,13 +81,13 @@ const RESOURCES = [
   },
   {
     to: '/resume-keyword-scanner',
-    title: 'Free ATS Keyword Scanner',
+    title: 'Free ATS Resume Checker',
     note: 'Check your resume against any job description',
   },
   {
     to: '/blog/how-to-write-a-resume-guide',
-    title: '10 Resume Mistakes to Avoid',
-    note: 'Critical errors that kill your chances',
+    title: 'How to Write a Resume',
+    note: 'The complete step-by-step guide',
   },
 ];
 
@@ -243,7 +243,7 @@ export default function TemplatesHub() {
                 <p className="text-ink/60 font-extralight leading-relaxed">
                   ATS systems rank resumes by keyword match. Read the job posting, identify required
                   skills and qualifications, and mirror that exact language in your resume. Use our{' '}
-                  <Link to="/resume-keyword-scanner" className="text-accent-text font-medium underline underline-offset-4 decoration-accent-text/30 hover:decoration-accent-text">free ATS keyword scanner</Link> to
+                  <Link to="/resume-keyword-scanner" className="text-accent-text font-medium underline underline-offset-4 decoration-accent-text/30 hover:decoration-accent-text">free ATS resume checker</Link> to
                   check your match rate before applying.
                 </p>
               </div>
