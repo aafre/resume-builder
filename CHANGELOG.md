@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.31.2] - 2026-11-15
+
+### 🐛 Bug Fixes
+
+- **seo:** Noindex non-prod hosts via X-Robots-Tag
+
 ## [3.31.1] - 2026-09-30
 
 ### 🐛 Bug Fixes
