@@ -94,7 +94,7 @@ def test_humans_get_app_shell_either_way(pseo_app, flag, path):
 def test_app_shell_on_jobs_routes_is_noindex_by_header(pseo_app, flag, headers, path):
     # The shell's own <meta robots> says index; the header is what non-JS crawlers see.
     with patch.dict(os.environ, env(flag)):
-        resp = pseo_app.get(path, headers=headers)
+        resp = pseo_app.get(path, headers=headers, base_url="https://easyfreeresume.com")
     if resp.get_data(as_text=True) == SHELL:
         assert resp.headers.get("X-Robots-Tag") == "noindex, follow"
     else:  # flag on + crawler: server-rendered page, unchanged

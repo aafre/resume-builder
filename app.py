@@ -1293,6 +1293,16 @@ def canonicalize_host():
     return None
 
 
+@app.after_request
+def noindex_non_prod_hosts(resp):
+    """Keep dev/run.app/localhost out of the index. Host-based, not FLASK_ENV:
+    DEV also runs as production. Not robots.txt: a crawl block hides the noindex."""
+    host = (request.host or "").split(":")[0].lower()
+    if host not in (CANONICAL_HOST, WWW_HOST):
+        resp.headers["X-Robots-Tag"] = "noindex, nofollow"
+    return resp
+
+
 # Initialize PDF process pool on app startup
 initialize_pdf_pool()
 
